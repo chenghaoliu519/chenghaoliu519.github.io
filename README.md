@@ -10,6 +10,8 @@ A lightweight, responsive academic homepage for GitHub Pages.
 - `styles.css`: responsive layout, typography, and print styles.
 - `site.js`: optional email-copy control and navigation highlighting.
 - `assets/favicon.svg`: vector favicon.
+- `assets/social-card.svg` and `assets/social-card.png`: editable source and
+  1200 × 630 sharing image, referenced by Open Graph and Twitter card metadata.
 - `assets/fonts/`: self-hosted DM Sans and Instrument Serif fonts, with their
   SIL Open Font License files.
 - `404.html`: not-found page.
@@ -46,3 +48,14 @@ source code, phone numbers, and personal photographs. Do not copy private
 project archives or credentials into this repository.
 
 Publication links should only be added when a public, verified URL is available.
+
+## Presentation
+
+The page leads with the biography and selected publication, followed by research
+interests, background, and contact. Keep the neutral palette and restrained
+typography; avoid adding decorative panels or exposing unpublished work.
+
+The sharing image is not displayed in the page body. When updating it, render
+`assets/social-card.svg` at 1200 × 630 with the local DM Sans font loaded, and
+replace `assets/social-card.png`. Update the image alt text in `index.html` if
+the image content changes. Preview refresh timing depends on the sharing platform.
