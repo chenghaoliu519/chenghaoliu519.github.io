@@ -1,0 +1,42 @@
+# Chenghao Liu — Academic homepage
+
+A lightweight, responsive academic homepage for GitHub Pages.
+
+**Website:** https://chenghaoliu519.github.io/
+
+## Files
+
+- `index.html`: biography, research areas, publication, background, and contact.
+- `styles.css`: responsive layout, typography, and print styles.
+- `site.js`: optional email-copy control and navigation highlighting.
+- `assets/favicon.svg`: vector favicon.
+- `404.html`: not-found page.
+- `robots.txt` and `sitemap.xml`: search-engine discovery.
+
+No framework, build step, package installation, remote fonts, analytics,
+or third-party scripts are required. The main content, links, and expandable
+publication summary work without JavaScript.
+
+## Local preview
+
+From the repository directory:
+
+```sh
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
+Open `http://127.0.0.1:8000`.
+
+## Publishing
+
+GitHub Pages publishes the root of the `main` branch. `.nojekyll` ensures the
+files are served as a plain static site. Push changes to `main` to update it.
+
+## Content scope
+
+This public repository contains only the website. It intentionally excludes
+the full CV, private manuscripts, unpublished experimental results, research
+source code, phone numbers, and personal photographs. Do not copy private
+project archives or credentials into this repository.
+
+Publication links should only be added when a public, verified URL is available.
