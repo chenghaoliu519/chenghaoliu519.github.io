@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Chenghao Liu is a Computer Science Ph.D. student at The University of Texas at Arlington researching efficient language-model inference and systems for AI.">
-    <meta name="theme-color" content="#f6f5f0">
+    <meta name="theme-color" content="#ffffff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
     <meta property="og:type" content="website">
@@ -16,7 +16,6 @@
     <link rel="canonical" href="https://chenghaoliu519.github.io/">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="assets/fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="styles.css">
     <script src="site.js" defer></script>
   </head>
@@ -25,12 +24,12 @@
 
     <header class="site-header">
       <div class="header-inner">
-        <a class="wordmark" href="#about" aria-label="Chenghao Liu, home"><span class="brand-mark" aria-hidden="true">cl.</span><span>Chenghao Liu</span></a>
+        <a class="wordmark" href="#about" aria-label="Chenghao Liu, home">Chenghao Liu</a>
         <nav aria-label="Main navigation">
           <a href="#research">Research</a>
           <a href="#publications">Publication</a>
           <a href="#background">Background</a>
-          <a href="#contact">Contact <span aria-hidden="true">↗</span></a>
+          <a href="#contact">Contact</a>
         </nav>
       </div>
     </header>
@@ -39,29 +38,21 @@
       <section id="about" class="hero" aria-labelledby="name">
         <div class="hero-body">
           <div class="hero-copy">
-            <div class="eyebrow"><span class="small-rule" aria-hidden="true"></span> Machine learning &amp; computer systems</div>
-            <h1 id="name">Chenghao <em>Liu<span class="name-period" aria-hidden="true">.</span></em></h1>
-            <p class="hero-statement">Making language-model inference<br class="desktop-break"> <span>more efficient.</span></p>
+            <p class="eyebrow">Machine learning &amp; computer systems</p>
+            <h1 id="name">Chenghao Liu</h1>
+            <p class="hero-statement">Making language-model<br class="desktop-break"> inference more efficient.</p>
+          </div>
+          <div class="hero-introduction">
             <p class="bio">I’m a Ph.D. student in Computer Science at <strong>The University of Texas at Arlington</strong>, advised by <strong>Prof. Jia Rao</strong>. I study efficient language-model inference and the systems that support it—from adaptive computation and decoding to memory and data movement.</p>
             <div class="hero-links" aria-label="Profile links">
-              <a class="primary-link" href="mailto:liuchenghao97@gmail.com">Get in touch <span aria-hidden="true">↗</span></a>
+              <a class="primary-link" href="mailto:liuchenghao97@gmail.com">Get in touch</a>
               <a class="text-link" href="https://github.com/chenghaoliu519">GitHub <span aria-hidden="true">↗</span></a>
               <a class="text-link" href="https://www.linkedin.com/in/chenghao-liu-12a058240/">LinkedIn <span aria-hidden="true">↗</span></a>
             </div>
           </div>
-          <aside class="research-lens" aria-labelledby="lens-heading">
-            <div class="lens-label"><span class="lens-dot" aria-hidden="true"></span> My research lens</div>
-            <h2 id="lens-heading">Efficiency,<br><em>across the stack.</em></h2>
-            <div class="lens-stack">
-              <a href="#research-models"><span class="stack-number">01</span><span><strong>Models</strong><small>Efficient computation</small></span><span class="stack-arrow" aria-hidden="true">↗</span></a>
-              <a href="#research-runtime"><span class="stack-number">02</span><span><strong>Runtime</strong><small>Adaptive execution</small></span><span class="stack-arrow" aria-hidden="true">↗</span></a>
-              <a href="#research-memory"><span class="stack-number">03</span><span><strong>Memory</strong><small>Efficient data access</small></span><span class="stack-arrow" aria-hidden="true">↗</span></a>
-            </div>
-            <p class="lens-footer">Algorithms meet real-world execution.</p>
-          </aside>
         </div>
         <a class="announcement" href="#publications">
-          <span class="announcement-label"><span class="news-dot" aria-hidden="true"></span> Research update</span>
+          <span class="announcement-label">Research update</span>
           <span><strong>SPIRIT</strong> accepted at <strong>NeurIPS 2026</strong><span class="announcement-detail"> · First-author paper</span></span>
           <span class="announcement-arrow" aria-hidden="true">↗</span>
         </a>
@@ -70,28 +61,24 @@
       <section id="research" class="research-section" aria-labelledby="research-heading">
         <div class="section-heading-row">
         <div class="section-label">
-          <span class="section-number" aria-hidden="true">01 /</span>
           <h2 id="research-heading">Research interests</h2>
         </div>
           <p class="section-intro">I work across model execution and system design, with a focus on turning computational efficiency into practical throughput and latency improvements.</p>
         </div>
           <div class="research-list">
             <article id="research-models" class="research-item">
-              <span class="research-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="m16 5 11 6-11 6L5 11l11-6Zm-11 12 11 6 11-6M5 23l11 6 11-6"/></svg></span>
               <div>
                 <h3>Efficient language-model inference</h3>
                 <p>Speculative decoding, diffusion language models, and adaptive computation.</p>
               </div>
             </article>
             <article id="research-memory" class="research-item">
-              <span class="research-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><rect x="8" y="8" width="16" height="16" rx="2"/><path d="M12 3v5m8-5v5M12 24v5m8-5v5M3 12h5m-5 8h5m16-8h5m-5 8h5M13 13h6v6h-6z"/></svg></span>
               <div>
                 <h3>Memory systems for AI</h3>
                 <p>KV-cache management, pooled memory, and GPU data movement.</p>
               </div>
             </article>
             <article id="research-runtime" class="research-item">
-              <span class="research-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M5 5v22h23M9 20l5-7 5 4 8-10M21 7h6v6"/></svg></span>
               <div>
                 <h3>Systems-aware optimization</h3>
                 <p>Runtime adaptation and end-to-end performance under changing workloads.</p>
@@ -102,17 +89,10 @@
 
       <section id="publications" class="section-grid" aria-labelledby="publication-heading">
         <div class="section-label">
-          <span class="section-number" aria-hidden="true">02 /</span>
           <h2 id="publication-heading">Selected work</h2>
         </div>
         <div class="section-body">
           <article class="publication">
-            <div class="publication-cover" aria-hidden="true">
-              <span class="cover-kicker">Self-speculative decoding</span>
-              <span class="cover-title">SPIRIT<span>.</span></span>
-              <div class="cover-lines"><span></span><span></span><span></span><span></span><span></span></div>
-              <span class="cover-footer">Speed-driven online adaptation <span>2026</span></span>
-            </div>
             <div class="publication-content">
             <div class="publication-meta">
               <span class="venue">NeurIPS 2026</span>
@@ -135,7 +115,6 @@
 
       <section id="background" class="section-grid" aria-labelledby="background-heading">
         <div class="section-label">
-          <span class="section-number" aria-hidden="true">03 /</span>
           <h2 id="background-heading">Background</h2>
         </div>
         <div class="section-body">
