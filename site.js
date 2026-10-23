@@ -3,11 +3,12 @@
 // The page, navigation, and paper summary work without JavaScript.
 const copyButton = document.querySelector("#copy-email");
 const copyStatus = document.querySelector("#copy-status");
-if (copyButton && copyStatus && navigator.clipboard && window.isSecureContext) {
+const emailLink = document.querySelector(".contact-email");
+if (copyButton && copyStatus && emailLink && navigator.clipboard && window.isSecureContext) {
   copyButton.hidden = false;
   copyButton.addEventListener("click", async () => {
     try {
-      await navigator.clipboard.writeText("cxl5192@mavs.uta.edu");
+      await navigator.clipboard.writeText(emailLink.getAttribute("href").replace(/^mailto:/, ""));
       copyStatus.textContent = "Email address copied.";
     } catch {
       copyStatus.textContent = "Please select and copy the address above.";
