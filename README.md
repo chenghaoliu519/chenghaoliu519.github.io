@@ -51,14 +51,16 @@ Publication links should only be added when a public, verified URL is available.
 
 ## Presentation
 
-The page opens with a left-aligned introduction: identity and research focus
-sit beside the biography on desktop and stack on small screens. The SPIRIT
-feature pairs the complete paper title, authors, and description with a compact
-diagram, followed by research interests, background, and contact. Its inline
-SVG illustrations explain drafting, full-target verification, and throughput
-feedback; they are a conceptual overview, not experimental measurements.
-Diagram labels remain readable HTML. Keep the shared alignment, neutral palette,
-and restrained typography; avoid decorative clutter or exposing unpublished work.
+The introduction and publication follow a continuous, left-aligned reading
+column. The publication omits the author row and expands into a full-width
+control diagram. The diagram explains the throughput decomposition, productive
+execution windows, length-normalized feedback, ratio-first search, and profile
+reuse across requests. Within-request search uses the calibrated score;
+cross-request mismatch detection uses request-head throughput and acceptance.
+The ratio and layer-pattern glyphs are conceptual SVG illustrations, not
+experimental measurements. Labels remain responsive HTML. Keep the shared
+alignment, neutral palette, and readable typography; avoid decorative clutter
+or exposing unpublished work.
 
 The sharing image is not displayed in the page body. When updating it, render
 `assets/social-card.svg` at 1200 × 630 with the local DM Sans font loaded, and

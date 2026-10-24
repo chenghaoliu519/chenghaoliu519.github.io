@@ -55,7 +55,7 @@
           <div class="hero-introduction">
             <p class="bio">I’m a Ph.D. student in Computer Science at <strong>The University of Texas at Arlington</strong>, advised by <strong class="keep-together">Prof. Jia Rao</strong>. I develop adaptive inference methods and study how runtime and memory-system design shape their performance.</p>
             <div class="hero-links" aria-label="Profile links">
-              <a class="primary-link" href="mailto:liuchenghao97@gmail.com">Get in touch</a>
+              <a class="primary-link" href="mailto:liuchenghao97@gmail.com">Get in touch <span aria-hidden="true">→</span></a>
               <a class="text-link" href="https://github.com/chenghaoliu519">GitHub <span aria-hidden="true">↗</span></a>
               <a class="text-link" href="https://www.linkedin.com/in/chenghao-liu-12a058240/">LinkedIn <span aria-hidden="true">↗</span></a>
             </div>
@@ -76,7 +76,6 @@
               <span class="publication-status">Accepted · First author</span>
             </div>
             <h3>SPIRIT: Speed-Driven Online Adaptation for <span class="keep-together">Self-Speculative</span> Decoding</h3>
-            <p class="authors"><strong>Chenghao Liu</strong>, Chengbo Zhan, Hui Lu, and Jia Rao</p>
             <p class="publication-description">Training-free self-speculative decoding that adapts online to optimize measured throughput rather than token agreement alone.</p>
             <details class="paper-summary">
               <summary>Read research summary <span class="expand-icon" aria-hidden="true"></span></summary>
@@ -86,56 +85,83 @@
               </div>
             </details>
             </div>
-            <figure class="method-figure" aria-labelledby="method-caption">
-              <ol class="decoding-flow">
-                <li class="flow-step">
-                  <svg class="method-icon" viewBox="0 0 220 150" aria-hidden="true" focusable="false">
-                    <g fill="#e5f0ff" stroke="#0066cc" stroke-width="1.5" stroke-linejoin="round">
-                      <path d="M40 107 110 82 180 107 110 132Z"/>
-                      <path d="M40 90 110 65 180 90 110 115Z" fill="white" stroke="#b8c0ca" stroke-dasharray="4 4"/>
-                      <path d="M40 73 110 48 180 73 110 98Z"/>
-                      <path d="M40 56 110 31 180 56 110 81Z" fill="white" stroke="#b8c0ca" stroke-dasharray="4 4"/>
-                      <path d="M40 39 110 14 180 39 110 64Z"/>
-                    </g>
-                  </svg>
-                  <h4>Draft</h4>
-                  <p>Use selected layers<br> of the target model.</p>
-                </li>
-                <li class="flow-step">
-                  <svg class="method-icon" viewBox="0 0 220 150" aria-hidden="true" focusable="false">
-                    <g fill="#ffffff" stroke="#626267" stroke-width="1.5" stroke-linejoin="round">
-                      <path d="M40 107 110 82 180 107 110 132Z"/>
-                      <path d="M40 90 110 65 180 90 110 115Z"/>
-                      <path d="M40 73 110 48 180 73 110 98Z"/>
-                      <path d="M40 56 110 31 180 56 110 81Z"/>
-                      <path d="M40 39 110 14 180 39 110 64Z"/>
-                    </g>
-                  </svg>
-                  <h4>Verify</h4>
-                  <p>Check the draft with<br> the full target model.</p>
-                </li>
-                <li class="flow-step">
-                  <svg class="method-icon" viewBox="0 0 220 150" aria-hidden="true" focusable="false">
-                    <g fill="white" stroke="#b8c0ca" stroke-width="1.5">
-                      <rect x="36" y="35" width="40" height="40" rx="10"/>
-                      <rect x="90" y="35" width="40" height="40" rx="10"/>
-                      <rect x="144" y="35" width="40" height="40" rx="10"/>
-                    </g>
-                    <g fill="#626267">
-                      <rect x="48" y="53" width="16" height="4" rx="2"/>
-                      <rect x="102" y="53" width="16" height="4" rx="2"/>
-                      <rect x="156" y="53" width="16" height="4" rx="2"/>
-                    </g>
-                    <path d="M56 84V96H164V84M110 96V108" fill="none" stroke="#b8c0ca" stroke-width="1.5"/>
-                    <circle cx="110" cy="120" r="15" fill="#e5f0ff" stroke="#0066cc" stroke-width="1.5"/>
-                    <path d="m104 120 4 4 8-8" fill="none" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  <h4>Commit</h4>
-                  <p>Emit verified output.<br> Measure realized throughput.</p>
-                </li>
-              </ol>
-              <div class="feedback-loop"><span>Measured throughput guides online adaptation</span></div>
-              <figcaption id="method-caption">Conceptual overview · The same target model drafts and verifies.</figcaption>
+            <figure class="method-figure" aria-labelledby="method-heading" aria-describedby="method-caption">
+              <div class="method-header">
+                <div>
+                  <p class="method-eyebrow">The control principle</p>
+                  <h4 id="method-heading">Optimize useful output per second.</h4>
+                </div>
+                <div class="objective">
+                  <div class="objective-equation" role="math" aria-label="S sub w equals G sub w divided by T sub w, equals alpha sub w plus beta sub w, multiplied by nu sub w.">
+                    <span aria-hidden="true"><i>S</i><sub>w</sub> = <span class="fraction"><span><i>G</i><sub>w</sub></span><span><i>T</i><sub>w</sub></span></span> = (<i>α</i><sub>w</sub> + <i>β</i><sub>w</sub>) <i>ν</i><sub>w</sub></span>
+                  </div>
+                  <p>Token yield × execution rate</p>
+                </div>
+              </div>
+              <p class="method-premise">Each execution window both produces output and evaluates its configuration.</p>
+
+              <div class="runtime-control">
+                <ol class="control-flow">
+                  <li class="control-node">
+                    <span class="node-label">Execute</span>
+                    <h5>A productive runtime window</h5>
+                    <p>Layer-skipping self-draft with full-target verification.</p>
+                    <div class="window-observations">
+                      <div><span class="math-symbol"><i>G</i><sub>w</sub></span><span>Committed tokens</span></div>
+                      <div><span class="math-symbol"><i>T</i><sub>w</sub></span><span>Decode time</span></div>
+                    </div>
+                  </li>
+                  <li class="control-node">
+                    <span class="node-label">Measure</span>
+                    <h5>Comparable runtime feedback</h5>
+                    <p>Correct for sequence-length drift, then smooth short-window noise.</p>
+                    <div class="signal-chain" role="img" aria-label="Raw throughput S sub w becomes controller score Q sub w through length normalization and exponential moving average smoothing.">
+                      <span aria-hidden="true"><i>S</i><sub>w</sub></span>
+                      <span class="signal-transform" aria-hidden="true">Normalize + EMA<span>→</span></span>
+                      <span aria-hidden="true"><i>Q</i><sub>w</sub></span>
+                    </div>
+                  </li>
+                  <li class="control-node">
+                    <span class="node-label">Adapt within the request</span>
+                    <h5>Hierarchical configuration search</h5>
+                    <div class="search-stage">
+                      <span class="stage-index">I</span>
+                      <div><strong>Localize the skip ratio <i>r</i></strong>
+                        <svg class="ratio-glyph" viewBox="0 0 192 22" aria-hidden="true" focusable="false">
+                          <path d="M4 11H188" stroke="#c7cbd1" stroke-width="1.5"/>
+                          <path d="M73 3H68V19H73M124 3H129V19H124" fill="none" stroke="#0066cc" stroke-width="1.5"/>
+                          <g fill="#c7cbd1"><circle cx="13" cy="11" r="3"/><circle cx="40" cy="11" r="3"/><circle cx="154" cy="11" r="3"/><circle cx="181" cy="11" r="3"/></g>
+                          <circle cx="92" cy="11" r="4" fill="#0066cc"/>
+                          <circle cx="115" cy="11" r="3.5" fill="white" stroke="#0066cc" stroke-width="1.5"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="search-stage">
+                      <span class="stage-index">II</span>
+                      <div><strong>Fix <i>r</i>, refine layer pattern <i>L</i></strong>
+                        <svg class="pattern-glyph" viewBox="0 0 192 22" aria-hidden="true" focusable="false">
+                          <g fill="white" stroke="#b7bec8"><rect x="1" y="3" width="12" height="16" rx="2"/><rect x="23" y="3" width="12" height="16" rx="2"/><rect x="45" y="3" width="12" height="16" rx="2"/><rect x="67" y="3" width="12" height="16" rx="2"/><rect x="89" y="3" width="12" height="16" rx="2"/><rect x="111" y="3" width="12" height="16" rx="2"/><rect x="133" y="3" width="12" height="16" rx="2"/><rect x="155" y="3" width="12" height="16" rx="2"/></g>
+                          <g fill="#e5f0ff" stroke="#0066cc"><rect x="23" y="3" width="12" height="16" rx="2"/><rect x="67" y="3" width="12" height="16" rx="2"/><rect x="111" y="3" width="12" height="16" rx="2"/><rect x="133" y="3" width="12" height="16" rx="2"/></g>
+                        </svg>
+                      </div>
+                    </div>
+                  </li>
+                </ol>
+                <div class="configuration-return"><span>Deploy <i>c</i><sub>w+1</sub> = (<i>r</i>, <i>L</i>) in the next window</span></div>
+              </div>
+
+              <div class="profile-control">
+                <div class="profile-heading">
+                  <span class="node-label">Across requests</span>
+                  <h5>Shift-aware profile reuse</h5>
+                </div>
+                <ol class="profile-flow">
+                  <li><strong>Detect profile mismatch</strong><span>Request-head throughput + acceptance</span></li>
+                  <li><strong>Probe stored profiles</strong><span>When mismatch rises</span></li>
+                  <li><strong>Stay · Switch · Refine · Restart</strong><span>Adapt to the current workload</span></li>
+                </ol>
+              </div>
+              <figcaption id="method-caption">Conceptual overview. α: draft acceptance; β: verifier-token bonus per drafted token; ν: execution rate. Window-boundary updates use existing execution statistics, with no auxiliary validation stage.</figcaption>
             </figure>
           </article>
       </section>
