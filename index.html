@@ -26,7 +26,7 @@
     <link rel="canonical" href="https://chenghaoliu519.github.io/">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=e618458e13a4">
+    <link rel="stylesheet" href="styles.css?v=5af27975ccd8">
     <script src="site.js" defer></script>
   </head>
   <body>
@@ -60,20 +60,23 @@
             </div>
           </div>
         </div>
-        <a class="announcement" href="#publications">
+        <!-- Remove hidden to show an announcement again when there is more news. -->
+        <a class="announcement" href="#publications" hidden>
           <span><strong>SPIRIT</strong> accepted at <strong>NeurIPS 2026</strong><span class="announcement-detail"> · First-author paper</span></span>
           <span class="announcement-arrow" aria-hidden="true">→</span>
         </a>
       </section>
 
       <section id="publications" class="publication-section page-shell" aria-labelledby="publication-heading">
-        <h2 id="publication-heading" class="eyebrow">Selected work</h2>
-          <article class="publication">
-            <div class="publication-content">
+        <div class="publication-topline">
+          <h2 id="publication-heading" class="eyebrow">Selected work</h2>
             <div class="publication-meta">
               <span class="venue">NeurIPS 2026</span>
               <span class="publication-status">Accepted · First author</span>
             </div>
+        </div>
+          <article class="publication">
+            <div class="publication-content">
             <h3>SPIRIT: Speed-Driven Online Adaptation for <span class="keep-together">Self-Speculative</span> Decoding</h3>
             <p class="publication-description">Training-free self-speculative decoding that adapts online to optimize measured throughput rather than token agreement alone.</p>
             <details class="paper-summary">
@@ -85,10 +88,12 @@
             </details>
             </div>
             <figure class="method-figure" aria-labelledby="method-heading" aria-describedby="method-caption">
+              <div class="method-canvas">
               <div class="method-header">
                 <div>
                   <p class="method-eyebrow">The control principle</p>
                   <h4 id="method-heading">Optimize useful output per second.</h4>
+                  <p class="method-premise">Each execution window both produces output and evaluates its configuration.</p>
                 </div>
                 <div class="objective">
                   <div class="objective-equation" role="math" aria-label="S sub w equals G sub w divided by T sub w, equals alpha sub w plus beta sub w, multiplied by nu sub w.">
@@ -97,7 +102,6 @@
                   <p>Token yield × execution rate</p>
                 </div>
               </div>
-              <p class="method-premise">Each execution window both produces output and evaluates its configuration.</p>
 
               <div class="runtime-control">
                 <ol class="control-flow">
@@ -155,8 +159,8 @@
                       </g>
                     </svg>
                     <h5>Search coarse to fine</h5>
-                    <p>Localize <i>r</i>, then refine <i>L</i><br> at the selected ratio.</p>
-                    <div class="node-detail">Within-request adaptation</div>
+                    <p>Localize the skip ratio <i>r</i>,<br> then refine the layer pattern <i>L</i>.</p>
+                    <div class="node-detail">Refine layers at the selected ratio</div>
                   </li>
                 </ol>
                 <div class="configuration-return"><span>Deploy <i>c</i><sub>w+1</sub> = (<i>r</i>, <i>L</i>) in the next window</span></div>
@@ -180,6 +184,7 @@
                   <li><strong>Probe stored profiles</strong><span>When mismatch rises</span></li>
                   <li><strong>Stay · Switch · Refine · Restart</strong><span>Adapt to the current workload</span></li>
                 </ol>
+              </div>
               </div>
               <figcaption id="method-caption">Conceptual overview. α: draft acceptance; β: verifier-token bonus per drafted token; ν: execution rate. Window-boundary updates use existing execution statistics, with no auxiliary validation stage.</figcaption>
             </figure>

@@ -55,6 +55,11 @@ Publication links should only be added when a public, verified URL is available.
 
 ## Presentation
 
+The acceptance announcement is temporarily hidden. To show it again, remove
+the `hidden` attribute from `<a class="announcement">` in `index.html`; update
+its text as appropriate. It occupies no space while hidden. The publication's
+venue and status remain visible independently.
+
 The introduction and publication follow a continuous, left-aligned reading
 column. The header contains navigation only; the publication omits the author
 row. Its control diagram uses one light surface with SVG illustrations of the
