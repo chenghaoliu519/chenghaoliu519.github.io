@@ -56,15 +56,15 @@ Publication links should only be added when a public, verified URL is available.
 ## Presentation
 
 The introduction and publication follow a continuous, left-aligned reading
-column. The publication omits the author row and expands into a full-width
-control diagram. The diagram explains the throughput decomposition, productive
-execution windows, length-normalized feedback, ratio-first search, and profile
-reuse across requests. Within-request search uses the calibrated score;
+column. The header contains navigation only; the publication omits the author
+row. Its control diagram uses one light surface with SVG illustrations of the
+self-draft/verifier, calibrated feedback, and ratio-first search, plus a separate
+profile-reuse strip. Within-request search uses the calibrated score;
 cross-request mismatch detection uses request-head throughput and acceptance.
-The ratio and layer-pattern glyphs are conceptual SVG illustrations, not
-experimental measurements. Labels remain responsive HTML. Keep the shared
-alignment, neutral palette, and readable typography; avoid decorative clutter
-or exposing unpublished work.
+The glyphs are conceptual illustrations, not experimental measurements. Labels
+remain responsive HTML; tiny SVG labels are hidden on narrow screens where the
+adjacent text conveys the same meaning. Keep the shared alignment, neutral
+palette, and readable typography; avoid decorative clutter or unpublished work.
 
 The sharing image is not displayed in the page body. When updating it, render
 `assets/social-card.svg` at 1200 × 630 with the local DM Sans font loaded, and
