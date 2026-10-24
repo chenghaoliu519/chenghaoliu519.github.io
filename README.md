@@ -40,6 +40,10 @@ Open `http://127.0.0.1:8000`.
 GitHub Pages publishes the root of the `main` branch. `.nojekyll` ensures the
 files are served as a plain static site. Push changes to `main` to update it.
 
+When changing `styles.css`, update the stylesheet query in `index.html` and
+`404.html` to the first 12 characters of its SHA-256 hash. This keeps new HTML
+from being paired with a cached stylesheet from a previous layout.
+
 ## Content scope
 
 This public repository contains only the website. It intentionally excludes
