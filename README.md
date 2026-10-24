@@ -51,9 +51,13 @@ Publication links should only be added when a public, verified URL is available.
 
 ## Presentation
 
-The page leads with the biography and selected publication, followed by research
-interests, background, and contact. Keep the neutral palette and restrained
-typography; avoid adding decorative panels or exposing unpublished work.
+The page opens with a centered introduction, followed by a standalone SPIRIT
+feature, research interests, background, and contact. The publication's inline
+SVG illustrations explain drafting, full-target verification, and throughput
+feedback; they are a conceptual overview, not experimental measurements. The
+diagram becomes vertical on small screens, with labels kept as readable HTML.
+Keep the neutral palette, restrained typography, and generous section spacing;
+avoid decorative clutter or exposing unpublished work.
 
 The sharing image is not displayed in the page body. When updating it, render
 `assets/social-card.svg` at 1200 × 630 with the local DM Sans font loaded, and

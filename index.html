@@ -44,13 +44,13 @@
       </div>
     </header>
 
-    <main id="main" class="page-shell">
+    <main id="main">
       <section id="about" class="hero" aria-labelledby="name">
         <div class="hero-body">
           <div class="hero-copy">
             <p class="eyebrow">Machine learning &amp; computer systems</p>
             <h1 id="name">Chenghao Liu</h1>
-            <p class="hero-statement">Making language-model<br class="desktop-break"> inference more efficient.</p>
+            <p class="hero-statement">Making language-model inference<br class="desktop-break"> more efficient.</p>
           </div>
           <div class="hero-introduction">
             <p class="bio">I’m a Ph.D. student in Computer Science at <strong>The University of Texas at Arlington</strong>, advised by <strong class="keep-together">Prof. Jia Rao</strong>. I develop adaptive inference methods and study how runtime and memory-system design shape their performance.</p>
@@ -62,24 +62,20 @@
           </div>
         </div>
         <a class="announcement" href="#publications">
-          <span class="announcement-label">Research update</span>
           <span><strong>SPIRIT</strong> accepted at <strong>NeurIPS 2026</strong><span class="announcement-detail"> · First-author paper</span></span>
-          <span class="announcement-arrow" aria-hidden="true">↗</span>
+          <span class="announcement-arrow" aria-hidden="true">→</span>
         </a>
       </section>
 
-      <section id="publications" class="section-grid" aria-labelledby="publication-heading">
-        <div class="section-label">
-          <h2 id="publication-heading">Selected work</h2>
-        </div>
-        <div class="section-body">
+      <section id="publications" class="publication-section page-shell" aria-labelledby="publication-heading">
+        <h2 id="publication-heading" class="eyebrow">Selected work</h2>
           <article class="publication">
             <div class="publication-content">
             <div class="publication-meta">
               <span class="venue">NeurIPS 2026</span>
               <span class="publication-status">Accepted · First author</span>
             </div>
-            <h3>SPIRIT: Speed-Driven Online Adaptation for <span class="keep-together">Self-Speculative</span> Decoding</h3>
+            <h3><span class="paper-name">SPIRIT<span class="visually-hidden">:</span></span> <span class="paper-title">Speed-Driven Online Adaptation<br class="desktop-break"> for <span class="keep-together">Self-Speculative</span> Decoding</span></h3>
             <p class="authors"><strong>Chenghao Liu</strong>, Chengbo Zhan, Hui Lu, and Jia Rao</p>
             <p class="publication-description">Training-free self-speculative decoding that adapts online to optimize measured throughput rather than token agreement alone.</p>
             <details class="paper-summary">
@@ -90,11 +86,62 @@
               </div>
             </details>
             </div>
+            <figure class="method-figure" aria-labelledby="method-caption">
+              <ol class="decoding-flow">
+                <li class="flow-step">
+                  <svg class="method-icon" viewBox="0 0 220 150" aria-hidden="true" focusable="false">
+                    <g fill="#e5f0ff" stroke="#0066cc" stroke-width="1.5" stroke-linejoin="round">
+                      <path d="M40 107 110 82 180 107 110 132Z"/>
+                      <path d="M40 90 110 65 180 90 110 115Z" fill="white" stroke="#b8c0ca" stroke-dasharray="4 4"/>
+                      <path d="M40 73 110 48 180 73 110 98Z"/>
+                      <path d="M40 56 110 31 180 56 110 81Z" fill="white" stroke="#b8c0ca" stroke-dasharray="4 4"/>
+                      <path d="M40 39 110 14 180 39 110 64Z"/>
+                    </g>
+                  </svg>
+                  <h4>Draft</h4>
+                  <p>Use selected layers<br> of the target model.</p>
+                </li>
+                <li class="flow-step">
+                  <svg class="method-icon" viewBox="0 0 220 150" aria-hidden="true" focusable="false">
+                    <g fill="#ffffff" stroke="#626267" stroke-width="1.5" stroke-linejoin="round">
+                      <path d="M40 107 110 82 180 107 110 132Z"/>
+                      <path d="M40 90 110 65 180 90 110 115Z"/>
+                      <path d="M40 73 110 48 180 73 110 98Z"/>
+                      <path d="M40 56 110 31 180 56 110 81Z"/>
+                      <path d="M40 39 110 14 180 39 110 64Z"/>
+                    </g>
+                  </svg>
+                  <h4>Verify</h4>
+                  <p>Check the draft with<br> the full target model.</p>
+                </li>
+                <li class="flow-step">
+                  <svg class="method-icon" viewBox="0 0 220 150" aria-hidden="true" focusable="false">
+                    <g fill="white" stroke="#b8c0ca" stroke-width="1.5">
+                      <rect x="36" y="35" width="40" height="40" rx="10"/>
+                      <rect x="90" y="35" width="40" height="40" rx="10"/>
+                      <rect x="144" y="35" width="40" height="40" rx="10"/>
+                    </g>
+                    <g fill="#626267">
+                      <rect x="48" y="53" width="16" height="4" rx="2"/>
+                      <rect x="102" y="53" width="16" height="4" rx="2"/>
+                      <rect x="156" y="53" width="16" height="4" rx="2"/>
+                    </g>
+                    <path d="M56 84V96H164V84M110 96V108" fill="none" stroke="#b8c0ca" stroke-width="1.5"/>
+                    <circle cx="110" cy="120" r="15" fill="#e5f0ff" stroke="#0066cc" stroke-width="1.5"/>
+                    <path d="m104 120 4 4 8-8" fill="none" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <h4>Commit</h4>
+                  <p>Emit verified output.<br> Measure realized throughput.</p>
+                </li>
+              </ol>
+              <div class="feedback-loop"><span>Measured throughput guides online adaptation</span></div>
+              <figcaption id="method-caption">Conceptual overview · The same target model drafts and verifies.</figcaption>
+            </figure>
           </article>
-        </div>
       </section>
 
       <section id="research" class="research-section" aria-labelledby="research-heading">
+        <div class="page-shell">
         <div class="section-heading-row">
         <div class="section-label">
           <h2 id="research-heading">Research interests</h2>
@@ -121,9 +168,10 @@
               </div>
             </article>
           </div>
+        </div>
       </section>
 
-      <section id="background" class="section-grid" aria-labelledby="background-heading">
+      <section id="background" class="section-grid page-shell" aria-labelledby="background-heading">
         <div class="section-label">
           <h2 id="background-heading">Background</h2>
         </div>
@@ -166,6 +214,7 @@
       </section>
 
       <section id="contact" class="contact-section" aria-labelledby="contact-heading">
+        <div class="contact-inner page-shell">
         <div>
           <span class="eyebrow">Get in touch</span>
           <h2 id="contact-heading">Let’s talk research.</h2>
@@ -175,6 +224,7 @@
           <a class="contact-email" href="mailto:liuchenghao97@gmail.com">liuchenghao97@gmail.com <span aria-hidden="true">↗</span></a>
           <button id="copy-email" class="copy-button" type="button" hidden>Copy email address</button>
           <span id="copy-status" class="copy-status" role="status" aria-live="polite"></span>
+        </div>
         </div>
       </section>
     </main>
