@@ -77,7 +77,9 @@ row. Native expandable research details contain the full summary, formula, and
 control diagram; they work without JavaScript. The default diagram introduces
 self-drafting, full verification, and throughput-guided ratio/layer adaptation.
 The expanded diagram adds calibrated feedback, ratio-first search, and profile
-reuse. Within-request search uses the calibrated score;
+reuse. Three small vector illustrations show mismatch detection, stored profiles
+probed on the same request head, and the stay/switch/refine/restart choices.
+Within-request search uses the calibrated score;
 cross-request mismatch detection uses request-head throughput and acceptance.
 The glyphs are conceptual illustrations, not experimental measurements. Labels
 remain responsive HTML; tiny SVG labels are hidden on narrow screens where the
