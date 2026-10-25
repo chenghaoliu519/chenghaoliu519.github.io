@@ -60,11 +60,14 @@ the `hidden` attribute from `<a class="announcement">` in `index.html`; update
 its text as appropriate. It occupies no space while hidden. The publication's
 venue and status remain visible independently.
 
-The introduction and publication follow a continuous, left-aligned reading
-column. The header contains navigation only; the publication omits the author
-row. Its control diagram uses one light surface with SVG illustrations of the
-self-draft/verifier, calibrated feedback, and ratio-first search, plus a separate
-profile-reuse strip. Within-request search uses the calibrated score;
+The introduction stays left-aligned. The publication pairs its title and short
+description with a compact conceptual diagram on desktop, stacking them on
+mobile. The header contains navigation only; the publication omits the author
+row. Native expandable research details contain the full summary, formula, and
+control diagram; they work without JavaScript. The default diagram introduces
+self-drafting, full verification, and throughput-guided ratio/layer adaptation.
+The expanded diagram adds calibrated feedback, ratio-first search, and profile
+reuse. Within-request search uses the calibrated score;
 cross-request mismatch detection uses request-head throughput and acceptance.
 The glyphs are conceptual illustrations, not experimental measurements. Labels
 remain responsive HTML; tiny SVG labels are hidden on narrow screens where the

@@ -26,7 +26,7 @@
     <link rel="canonical" href="https://chenghaoliu519.github.io/">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=5af27975ccd8">
+    <link rel="stylesheet" href="styles.css?v=3602c9c5e76e">
     <script src="site.js" defer></script>
   </head>
   <body>
@@ -76,17 +76,59 @@
             </div>
         </div>
           <article class="publication">
+            <div class="publication-feature">
             <div class="publication-content">
             <h3>SPIRIT: Speed-Driven Online Adaptation for <span class="keep-together">Self-Speculative</span> Decoding</h3>
             <p class="publication-description">Training-free self-speculative decoding that adapts online to optimize measured throughput rather than token agreement alone.</p>
+            </div>
+            <figure class="method-preview" aria-labelledby="preview-heading" aria-describedby="preview-caption">
+              <h4 id="preview-heading">Throughput drives adaptation.</h4>
+              <ol class="preview-flow">
+                <li>
+                  <svg viewBox="0 0 90 100" aria-hidden="true" focusable="false">
+                    <g fill="#e5f0ff" stroke="#0066cc" stroke-width="1.4" stroke-linejoin="round">
+                      <path d="M14 75 45 64 76 75 45 86Z"/>
+                      <path d="M14 61 45 50 76 61 45 72Z" fill="white" stroke="#b8c0ca" stroke-dasharray="3 3"/>
+                      <path d="M14 47 45 36 76 47 45 58Z"/>
+                      <path d="M14 33 45 22 76 33 45 44Z" fill="white" stroke="#b8c0ca" stroke-dasharray="3 3"/>
+                      <path d="M14 19 45 8 76 19 45 30Z"/>
+                    </g>
+                  </svg>
+                  <span>Self-draft</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 90 100" aria-hidden="true" focusable="false">
+                    <g fill="white" stroke="#626267" stroke-width="1.4" stroke-linejoin="round">
+                      <path d="M14 75 45 64 76 75 45 86Z"/>
+                      <path d="M14 61 45 50 76 61 45 72Z"/>
+                      <path d="M14 47 45 36 76 47 45 58Z"/>
+                      <path d="M14 33 45 22 76 33 45 44Z"/>
+                      <path d="M14 19 45 8 76 19 45 30Z"/>
+                    </g>
+                  </svg>
+                  <span>Full verifier</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 90 100" aria-hidden="true" focusable="false">
+                    <path d="M10 24H80M10 49H80M10 74H80" fill="none" stroke="#c7cbd1" stroke-width="1.4" stroke-linecap="round"/>
+                    <g fill="#e5f0ff" stroke="#0066cc" stroke-width="1.4">
+                      <circle cx="31" cy="24" r="7"/><circle cx="61" cy="49" r="7"/><circle cx="42" cy="74" r="7"/>
+                    </g>
+                  </svg>
+                  <span>Adapt</span>
+                </li>
+              </ol>
+              <div class="preview-feedback"><span>Throughput feedback</span></div>
+              <figcaption id="preview-caption">Tune the skip ratio <i>r</i> and layer pattern <i>L</i><br> using measured throughput.</figcaption>
+            </figure>
+            </div>
             <details class="paper-summary">
-              <summary>Read research summary <span class="expand-icon" aria-hidden="true"></span></summary>
+              <summary><span class="details-closed-label">Explore the method</span><span class="details-open-label">Close research details</span> <span class="expand-icon" aria-hidden="true"></span></summary>
               <div class="summary-content">
+                <div class="summary-copy">
                 <p>SPIRIT uses the target model itself to produce speculative drafts and selects layer-skipping configurations through hierarchical online search. Its controller combines window-level throughput feedback, length-aware normalization, and profile reuse to adapt to changing workloads without offline profiling or a separately trained draft model.</p>
                 <p>The evaluation achieves up to <strong>1.74×</strong> speedup with FP16 self-drafts and <strong>2.14×</strong> with NF4 self-drafts over autoregressive decoding, while preserving the target model’s output distribution. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving.</p>
-              </div>
-            </details>
-            </div>
+                </div>
             <figure class="method-figure" aria-labelledby="method-heading" aria-describedby="method-caption">
               <div class="method-canvas">
               <div class="method-header">
@@ -188,6 +230,8 @@
               </div>
               <figcaption id="method-caption">Conceptual overview. α: draft acceptance; β: verifier-token bonus per drafted token; ν: execution rate. Window-boundary updates use existing execution statistics, with no auxiliary validation stage.</figcaption>
             </figure>
+              </div>
+            </details>
           </article>
       </section>
 
