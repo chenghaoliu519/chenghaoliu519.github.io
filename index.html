@@ -26,7 +26,7 @@
     <link rel="canonical" href="https://chenghaoliu519.github.io/">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=0e05a1277891">
+    <link rel="stylesheet" href="styles.css?v=f4b487d537a4">
     <script src="site.js?v=a83c3c0dcc24" defer></script>
   </head>
   <body>
@@ -217,82 +217,74 @@
               </div>
 
               <div class="profile-control">
-                <div class="profile-heading">
-                  <svg class="profile-icon" viewBox="0 0 54 52" aria-hidden="true" focusable="false">
-                    <rect x="17" y="5" width="31" height="32" rx="5" fill="white" stroke="#c7cbd1" stroke-width="1.3"/>
-                    <rect x="10" y="11" width="31" height="32" rx="5" fill="white" stroke="#a1a8b2" stroke-width="1.3"/>
-                    <rect x="3" y="17" width="31" height="32" rx="5" fill="#e5f0ff" stroke="#0066cc" stroke-width="1.3"/>
-                    <path d="M11 27H26M11 33H26M11 39H21" stroke="#0066cc" stroke-width="1.3" stroke-linecap="round"/>
-                  </svg>
-                  <div>
+                <div class="reuse-header">
                   <span class="node-label">Across requests</span>
                   <h5>Shift-aware reuse</h5>
+                </div>
+                <div class="reuse-flow">
+                  <div class="reuse-stage">
+                    <h6>Read the request head</h6>
+                    <p class="reuse-description">Compare with the active profile’s signature.</p>
+                    <div class="signature-preview" role="img" aria-label="Conceptual comparison: current request-head throughput and acceptance depart from the active profile's stored ranges.">
+                      <div class="signature-row" aria-hidden="true"><span>Throughput</span><div class="signature-track"><span class="signature-range"></span><span class="signature-point"></span></div></div>
+                      <div class="signature-row" aria-hidden="true"><span>Acceptance</span><div class="signature-track"><span class="signature-range"></span><span class="signature-point"></span></div></div>
+                      <div class="signature-legend" aria-hidden="true"><span><b class="range-key"></b>Stored range</span><span><b class="point-key"></b>Current head</span></div>
+                    </div>
+                    <p class="reuse-note">Compatible heads keep the active profile.</p>
+                  </div>
+                  <div class="reuse-stage">
+                    <h6>On mismatch, probe profiles</h6>
+                    <p class="reuse-description">Compare candidates on the same request head.</p>
+                    <div class="profile-bank" role="img" aria-label="The active profile and two stored profiles, each with a skip ratio r and layer pattern L, are probed on the same request head.">
+                      <div class="bank-profiles" aria-hidden="true">
+                        <div class="bank-profile">
+                          <span class="bank-name">Active</span>
+                          <div class="bank-ratio"><i>r</i><span></span></div>
+                          <div class="bank-layers"><i>L</i><span class="bank-pattern"><b></b><b></b><b></b><b></b></span></div>
+                        </div>
+                        <div class="bank-profile bank-profile-candidate">
+                          <span class="bank-name">Stored A</span>
+                          <div class="bank-ratio"><i>r</i><span></span></div>
+                          <div class="bank-layers"><i>L</i><span class="bank-pattern"><b></b><b></b><b></b><b></b></span></div>
+                        </div>
+                        <div class="bank-profile">
+                          <span class="bank-name">Stored B</span>
+                          <div class="bank-ratio"><i>r</i><span></span></div>
+                          <div class="bank-layers"><i>L</i><span class="bank-pattern"><b></b><b></b><b></b><b></b></span></div>
+                        </div>
+                      </div>
+                      <svg class="bank-probe" viewBox="0 0 300 44" aria-hidden="true" focusable="false">
+                        <g fill="none" stroke="#a1a8b2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M150 31V22H48V4m-4 4 4-4 4 4M150 22H252V4m-4 4 4-4 4 4"/>
+                          <path d="M150 31V4m-4 4 4-4 4 4" stroke="#0066cc"/>
+                        </g>
+                        <rect x="129" y="31" width="42" height="10" rx="4" fill="white" stroke="#a1a8b2" stroke-width="1.3"/>
+                      </svg>
+                    </div>
+                    <p class="reuse-note">Rank candidates by relative probe merit.</p>
+                  </div>
+                  <div class="reuse-stage reuse-decisions">
+                    <h6>Reuse before rebuilding</h6>
+                    <dl class="reuse-actions">
+                      <div>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><path d="m8 12 3 3 5-6"/></svg>
+                        <dt>Stay</dt><dd>Keep the active profile.</dd>
+                      </div>
+                      <div>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 8h15m-4-4 4 4-4 4M20 16H5m4-4-4 4 4 4"/></svg>
+                        <dt>Switch</dt><dd>Reuse a better stored profile.</dd>
+                      </div>
+                      <div>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h5m4 0h7M4 17h10m4 0h2"/><circle cx="11" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg>
+                        <dt>Refine</dt><dd>Switch, then adjust its layers.</dd>
+                      </div>
+                      <div>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 8a8 8 0 1 1-1 8M5 3v5h5"/></svg>
+                        <dt>Restart</dt><dd>Search anew when no profile fits.</dd>
+                      </div>
+                    </dl>
                   </div>
                 </div>
-                <ol class="profile-flow">
-                  <li>
-                    <svg class="profile-visual" viewBox="0 0 220 112" aria-hidden="true" focusable="false">
-                      <rect x="61" y="17" width="33" height="64" rx="6" fill="#e5f0ff"/>
-                      <rect x="171" y="17" width="33" height="64" rx="6" fill="#e5f0ff"/>
-                      <g fill="none" stroke="#a1a8b2" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="3 4">
-                        <path d="M17 39H92"/><path d="M127 60H202"/>
-                      </g>
-                      <g fill="none" stroke="#0066cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17 40 32 37 47 40 62 43 77 59 92 64"/>
-                        <path d="M127 61 142 59 157 62 172 56 187 41 202 34"/>
-                      </g>
-                      <g fill="#0066cc"><circle cx="92" cy="64" r="3"/><circle cx="202" cy="34" r="3"/></g>
-                      <g class="glyph-label" fill="#626267" font-size="11" text-anchor="middle">
-                        <text x="55" y="101">Throughput</text><text x="165" y="101">Acceptance</text>
-                      </g>
-                    </svg>
-                    <strong>Detect profile mismatch</strong><span>Request-head throughput + acceptance</span>
-                  </li>
-                  <li>
-                    <svg class="profile-visual" viewBox="0 0 220 112" aria-hidden="true" focusable="false">
-                      <g fill="none" stroke="#a1a8b2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M110 92V79H44V65m-4 4 4-4 4 4M110 79H176V65m-4 4 4-4 4 4"/>
-                        <path d="M110 92V65m-4 4 4-4 4 4" stroke="#0066cc"/>
-                      </g>
-                      <g fill="white" stroke="#a1a8b2" stroke-width="1.4">
-                        <rect x="20" y="13" width="48" height="50" rx="6"/>
-                        <rect x="86" y="13" width="48" height="50" rx="6" fill="#e5f0ff" stroke="#0066cc"/>
-                        <rect x="152" y="13" width="48" height="50" rx="6"/>
-                      </g>
-                      <g stroke="#a1a8b2" stroke-width="1.4" stroke-linecap="round">
-                        <path d="M30 27H58M96 27H124M162 27H190"/>
-                      </g>
-                      <g fill="#86868b"><circle cx="38" cy="27" r="3"/><circle cx="181" cy="27" r="3"/></g>
-                      <circle cx="113" cy="27" r="3" fill="#0066cc"/>
-                      <g fill="white" stroke="#b8c0ca" stroke-width="1.2">
-                        <rect x="29" y="40" width="7" height="10" rx="1.5"/><rect x="40" y="40" width="7" height="10" rx="1.5" fill="#dce0e6"/><rect x="51" y="40" width="7" height="10" rx="1.5"/>
-                        <rect x="95" y="40" width="7" height="10" rx="1.5" fill="#0066cc" stroke="#0066cc"/><rect x="106" y="40" width="7" height="10" rx="1.5"/><rect x="117" y="40" width="7" height="10" rx="1.5" fill="#0066cc" stroke="#0066cc"/>
-                        <rect x="161" y="40" width="7" height="10" rx="1.5" fill="#dce0e6"/><rect x="172" y="40" width="7" height="10" rx="1.5"/><rect x="183" y="40" width="7" height="10" rx="1.5"/>
-                      </g>
-                      <rect x="91" y="93" width="38" height="13" rx="4" fill="white" stroke="#a1a8b2" stroke-width="1.3"/>
-                      <path d="M99 99.5H121" stroke="#86868b" stroke-width="1.3" stroke-linecap="round"/>
-                    </svg>
-                    <strong>Probe stored profiles</strong><span>On mismatch, compare on the same request head</span>
-                  </li>
-                  <li>
-                    <svg class="profile-visual" viewBox="0 0 220 112" aria-hidden="true" focusable="false">
-                      <g fill="none" stroke="#a1a8b2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M41 56H72M72 17V95M72 17H104m-4-4 4 4-4 4M72 43H104m-4-4 4 4-4 4M72 69H104m-4-4 4 4-4 4M72 95H104m-4-4 4 4-4 4"/>
-                      </g>
-                      <circle cx="32" cy="56" r="9" fill="white" stroke="#0066cc" stroke-width="1.5"/>
-                      <circle cx="32" cy="56" r="3" fill="#0066cc"/>
-                      <g fill="white" stroke="#b8c0ca" stroke-width="1.3">
-                        <rect x="119" y="12" width="11" height="10" rx="2"/><rect x="137" y="12" width="11" height="10" rx="2" fill="#dce0e6"/><rect x="155" y="12" width="11" height="10" rx="2"/><rect x="173" y="12" width="11" height="10" rx="2" fill="#dce0e6"/>
-                        <rect x="119" y="38" width="11" height="10" rx="2" fill="#e5f0ff" stroke="#0066cc"/><rect x="137" y="38" width="11" height="10" rx="2"/><rect x="155" y="38" width="11" height="10" rx="2" fill="#e5f0ff" stroke="#0066cc"/><rect x="173" y="38" width="11" height="10" rx="2"/>
-                        <rect x="119" y="64" width="11" height="10" rx="2"/><rect x="137" y="64" width="11" height="10" rx="2" fill="#dce0e6"/><rect x="155" y="64" width="11" height="10" rx="2" fill="#e5f0ff" stroke="#0066cc"/><rect x="173" y="64" width="11" height="10" rx="2"/>
-                      </g>
-                      <g fill="none" stroke="#a1a8b2" stroke-width="1.3" stroke-dasharray="2 2">
-                        <rect x="119" y="90" width="11" height="10" rx="2"/><rect x="137" y="90" width="11" height="10" rx="2"/><rect x="155" y="90" width="11" height="10" rx="2"/><rect x="173" y="90" width="11" height="10" rx="2"/>
-                      </g>
-                    </svg>
-                    <strong>Stay · Switch · Refine · Restart</strong><span>Adapt to the current workload</span>
-                  </li>
-                </ol>
               </div>
               </div>
               <figcaption id="method-caption">Conceptual overview. α: draft acceptance; β: verifier-token bonus per drafted token; ν: execution rate. Window-boundary updates use existing execution statistics, with no auxiliary validation stage.</figcaption>

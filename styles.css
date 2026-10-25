@@ -138,18 +138,53 @@ h2 { font-size: 28px; font-weight: 550; letter-spacing: -.65px; line-height: 1.2
 .configuration-return::before { content: ""; position: absolute; inset: 0 0 9px; border: 1px solid var(--accent); border-top: 0; border-radius: 0 0 10px 10px; }
 .configuration-return::after { content: ""; position: absolute; left: -3px; top: 1px; width: 7px; height: 7px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); transform: rotate(45deg); }
 .configuration-return > span { position: relative; background: var(--surface); padding: 0 10px; }
-.profile-control { margin-top: 28px; padding-top: 24px; border-top: 1px solid #dcdcdf; }
-.profile-heading { display: flex; align-items: center; gap: 12px; }
-.profile-icon { width: 30px; height: 30px; flex-shrink: 0; }
-.profile-heading > div { display: flex; align-items: baseline; gap: 14px; }
-.profile-heading h5 { font-size: 15px; font-weight: 600; line-height: 1.4; letter-spacing: -.2px; margin: 0; }
-.profile-flow { list-style: none; margin: 22px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
-.profile-flow li { position: relative; min-width: 0; }
-.profile-visual { display: block; width: 220px; height: 112px; max-width: 100%; margin: 0 auto 16px; }
-.profile-flow li:not(:last-child)::after { content: ""; position: absolute; width: 26px; height: 1px; background: #a1a1a6; right: -29px; top: 55px; }
-.profile-flow li:not(:last-child)::before { content: ""; position: absolute; width: 6px; height: 6px; border-top: 1px solid #a1a1a6; border-right: 1px solid #a1a1a6; right: -28px; top: 52px; transform: rotate(45deg); }
-.profile-flow strong { display: block; font-size: 13px; font-weight: 600; line-height: 1.5; }
-.profile-flow li > span { display: block; margin-top: 6px; font-size: 12px; line-height: 1.6; color: var(--muted); }
+/* Request signatures and reusable configurations share one decision flow. */
+.profile-control { margin-top: 28px; padding-top: 26px; border-top: 1px solid #dcdcdf; }
+.reuse-header { display: flex; align-items: baseline; gap: 14px; }
+.reuse-header h5 { font-size: 19px; font-weight: 600; line-height: 1.35; letter-spacing: -.4px; margin: 0; }
+.reuse-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; margin-top: 28px; }
+.reuse-stage { position: relative; min-width: 0; }
+.reuse-stage h6 { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; letter-spacing: -.2px; }
+.reuse-stage .reuse-description { color: var(--muted); font-size: 13px; line-height: 1.65; margin-top: 7px; }
+.reuse-stage:not(:last-child)::after { content: ""; position: absolute; top: 112px; right: -31px; width: 25px; height: 1px; background: #a1a1a6; }
+.reuse-stage:not(:last-child)::before { content: ""; position: absolute; top: 109px; right: -30px; width: 6px; height: 6px; border-top: 1px solid #a1a1a6; border-right: 1px solid #a1a1a6; transform: rotate(45deg); }
+.signature-preview { margin-top: 24px; }
+.signature-row { display: grid; grid-template-columns: 80px minmax(0, 1fr); align-items: center; gap: 10px; min-height: 32px; color: var(--muted); font-size: 12px; }
+.signature-track { position: relative; height: 20px; }
+.signature-track::before { content: ""; position: absolute; top: 9.5px; left: 0; right: 0; height: 1px; background: #c7cbd1; }
+.signature-range { position: absolute; top: 3px; left: 25%; width: 30%; height: 14px; background: #dce0e6; border-radius: 4px; }
+.signature-point { position: absolute; left: 79%; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.signature-row:nth-child(2) .signature-range { left: 45%; }
+.signature-row:nth-child(2) .signature-point { left: 18%; }
+.signature-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 16px; margin-top: 15px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.signature-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.range-key { width: 12px; height: 8px; border-radius: 2px; background: #dce0e6; }
+.point-key { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.reuse-stage .reuse-note { margin-top: 17px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+.profile-bank { margin-top: 19px; }
+.bank-profiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.bank-profile { min-width: 0; padding: 10px 8px 12px; border: 1px solid #c7cbd1; border-radius: 8px; background: white; }
+.bank-name { display: block; color: var(--muted); font-size: 11px; line-height: 1.5; text-align: center; white-space: nowrap; }
+.bank-ratio, .bank-layers { display: grid; grid-template-columns: 9px minmax(0, 1fr); gap: 5px; align-items: center; margin-top: 10px; font-size: 12px; line-height: 1; color: var(--muted); }
+.bank-ratio > span { position: relative; height: 12px; }
+.bank-ratio > span::before { content: ""; position: absolute; top: 5.5px; left: 0; right: 0; height: 1px; background: #b8c0ca; }
+.bank-ratio > span::after { content: ""; position: absolute; top: 3px; left: 20%; width: 6px; height: 6px; border-radius: 50%; background: #86868b; }
+.bank-profile:nth-child(2) .bank-ratio > span::after { left: 60%; }
+.bank-profile:nth-child(3) .bank-ratio > span::after { left: 40%; }
+.bank-pattern { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; }
+.bank-pattern b { height: 9px; border: 1px solid #b8c0ca; border-radius: 2px; background: white; }
+.bank-profile:first-child .bank-pattern b:nth-child(even), .bank-profile:last-child .bank-pattern b:nth-child(odd) { background: #dce0e6; }
+.bank-profile-candidate { border-color: #0066cc; background: #e5f0ff; }
+.bank-profile-candidate .bank-name { color: #0066cc; }
+.bank-profile-candidate .bank-ratio > span::after { background: #0066cc; }
+.bank-profile-candidate .bank-pattern b:nth-child(even) { border-color: #0066cc; background: #0066cc; }
+.bank-probe { display: block; width: 100%; height: 40px; margin-top: 5px; }
+.profile-bank + .reuse-note { margin-top: 7px; }
+.reuse-actions { margin: 12px 0 0; display: grid; gap: 12px; }
+.reuse-actions > div { display: grid; grid-template-columns: 24px minmax(0, 1fr); column-gap: 11px; }
+.reuse-actions svg { grid-row: 1 / 3; width: 22px; height: 22px; margin-top: 2px; fill: none; stroke: #0066cc; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.reuse-actions dt { color: var(--ink); font-size: 14px; font-weight: 500; line-height: 1.5; }
+.reuse-actions dd { margin: 2px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .method-figure figcaption { max-width: 960px; margin: 14px auto 0; font-size: 12px; line-height: 1.7; color: var(--muted); }
 
 .section-grid { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 60px; padding-top: 48px; padding-bottom: 48px; }
@@ -205,7 +240,12 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
   .objective-equation { font-size: 23px; }
   .control-flow { gap: 26px; }
   .control-node h5 { font-size: 18px; }
-  .profile-flow { gap: 26px; }
+}
+@media (max-width: 960px) {
+  .reuse-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 36px; }
+  .reuse-decisions { grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid #dcdcdf; }
+  .reuse-stage:nth-child(2)::before, .reuse-stage:nth-child(2)::after { display: none; }
+  .reuse-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 36px; }
 }
 @media (max-width: 820px) {
   :root { --section-space: 64px; }
@@ -249,9 +289,6 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
   .control-node:not(:last-child)::before { right: -21px; top: 53px; }
   .signal-score { width: 50px; height: 50px; line-height: 47px; font-size: 25px; }
   .signal-bridge { width: 60px; }
-  .profile-flow { gap: 24px; }
-  .profile-flow li:not(:last-child)::after { width: 20px; right: -22px; }
-  .profile-flow li:not(:last-child)::before { right: -21px; }
 }
 @media (max-width: 700px) {
   .publication-feature { grid-template-columns: minmax(0, 1fr); gap: 24px; }
@@ -279,14 +316,20 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
   .configuration-return { width: 100%; padding-top: 0; text-align: left; margin-top: 26px; }
   .configuration-return::before, .configuration-return::after { display: none; }
   .configuration-return > span { padding: 0; }
-  .profile-flow { grid-template-columns: minmax(0, 1fr); gap: 26px; }
-  .profile-flow li { display: grid; grid-template-columns: 130px minmax(0, 1fr); column-gap: 23px; }
-  .profile-visual { grid-row: 1 / 3; width: 130px; height: 100px; margin: 0; align-self: center; }
-  .profile-flow strong { align-self: end; }
-  .profile-flow li > span { align-self: start; }
-  .profile-flow li:not(:last-child)::after { width: 1px; height: 16px; right: auto; left: 65px; top: auto; bottom: -21px; }
-  .profile-flow li:not(:last-child)::before { right: auto; left: 62.5px; top: auto; bottom: -21px; transform: rotate(135deg); }
-  .profile-flow li > span { margin-top: 2px; }
+}
+@media (max-width: 700px) {
+  .reuse-header { flex-wrap: wrap; gap: 6px 14px; }
+  .reuse-flow { grid-template-columns: minmax(0, 1fr); gap: 38px; margin-top: 24px; }
+  .reuse-stage { width: 100%; max-width: 380px; margin: 0 auto; }
+  .reuse-decisions { grid-column: auto; border-top: 0; padding-top: 0; }
+  .reuse-stage:not(:last-child)::after { display: block; top: auto; right: auto; left: calc(50% - .5px); bottom: -28px; width: 1px; height: 18px; }
+  .reuse-stage:not(:last-child)::before { display: block; top: auto; right: auto; left: calc(50% - 3px); bottom: -28px; transform: rotate(135deg); }
+  .signature-preview { margin-top: 16px; }
+  .signature-legend { font-size: 12px; }
+  .bank-name { font-size: 12px; }
+  .reuse-actions { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .reuse-actions dt { font-size: 15px; }
+  .reuse-actions dd { font-size: 13px; }
 }
 @media (max-width: 600px) {
   :root { --section-space: 52px; }
@@ -326,11 +369,6 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
   .signal-score { width: 34px; height: 34px; font-size: 19px; line-height: 31px; }
   .signal-bridge { width: 32px; }
   .configuration-return { font-size: 12px; }
-  .profile-heading > div { flex-wrap: wrap; gap: 2px 12px; }
-  .profile-flow li { grid-template-columns: 100px minmax(0, 1fr); column-gap: 17px; }
-  .profile-visual { width: 100px; }
-  .profile-flow li:not(:last-child)::after { left: 50px; }
-  .profile-flow li:not(:last-child)::before { left: 47.5px; }
   .section-heading-row { gap: 18px; }
   h2 { font-size: 26px; }
   .research-section { padding-top: 44px; padding-bottom: 44px; }
@@ -368,10 +406,6 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
   .control-node:not(:last-child)::before { left: 37px; }
   .signal-score { width: 28px; height: 28px; line-height: 25px; font-size: 17px; }
   .signal-bridge { width: 24px; }
-  .profile-flow li { grid-template-columns: 80px minmax(0, 1fr); column-gap: 12px; }
-  .profile-visual { width: 80px; }
-  .profile-flow li:not(:last-child)::after { left: 40px; }
-  .profile-flow li:not(:last-child)::before { left: 37.5px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
