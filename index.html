@@ -26,8 +26,8 @@
     <link rel="canonical" href="https://chenghaoliu519.github.io/">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=41e7476a7778">
-    <script src="site.js" defer></script>
+    <link rel="stylesheet" href="styles.css?v=dab8996267e0">
+    <script src="site.js?v=a83c3c0dcc24" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -80,6 +80,7 @@
             <div class="publication-content">
             <h3>SPIRIT: Speed-Driven Online Adaptation for <span class="keep-together">Self-Speculative</span> Decoding</h3>
             <p class="publication-description">Training-free self-speculative decoding that adapts online to optimize window-level realized throughput rather than token agreement alone.</p>
+            <p class="publication-result">Up to <strong>2.21×</strong> throughput over autoregressive decoding.<span>Supplementary 1,000-request NF4 evaluation.</span></p>
             </div>
             <figure class="method-preview" aria-labelledby="preview-heading" aria-describedby="preview-caption">
               <h4 id="preview-heading">Throughput drives adaptation.</h4>
@@ -130,10 +131,11 @@
             </div>
             <details class="paper-summary">
               <summary><span class="details-closed-label">Explore the method</span><span class="details-open-label">Close research details</span> <span class="expand-icon" aria-hidden="true"></span></summary>
-              <div class="summary-content">
+              <div class="summary-content" id="spirit-details">
                 <div class="summary-copy">
                 <p>SPIRIT uses the target model itself to produce speculative drafts and selects layer-skipping configurations through hierarchical online search. Its controller combines window-level throughput feedback, length-aware normalization, and profile reuse to adapt to changing workloads without offline profiling or a separately trained draft model.</p>
-                <p>The evaluation achieves up to <strong>1.74×</strong> speedup with FP16 self-drafts and <strong>2.14×</strong> with NF4 self-drafts over autoregressive decoding, while preserving the target model’s output distribution. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving.</p>
+                <p>The paper reports up to <strong>1.74×</strong> speedup with FP16 self-drafts and <strong>2.14×</strong> with NF4 self-drafts over autoregressive decoding, with full-target verification. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving.</p>
+                <p>A supplementary 1,000-request TinyStories evaluation on LLaMA-2-13B reaches <strong>2.18× and 2.21× cumulative speedup</strong> on two hosts. Each result aggregates four controller seeds, with one RTX A6000 per run, an NF4 self-draft, and an FP16 verifier. Timings include online search and profile updates over the complete request stream.</p>
                 </div>
             <figure class="method-figure" aria-labelledby="method-heading" aria-describedby="method-caption">
               <div class="method-canvas">
@@ -236,6 +238,7 @@
               </div>
               <figcaption id="method-caption">Conceptual overview. α: draft acceptance; β: verifier-token bonus per drafted token; ν: execution rate. Window-boundary updates use existing execution statistics, with no auxiliary validation stage.</figcaption>
             </figure>
+                <button class="details-close" type="button" aria-controls="spirit-details" hidden>Close research details <span aria-hidden="true">↑</span></button>
               </div>
             </details>
           </article>

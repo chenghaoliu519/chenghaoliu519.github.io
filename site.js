@@ -16,22 +16,54 @@ if (copyButton && copyStatus && emailLink && navigator.clipboard && window.isSec
   });
 }
 
-// Highlight the section in view without intercepting standard anchor navigation.
-const navigationLinks = Array.from(document.querySelectorAll("nav a"));
-if ("IntersectionObserver" in window) {
-  const visibleSections = new Map();
-  const observer = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      visibleSections.set(entry.target.id, entry.isIntersecting);
+// A second close control keeps long research details easy to leave on mobile.
+const researchDetails = document.querySelector(".paper-summary");
+const detailsSummary = researchDetails?.querySelector("summary");
+const closeDetails = researchDetails?.querySelector(".details-close");
+if (detailsSummary && closeDetails) {
+  closeDetails.hidden = false;
+  closeDetails.addEventListener("click", () => {
+    researchDetails.open = false;
+    detailsSummary.focus({ preventScroll: true });
+    detailsSummary.scrollIntoView({
+      block: "start",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+    });
+  });
+}
+
+// Track native scrolling, including short final sections that cannot reach the
+// top of the viewport. Use the same offset as the page's anchor navigation.
+const navigationItems = Array.from(document.querySelectorAll("nav a"))
+  .map((link) => ({ link, section: document.querySelector(link.hash) }))
+  .filter(({ section }) => section);
+let navigationFrame = null;
+
+function updateActiveNavigation() {
+  navigationFrame = null;
+  const root = document.documentElement;
+  const activationLine = (parseFloat(getComputedStyle(root).scrollPaddingTop) || 0) + 2;
+  const atBottom = window.scrollY > 0 && window.scrollY + window.innerHeight >= root.scrollHeight - 2;
+  let current = atBottom ? navigationItems[navigationItems.length - 1] : undefined;
+  if (!atBottom) {
+    for (const item of navigationItems) {
+      if (item.section.getBoundingClientRect().top <= activationLine) current = item;
     }
-    const current = navigationLinks.find((link) => visibleSections.get(link.hash.slice(1)));
-    for (const link of navigationLinks) {
-      if (link === current) link.setAttribute("aria-current", "location");
-      else link.removeAttribute("aria-current");
-    }
-  }, { rootMargin: "-18% 0px -48% 0px" });
-  for (const link of navigationLinks) {
-    const section = document.querySelector(link.hash);
-    if (section) observer.observe(section);
+  }
+  for (const item of navigationItems) {
+    if (item === current) item.link.setAttribute("aria-current", "location");
+    else item.link.removeAttribute("aria-current");
   }
 }
+
+function scheduleNavigationUpdate() {
+  if (navigationFrame === null) navigationFrame = requestAnimationFrame(updateActiveNavigation);
+}
+
+window.addEventListener("scroll", scheduleNavigationUpdate, { passive: true });
+window.addEventListener("resize", scheduleNavigationUpdate);
+window.addEventListener("hashchange", scheduleNavigationUpdate);
+window.addEventListener("load", scheduleNavigationUpdate);
+researchDetails?.addEventListener("toggle", scheduleNavigationUpdate);
+if ("ResizeObserver" in window) new ResizeObserver(scheduleNavigationUpdate).observe(document.body);
+scheduleNavigationUpdate();
