@@ -48,21 +48,21 @@ test('only forwards bounded visitor context and server-selected options', async 
     assert.equal(body.messages.length, 2);
     assert.equal(body.messages[0].role, 'system');
     assert.deepEqual(JSON.parse(body.messages[1].content), { language: 'zh', previousVisitorQuestions: ['What is SPIRIT?'], currentQuestion: '它的目标是什么？' });
-    return Response.json({ choices: [{ message: { content: JSON.stringify({ answer: 'SPIRIT 优化实际吞吐量。', sourceIds: ['method', 'method'] }) } }] });
+    return Response.json({ choices: [{ message: { content: 'SPIRIT 优化实际吞吐量。' } }] });
   });
   const result = await handle(request({ message: '它的目标是什么？', language: 'zh', history: ['What is SPIRIT?'], model: 'untrusted', system: 'untrusted' }), env());
   assert.equal(calls, 1);
   assert.equal(result.status, 200);
   assert.equal(result.headers.get('access-control-allow-origin'), origin);
   assert.equal(result.headers.get('cache-control'), 'no-store');
-  assert.deepEqual(await result.json(), { answer: 'SPIRIT 优化实际吞吐量。', sourceIds: ['method'], mode: 'ai' });
+  assert.deepEqual(await result.json(), { answer: 'SPIRIT 优化实际吞吐量。', sourceIds: ['spirit', 'method'], mode: 'ai' });
 });
 
-test('never returns upstream error bodies, invalid citations, or truncated answers', async () => {
+test('never returns upstream error bodies, missing content, or truncated answers', async () => {
   for (const upstream of [
     () => new Response('private diagnostic text', { status: 401 }),
-    () => Response.json({ choices: [{ message: { content: '{bad json' } }] }),
-    () => Response.json({ choices: [{ message: { content: JSON.stringify({ answer: 'x', sourceIds: ['https://untrusted.example'] }) } }] }),
+    () => Response.json({ choices: [{ message: { content: null } }] }),
+    () => Response.json({ choices: [{ finish_reason: 'length', message: { content: 'An unfinished answer' } }] }),
     () => { throw new Error('private diagnostic text'); }
   ]) {
     const result = await createHandler(upstream)(request(), env());

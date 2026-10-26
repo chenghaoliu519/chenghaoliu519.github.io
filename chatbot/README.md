@@ -37,7 +37,8 @@ origin or place any secret in the client configuration.
   conversation database is used. The UI discloses transmission to Groq.
 - The Worker does not log message content. Cloudflare and Groq process requests
   under their own policies. Do not describe this as zero-retention or local AI.
-- Replies are rendered as text, and source links come from a fixed allowlist.
+- Replies are rendered as text, and related source links are selected from the
+  site's public topic index, never from model-generated URLs.
   Grounding instructions reduce hallucinations; they do not guarantee factual
   accuracy. Check answers when updating the model or knowledge.
 - Requests are limited to 500 characters and 8 KB bodies, with a 14-second
@@ -63,7 +64,7 @@ When changing client modules, refresh their import query hashes and the
 `index.html` stylesheet/module hashes. Keep `.dev.vars`, environment files,
 Wrangler state, build output and credentials out of Git.
 
-Official references: [Groq structured outputs](https://console.groq.com/docs/structured-outputs),
+Official references: [Groq text generation](https://console.groq.com/docs/text-chat),
 [Groq rate limits](https://console.groq.com/docs/rate-limits),
 [Cloudflare rate limiting](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/),
 [GitHub Actions deployment](https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/).
