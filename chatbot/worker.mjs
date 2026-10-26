@@ -80,7 +80,7 @@ export function createHandler(upstreamFetch = fetch) {
         body: JSON.stringify({
           model: env.GROQ_MODEL || 'openai/gpt-oss-120b',
           messages: [
-            { role: 'system', content: systemPrompt + '\nAccuracy rules: When mentioning speedup, preserve each separate maximum and its precision: up to 1.74× with FP16 self-drafts; up to 2.21× with NF4 self-drafts, relative to autoregressive decoding. Never turn these maxima into a range achieved across models. Describe correctness as full-target verification; do not invent an accuracy metric or promise universal bit-exactness. In Chinese use 自草稿 for self-draft, 层配置 for layer pattern, and 窗口级实际吞吐量 for window-level realized throughput.' },
+            { role: 'system', content: systemPrompt + '\nAccuracy rules: When mentioning speedup, preserve each separate maximum and its precision: up to 1.74× with FP16 self-drafts; up to 2.21× with NF4 self-drafts, relative to autoregressive decoding. Never turn these maxima into a range achieved across models. Search finds high-throughput configurations; do not claim it finds the best or globally optimal configuration. Describe correctness only as retaining full-target verification, not as measured accuracy preservation; do not invent an accuracy metric or promise universal bit-exactness. In Chinese do not claim 找到最优配置 or 保持全模型准确性; say 搜索高吞吐配置 and 保留完整目标模型验证. In Chinese use 自草稿 for self-draft, 层配置 for layer pattern, and 窗口级实际吞吐量 for window-level realized throughput.' },
             { role: 'user', content: JSON.stringify({
               language: data.language, previousVisitorQuestions: data.history || [], currentQuestion: data.message.trim()
             }) }
