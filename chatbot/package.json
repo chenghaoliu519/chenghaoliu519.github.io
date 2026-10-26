@@ -1,0 +1,8 @@
+{
+  "name": "chenghao-public-research-guide",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test tests/*.test.mjs" },
+  "devDependencies": { "wrangler": "4.152.0" },
+  "engines": { "node": ">=22" }
+}
