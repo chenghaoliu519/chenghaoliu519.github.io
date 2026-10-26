@@ -1,4 +1,4 @@
-import { CHAT_ENDPOINT } from './config.mjs?v=ad57537e1a15';
+import { CHAT_ENDPOINT } from './config.mjs?v=3ecaa7461fe7';
 import { localAnswer, sources } from './knowledge.mjs?v=34cd04085862';
 
 const get = id => document.getElementById(`guide-${id}`);
@@ -64,7 +64,7 @@ function updateLanguage() {
   privacy.textContent = endpoint ? t.privacy : t.privacyLocal;
   if (endpoint) {
     const link = document.createElement('a');
-    link.href = 'https://groq.com/privacy-policy/';
+    link.href = 'https://console.groq.com/docs/your-data';
     link.target = '_blank'; link.rel = 'noopener noreferrer';
     link.textContent = t.policy;
     privacy.append(link);
