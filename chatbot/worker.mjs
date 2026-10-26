@@ -99,15 +99,23 @@ export function createHandler(upstreamFetch = fetch) {
           response_format: { type: 'json_schema', json_schema: { name: 'public_profile_answer', strict: true, schema } }
         })
       });
-      if (!upstream.ok) return response({ error: upstream.status === 429 ? 'rate_limited' : 'unavailable' }, upstream.status === 429 ? 429 : 503, origin);
+      if (!upstream.ok) {
+        // Expose only bounded diagnostic categories, never upstream text or prompts.
+        const failure = await upstream.json().catch(() => ({}));
+        const knownCodes = ['json_validate_failed', 'context_length_exceeded', 'invalid_api_key', 'rate_limit_exceeded', 'model_decommissioned'];
+        return response({ error: upstream.status === 429 ? 'rate_limited' : 'unavailable',
+          reason: 'provider_rejected', providerStatus: upstream.status,
+          providerCode: knownCodes.includes(failure.error?.code) ? failure.error.code : 'other'
+        }, upstream.status === 429 ? 429 : 503, origin);
+      }
       const payload = await upstream.json();
       const result = JSON.parse(payload.choices?.[0]?.message?.content || '{}');
       if (typeof result.answer !== 'string' || !result.answer.trim() || result.answer.length > 2400 ||
           !Array.isArray(result.sourceIds) || result.sourceIds.some(id => !sourceIds.includes(id))) {
-        return response({ error: 'unavailable' }, 503, origin);
+        return response({ error: 'unavailable', reason: 'invalid_reply' }, 503, origin);
       }
       return response({ answer: result.answer.trim(), sourceIds: [...new Set(result.sourceIds)].slice(0, 3), mode: 'ai' }, 200, origin);
-    } catch { return response({ error: 'unavailable' }, 503, origin); }
+    } catch { return response({ error: 'unavailable', reason: controller.signal.aborted ? 'timeout' : 'invalid_response' }, 503, origin); }
     finally { clearTimeout(timer); }
   };
 }

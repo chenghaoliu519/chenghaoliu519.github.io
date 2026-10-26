@@ -67,7 +67,9 @@ test('never returns upstream error bodies, invalid citations, or truncated answe
   ]) {
     const result = await createHandler(upstream)(request(), env());
     assert.equal(result.status, 503);
-    assert.deepEqual(await result.json(), { error: 'unavailable' });
+    const body = await result.text();
+    assert.equal(JSON.parse(body).error, 'unavailable');
+    assert.equal(body.includes('private diagnostic text'), false);
   }
   assert.equal((await createHandler(() => new Response('', { status: 429 }))(request(), env())).status, 429);
 });
