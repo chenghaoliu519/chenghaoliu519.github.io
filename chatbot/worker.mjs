@@ -79,9 +79,9 @@ export function createHandler(upstreamFetch = fetch) {
         method: 'POST', signal: controller.signal,
         headers: { Authorization: `Bearer ${env.GROQ_API_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: env.GROQ_MODEL || 'openai/gpt-oss-20b',
+          model: env.GROQ_MODEL || 'openai/gpt-oss-120b',
           messages: [
-            { role: 'system', content: systemPrompt },
+            { role: 'system', content: systemPrompt + '\nAccuracy rules: When mentioning speedup, preserve each separate maximum and its precision: up to 1.74× with FP16 self-drafts; up to 2.21× with NF4 self-drafts, relative to autoregressive decoding. Never turn these maxima into a range achieved across models. Describe correctness as full-target verification; do not invent an accuracy metric or promise universal bit-exactness. In Chinese use 自草稿 for self-draft, 层配置 for layer pattern, and 窗口级实际吞吐量 for window-level realized throughput.' },
             { role: 'user', content: JSON.stringify({
               language: data.language, previousVisitorQuestions: data.history || [], currentQuestion: data.message.trim()
             }) }

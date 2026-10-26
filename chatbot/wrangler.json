@@ -6,7 +6,7 @@
   "workers_dev": true,
   "preview_urls": false,
   "observability": { "enabled": false },
-  "vars": { "GROQ_MODEL": "openai/gpt-oss-20b" },
+  "vars": { "GROQ_MODEL": "openai/gpt-oss-120b" },
   "ratelimits": [
     { "name": "VISITOR_LIMIT", "namespace_id": "519001", "simple": { "limit": 6, "period": 60 } },
     { "name": "SITE_LIMIT", "namespace_id": "519002", "simple": { "limit": 10, "period": 60 } }

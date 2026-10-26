@@ -44,7 +44,7 @@ test('only forwards bounded visitor context and server-selected options', async 
     calls++;
     assert.equal(url, 'https://api.groq.com/openai/v1/chat/completions');
     const body = JSON.parse(options.body);
-    assert.equal(body.model, 'openai/gpt-oss-20b');
+    assert.equal(body.model, 'openai/gpt-oss-120b');
     assert.equal(body.messages.length, 2);
     assert.equal(body.messages[0].role, 'system');
     assert.deepEqual(JSON.parse(body.messages[1].content), { language: 'zh', previousVisitorQuestions: ['What is SPIRIT?'], currentQuestion: '它的目标是什么？' });

@@ -1,7 +1,7 @@
 // Run only in the manually triggered GitHub Actions deployment job.
 // Credentials remain in environment variables / child-process stdin.
 import { spawn } from 'node:child_process';
-import { appendFileSync } from 'node:fs';
+import { appendFileSync, readFileSync } from 'node:fs';
 
 const account = process.env.CLOUDFLARE_ACCOUNT_ID?.trim();
 const token = process.env.CLOUDFLARE_API_TOKEN?.trim();
@@ -14,7 +14,8 @@ const modelCheck = await fetch('https://api.groq.com/openai/v1/models', {
 });
 if (!modelCheck.ok) throw new Error(`Groq credential check failed (HTTP ${modelCheck.status}). Check that RESUME contains a Groq API key from console.groq.com.`);
 const models = await modelCheck.json();
-if (!models.data?.some(model => model.id === 'openai/gpt-oss-20b')) throw new Error('The configured Groq model is not available for this API key.');
+const configuredModel = JSON.parse(readFileSync(new URL('./wrangler.json', import.meta.url), 'utf8')).vars.GROQ_MODEL;
+if (!models.data?.some(model => model.id === configuredModel)) throw new Error('The configured Groq model is not available for this API key.');
 console.log('Groq credential and model availability verified.');
 const base = `https://api.cloudflare.com/client/v4/accounts/${account}/workers/subdomain`;
 async function cloudflare(method, body) {
