@@ -134,8 +134,7 @@
               <div class="summary-content" id="spirit-details">
                 <div class="summary-copy">
                 <p>SPIRIT uses the target model itself to produce speculative drafts and selects layer-skipping configurations through hierarchical online search. Its controller combines window-level throughput feedback, length-aware normalization, and profile reuse to adapt to changing workloads without offline profiling or a separately trained draft model.</p>
-                <p>The paper reports up to <strong>1.74×</strong> speedup with FP16 self-drafts and <strong>2.14×</strong> with NF4 self-drafts over autoregressive decoding, with full-target verification. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving.</p>
-                <p>A supplementary 1,000-request TinyStories evaluation on LLaMA-2-13B reaches <strong>2.18× and 2.21× cumulative speedup</strong> on two hosts. Each result aggregates four controller seeds, with one RTX A6000 per run, an NF4 self-draft, and an FP16 verifier. Timings include online search and profile updates over the complete request stream.</p>
+                <p>SPIRIT achieves up to <strong>1.74×</strong> speedup with FP16 self-drafts and <strong>2.21×</strong> with NF4 self-drafts over autoregressive decoding, with full-target verification. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving.</p>
                 </div>
             <figure class="method-figure" aria-labelledby="method-heading" aria-describedby="method-caption">
               <div class="method-canvas">

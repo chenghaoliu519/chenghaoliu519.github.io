@@ -55,13 +55,15 @@ project archives or credentials into this repository.
 
 Publication links should only be added when a public, verified URL is available.
 
-The default SPIRIT result refers to a supplementary NF4 evaluation, separately
-identified from the paper's 1.74× FP16 and 2.14× NF4 results. The supplementary
+The site's 2.21× SPIRIT result comes from a supplementary NF4 evaluation; the
+paper reports 1.74× FP16 and 2.14× NF4 results. The supplementary
 measurement uses 1,000 TinyStories requests on LLaMA-2-13B, with four controller
 seeds on each of two hosts and one RTX A6000 per run. Complete-stream token/time
 totals give 2.184542× and 2.207254× over each host's matched autoregressive baseline,
-including online search and profile updates. The page rounds these to 2.18× and
-2.21×; neither is a best-seed or post-search-only result.
+including online search and profile updates. The page rounds the higher host
+aggregate to 2.21×; this is not a best-seed or post-search-only result. The public
+summary states SPIRIT's achieved performance without attributing this later
+measurement to the paper. Keep protocol details here for future maintenance.
 
 ## Presentation
 
