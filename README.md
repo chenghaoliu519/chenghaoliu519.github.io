@@ -10,6 +10,9 @@ A lightweight, responsive academic homepage for GitHub Pages.
 - `styles.css`: responsive layout, typography, and print styles.
 - `site.js`: optional email-copy control, navigation highlighting, and a bottom
   close control for the research details.
+- `chatbot/`: Mochi's bilingual public-knowledge guide, optional Groq-backed
+  Cloudflare Worker, tests, and deployment instructions.
+- `assets/mochi.svg`: the small vector cat used by the guide.
 - `assets/favicon.svg`: vector favicon.
 - `assets/social-card.svg` and `assets/social-card.png`: editable source and
   1200 × 630 sharing image, referenced by Open Graph and Twitter card metadata.
@@ -21,6 +24,12 @@ A lightweight, responsive academic homepage for GitHub Pages.
 No framework, build step, package installation, remote fonts, analytics,
 or third-party scripts are required. The main content, links, and expandable
 publication summary work without JavaScript.
+
+The optional chat uses a separate Cloudflare Worker and Groq. Its keys are kept
+in GitHub Actions / Worker secrets, never in site assets. It only receives the
+visitor's question and recent question context, and answers from public profile
+information. The chat discloses the external processing and labels curated
+fallback answers when the model is unavailable. See [chatbot setup](chatbot/README.md).
 
 The public contact address is `liuchenghao97@gmail.com`. Update both `mailto:`
 links and the visible address in `index.html` when changing it; the copy button
