@@ -10,7 +10,12 @@ const messages = get('messages');
 const status = get('status');
 const scroll = get('scroll');
 const endpoint = /^https:\/\/chenghao-mochi\.[a-z0-9-]+\.workers\.dev\/chat$/.test(CHAT_ENDPOINT) ? CHAT_ENDPOINT : '';
+const languageKey = 'chenghao-guide-language';
 let language = 'en';
+try {
+  const saved = localStorage.getItem(languageKey);
+  if (saved === 'en' || saved === 'zh') language = saved;
+} catch { /* Language switching also works without browser storage. */ }
 let history = [];
 let pending = null;
 let generation = 0;
@@ -25,7 +30,9 @@ const copy = {
     thinking: 'Looking through the public research notes…', user: 'You', local: 'From the public site · AI is unavailable right now',
     localOnly: 'From the public site', privacy: 'AI answers from public information; may make mistakes. Questions and recent context are sent to Groq. ',
     privacyLocal: 'Answers from the public site. This conversation stays in this tab.', policy: 'Privacy',
-    conversation: 'Conversation', suggestionsLabel: 'Suggested questions'
+    conversation: 'Conversation', suggestionsLabel: 'Suggested questions',
+    copyAnswer: 'Copy answer', copied: 'Copied', copySuccess: 'Answer copied.',
+    copyFallback: 'Text selected. Copy it manually.'
   },
   zh: {
     subtitle: 'Chenghao 的科研小助手', greeting: '小小向导，带你走近研究。',
@@ -35,9 +42,17 @@ const copy = {
     thinking: '正在查阅公开研究资料…', user: '你', local: '公开资料回答 · AI 暂时不可用',
     localOnly: '公开资料回答', privacy: 'AI 根据公开资料回答，可能出错。问题与最近的上下文会发送给 Groq。',
     privacyLocal: '根据公开网站资料回答。对话仅保留在此标签页中。', policy: '隐私说明',
-    conversation: '对话记录', suggestionsLabel: '建议问题'
+    conversation: '对话记录', suggestionsLabel: '建议问题',
+    copyAnswer: '复制回答', copied: '已复制', copySuccess: '回答已复制。',
+    copyFallback: '已选中文字，请手动复制。'
   }
 };
+
+function setLanguage(next) {
+  language = next;
+  try { localStorage.setItem(languageKey, language); } catch { /* Keep this tab's choice. */ }
+  updateLanguage();
+}
 
 function updateLanguage() {
   const t = copy[language];
@@ -88,11 +103,12 @@ dialog.addEventListener('click', event => {
   if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close();
 });
 get('language').addEventListener('click', () => {
-  language = language === 'en' ? 'zh' : 'en'; updateLanguage();
+  setLanguage(language === 'en' ? 'zh' : 'en');
 });
 get('reset').addEventListener('click', () => {
   generation++; pending?.abort(); pending = null; history = [];
   messages.replaceChildren(); status.textContent = ''; input.value = '';
+  dialog.classList.remove('has-conversation');
   get('intro').hidden = false; updateControls(); scroll.scrollTop = 0;
 });
 
@@ -108,6 +124,38 @@ input.addEventListener('keydown', event => {
   }
 });
 get('form').addEventListener('submit', event => { event.preventDefault(); submit(input.value); });
+
+function addCopyControl(item, content, text, t) {
+  const actions = document.createElement('div');
+  actions.className = 'guide-answer-actions';
+  const button = document.createElement('button');
+  button.type = 'button'; button.className = 'guide-copy'; button.textContent = t.copyAnswer;
+  const feedback = document.createElement('span');
+  feedback.className = 'guide-copy-feedback'; feedback.setAttribute('role', 'status');
+  let resetTimer;
+  button.addEventListener('click', async () => {
+    clearTimeout(resetTimer);
+    button.disabled = true;
+    feedback.textContent = '';
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error('unavailable');
+      await navigator.clipboard.writeText(text);
+      button.textContent = t.copied;
+      feedback.classList.add('guide-sr-only');
+      feedback.textContent = t.copySuccess;
+      resetTimer = setTimeout(() => { button.textContent = t.copyAnswer; feedback.textContent = ''; }, 2000);
+    } catch {
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(content);
+      selection.removeAllRanges(); selection.addRange(range);
+      button.textContent = t.copyAnswer;
+      feedback.classList.remove('guide-sr-only');
+      feedback.textContent = t.copyFallback;
+    } finally { button.disabled = false; }
+  });
+  actions.append(button, feedback); item.append(actions);
+}
 
 function appendMessage(role, text, ids = [], mode = '', lang = language) {
   const t = copy[lang];
@@ -148,6 +196,8 @@ function appendMessage(role, text, ids = [], mode = '', lang = language) {
     const note = document.createElement('span'); note.className = 'guide-mode';
     note.textContent = endpoint ? t.local : t.localOnly; item.append(note);
   }
+  if (role === 'assistant') addCopyControl(item, content, text, t);
+  dialog.classList.add('has-conversation');
   messages.append(item);
   while (messages.children.length > 60) messages.firstElementChild.remove();
   scroll.scrollTop = scroll.scrollHeight;
@@ -156,9 +206,8 @@ function appendMessage(role, text, ids = [], mode = '', lang = language) {
 async function submit(raw) {
   const question = raw.trim();
   if (!question || question.length > 500 || pending) return;
-  if (/[\u3400-\u9fff]/u.test(question)) language = 'zh';
-  else if (/[a-z]/i.test(question)) language = 'en';
-  updateLanguage();
+  const nextLanguage = /[\u3400-\u9fff]/u.test(question) ? 'zh' : /[a-z]/i.test(question) ? 'en' : language;
+  setLanguage(nextLanguage);
   const lang = language;
   const turn = generation;
   get('intro').hidden = true;

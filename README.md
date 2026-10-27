@@ -57,7 +57,8 @@ When changing `styles.css`, update the stylesheet query in `index.html` and
 from being paired with a cached stylesheet from a previous layout.
 Apply the same rule to the script query in `index.html` when changing `site.js`.
 Refresh the `theme.css` and `theme.js` queries in both HTML pages when changing
-them, and the `chatbot/guide.css` query in `index.html` when changing chat colors.
+them, and the `chatbot/guide.css` and `chatbot/guide.mjs` queries in `index.html`
+when changing the chat interface.
 
 ## Appearance
 

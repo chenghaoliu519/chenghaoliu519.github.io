@@ -32,8 +32,12 @@ origin or place any secret in the client configuration.
 
 - The assistant answers in English or Chinese from approved public facts. It
   speaks about Chenghao in the third person and cannot act on his behalf.
+- The current language is saved as `chenghao-guide-language` in local storage;
+  language switching still works when storage is unavailable. Answers have a
+  copy control, with text selection as a fallback if clipboard access fails.
+  On mobile, the welcome panel fits its content and expands for conversation.
 - Only the question and up to four previous visitor questions are sent to the
-  backend. Conversation state stays in the tab; no browser persistence or
+  backend. Conversation state stays in the tab; no conversation persistence or
   conversation database is used. The UI discloses transmission to Groq.
 - The Worker does not log message content. Cloudflare and Groq process requests
   under their own policies. Do not describe this as zero-retention or local AI.

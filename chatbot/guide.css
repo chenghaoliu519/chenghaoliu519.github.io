@@ -31,6 +31,10 @@
 .guide-sources a { color: var(--accent); font-size: 12px; text-decoration: none; }
 .guide-sources a:hover { text-decoration: underline; }
 .guide-mode { display: block; color: var(--muted); font-size: 11px; margin-top: 9px; }
+.guide-answer-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+.guide-copy { display: inline-flex; align-items: center; min-height: 36px; padding: 6px 0; border: 0; background: transparent; color: var(--muted); font-size: 12px; line-height: 1.5; cursor: pointer; }
+.guide-copy:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.guide-copy-feedback { color: var(--muted); font-size: 11px; line-height: 1.5; }
 .guide-status { min-height: 0; font-size: 12px; color: var(--muted); margin-top: 12px; }
 .guide-status:empty { display: none; }
 .guide-composer { flex-shrink: 0; padding: 10px 16px 14px; background: var(--chat-panel); border-top: 1px solid var(--chat-divider); }
@@ -50,6 +54,7 @@ html.guide-is-open { overflow: hidden; }
   .guide-launcher { right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); padding: 2px; min-height: 58px; }
   .guide-launcher span { display: none; }
   .guide-dialog { inset: auto 12px max(12px, env(safe-area-inset-bottom)) 12px; width: auto; max-width: none; height: min(628px, calc(100dvh - 24px)); max-height: calc(100dvh - 24px); border-radius: 20px; }
+  .guide-dialog:not(.has-conversation) { height: auto; }
   .guide-input { font-size: 16px; }
   .guide-header { gap: 5px; padding: 10px 11px; }
   .guide-heading p { font-size: 10px; }
