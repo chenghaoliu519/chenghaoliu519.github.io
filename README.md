@@ -8,6 +8,8 @@ A lightweight, responsive academic homepage for GitHub Pages.
 
 - `index.html`: biography, research areas, publication, background, and contact.
 - `styles.css`: responsive layout, typography, and print styles.
+- `theme.css` and `theme.js`: shared light/dark palettes and the accessible
+  navigation toggle, including diagram and chat colors.
 - `site.js`: optional email-copy control, navigation highlighting, and a bottom
   close control for the research details.
 - `chatbot/`: Mochi's bilingual public-knowledge guide, optional Groq-backed
@@ -54,6 +56,22 @@ When changing `styles.css`, update the stylesheet query in `index.html` and
 `404.html` to the first 12 characters of its SHA-256 hash. This keeps new HTML
 from being paired with a cached stylesheet from a previous layout.
 Apply the same rule to the script query in `index.html` when changing `site.js`.
+Refresh the `theme.css` and `theme.js` queries in both HTML pages when changing
+them, and the `chatbot/guide.css` query in `index.html` when changing chat colors.
+
+## Appearance
+
+The navigation's moon/sun button switches between light and dark mode. A first
+visit follows the operating-system preference; a manual choice is saved under
+`chenghao-theme` in browser local storage and synchronized across tabs. The
+small external theme script runs before styles paint and follows the existing
+CSP. If storage is unavailable, the toggle still works for the current tab.
+Without JavaScript, the CSS follows the system preference. The 404 page shares
+the theme, while print output always uses the light palette.
+
+Palette values live in `theme.css`; keep its explicit and system-default dark
+blocks in sync. Diagrams use the same CSS variables as the page rather than an
+inversion filter. Mochi's artwork retains its original colors on themed panels.
 
 ## Content scope
 
