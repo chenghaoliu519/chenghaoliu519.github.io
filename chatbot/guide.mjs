@@ -3,12 +3,14 @@ import { localAnswer, sources } from './knowledge.mjs?v=34cd04085862';
 
 const get = id => document.getElementById(`guide-${id}`);
 const dialog = get('dialog');
+const dock = get('dock');
 const launcher = get('launcher');
 const input = get('input');
 const send = get('send');
 const messages = get('messages');
 const status = get('status');
 const scroll = get('scroll');
+const newAnswer = get('new-answer');
 const endpoint = /^https:\/\/chenghao-mochi\.[a-z0-9-]+\.workers\.dev\/chat$/.test(CHAT_ENDPOINT) ? CHAT_ENDPOINT : '';
 const languageKey = 'chenghao-guide-language';
 let language = 'en';
@@ -20,6 +22,7 @@ let history = [];
 let pending = null;
 let generation = 0;
 let cooldownUntil = 0;
+let unreadAnswer = null;
 
 const copy = {
   en: {
@@ -32,7 +35,8 @@ const copy = {
     privacyLocal: 'Answers from the public site. This conversation stays in this tab.', policy: 'Privacy',
     conversation: 'Conversation', suggestionsLabel: 'Suggested questions',
     copyAnswer: 'Copy answer', copied: 'Copied', copySuccess: 'Answer copied.',
-    copyFallback: 'Text selected. Copy it manually.'
+    copyFallback: 'Text selected. Copy it manually.',
+    minimize: 'Minimize Mochi', restore: 'Show Mochi', newAnswer: 'New answer ↓'
   },
   zh: {
     subtitle: 'Chenghao 的科研小助手', greeting: '小小向导，带你走近研究。',
@@ -44,7 +48,8 @@ const copy = {
     privacyLocal: '根据公开网站资料回答。对话仅保留在此标签页中。', policy: '隐私说明',
     conversation: '对话记录', suggestionsLabel: '建议问题',
     copyAnswer: '复制回答', copied: '已复制', copySuccess: '回答已复制。',
-    copyFallback: '已选中文字，请手动复制。'
+    copyFallback: '已选中文字，请手动复制。',
+    minimize: '收起 Mochi', restore: '显示 Mochi', newAnswer: '新回答 ↓'
   }
 };
 
@@ -62,6 +67,10 @@ function updateLanguage() {
   get('input-label').textContent = t.label;
   for (const key of ['send', 'close', 'reset']) get(key).setAttribute('aria-label', t[key]);
   get('reset').title = t.reset;
+  for (const key of ['minimize', 'restore']) {
+    get(key).setAttribute('aria-label', t[key]); get(key).title = t[key];
+  }
+  newAnswer.textContent = t.newAnswer;
   get('language').textContent = language === 'en' ? '中文' : 'EN';
   get('language').setAttribute('aria-label', language === 'en' ? 'Switch to Chinese' : 'Switch to English');
   messages.setAttribute('aria-label', t.conversation);
@@ -89,9 +98,18 @@ function updateLanguage() {
 function open() {
   dialog.showModal();
   document.documentElement.classList.add('guide-is-open');
+  resizeInput();
 }
 function close() { dialog.close(); }
 launcher.addEventListener('click', open);
+get('minimize').addEventListener('click', () => {
+  dock.dataset.minimized = '';
+  get('restore').focus({ preventScroll: true });
+});
+get('restore').addEventListener('click', () => {
+  delete dock.dataset.minimized;
+  launcher.focus({ preventScroll: true });
+});
 get('close').addEventListener('click', close);
 dialog.addEventListener('close', () => {
   document.documentElement.classList.remove('guide-is-open');
@@ -108,6 +126,7 @@ get('language').addEventListener('click', () => {
 get('reset').addEventListener('click', () => {
   generation++; pending?.abort(); pending = null; history = [];
   messages.replaceChildren(); status.textContent = ''; input.value = '';
+  unreadAnswer = null; newAnswer.hidden = true; resizeInput();
   dialog.classList.remove('has-conversation');
   get('intro').hidden = false; updateControls(); scroll.scrollTop = 0;
 });
@@ -116,7 +135,17 @@ function updateControls() {
   send.disabled = Boolean(pending) || !input.value.trim();
   input.setAttribute('aria-busy', pending ? 'true' : 'false');
 }
-input.addEventListener('input', updateControls);
+function resizeInput() {
+  if (!dialog.open) return;
+  input.rows = 1;
+  if (input.scrollHeight > input.clientHeight + 1) {
+    const style = getComputedStyle(input);
+    const padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    input.rows = Math.min(4, Math.ceil((input.scrollHeight - padding) / parseFloat(style.lineHeight)));
+  }
+}
+input.addEventListener('input', () => { updateControls(); resizeInput(); });
+window.addEventListener('resize', resizeInput);
 input.addEventListener('keydown', event => {
   if (event.key === 'Enter' && !event.shiftKey && !event.isComposing && event.keyCode !== 229) {
     event.preventDefault();
@@ -124,6 +153,32 @@ input.addEventListener('keydown', event => {
   }
 });
 get('form').addEventListener('submit', event => { event.preventDefault(); submit(input.value); });
+
+function scrollToLatest() {
+  scroll.scrollTo({ top: scroll.scrollHeight, behavior: 'instant' });
+}
+
+function revealAnswer(answer, focus = false) {
+  unreadAnswer = null; newAnswer.hidden = true;
+  const top = scroll.scrollTop + answer.getBoundingClientRect().top - scroll.getBoundingClientRect().top;
+  scroll.scrollTo({ top: top - parseFloat(getComputedStyle(scroll).paddingTop), behavior: 'instant' });
+  if (focus) {
+    answer.tabIndex = -1; answer.focus({ preventScroll: true });
+    answer.addEventListener('blur', () => answer.removeAttribute('tabindex'), { once: true });
+  }
+}
+
+newAnswer.addEventListener('click', () => {
+  if (unreadAnswer?.isConnected) revealAnswer(unreadAnswer, true);
+});
+scroll.addEventListener('scroll', () => {
+  if (!unreadAnswer || !dialog.open) return;
+  const answer = unreadAnswer.getBoundingClientRect();
+  const viewport = scroll.getBoundingClientRect();
+  if (answer.top < viewport.bottom && answer.bottom > viewport.top) {
+    unreadAnswer = null; newAnswer.hidden = true;
+  }
+}, { passive: true });
 
 function addCopyControl(item, content, text, t) {
   const actions = document.createElement('div');
@@ -200,7 +255,7 @@ function appendMessage(role, text, ids = [], mode = '', lang = language) {
   dialog.classList.add('has-conversation');
   messages.append(item);
   while (messages.children.length > 60) messages.firstElementChild.remove();
-  scroll.scrollTop = scroll.scrollHeight;
+  return item;
 }
 
 async function submit(raw) {
@@ -211,13 +266,15 @@ async function submit(raw) {
   const lang = language;
   const turn = generation;
   get('intro').hidden = true;
+  unreadAnswer = null; newAnswer.hidden = true;
+  input.value = ''; resizeInput();
   appendMessage('user', question, [], '', lang);
-  input.value = '';
+  scrollToLatest();
   let reply = localAnswer(question, lang);
   if (endpoint && Date.now() >= cooldownUntil) {
     const controller = new AbortController(); pending = controller;
     updateControls(); status.textContent = copy[lang].thinking;
-    scroll.scrollTop = scroll.scrollHeight;
+    scrollToLatest();
     const timeout = setTimeout(() => controller.abort(), 17000);
     try {
       const response = await fetch(endpoint, {
@@ -237,9 +294,24 @@ async function submit(raw) {
   }
   if (turn !== generation) return;
   history.push(question); history = history.slice(-4);
+  // Follow a waiting reader to the answer's beginning, but preserve the position
+  // of someone who scrolled back through the conversation while it was pending.
+  const follow = dialog.open && scroll.scrollHeight - scroll.clientHeight - scroll.scrollTop < 32;
+  const previousTop = scroll.scrollTop;
+  const viewportTop = scroll.getBoundingClientRect().top;
+  const anchor = Array.from(messages.children).find(item => item.getBoundingClientRect().bottom > viewportTop);
+  const anchorOffset = anchor ? anchor.getBoundingClientRect().top - viewportTop : 0;
   status.textContent = '';
-  appendMessage('assistant', reply.answer, reply.sourceIds, reply.mode, lang);
+  const answer = appendMessage('assistant', reply.answer, reply.sourceIds, reply.mode, lang);
+  if (follow) revealAnswer(answer);
+  else {
+    unreadAnswer = answer; newAnswer.hidden = false;
+    const top = anchor?.isConnected
+      ? scroll.scrollTop + anchor.getBoundingClientRect().top - scroll.getBoundingClientRect().top - anchorOffset
+      : previousTop;
+    scroll.scrollTo({ top, behavior: 'instant' });
+  }
   updateControls();
 }
 
-if (typeof dialog.showModal === 'function') { updateLanguage(); launcher.hidden = false; }
+if (typeof dialog.showModal === 'function') { updateLanguage(); dock.hidden = false; }

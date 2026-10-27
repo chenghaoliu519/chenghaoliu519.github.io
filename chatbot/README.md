@@ -36,6 +36,11 @@ origin or place any secret in the client configuration.
   language switching still works when storage is unavailable. Answers have a
   copy control, with text selection as a fallback if clipboard access fails.
   On mobile, the welcome panel fits its content and expands for conversation.
+- On mobile, the cat can be minimized to a small edge tab and restored without
+  losing the conversation. The choice lasts for the current page visit.
+  The input grows to four lines before scrolling internally. New replies open
+  at their beginning; readers who scroll back while waiting keep their position
+  and can use the new-answer button to jump to the reply.
 - Only the question and up to four previous visitor questions are sent to the
   backend. Conversation state stays in the tab; no conversation persistence or
   conversation database is used. The UI discloses transmission to Groq.

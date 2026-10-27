@@ -31,8 +31,8 @@
     <link rel="stylesheet" href="styles.css?v=ad33ffb25fd5">
     <link rel="stylesheet" href="theme.css?v=99513c42055d">
     <script src="site.js?v=a83c3c0dcc24" defer></script>
-    <link rel="stylesheet" href="chatbot/guide.css?v=65c0e0498be8">
-    <script type="module" src="chatbot/guide.mjs?v=c5be8beef7e5"></script>
+    <link rel="stylesheet" href="chatbot/guide.css?v=e3251749e350">
+    <script type="module" src="chatbot/guide.mjs?v=1f5922d5bda7"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -416,10 +416,18 @@
         <a href="#about">Back to top <span aria-hidden="true">↑</span></a>
       </div>
     </footer>
-    <button class="guide-launcher" id="guide-launcher" type="button" aria-label="Ask Mochi, Chenghao’s research guide" aria-haspopup="dialog" aria-controls="guide-dialog" hidden>
-      <img src="assets/mochi.svg" width="54" height="54" alt="">
-      <span>Ask Mochi</span>
-    </button>
+    <div class="guide-dock" id="guide-dock" hidden>
+      <button class="guide-launcher" id="guide-launcher" type="button" aria-label="Ask Mochi, Chenghao’s research guide" aria-haspopup="dialog" aria-controls="guide-dialog">
+        <img src="assets/mochi.svg" width="54" height="54" alt="">
+        <span>Ask Mochi</span>
+      </button>
+      <button class="guide-minimize" id="guide-minimize" type="button" aria-label="Minimize Mochi" title="Minimize Mochi" aria-controls="guide-launcher">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 5 5 5-5 5"/></svg>
+      </button>
+      <button class="guide-restore" id="guide-restore" type="button" aria-label="Show Mochi" title="Show Mochi" aria-controls="guide-launcher">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12 5-5 5 5 5"/></svg>
+      </button>
+    </div>
     <dialog class="guide-dialog" id="guide-dialog" aria-labelledby="guide-title">
       <div class="guide-header">
         <img src="assets/mochi.svg" width="44" height="44" alt="">
@@ -445,6 +453,7 @@
         <div class="guide-messages" id="guide-messages" role="log" aria-label="Conversation" aria-live="polite" aria-relevant="additions"></div>
         <p class="guide-status" id="guide-status" role="status"></p>
       </div>
+      <button class="guide-new-answer" id="guide-new-answer" type="button" hidden>New answer ↓</button>
       <form class="guide-composer" id="guide-form">
         <div class="guide-input-wrap">
           <label class="guide-sr-only" for="guide-input" id="guide-input-label">Your question</label>
