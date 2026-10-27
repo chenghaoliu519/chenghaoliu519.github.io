@@ -1,5 +1,5 @@
 /* Shared palette: preserve the original light appearance and give every surface
-   and diagram a deliberate dark equivalent. Keep both dark blocks in sync. */
+   and diagram a deliberate dark equivalent. Light is the default. */
 :root {
   color-scheme: light;
   --paper: #ffffff;
@@ -88,54 +88,6 @@
   --shadow-launcher: 0 3px 18px #00000040;
   --shadow-launcher-hover: 0 5px 24px #00000066;
   --shadow-dialog: 0 18px 70px #00000066;
-}
-
-/* Native system preference also works when JavaScript is disabled. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-  color-scheme: dark;
-  --paper: #111214;
-  --surface: #1b1c1f;
-  --ink: #f5f5f7;
-  --muted: #aaaab3;
-  --accent: #7dbbff;
-  --rule: #34363b;
-  --rule-strong: #3b3c42;
-  --header-glass: rgb(17 18 20 / 94%);
-  --header-rule: rgb(255 255 255 / 8%);
-  --selection: #264f7c;
-  --connector: #7a7d86;
-  --accent-soft: #1c334c;
-  --diagram-paper: #25272b;
-  --diagram-line: #5d636e;
-  --diagram-outline: #69717f;
-  --diagram-marker: #9da7b6;
-  --diagram-secondary: #a4a7af;
-  --diagram-muted-fill: #41454d;
-  --diagram-soft-fill: #33373d;
-  --chat-panel: #202226;
-  --chat-line: #41444b;
-  --chat-divider: #35373e;
-  --chat-launcher-ink: #dbe2ec;
-  --chat-secondary: #dbe2ec;
-  --chat-hover: #2d3036;
-  --chat-suggestion-hover: #2b313b;
-  --chat-suggestion-outline: #627b9c;
-  --chat-bubble: #273b53;
-  --chat-bubble-ink: #e3ecf8;
-  --chat-input-border: #606771;
-  --chat-placeholder: #a1aab8;
-  --button-fill: #7dbbff;
-  --button-ink: #101c2c;
-  --button-hover: #a4d1ff;
-  --button-disabled-fill: #343942;
-  --button-disabled-ink: #9ba6b5;
-  --focus-glow: #82baff26;
-  --chat-backdrop: #00000066;
-  --shadow-launcher: 0 3px 18px #00000040;
-  --shadow-launcher-hover: 0 5px 24px #00000066;
-  --shadow-dialog: 0 18px 70px #00000066;
-}
 }
 
 /* Printed pages always use the light palette, regardless of the saved theme. */

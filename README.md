@@ -62,15 +62,14 @@ them, and the `chatbot/guide.css` query in `index.html` when changing chat color
 ## Appearance
 
 The navigation's moon/sun button switches between light and dark mode. A first
-visit follows the operating-system preference; a manual choice is saved under
+visit always uses the light theme; a manual choice is saved under
 `chenghao-theme` in browser local storage and synchronized across tabs. The
 small external theme script runs before styles paint and follows the existing
 CSP. If storage is unavailable, the toggle still works for the current tab.
-Without JavaScript, the CSS follows the system preference. The 404 page shares
+Without JavaScript, the CSS uses the light theme. The 404 page shares
 the theme, while print output always uses the light palette.
 
-Palette values live in `theme.css`; keep its explicit and system-default dark
-blocks in sync. Diagrams use the same CSS variables as the page rather than an
+Palette values live in `theme.css`. Diagrams use the same CSS variables as the page rather than an
 inversion filter. Mochi's artwork retains its original colors on themed panels.
 
 ## Content scope

@@ -2,7 +2,6 @@
 (() => {
   const key = 'chenghao-theme';
   const root = document.documentElement;
-  const system = window.matchMedia('(prefers-color-scheme: dark)');
   const valid = value => value === 'light' || value === 'dark';
   let preference = null;
   try {
@@ -11,7 +10,7 @@
   } catch { /* The toggle still works when browser storage is unavailable. */ }
 
   function apply() {
-    const theme = preference || (system.matches ? 'dark' : 'light');
+    const theme = preference || 'light';
     root.dataset.theme = theme;
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#111214' : '#ffffff');
     const button = document.getElementById('theme-toggle');
@@ -31,7 +30,6 @@
     });
     apply();
   }, { once: true });
-  system.addEventListener('change', () => { if (!preference) apply(); });
   window.addEventListener('storage', event => {
     if (event.key !== key && event.key !== null) return;
     preference = valid(event.newValue) ? event.newValue : null;
