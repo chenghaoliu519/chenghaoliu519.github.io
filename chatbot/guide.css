@@ -16,7 +16,6 @@
 .guide-icon { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 36px; flex-shrink: 0; padding: 7px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); cursor: pointer; }
 .guide-icon:hover { background: var(--chat-hover); color: var(--ink); }
 .guide-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.guide-language { font-size: 12px; width: 38px; padding: 0; }
 .guide-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 22px 20px 16px; scroll-behavior: smooth; }
 .guide-intro { padding: 4px 0 22px; }
 .guide-intro > img { width: 76px; height: 76px; display: block; margin-bottom: 10px; }

@@ -32,10 +32,11 @@ origin or place any secret in the client configuration.
 
 - The assistant answers in English or Chinese from approved public facts. It
   speaks about Chenghao in the third person and cannot act on his behalf.
-- A manually selected language is saved as `chenghao-guide-language` in local
-  storage and takes precedence over question-language detection. Existing saved
-  preferences are retained; without a saved choice, questions select the answer
-  language automatically. Switching still works when storage is unavailable.
+- The interface stays in English and has no language switch. Replies follow the
+  question's language (English or Chinese); short technical follow-ups such as
+  "NF4?" retain the conversation's language. New conversations default to English.
+  The retired `chenghao-guide-language` preference is removed when possible and
+  never used. No language preference is persisted.
   Answers have a copy control, with text selection as a fallback if clipboard
   access fails.
   On mobile, the welcome panel fits its content and expands for conversation.

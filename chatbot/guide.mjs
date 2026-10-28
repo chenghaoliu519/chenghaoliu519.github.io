@@ -13,13 +13,9 @@ const status = get('status');
 const scroll = get('scroll');
 const newAnswer = get('new-answer');
 const endpoint = /^https:\/\/chenghao-mochi\.[a-z0-9-]+\.workers\.dev\/chat$/.test(CHAT_ENDPOINT) ? CHAT_ENDPOINT : '';
-const languageKey = 'chenghao-guide-language';
+// Retire the old manual preference; the interface always starts in English.
+try { localStorage.removeItem('chenghao-guide-language'); } catch { /* Storage is optional. */ }
 let language = 'en';
-let languagePreference = null;
-try {
-  const saved = localStorage.getItem(languageKey);
-  if (saved === 'en' || saved === 'zh') language = languagePreference = saved;
-} catch { /* Language switching also works without browser storage. */ }
 let history = [];
 let pending = null;
 let generation = 0;
@@ -27,46 +23,22 @@ let cooldownUntil = 0;
 let unreadAnswer = null;
 
 const copy = {
-  en: {
-    subtitle: 'Chenghao’s research guide', greeting: 'A little guide. A closer look.',
-    description: 'Hi, I’m Mochi. Ask me about Chenghao’s background, research, or the ideas behind SPIRIT.',
-    suggestions: [['His background', 'Tell me about Chenghao’s background.'], ['What is SPIRIT?', 'What is the key idea behind SPIRIT?'], ['Research results', 'What results does SPIRIT achieve?']],
-    placeholder: 'Ask a question…', label: 'Your question', send: 'Send question', close: 'Close chat', reset: 'Start a new conversation',
-    thinking: 'Looking through the public research notes…', user: 'You', local: 'From the public site · AI is unavailable right now',
-    localOnly: 'From the public site', privacy: 'AI answers from public information; may make mistakes. Your question and recent Q&A are sent to Groq. ',
-    privacyLocal: 'Answers from the public site. This conversation stays in this tab.', policy: 'Privacy',
-    conversation: 'Conversation', suggestionsLabel: 'Suggested questions',
-    copyAnswer: 'Copy answer', copied: 'Copied', copySuccess: 'Answer copied.',
-    copyFallback: 'Text selected. Copy it manually.',
-    minimize: 'Minimize Mochi', restore: 'Show Mochi', newAnswer: 'New answer ↓'
-  },
-  zh: {
-    subtitle: 'Chenghao 的科研小助手', greeting: '小小向导，带你走近研究。',
-    description: '你好，我是 Mochi。可以问我 Chenghao 的背景、研究成果，或 SPIRIT 背后的想法。',
-    suggestions: [['个人背景', '介绍一下 Chenghao 的个人背景。'], ['SPIRIT 是什么？', 'SPIRIT 的核心想法是什么？'], ['研究成果', 'SPIRIT 取得了哪些加速结果？']],
-    placeholder: '聊聊 Chenghao 或 SPIRIT…', label: '你的问题', send: '发送问题', close: '关闭聊天', reset: '开始新的对话',
-    thinking: '正在查阅公开研究资料…', user: '你', local: '公开资料回答 · AI 暂时不可用',
-    localOnly: '公开资料回答', privacy: 'AI 根据公开资料回答，可能出错。当前问题与最近几轮问答会发送给 Groq。',
-    privacyLocal: '根据公开网站资料回答。对话仅保留在此标签页中。', policy: '隐私说明',
-    conversation: '对话记录', suggestionsLabel: '建议问题',
-    copyAnswer: '复制回答', copied: '已复制', copySuccess: '回答已复制。',
-    copyFallback: '已选中文字，请手动复制。',
-    minimize: '收起 Mochi', restore: '显示 Mochi', newAnswer: '新回答 ↓'
-  }
+  subtitle: 'Chenghao’s research guide', greeting: 'A little guide. A closer look.',
+  description: 'Hi, I’m Mochi. Ask me about Chenghao’s background, research, or the ideas behind SPIRIT.',
+  suggestions: [['His background', 'Tell me about Chenghao’s background.'], ['What is SPIRIT?', 'What is the key idea behind SPIRIT?'], ['Research results', 'What results does SPIRIT achieve?']],
+  placeholder: 'Ask a question…', label: 'Your question', send: 'Send question', close: 'Close chat', reset: 'Start a new conversation',
+  thinking: 'Looking through the public research notes…', user: 'You', local: 'From the public site · AI is unavailable right now',
+  localOnly: 'From the public site', privacy: 'AI answers from public information; may make mistakes. Your question and recent Q&A are sent to Groq. ',
+  privacyLocal: 'Answers from the public site. This conversation stays in this tab.', policy: 'Privacy',
+  conversation: 'Conversation', suggestionsLabel: 'Suggested questions',
+  copyAnswer: 'Copy answer', copied: 'Copied', copySuccess: 'Answer copied.',
+  copyFallback: 'Text selected. Copy it manually.',
+  minimize: 'Minimize Mochi', restore: 'Show Mochi', newAnswer: 'New answer ↓'
 };
 
-function setLanguage(next, manual = false) {
-  language = next;
-  if (manual) {
-    languagePreference = next;
-    try { localStorage.setItem(languageKey, next); } catch { /* Keep this tab's choice. */ }
-  }
-  updateLanguage();
-}
-
-function updateLanguage() {
-  const t = copy[language];
-  dialog.lang = language === 'zh' ? 'zh-CN' : 'en';
+function initializeInterface() {
+  const t = copy;
+  dialog.lang = 'en';
   for (const key of ['subtitle', 'greeting', 'description']) get(key).textContent = t[key];
   input.placeholder = t.placeholder;
   get('input-label').textContent = t.label;
@@ -76,8 +48,6 @@ function updateLanguage() {
     get(key).setAttribute('aria-label', t[key]); get(key).title = t[key];
   }
   newAnswer.textContent = t.newAnswer;
-  get('language').textContent = language === 'en' ? '中文' : 'EN';
-  get('language').setAttribute('aria-label', language === 'en' ? 'Switch to Chinese' : 'Switch to English');
   messages.setAttribute('aria-label', t.conversation);
   const suggestions = get('suggestions');
   suggestions.setAttribute('aria-label', t.suggestionsLabel);
@@ -125,11 +95,8 @@ dialog.addEventListener('click', event => {
   const r = dialog.getBoundingClientRect();
   if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close();
 });
-get('language').addEventListener('click', () => {
-  setLanguage(language === 'en' ? 'zh' : 'en', true);
-});
 get('reset').addEventListener('click', () => {
-  generation++; pending?.abort(); pending = null; history = [];
+  generation++; pending?.abort(); pending = null; history = []; language = 'en';
   messages.replaceChildren(); status.textContent = ''; input.value = '';
   unreadAnswer = null; newAnswer.hidden = true; resizeInput();
   dialog.classList.remove('has-conversation');
@@ -218,14 +185,14 @@ function addCopyControl(item, content, text, t) {
 }
 
 function appendMessage(role, text, ids = [], mode = '', lang = language) {
-  const t = copy[lang];
+  const t = copy;
   const item = document.createElement('div');
   item.className = `guide-message ${role}`;
-  item.lang = lang === 'zh' ? 'zh-CN' : 'en';
   const speaker = document.createElement('span');
   speaker.className = 'guide-speaker';
   speaker.textContent = role === 'user' ? t.user : 'Mochi';
   const content = document.createElement('p');
+  content.lang = lang === 'zh' ? 'zh-CN' : 'en';
   content.textContent = text;
   item.append(speaker, content);
   if (ids.length) {
@@ -233,7 +200,7 @@ function appendMessage(role, text, ids = [], mode = '', lang = language) {
     for (const id of [...new Set(ids)].slice(0, 3)) {
       const source = sources[id]; if (!source) continue;
       const link = document.createElement('a');
-      link.href = source.href; link.textContent = `${source[lang]} ↗`;
+      link.href = source.href; link.textContent = `${source.en} ↗`;
       if (source.href.startsWith('#')) {
         link.addEventListener('click', event => {
           event.preventDefault(); close();
@@ -266,8 +233,9 @@ function appendMessage(role, text, ids = [], mode = '', lang = language) {
 async function submit(raw) {
   const question = raw.trim();
   if (!question || question.length > MAX_QUESTION_LENGTH || pending) return;
-  const nextLanguage = languagePreference ?? (/[\u3400-\u9fff]/u.test(question) ? 'zh' : /[a-z]/i.test(question) ? 'en' : language);
-  setLanguage(nextLanguage);
+  // Short technical follow-ups inherit the conversation's language.
+  if (/[\u3400-\u9fff]/u.test(question)) language = 'zh';
+  else if (/[a-z]/i.test(question) && !/^(?:SPIRIT|NF4|FP16|BF16|GQA|MoE|AR|LLMs?)[\s?!.,]*$/i.test(question)) language = 'en';
   const lang = language;
   const turn = generation;
   get('intro').hidden = true;
@@ -278,7 +246,7 @@ async function submit(raw) {
   let reply = localAnswer(question, lang);
   if (endpoint && Date.now() >= cooldownUntil) {
     const controller = new AbortController(); pending = controller;
-    updateControls(); status.textContent = copy[lang].thinking;
+    updateControls(); status.textContent = copy.thinking;
     scrollToLatest();
     const timeout = setTimeout(() => controller.abort(), 17000);
     try {
@@ -319,4 +287,4 @@ async function submit(raw) {
   updateControls();
 }
 
-if (typeof dialog.showModal === 'function') { updateLanguage(); dock.hidden = false; }
+if (typeof dialog.showModal === 'function') { initializeInterface(); dock.hidden = false; }
