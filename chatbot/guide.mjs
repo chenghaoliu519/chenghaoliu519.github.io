@@ -1,5 +1,6 @@
 import { CHAT_ENDPOINT } from './config.mjs?v=3ecaa7461fe7';
 import { localAnswer, sources } from './knowledge.mjs?v=34cd04085862';
+import { MAX_QUESTION_LENGTH, MAX_ANSWER_LENGTH, MAX_TURNS, createChatPayload } from './conversation.mjs?v=a0c346b920fe';
 
 const get = id => document.getElementById(`guide-${id}`);
 const dialog = get('dialog');
@@ -14,9 +15,10 @@ const newAnswer = get('new-answer');
 const endpoint = /^https:\/\/chenghao-mochi\.[a-z0-9-]+\.workers\.dev\/chat$/.test(CHAT_ENDPOINT) ? CHAT_ENDPOINT : '';
 const languageKey = 'chenghao-guide-language';
 let language = 'en';
+let languagePreference = null;
 try {
   const saved = localStorage.getItem(languageKey);
-  if (saved === 'en' || saved === 'zh') language = saved;
+  if (saved === 'en' || saved === 'zh') language = languagePreference = saved;
 } catch { /* Language switching also works without browser storage. */ }
 let history = [];
 let pending = null;
@@ -31,7 +33,7 @@ const copy = {
     suggestions: [['His background', 'Tell me about Chenghao’s background.'], ['What is SPIRIT?', 'What is the key idea behind SPIRIT?'], ['Research results', 'What results does SPIRIT achieve?']],
     placeholder: 'Ask a question…', label: 'Your question', send: 'Send question', close: 'Close chat', reset: 'Start a new conversation',
     thinking: 'Looking through the public research notes…', user: 'You', local: 'From the public site · AI is unavailable right now',
-    localOnly: 'From the public site', privacy: 'AI answers from public information; may make mistakes. Questions and recent context are sent to Groq. ',
+    localOnly: 'From the public site', privacy: 'AI answers from public information; may make mistakes. Your question and recent Q&A are sent to Groq. ',
     privacyLocal: 'Answers from the public site. This conversation stays in this tab.', policy: 'Privacy',
     conversation: 'Conversation', suggestionsLabel: 'Suggested questions',
     copyAnswer: 'Copy answer', copied: 'Copied', copySuccess: 'Answer copied.',
@@ -44,7 +46,7 @@ const copy = {
     suggestions: [['个人背景', '介绍一下 Chenghao 的个人背景。'], ['SPIRIT 是什么？', 'SPIRIT 的核心想法是什么？'], ['研究成果', 'SPIRIT 取得了哪些加速结果？']],
     placeholder: '聊聊 Chenghao 或 SPIRIT…', label: '你的问题', send: '发送问题', close: '关闭聊天', reset: '开始新的对话',
     thinking: '正在查阅公开研究资料…', user: '你', local: '公开资料回答 · AI 暂时不可用',
-    localOnly: '公开资料回答', privacy: 'AI 根据公开资料回答，可能出错。问题与最近的上下文会发送给 Groq。',
+    localOnly: '公开资料回答', privacy: 'AI 根据公开资料回答，可能出错。当前问题与最近几轮问答会发送给 Groq。',
     privacyLocal: '根据公开网站资料回答。对话仅保留在此标签页中。', policy: '隐私说明',
     conversation: '对话记录', suggestionsLabel: '建议问题',
     copyAnswer: '复制回答', copied: '已复制', copySuccess: '回答已复制。',
@@ -53,9 +55,12 @@ const copy = {
   }
 };
 
-function setLanguage(next) {
+function setLanguage(next, manual = false) {
   language = next;
-  try { localStorage.setItem(languageKey, language); } catch { /* Keep this tab's choice. */ }
+  if (manual) {
+    languagePreference = next;
+    try { localStorage.setItem(languageKey, next); } catch { /* Keep this tab's choice. */ }
+  }
   updateLanguage();
 }
 
@@ -121,7 +126,7 @@ dialog.addEventListener('click', event => {
   if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close();
 });
 get('language').addEventListener('click', () => {
-  setLanguage(language === 'en' ? 'zh' : 'en');
+  setLanguage(language === 'en' ? 'zh' : 'en', true);
 });
 get('reset').addEventListener('click', () => {
   generation++; pending?.abort(); pending = null; history = [];
@@ -260,8 +265,8 @@ function appendMessage(role, text, ids = [], mode = '', lang = language) {
 
 async function submit(raw) {
   const question = raw.trim();
-  if (!question || question.length > 500 || pending) return;
-  const nextLanguage = /[\u3400-\u9fff]/u.test(question) ? 'zh' : /[a-z]/i.test(question) ? 'en' : language;
+  if (!question || question.length > MAX_QUESTION_LENGTH || pending) return;
+  const nextLanguage = languagePreference ?? (/[\u3400-\u9fff]/u.test(question) ? 'zh' : /[a-z]/i.test(question) ? 'en' : language);
   setLanguage(nextLanguage);
   const lang = language;
   const turn = generation;
@@ -280,20 +285,20 @@ async function submit(raw) {
       const response = await fetch(endpoint, {
         method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer', signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: question, history: history.slice(-4), language: lang })
+        body: JSON.stringify(createChatPayload(question, lang, history))
       });
       if (response.status === 429) cooldownUntil = Date.now() + 60000;
       if (!response.ok) throw new Error('unavailable');
       const candidate = await response.json();
       if (candidate.mode !== 'ai' || typeof candidate.answer !== 'string' || !candidate.answer.trim() ||
-          candidate.answer.length > 2400 || !Array.isArray(candidate.sourceIds) ||
+          candidate.answer.length > MAX_ANSWER_LENGTH || !Array.isArray(candidate.sourceIds) ||
           candidate.sourceIds.some(id => !Object.hasOwn(sources, id))) throw new Error('invalid');
       reply = candidate;
     } catch { /* Keep the explicitly labelled, curated fallback. */ }
     finally { clearTimeout(timeout); if (turn === generation) pending = null; }
   }
   if (turn !== generation) return;
-  history.push(question); history = history.slice(-4);
+  history.push({ question, answer: reply.answer }); history = history.slice(-MAX_TURNS);
   // Follow a waiting reader to the answer's beginning, but preserve the position
   // of someone who scrolled back through the conversation while it was pending.
   const follow = dialog.open && scroll.scrollHeight - scroll.clientHeight - scroll.scrollTop < 32;

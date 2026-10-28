@@ -32,26 +32,35 @@ origin or place any secret in the client configuration.
 
 - The assistant answers in English or Chinese from approved public facts. It
   speaks about Chenghao in the third person and cannot act on his behalf.
-- The current language is saved as `chenghao-guide-language` in local storage;
-  language switching still works when storage is unavailable. Answers have a
-  copy control, with text selection as a fallback if clipboard access fails.
+- A manually selected language is saved as `chenghao-guide-language` in local
+  storage and takes precedence over question-language detection. Existing saved
+  preferences are retained; without a saved choice, questions select the answer
+  language automatically. Switching still works when storage is unavailable.
+  Answers have a copy control, with text selection as a fallback if clipboard
+  access fails.
   On mobile, the welcome panel fits its content and expands for conversation.
 - On mobile, the cat can be minimized to a small edge tab and restored without
   losing the conversation. The choice lasts for the current page visit.
   The input grows to four lines before scrolling internally. New replies open
   at their beginning; readers who scroll back while waiting keep their position
   and can use the new-answer button to jump to the reply.
-- Only the question and up to four previous visitor questions are sent to the
-  backend. Conversation state stays in the tab; no conversation persistence or
-  conversation database is used. The UI discloses transmission to Groq.
+- The current question and up to three recent complete question-and-answer pairs
+  are sent to the backend. Oldest pairs are dropped as needed to keep the UTF-8
+  request within 16 KiB; retained answers are not truncated. Conversation state
+  stays in the tab; no conversation persistence or conversation database is used.
+  New conversation clears the context. The UI discloses transmission to Groq.
+  The Worker accepts the previous question-only format for cached clients.
+- Earlier answers are context for follow-up references, not a factual source.
+  They remain inside untrusted user data; approved public knowledge takes
+  precedence, and the model is instructed to correct earlier mistakes.
 - The Worker does not log message content. Cloudflare and Groq process requests
   under their own policies. Do not describe this as zero-retention or local AI.
 - Replies are rendered as text, and related source links are selected from the
   site's public topic index, never from model-generated URLs.
   Grounding instructions reduce hallucinations; they do not guarantee factual
   accuracy. Check answers when updating the model or knowledge.
-- Requests are limited to 500 characters and 8 KB bodies, with a 14-second
-  upstream timeout. Only the production homepage origin is allowed by CORS.
+- Questions are limited to 500 characters and requests to 16 KiB bodies, with a
+  14-second upstream timeout. Only the production homepage origin is allowed by CORS.
   CORS is not authentication for a public endpoint.
 - Cloudflare rate bindings impose approximate limits of 6 requests per IP and
   10 site requests per minute **per Cloudflare location**. Shared IPs may share

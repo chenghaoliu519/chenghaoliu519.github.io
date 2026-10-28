@@ -29,8 +29,8 @@ publication summary work without JavaScript.
 
 The optional chat uses a separate Cloudflare Worker and Groq. Its keys are kept
 in GitHub Actions / Worker secrets, never in site assets. It only receives the
-visitor's question and recent question context, and answers from public profile
-information. The chat discloses the external processing and labels curated
+visitor's question and up to three recent question-and-answer pairs, and answers
+from public profile information. The chat discloses the external processing and labels curated
 fallback answers when the model is unavailable. See [chatbot setup](chatbot/README.md).
 
 The public contact address is `liuchenghao97@gmail.com`. Update both `mailto:`
