@@ -240,7 +240,7 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 .copy-button:hover { color: var(--ink); text-decoration: underline; }
 .copy-status { min-height: 20px; font-size: 12px; color: var(--muted); }
 .site-footer { padding-top: 24px; padding-bottom: 28px; display: flex; justify-content: space-between; align-items: center; gap: 25px; color: var(--muted); font-size: 11px; }
-.site-footer div { display: flex; gap: 25px; }
+.site-footer div { display: flex; flex-wrap: wrap; gap: 4px 25px; }
 .site-footer a { padding: 7px 0; text-decoration: none; }
 .site-footer a:hover { color: var(--ink); text-decoration: underline; }
 .not-found { min-height: 100vh; display: grid; place-items: center; background: var(--surface); padding: 24px; }
