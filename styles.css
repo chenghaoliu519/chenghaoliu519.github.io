@@ -207,7 +207,7 @@ h2 { font-size: 28px; font-weight: 550; letter-spacing: -.65px; line-height: 1.2
 .reuse-actions svg { grid-row: 1 / 3; width: 22px; height: 22px; margin-top: 2px; fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 .reuse-actions dt { color: var(--ink); font-size: 14px; font-weight: 500; line-height: 1.5; }
 .reuse-actions dd { margin: 2px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
-.method-figure figcaption { max-width: 960px; margin: 14px auto 0; font-size: 12px; line-height: 1.7; color: var(--muted); }
+.method-figure > figcaption { max-width: 960px; margin: 14px auto 0; font-size: 12px; line-height: 1.7; color: var(--muted); }
 
 .section-grid { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 60px; padding-top: 48px; padding-bottom: 48px; }
 .section-label { padding-top: 1px; }
@@ -459,9 +459,7 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 .evidence-comparison .faster-configuration { background: var(--accent-soft); }
 .evidence-comparison .faster-configuration strong { color: var(--accent); }
 .evidence-takeaway { margin-top: 16px; font-size: 13px; line-height: 1.75; }
-.evidence-source { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 28px; }
-.evidence-source p { max-width: 700px; font-size: 11px; line-height: 1.7; }
-.evidence-source .text-link { font-size: 12px; }
+.evidence-source { margin-top: 14px; font-size: 11px; line-height: 1.7; color: var(--muted); }
 .boundary-score { margin-top: 8px; color: var(--accent); font-size: 14px; line-height: 1.7; }
 .search-detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; margin-top: 28px; padding-top: 25px; border-top: 1px solid var(--rule-strong); }
 .search-detail-grid h5 { color: var(--ink); margin: 7px 0 12px; font-size: 17px; font-weight: 600; line-height: 1.4; letter-spacing: -.25px; }
@@ -469,14 +467,11 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 .search-detail-grid li { padding-left: 3px; }
 .search-detail-grid li::marker { color: var(--accent); font-variant-numeric: tabular-nums; }
 .profile-definition { margin-top: 12px; max-width: 800px; font-size: 13px; line-height: 1.75; color: var(--muted); }
-.research-resources { display: flex; flex-wrap: wrap; gap: 0 28px; margin-top: 12px; }
-.research-resources .text-link { gap: 6px; font-size: 13px; }
-.research-resources .text-link > span { margin-left: 0; }
+.method-flow-link { color: var(--accent); }
 @media (max-width: 700px) {
   .motivation-evidence, .search-detail-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
   .motivation-evidence { margin-top: 28px; padding-top: 24px; }
   .motivation-copy h4 { font-size: 20px; }
-  .evidence-source { display: block; }
   .search-detail-grid { gap: 28px; }
 }
 @media (max-width: 360px) {
@@ -488,23 +483,32 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
   .motivation-evidence, .search-detail-grid > section { break-inside: avoid; }
 }
 
-/* Each source figure can be opened independently inside the research details. */
-.figure-disclosure { width: 100%; min-width: 0; flex-basis: 100%; }
-.figure-disclosure > summary { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 44px; padding: 10px 0; list-style: none; color: var(--accent); font-size: 13px; line-height: 1.6; cursor: pointer; }
+/* Optional figures continue the explanation in their own research section. */
+.figure-disclosure { width: 100%; min-width: 0; border-top: 1px solid var(--rule); }
+.motivation-evidence > .figure-disclosure { grid-column: 1 / -1; }
+.method-canvas > .figure-disclosure { margin-top: 28px; border-color: var(--rule-strong); }
+.figure-disclosure > summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 44px; padding: 18px 0 4px; list-style: none; line-height: 1.6; cursor: pointer; }
 .figure-disclosure > summary::-webkit-details-marker { display: none; }
-.figure-disclosure > summary:hover > .figure-show,
-.figure-disclosure > summary:hover > .figure-hide { text-decoration: underline; text-underline-offset: 4px; }
+.figure-summary-copy { display: grid; gap: 3px; min-width: 0; }
+.figure-title { color: var(--ink); font-size: 14px; font-weight: 500; }
+.figure-description { color: var(--muted); font-size: 12px; }
+.figure-action { display: inline-flex; align-items: center; flex-shrink: 0; gap: 10px; color: var(--accent); font-size: 12px; }
+.figure-disclosure > summary:hover .figure-title { color: var(--accent); }
+.figure-disclosure > summary:hover .figure-action { text-decoration: underline; text-underline-offset: 4px; }
 .figure-hide, .figure-disclosure[open] > summary .figure-show { display: none; }
 .figure-disclosure[open] > summary .figure-hide { display: inline; }
 .figure-toggle-icon { position: relative; width: 10px; height: 10px; flex: 0 0 10px; }
 .figure-toggle-icon::before, .figure-toggle-icon::after { content: ""; position: absolute; top: 4px; left: 0; width: 10px; height: 1px; background: currentColor; }
 .figure-toggle-icon::after { transform: rotate(90deg); transition: transform 150ms ease; }
 .figure-disclosure[open] > summary .figure-toggle-icon::after { transform: rotate(0); }
-.figure-panel { margin: 8px 0 14px; }
+.figure-panel { margin: 18px 0 0; }
 .figure-image-link { display: block; overflow: hidden; padding: 8px; border: 1px solid var(--rule); border-radius: 12px; background: white; cursor: zoom-in; }
 .figure-image-link img { display: block; width: 100%; height: auto; }
 .figure-panel figcaption { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.75; }
 .figure-panel figcaption a { display: inline-block; min-height: 36px; padding: 6px 0; color: var(--accent); }
+@media (max-width: 600px) {
+  .figure-disclosure > summary { align-items: flex-start; flex-direction: column; gap: 8px; }
+}
 @media (prefers-reduced-motion: reduce) {
   .figure-toggle-icon::after { transition: none; }
 }

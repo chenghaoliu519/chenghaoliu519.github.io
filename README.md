@@ -82,11 +82,13 @@ project archives or credentials into this repository.
 
 The author-provided NeurIPS 2026 camera-ready is published at
 `assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf`. The homepage links it directly.
-The two approved poster figures appear in independently expandable sections
-inside the research details, with full-size links. They are stored as `assets/figures/spirit-motivation-v06.png` and
+The two approved poster figures appear as independently expandable parts of the
+Motivation and Method sections, with contextual titles and full-size links. The
+method figure sits inside the method canvas after the two control loops. They are stored as `assets/figures/spirit-motivation-v06.png` and
 `assets/figures/spirit-method-v32.png`. These are exact copies of the supplied
 versions; keep future replacements versioned. The separate method-flow PDF is published at
-`assets/papers/spirit_flow.pdf` and linked by “View method flow.”
+`assets/papers/spirit_flow.pdf` and linked in the method caption as “control-flow
+diagram (PDF).”
 
 The headline 2.48× is the camera-ready's NF4 maximum. Appendix C.7 reports
 2.478× for the best complete run (rounded to 2.48×), and 2.465× pooled across

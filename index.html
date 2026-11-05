@@ -28,7 +28,7 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
     <script src="theme.js?v=3efb3f2dd9f7"></script>
-    <link rel="stylesheet" href="styles.css?v=e54a85050bbb">
+    <link rel="stylesheet" href="styles.css?v=2ade295c1975">
     <link rel="stylesheet" href="theme.css?v=99513c42055d">
     <script src="site.js?v=f417b6eb8be3" defer></script>
     <link rel="stylesheet" href="chatbot/guide.css?v=bd0671b087d8">
@@ -169,19 +169,20 @@
                       </tbody>
                     </table>
                     <p class="evidence-takeaway">In a highlighted ≈96–98% acceptance band, throughput spans <strong>21.99–26.39 tokens/s</strong>.</p>
+                    <p class="evidence-source">LLaMA-2-13B · CNN/DM · FP16. 21 skip ratios × 24 layer patterns, using the same 24 prompts per configuration. Measured decode-only configuration sweep.</p>
                   </div>
-                  <div class="evidence-source">
-                    <p>LLaMA-2-13B · CNN/DM · FP16. 21 skip ratios × 24 layer patterns, using the same 24 prompts per configuration. Measured decode-only configuration sweep.</p>
-                    <details class="figure-disclosure" id="motivation-figure-details">
-                      <summary><span class="figure-show">View motivation figure</span><span class="figure-hide">Hide motivation figure</span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
-                      <figure class="figure-panel">
-                        <a class="figure-image-link" href="assets/figures/spirit-motivation-v06.png" target="_blank" rel="noopener" aria-label="Open the motivation figure at full size in a new tab">
-                          <img src="assets/figures/spirit-motivation-v06.png" width="3600" height="1920" loading="lazy" decoding="async" alt="Motivation: layer skipping affects both agreement and execution cost. Measured configurations with similar acceptance have different throughput; skip ratio organizes the throughput frontier.">
-                        </a>
-                        <figcaption>LLaMA-2-13B / CNN/DM / FP16. The original measured configuration sweep. <a href="assets/figures/spirit-motivation-v06.png" target="_blank" rel="noopener">Open full-size figure <span aria-hidden="true">↗</span></a></figcaption>
-                      </figure>
-                    </details>
-                  </div>
+                  <details class="figure-disclosure" id="motivation-figure-details">
+                    <summary>
+                      <span class="figure-summary-copy"><span class="figure-title">The throughput landscape</span><span class="figure-description">How skip ratio and layer placement shape the trade-off.</span></span>
+                      <span class="figure-action" aria-hidden="true"><span class="figure-show">Expand figure</span><span class="figure-hide">Collapse figure</span><span class="figure-toggle-icon"></span></span>
+                    </summary>
+                    <figure class="figure-panel">
+                      <a class="figure-image-link" href="assets/figures/spirit-motivation-v06.png" target="_blank" rel="noopener" aria-label="Open the motivation figure at full size in a new tab">
+                        <img src="assets/figures/spirit-motivation-v06.png" width="3600" height="1920" loading="lazy" decoding="async" alt="Motivation: layer skipping affects both agreement and execution cost. Measured configurations with similar acceptance have different throughput; skip ratio organizes the throughput frontier.">
+                      </a>
+                      <figcaption>LLaMA-2-13B / CNN/DM / FP16. The original measured configuration sweep. <a href="assets/figures/spirit-motivation-v06.png" target="_blank" rel="noopener">Open full-size figure <span aria-hidden="true">↗</span></a></figcaption>
+                    </figure>
+                  </details>
                 </section>
             <figure class="method-figure" id="spirit-method" aria-labelledby="method-heading" aria-describedby="method-caption">
               <div class="method-canvas">
@@ -378,21 +379,22 @@
                   </div>
                 </div>
               </div>
+
+                <details class="figure-disclosure" id="method-figure-details">
+                  <summary>
+                    <span class="figure-summary-copy"><span class="figure-title">The complete method</span><span class="figure-description">Within-request search and cross-request profile reuse in one diagram.</span></span>
+                    <span class="figure-action" aria-hidden="true"><span class="figure-show">Expand figure</span><span class="figure-hide">Collapse figure</span><span class="figure-toggle-icon"></span></span>
+                  </summary>
+                  <figure class="figure-panel">
+                    <a class="figure-image-link" href="assets/figures/spirit-method-v32.png" target="_blank" rel="noopener" aria-label="Open the detailed method figure at full size in a new tab">
+                      <img src="assets/figures/spirit-method-v32.png" width="4000" height="2322" loading="lazy" decoding="async" alt="Detailed SPIRIT method: productive draft–verify windows feed calibrated scores into ratio search and fixed-ratio layer refinement. Across requests, profile signatures and probes guide stay, switch, switch and refine, or restart.">
+                    </a>
+                    <figcaption>The detailed within-request and cross-request control loops. <a href="assets/figures/spirit-method-v32.png" target="_blank" rel="noopener">Open full-size figure <span aria-hidden="true">↗</span></a></figcaption>
+                  </figure>
+                </details>
               </div>
-              <figcaption id="method-caption">Conceptual overview. Within-request boundary updates need no additional model forward pass. Cross-request profile trials compare candidates separately on the same request head.</figcaption>
+              <figcaption id="method-caption">Conceptual overview. Within-request boundary updates need no additional model forward pass; cross-request profile trials compare candidates separately on the same request head. The <a class="method-flow-link" href="assets/papers/spirit_flow.pdf" type="application/pdf" target="_blank" rel="noopener">control-flow diagram (PDF) <span aria-hidden="true">↗</span></a> traces these decisions.</figcaption>
             </figure>
-                <div class="research-resources" aria-label="SPIRIT research resources">
-                  <details class="figure-disclosure" id="method-figure-details">
-                      <summary><span class="figure-show">View detailed method figure</span><span class="figure-hide">Hide detailed method figure</span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
-                      <figure class="figure-panel">
-                        <a class="figure-image-link" href="assets/figures/spirit-method-v32.png" target="_blank" rel="noopener" aria-label="Open the detailed method figure at full size in a new tab">
-                          <img src="assets/figures/spirit-method-v32.png" width="4000" height="2322" loading="lazy" decoding="async" alt="Detailed SPIRIT method: productive draft–verify windows feed calibrated scores into ratio search and fixed-ratio layer refinement. Across requests, profile signatures and probes guide stay, switch, switch and refine, or restart.">
-                        </a>
-                        <figcaption>The detailed within-request and cross-request control loops. <a href="assets/figures/spirit-method-v32.png" target="_blank" rel="noopener">Open full-size figure <span aria-hidden="true">↗</span></a></figcaption>
-                      </figure>
-                    </details>
-                  <a class="text-link" href="assets/papers/spirit_flow.pdf" type="application/pdf">View method flow <span class="file-label">PDF</span><span aria-hidden="true">↗</span></a>
-                </div>
                 <button class="details-close" type="button" aria-controls="spirit-details" hidden>Close research details <span aria-hidden="true">↑</span></button>
               </div>
             </details>
