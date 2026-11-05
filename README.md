@@ -82,10 +82,11 @@ project archives or credentials into this repository.
 
 The author-provided NeurIPS 2026 camera-ready is published at
 `assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf`. The homepage links it directly.
-The two approved poster figures are linked from the expanded research details
-as `assets/figures/spirit-motivation-v06.png` and
+The two approved poster figures appear in independently expandable sections
+inside the research details, with full-size links. They are stored as `assets/figures/spirit-motivation-v06.png` and
 `assets/figures/spirit-method-v32.png`. These are exact copies of the supplied
-versions; keep future replacements versioned.
+versions; keep future replacements versioned. The separate method-flow PDF is published at
+`assets/papers/spirit_flow.pdf` and linked by “View method flow.”
 
 The headline 2.48× is the camera-ready's NF4 maximum. Appendix C.7 reports
 2.478× for the best complete run (rounded to 2.48×), and 2.465× pooled across
@@ -115,7 +116,7 @@ The introduction stays left-aligned. The publication pairs its title and short
 description with a compact conceptual diagram on desktop, stacking them on
 mobile. The header contains navigation only; the publication omits the author
 row. Native expandable research details contain the full summary, formula, and
-control diagram; they work without JavaScript. The default diagram introduces
+control diagram; the two nested figure disclosures also work without JavaScript. The default diagram introduces
 self-drafting, full verification, and throughput-guided ratio/layer adaptation.
 The expanded diagram adds calibrated feedback, ratio-first search, and profile
 reuse. The within-request loop shows token proposals, full-target verification,

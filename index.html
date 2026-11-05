@@ -28,7 +28,7 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
     <script src="theme.js?v=3efb3f2dd9f7"></script>
-    <link rel="stylesheet" href="styles.css?v=a0639e7f4797">
+    <link rel="stylesheet" href="styles.css?v=06ada2bfe0c3">
     <link rel="stylesheet" href="theme.css?v=99513c42055d">
     <script src="site.js?v=a83c3c0dcc24" defer></script>
     <link rel="stylesheet" href="chatbot/guide.css?v=bd0671b087d8">
@@ -92,7 +92,6 @@
             <p class="publication-result"><span class="result-metric">Up to <strong>2.48x</strong></span> <span class="result-context">throughput over autoregressive decoding.</span></p>
             <div class="publication-links">
               <a class="primary-link paper-link" href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf" type="application/pdf">Read the paper <span class="file-label">PDF</span><span aria-hidden="true">↗</span></a>
-              <span class="paper-version">NeurIPS 2026 · Camera-ready</span>
             </div>
             </div>
             <figure class="method-preview" aria-labelledby="preview-heading" aria-describedby="preview-caption">
@@ -153,8 +152,8 @@
                   <div class="motivation-copy">
                     <p class="method-eyebrow">Why optimize throughput?</p>
                     <h4 id="motivation-heading">Agreement leaves execution cost unseen.</h4>
-                    <p>Skipping layers changes both draft acceptance and the time spent drafting and verifying. A configuration with higher acceptance can still deliver fewer tokens per second.</p>
-                    <p>The skip ratio sets the coarse trade-off. Different layer patterns at the same ratio leave room for further improvement.</p>
+                    <p>Draft acceptance captures only draft–target consistency. Realized throughput couples the <strong>useful token yield</strong> of drafted work—including the verifier-token bonus—with the configuration’s <strong>intrinsic execution rate</strong>. Optimizing agreement alone can therefore favor a computationally expensive draft over one that commits more tokens per second.</p>
+                    <p>The measured landscape is structured: skip ratio organizes the dominant consistency–speed trade-off, while attention/MLP placement explains variation within each ratio. SPIRIT exploits this structure to reduce a combinatorial mask search to <strong>ratio-first localization and fixed-ratio refinement</strong>, evaluating within-request candidates through the same speculative execution that produces output tokens.</p>
                   </div>
                   <div class="evidence-comparison">
                     <table>
@@ -169,7 +168,15 @@
                   </div>
                   <div class="evidence-source">
                     <p>LLaMA-2-13B · CNN/DM · FP16. 21 skip ratios × 24 layer patterns, using the same 24 prompts per configuration. Measured decode-only configuration sweep.</p>
-                    <a class="text-link" href="assets/figures/spirit-motivation-v06.png">View motivation figure <span aria-hidden="true">↗</span></a>
+                    <details class="figure-disclosure" id="motivation-figure-details">
+                      <summary><span class="figure-show">View motivation figure</span><span class="figure-hide">Hide motivation figure</span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+                      <figure class="figure-panel">
+                        <a class="figure-image-link" href="assets/figures/spirit-motivation-v06.png" target="_blank" rel="noopener" aria-label="Open the motivation figure at full size in a new tab">
+                          <img src="assets/figures/spirit-motivation-v06.png" width="3600" height="1920" loading="lazy" decoding="async" alt="Motivation: layer skipping affects both agreement and execution cost. Measured configurations with similar acceptance have different throughput; skip ratio organizes the throughput frontier.">
+                        </a>
+                        <figcaption>LLaMA-2-13B / CNN/DM / FP16. The original measured configuration sweep. <a href="assets/figures/spirit-motivation-v06.png" target="_blank" rel="noopener">Open full-size figure <span aria-hidden="true">↗</span></a></figcaption>
+                      </figure>
+                    </details>
                   </div>
                 </section>
             <figure class="method-figure" aria-labelledby="method-heading" aria-describedby="method-caption">
@@ -366,8 +373,16 @@
               <figcaption id="method-caption">Conceptual overview. α: draft acceptance; β: verifier-token bonus per drafted token; ν: execution rate. Within-request boundary updates need no additional model forward pass. Cross-request profile trials compare candidates separately on the same request head.</figcaption>
             </figure>
                 <div class="research-resources" aria-label="SPIRIT research resources">
-                  <a class="text-link" href="assets/figures/spirit-method-v32.png">View detailed method figure <span aria-hidden="true">↗</span></a>
-                  <a class="text-link" href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf#page=3">Read the method in the paper <span class="file-label">PDF</span><span aria-hidden="true">↗</span></a>
+                  <details class="figure-disclosure" id="method-figure-details">
+                      <summary><span class="figure-show">View detailed method figure</span><span class="figure-hide">Hide detailed method figure</span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+                      <figure class="figure-panel">
+                        <a class="figure-image-link" href="assets/figures/spirit-method-v32.png" target="_blank" rel="noopener" aria-label="Open the detailed method figure at full size in a new tab">
+                          <img src="assets/figures/spirit-method-v32.png" width="4000" height="2322" loading="lazy" decoding="async" alt="Detailed SPIRIT method: productive draft–verify windows feed calibrated scores into ratio search and fixed-ratio layer refinement. Across requests, profile signatures and probes guide stay, switch, switch and refine, or restart.">
+                        </a>
+                        <figcaption>The detailed within-request and cross-request control loops. <a href="assets/figures/spirit-method-v32.png" target="_blank" rel="noopener">Open full-size figure <span aria-hidden="true">↗</span></a></figcaption>
+                      </figure>
+                    </details>
+                  <a class="text-link" href="assets/papers/spirit_flow.pdf" type="application/pdf">View method flow <span class="file-label">PDF</span><span aria-hidden="true">↗</span></a>
                 </div>
                 <button class="details-close" type="button" aria-controls="spirit-details" hidden>Close research details <span aria-hidden="true">↑</span></button>
               </div>

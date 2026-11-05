@@ -76,9 +76,9 @@ h2 { font-size: 28px; font-weight: 550; letter-spacing: -.65px; line-height: 1.2
 .publication-result strong { font-size: 28px; font-weight: 600; letter-spacing: -.7px; margin-left: 3px; }
 .result-context { display: block; margin-top: 3px; color: var(--muted); font-size: 13px; }
 .paper-summary { margin-top: 24px; border-top: 1px solid var(--rule); }
-.paper-summary summary { display: flex; align-items: center; justify-content: space-between; min-height: 52px; gap: 12px; font-size: 14px; color: var(--accent); cursor: pointer; padding: 14px 0; list-style: none; }
-.paper-summary summary::-webkit-details-marker { display: none; }
-.paper-summary summary:hover { text-decoration: underline; }
+.paper-summary > summary { display: flex; align-items: center; justify-content: space-between; min-height: 52px; gap: 12px; font-size: 14px; color: var(--accent); cursor: pointer; padding: 14px 0; list-style: none; }
+.paper-summary > summary::-webkit-details-marker { display: none; }
+.paper-summary > summary:hover { text-decoration: underline; }
 .details-open-label, .paper-summary[open] .details-closed-label { display: none; }
 .paper-summary[open] .details-open-label { display: inline; }
 .expand-icon { width: 10px; height: 10px; position: relative; flex-shrink: 0; }
@@ -445,7 +445,6 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 .publication-links { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 18px; margin-top: 13px; }
 .paper-link { gap: 8px; }
 .file-label { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .5px; line-height: 1.5; border: 1px solid var(--rule-strong); border-radius: 4px; padding: 1px 5px; color: var(--muted); }
-.paper-version { color: var(--muted); font-size: 12px; }
 .motivation-evidence { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 24px 44px; margin-top: 34px; padding: 28px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 .motivation-copy h4 { color: var(--ink); font-size: 22px; line-height: 1.35; letter-spacing: -.5px; margin: 7px 0 13px; text-wrap: wrap; }
 .motivation-copy > p:not(.method-eyebrow) { font-size: 14px; line-height: 1.8; }
@@ -487,4 +486,25 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 }
 @media print {
   .motivation-evidence, .search-detail-grid > section { break-inside: avoid; }
+}
+
+/* Each source figure can be opened independently inside the research details. */
+.figure-disclosure { width: 100%; min-width: 0; flex-basis: 100%; }
+.figure-disclosure > summary { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 44px; padding: 10px 0; list-style: none; color: var(--accent); font-size: 13px; line-height: 1.6; cursor: pointer; }
+.figure-disclosure > summary::-webkit-details-marker { display: none; }
+.figure-disclosure > summary:hover > .figure-show,
+.figure-disclosure > summary:hover > .figure-hide { text-decoration: underline; text-underline-offset: 4px; }
+.figure-hide, .figure-disclosure[open] > summary .figure-show { display: none; }
+.figure-disclosure[open] > summary .figure-hide { display: inline; }
+.figure-toggle-icon { position: relative; width: 10px; height: 10px; flex: 0 0 10px; }
+.figure-toggle-icon::before, .figure-toggle-icon::after { content: ""; position: absolute; top: 4px; left: 0; width: 10px; height: 1px; background: currentColor; }
+.figure-toggle-icon::after { transform: rotate(90deg); transition: transform 150ms ease; }
+.figure-disclosure[open] > summary .figure-toggle-icon::after { transform: rotate(0); }
+.figure-panel { margin: 8px 0 14px; }
+.figure-image-link { display: block; overflow: hidden; padding: 8px; border: 1px solid var(--rule); border-radius: 12px; background: white; cursor: zoom-in; }
+.figure-image-link img { display: block; width: 100%; height: auto; }
+.figure-panel figcaption { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.figure-panel figcaption a { display: inline-block; min-height: 36px; padding: 6px 0; color: var(--accent); }
+@media (prefers-reduced-motion: reduce) {
+  .figure-toggle-icon::after { transition: none; }
 }
