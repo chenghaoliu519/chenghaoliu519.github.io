@@ -80,17 +80,29 @@ the full CV, private manuscripts, raw experimental records, research
 source code, phone numbers, and personal photographs. Do not copy private
 project archives or credentials into this repository.
 
-Publication links should only be added when a public, verified URL is available.
+The author-provided NeurIPS 2026 camera-ready is published at
+`assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf`. The homepage links it directly.
+The two approved poster figures are linked from the expanded research details
+as `assets/figures/spirit-motivation-v06.png` and
+`assets/figures/spirit-method-v32.png`. These are exact copies of the supplied
+versions; keep future replacements versioned.
 
-The site's 2.21× SPIRIT result comes from a supplementary NF4 evaluation; the
-paper reports 1.74× FP16 and 2.14× NF4 results. The supplementary
-measurement uses 1,000 TinyStories requests on LLaMA-2-13B, with four controller
-seeds on each of two hosts and one RTX A6000 per run. Complete-stream token/time
-totals give 2.184542× and 2.207254× over each host's matched autoregressive baseline,
-including online search and profile updates. The page rounds the higher host
-aggregate to 2.21×; this is not a best-seed or post-search-only result. The public
-summary states SPIRIT's achieved performance without attributing this later
-measurement to the paper. Keep protocol details here for future maintenance.
+The headline 2.48× is the camera-ready's NF4 maximum. Appendix C.7 reports
+2.478× for the best complete run (rounded to 2.48×), and 2.465× pooled across
+eight runs. It uses LLaMA-2-13B, an NF4 self-draft, a full FP16 verifier, and
+the same ordered 1,000-request TinyStories stream on one RTX A6000 per run.
+Timing excludes prefill and includes online search and profile updates.
+Keep the maximum distinct from the pooled result and the older supplementary
+2.21× headline. The FP16 maximum remains 1.74×.
+
+The motivation table comes from the V06 figure's fixed-configuration sweep:
+LLaMA-2-13B, CNN/DM, FP16, 21 skip ratios × 24 patterns, and the same 24 prompts
+per configuration. The highest-acceptance configuration has 99.406% acceptance
+and 24.358953 tokens/s; the highest-throughput configuration has 98.020%
+acceptance and 26.394627 tokens/s. The highlighted approximately 96–98%
+acceptance band spans 21.987234–26.394627 tokens/s. This is an observed band
+selected in the sweep, not a confidence interval or an online SPIRIT speedup.
+The page rounds these numbers for display.
 
 ## Presentation
 
@@ -118,6 +130,7 @@ same request head only when mismatch rises. This diagram uses responsive HTML
 labels and vector connectors so its meaning stays readable on narrow screens.
 Within-request search uses the calibrated score;
 cross-request mismatch detection uses request-head throughput and acceptance.
+The expanded details include the empirical motivation table, confidence-guided ratio zooming, fixed-ratio random/Bayesian proposals, and the distinction between productive windows and uncommitted request-head trials.
 The glyphs are conceptual illustrations, not experimental measurements. Labels
 remain responsive HTML; tiny SVG labels are hidden on narrow screens where the
 adjacent text conveys the same meaning. Keep the shared alignment, neutral

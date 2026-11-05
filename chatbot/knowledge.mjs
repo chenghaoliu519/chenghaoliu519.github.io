@@ -6,9 +6,10 @@ export const sources = {
   research: { href: '#research', en: 'Research interests', zh: '研究方向' },
   spirit: { href: '#publications', en: 'SPIRIT', zh: 'SPIRIT 研究介绍' },
   method: { href: '#spirit-details', en: 'How SPIRIT works', zh: 'SPIRIT 方法详解' },
+  paper: { href: '/assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf', en: 'SPIRIT paper (PDF)', zh: 'SPIRIT 论文 PDF' },
   contact: { href: '#contact', en: 'Get in touch', zh: '联系方式' },
   measurement: {
-    href: 'https://github.com/chenghaoliu519/chenghaoliu519.github.io#content-scope',
+    href: '/assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf#page=24',
     en: 'Measurement context', zh: '实验口径'
   }
 };
@@ -57,16 +58,16 @@ export const facts = [
     zh: '跨请求时，SPIRIT 保存比例、层配置及请求开头的统计特征。当当前吞吐量和接受率与已有特征不再匹配时，它在同一请求开头比较当前配置与少量历史候选，选择继续使用、切换、切换后细化，或在没有合适配置时重新搜索。'
   },
   {
-    id: 'results', sourceIds: ['spirit'],
-    match: /\b(results?|speedup|performance|faster|gain|nf4|fp16|precision|quantiz)\b|结果|加速|性能|收益|精度|量化|多快|2\.21|1\.74/i,
-    en: 'SPIRIT achieves up to 1.74× speedup with FP16 self-drafts and 2.21× with NF4 self-drafts over autoregressive decoding, while retaining full-target verification. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving. These are measured results, not a guarantee for every model or workload.',
-    zh: 'SPIRIT 相对自回归解码，在 FP16 自草稿下最高达到 1.74× 加速，在 NF4 自草稿下最高达到 2.21×，同时保留完整目标模型验证。扩展评估覆盖 LLaMA、Qwen、Mixtral、SpecBench 的全部六类任务和批量服务。这些是实测结果，并非所有模型和任务都达到同一加速比。'
+    id: 'results', sourceIds: ['spirit', 'paper'],
+    match: /\b(results?|speedup|performance|faster|gain|nf4|fp16|precision|quantiz)\b|结果|加速|性能|收益|精度|量化|多快|2\.48|1\.74/i,
+    en: 'SPIRIT achieves up to 1.74× speedup with FP16 self-drafts and 2.48× with NF4 self-drafts over autoregressive decoding, while retaining full-target verification. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving. These are measured results, not a guarantee for every model or workload.',
+    zh: 'SPIRIT 相对自回归解码，在 FP16 自草稿下最高达到 1.74× 加速，在 NF4 自草稿下最高达到 2.48×，同时保留完整目标模型验证。扩展评估覆盖 LLaMA、Qwen、Mixtral、SpecBench 的全部六类任务和批量服务。这些是实测结果，并非所有模型和任务都达到同一加速比。'
   },
   {
     id: 'measurement', sourceIds: ['measurement'],
     match: /\b(protocol|hardware|a6000|1000|1,000|seeds?|cumulative|2\.14|reproduc|measurement|measured how)\b|口径|硬件|种子|累计|复现|怎么测|如何测|两台/i,
-    en: 'The 2.21× headline rounds the higher host aggregate in a supplementary 1,000-request TinyStories evaluation on LLaMA-2-13B. Each run used one RTX A6000, an NF4 self-draft and an FP16 verifier. Four controller seeds per host gave full-stream aggregates of 2.184542× and 2.207254× on two hosts, including search and profile updates, against matched AR. The paper’s earlier NF4 result is 2.14×.',
-    zh: '2.21× 来自 LLaMA-2-13B / TinyStories 的补充 1,000 请求评估，是两台主机中较高的聚合结果四舍五入所得。每次运行使用一张 RTX A6000、NF4 草稿和 FP16 验证器。每台主机四个控制器 seed，完整请求流包含搜索和配置更新，相对匹配的 AR 基线得到 2.184542× 和 2.207254×。论文较早的 NF4 结果为 2.14×。'
+    en: 'The camera-ready paper reports up to 2.48× decode speedup with NF4 self-drafts. Appendix C.7 uses LLaMA-2-13B on the same ordered stream of 1,000 TinyStories requests, one RTX A6000 per run, an NF4 draft, and a full FP16 verifier. It reports 2.465× pooled across eight runs and 2.478× for the best complete run, rounded to 2.48×. Timing excludes prefill and includes online search and profile updates; the maximum is not the pooled result.',
+    zh: 'Camera-ready 论文报告 NF4 自草稿下最高 2.48× 的 decode 加速。附录 C.7 使用 LLaMA-2-13B、同序的 1,000 个 TinyStories 请求、每次一张 RTX A6000，以及 NF4 草稿和完整 FP16 验证器。论文报告八次运行合并为 2.465×，最好完整运行为 2.478×，四舍五入为 2.48×。计时排除 prefill，包含在线搜索和配置更新；最高值不等于合并结果。'
   },
   {
     id: 'verification', sourceIds: ['spirit', 'method'],
@@ -75,10 +76,10 @@ export const facts = [
     zh: 'SPIRIT 复用目标模型进行自草稿，并保留完整目标模型验证。跳层或降低草稿精度改变的是候选生成成本，候选仍由完整模型验证。它不需要训练，也不需要单独训练的草稿模型。公开介绍没有承诺所有部署精度下的执行都逐位完全一致。'
   },
   {
-    id: 'availability', sourceIds: ['spirit', 'contact'],
+    id: 'availability', sourceIds: ['paper', 'contact'],
     match: /\b(download|source code|repository|pdf|arxiv|cv|resume|unpublished|under review)\b|下载|源码|代码|简历|未发表|在投/i,
-    en: 'The homepage provides a public SPIRIT overview and method explanation. It does not currently link a public paper PDF, code release, or full CV. For materials or collaboration, contact Chenghao at liuchenghao97@gmail.com; I can only discuss information already shared on this site.',
-    zh: '主页提供 SPIRIT 的公开介绍和方法说明，目前没有提供公开论文 PDF、代码发布或完整简历的链接。如需材料或讨论合作，可以联系 liuchenghao97@gmail.com。我只能介绍网站已经公开的信息。'
+    en: 'The SPIRIT camera-ready paper is available from the homepage’s Read the paper link and the PDF source below. The research details also link the motivation and method figures. The site does not publish a source-code release, full CV, or unpublished manuscripts. For other materials or collaboration, contact liuchenghao97@gmail.com.',
+    zh: 'SPIRIT 的 camera-ready 论文已公开，可以点击主页的 Read the paper 或下方 PDF 来源链接。研究详情还提供动机图和方法图。网站未发布源码、完整简历或未发表稿件；其他材料和合作可联系 liuchenghao97@gmail.com。'
   },
   {
     id: 'contact', sourceIds: ['contact'],

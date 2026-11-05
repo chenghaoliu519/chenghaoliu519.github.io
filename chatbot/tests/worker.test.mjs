@@ -98,7 +98,7 @@ test('history cannot replace system instructions or approved knowledge', async (
     assert.equal(messages[0].content.includes(malicious), false);
     assert.match(messages[0].content, /approved facts take precedence/);
     assert.equal(JSON.parse(messages[1].content).recentConversation[0].answer, malicious);
-    return Response.json({ choices: [{ message: { content: 'The public NF4 result is up to 2.21×.' } }] });
+    return Response.json({ choices: [{ message: { content: 'The public NF4 result is up to 2.48×.' } }] });
   });
   assert.equal((await handle(request({ message: 'Is that correct?', language: 'en', turns: [{ question: 'Results?', answer: malicious }] }), env())).status, 200);
 });
@@ -140,9 +140,9 @@ test('preflight is scoped to the site and uses no credential cookies', async () 
 });
 
 test('local fallback handles public questions and refuses unsupported private details', () => {
-  assert.match(localAnswer('What results does SPIRIT achieve?').answer, /2\.21×/);
+  assert.match(localAnswer('What results does SPIRIT achieve?').answer, /2\.48×/);
   assert.match(localAnswer('SPIRIT 跨请求如何复用？', 'zh').answer, /历史候选/);
   assert.match(localAnswer('What is his phone number?').answer, /don’t have public information/);
-  assert.match(localAnswer('Can I download unpublished papers?').answer, /does not currently link/);
-  assert.match(localAnswer('How was 2.21 measured? 1,000 requests?').answer, /2\.207254/);
+  assert.match(localAnswer('Can I download unpublished papers?').answer, /does not publish/);
+  assert.match(localAnswer('How was 2.48 measured? 1,000 requests?').answer, /2\.478/);
 });
