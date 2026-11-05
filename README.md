@@ -129,7 +129,8 @@ signature, shows active and historical ratio/layer configurations, and labels
 the stay/switch/refine/restart choices. Historical profiles are probed on the
 same request head only when mismatch rises. This diagram uses responsive HTML
 labels and vector connectors so its meaning stays readable on narrow screens.
-The expanded details have local links to Motivation, Method, and Profile reuse.
+The expanded details have local links to Motivation and Method. Within-request
+search and cross-request profile reuse are both part of Method.
 The throughput formula defines α, β, and ν directly beside the equation; ν uses
 total decode time. The local links use native anchors, and the top-level
 navigation scroll tracker remains scoped to the site header.
