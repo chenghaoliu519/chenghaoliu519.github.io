@@ -34,7 +34,7 @@ if (detailsSummary && closeDetails) {
 
 // Track native scrolling, including short final sections that cannot reach the
 // top of the viewport. Use the same offset as the page's anchor navigation.
-const navigationItems = Array.from(document.querySelectorAll("nav a"))
+const navigationItems = Array.from(document.querySelectorAll(".site-header nav a"))
   .map((link) => ({ link, section: document.querySelector(link.hash) }))
   .filter(({ section }) => section);
 let navigationFrame = null;

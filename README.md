@@ -129,6 +129,10 @@ signature, shows active and historical ratio/layer configurations, and labels
 the stay/switch/refine/restart choices. Historical profiles are probed on the
 same request head only when mismatch rises. This diagram uses responsive HTML
 labels and vector connectors so its meaning stays readable on narrow screens.
+The expanded details have local links to Motivation, Method, and Profile reuse.
+The throughput formula defines α, β, and ν directly beside the equation; ν uses
+total decode time. The local links use native anchors, and the top-level
+navigation scroll tracker remains scoped to the site header.
 Within-request search uses the calibrated score;
 cross-request mismatch detection uses request-head throughput and acceptance.
 The expanded details include the empirical motivation table, confidence-guided ratio zooming, fixed-ratio random/Bayesian proposals, and the distinction between productive windows and uncommitted request-head trials.

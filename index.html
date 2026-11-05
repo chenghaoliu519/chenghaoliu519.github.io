@@ -28,9 +28,9 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
     <script src="theme.js?v=3efb3f2dd9f7"></script>
-    <link rel="stylesheet" href="styles.css?v=06ada2bfe0c3">
+    <link rel="stylesheet" href="styles.css?v=e54a85050bbb">
     <link rel="stylesheet" href="theme.css?v=99513c42055d">
-    <script src="site.js?v=a83c3c0dcc24" defer></script>
+    <script src="site.js?v=f417b6eb8be3" defer></script>
     <link rel="stylesheet" href="chatbot/guide.css?v=bd0671b087d8">
     <script type="module" src="chatbot/guide.mjs?v=9a94f67529f8"></script>
   </head>
@@ -144,11 +144,16 @@
             <details class="paper-summary">
               <summary><span class="details-closed-label">Explore the method</span><span class="details-open-label">Close research details</span> <span class="expand-icon" aria-hidden="true"></span></summary>
               <div class="summary-content" id="spirit-details">
+                <nav class="research-nav" aria-label="Research details">
+                  <a href="#spirit-motivation">Motivation</a>
+                  <a href="#spirit-method">Method</a>
+                  <a href="#spirit-reuse">Profile reuse</a>
+                </nav>
                 <div class="summary-copy">
                 <p>SPIRIT uses the target model itself to produce speculative drafts and selects layer-skipping configurations through hierarchical online search. Its controller combines window-level throughput feedback, length-aware normalization, and profile reuse to adapt to changing workloads without offline profiling or a separately trained draft model.</p>
                 <p>SPIRIT achieves up to <strong>1.74×</strong> speedup with FP16 self-drafts and <strong>2.48x</strong> with NF4 self-drafts over autoregressive decoding, with full-target verification. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving.</p>
                 </div>
-                <section class="motivation-evidence" aria-labelledby="motivation-heading">
+                <section class="motivation-evidence" id="spirit-motivation" aria-labelledby="motivation-heading">
                   <div class="motivation-copy">
                     <p class="method-eyebrow">Why optimize throughput?</p>
                     <h4 id="motivation-heading">Agreement leaves execution cost unseen.</h4>
@@ -179,7 +184,7 @@
                     </details>
                   </div>
                 </section>
-            <figure class="method-figure" aria-labelledby="method-heading" aria-describedby="method-caption">
+            <figure class="method-figure" id="spirit-method" aria-labelledby="method-heading" aria-describedby="method-caption">
               <div class="method-canvas">
               <div class="method-header">
                 <div>
@@ -192,6 +197,11 @@
                     <span aria-hidden="true"><i>S</i><sub>w</sub> = <span class="fraction"><span><i>G</i><sub>w</sub></span><span><i>T</i><sub>w</sub></span></span> = (<i>α</i><sub>w</sub> + <i>β</i><sub>w</sub>) <i>ν</i><sub>w</sub></span>
                   </div>
                   <p>Token yield × execution rate</p>
+                  <dl class="objective-key" aria-label="Throughput formula symbols">
+                    <div><dt><i>α</i><sub>w</sub></dt><dd>Draft acceptance</dd></div>
+                    <div><dt><i>β</i><sub>w</sub></dt><dd>Extra verifier tokens per drafted token</dd></div>
+                    <div><dt><i>ν</i><sub>w</sub></dt><dd>Drafted tokens / total decode time</dd></div>
+                  </dl>
                 </div>
               </div>
 
@@ -298,7 +308,7 @@
                 </section>
               </div>
 
-              <div class="profile-control">
+              <div class="profile-control" id="spirit-reuse">
                 <div class="reuse-header">
                   <span class="node-label">Across requests</span>
                   <h5>Reuse when workloads recur.</h5>
@@ -370,7 +380,7 @@
                 </div>
               </div>
               </div>
-              <figcaption id="method-caption">Conceptual overview. α: draft acceptance; β: verifier-token bonus per drafted token; ν: execution rate. Within-request boundary updates need no additional model forward pass. Cross-request profile trials compare candidates separately on the same request head.</figcaption>
+              <figcaption id="method-caption">Conceptual overview. Within-request boundary updates need no additional model forward pass. Cross-request profile trials compare candidates separately on the same request head.</figcaption>
             </figure>
                 <div class="research-resources" aria-label="SPIRIT research resources">
                   <details class="figure-disclosure" id="method-figure-details">
