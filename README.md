@@ -83,7 +83,7 @@ project archives or credentials into this repository.
 The author-provided NeurIPS 2026 camera-ready is published at
 `assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf`. The homepage links it directly.
 The two approved poster figures appear as independently expandable parts of the
-Motivation and Method sections, with contextual titles and full-size links. The
+Problem and Method panels, behind compact “More detail” controls with full-size links. The
 method figure sits inside the method canvas after the two control loops. They are stored as `assets/figures/spirit-motivation-v06.png` and
 `assets/figures/spirit-method-v32.png`. These are exact copies of the supplied
 versions; keep future replacements versioned. The separate method-flow PDF is published at
@@ -131,11 +131,15 @@ signature, shows active and historical ratio/layer configurations, and labels
 the stay/switch/refine/restart choices. Historical profiles are probed on the
 same request head only when mismatch rises. This diagram uses responsive HTML
 labels and vector connectors so its meaning stays readable on narrow screens.
-The expanded details have local links to Motivation and Method. Within-request
-search and cross-request profile reuse are both part of Method.
+The expanded details offer Problem, Method, and Experiments tabs. Only one panel
+is visible at a time, with Problem selected initially. Within-request search and
+cross-request profile reuse are both part of Method. The Experiments panel reuses
+the existing published summary; the poster results figure is still pending.
 The throughput formula defines α, β, and ν directly beside the equation; ν uses
-total decode time. The local links use native anchors, and the top-level
-navigation scroll tracker remains scoped to the site header.
+total decode time. Tabs support arrow keys and Home/End, preserve direct section
+and figure links, and stay available while reading long panels. Without JavaScript,
+the links remain anchors and all panels are readable. The top-level navigation
+scroll tracker remains scoped to the site header.
 Within-request search uses the calibrated score;
 cross-request mismatch detection uses request-head throughput and acceptance.
 The expanded details include the empirical motivation table, confidence-guided ratio zooming, fixed-ratio random/Bayesian proposals, and the distinction between productive windows and uncommitted request-head trials.

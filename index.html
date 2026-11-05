@@ -28,9 +28,9 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
     <script src="theme.js?v=3efb3f2dd9f7"></script>
-    <link rel="stylesheet" href="styles.css?v=2ade295c1975">
+    <link rel="stylesheet" href="styles.css?v=0e469251f561">
     <link rel="stylesheet" href="theme.css?v=99513c42055d">
-    <script src="site.js?v=f417b6eb8be3" defer></script>
+    <script src="site.js?v=401c559447a1" defer></script>
     <link rel="stylesheet" href="chatbot/guide.css?v=bd0671b087d8">
     <script type="module" src="chatbot/guide.mjs?v=9a94f67529f8"></script>
   </head>
@@ -142,17 +142,15 @@
             </figure>
             </div>
             <details class="paper-summary">
-              <summary><span class="details-closed-label">Explore the method</span><span class="details-open-label">Close research details</span> <span class="expand-icon" aria-hidden="true"></span></summary>
+              <summary><span class="details-closed-label">Explore the research</span><span class="details-open-label">Close research details</span> <span class="expand-icon" aria-hidden="true"></span></summary>
               <div class="summary-content" id="spirit-details">
-                <nav class="research-nav" aria-label="Research details">
-                  <a href="#spirit-motivation">Motivation</a>
-                  <a href="#spirit-method">Method</a>
+                <nav class="research-tabs" aria-label="Research topics">
+                  <a id="spirit-problem-tab" href="#spirit-motivation">Problem</a>
+                  <a id="spirit-method-tab" href="#spirit-method">Method</a>
+                  <a id="spirit-experiments-tab" href="#spirit-experiments">Experiments</a>
                 </nav>
-                <div class="summary-copy">
-                <p>SPIRIT uses the target model itself to produce speculative drafts and selects layer-skipping configurations through hierarchical online search. Its controller combines window-level throughput feedback, length-aware normalization, and profile reuse to adapt to changing workloads without offline profiling or a separately trained draft model.</p>
-                <p>SPIRIT achieves up to <strong>1.74×</strong> speedup with FP16 self-drafts and <strong>2.48x</strong> with NF4 self-drafts over autoregressive decoding, with full-target verification. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving.</p>
-                </div>
-                <section class="motivation-evidence" id="spirit-motivation" aria-labelledby="motivation-heading">
+                <section class="research-panel" id="spirit-motivation" aria-labelledby="motivation-heading">
+                <section class="motivation-evidence" aria-labelledby="motivation-heading">
                   <div class="motivation-copy">
                     <p class="method-eyebrow">Why optimize throughput?</p>
                     <h4 id="motivation-heading">Agreement leaves execution cost unseen.</h4>
@@ -172,10 +170,7 @@
                     <p class="evidence-source">LLaMA-2-13B · CNN/DM · FP16. 21 skip ratios × 24 layer patterns, using the same 24 prompts per configuration. Measured decode-only configuration sweep.</p>
                   </div>
                   <details class="figure-disclosure" id="motivation-figure-details">
-                    <summary>
-                      <span class="figure-summary-copy"><span class="figure-title">The throughput landscape</span><span class="figure-description">How skip ratio and layer placement shape the trade-off.</span></span>
-                      <span class="figure-action" aria-hidden="true"><span class="figure-show">Expand figure</span><span class="figure-hide">Collapse figure</span><span class="figure-toggle-icon"></span></span>
-                    </summary>
+                    <summary><span class="figure-show">More detail<span class="sr-only">: motivation poster</span></span><span class="figure-hide">Less detail<span class="sr-only">: motivation poster</span></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
                     <figure class="figure-panel">
                       <a class="figure-image-link" href="assets/figures/spirit-motivation-v06.png" target="_blank" rel="noopener" aria-label="Open the motivation figure at full size in a new tab">
                         <img src="assets/figures/spirit-motivation-v06.png" width="3600" height="1920" loading="lazy" decoding="async" alt="Motivation: layer skipping affects both agreement and execution cost. Measured configurations with similar acceptance have different throughput; skip ratio organizes the throughput frontier.">
@@ -184,7 +179,10 @@
                     </figure>
                   </details>
                 </section>
-            <figure class="method-figure" id="spirit-method" aria-labelledby="method-heading" aria-describedby="method-caption">
+                </section>
+                <section class="research-panel" id="spirit-method" aria-labelledby="method-heading">
+                  <p class="research-intro">SPIRIT uses the target model itself to produce speculative drafts and selects layer-skipping configurations through hierarchical online search. Its controller combines window-level throughput feedback, length-aware normalization, and profile reuse to adapt to changing workloads without offline profiling or a separately trained draft model.</p>
+            <figure class="method-figure" aria-labelledby="method-heading" aria-describedby="method-caption">
               <div class="method-canvas">
               <div class="method-header">
                 <div>
@@ -381,10 +379,7 @@
               </div>
 
                 <details class="figure-disclosure" id="method-figure-details">
-                  <summary>
-                    <span class="figure-summary-copy"><span class="figure-title">The complete method</span><span class="figure-description">Within-request search and cross-request profile reuse in one diagram.</span></span>
-                    <span class="figure-action" aria-hidden="true"><span class="figure-show">Expand figure</span><span class="figure-hide">Collapse figure</span><span class="figure-toggle-icon"></span></span>
-                  </summary>
+                  <summary><span class="figure-show">More detail<span class="sr-only">: method poster</span></span><span class="figure-hide">Less detail<span class="sr-only">: method poster</span></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
                   <figure class="figure-panel">
                     <a class="figure-image-link" href="assets/figures/spirit-method-v32.png" target="_blank" rel="noopener" aria-label="Open the detailed method figure at full size in a new tab">
                       <img src="assets/figures/spirit-method-v32.png" width="4000" height="2322" loading="lazy" decoding="async" alt="Detailed SPIRIT method: productive draft–verify windows feed calibrated scores into ratio search and fixed-ratio layer refinement. Across requests, profile signatures and probes guide stay, switch, switch and refine, or restart.">
@@ -395,6 +390,13 @@
               </div>
               <figcaption id="method-caption">Conceptual overview. Within-request boundary updates need no additional model forward pass; cross-request profile trials compare candidates separately on the same request head. The <a class="method-flow-link" href="assets/papers/spirit_flow.pdf" type="application/pdf" target="_blank" rel="noopener">control-flow diagram (PDF) <span aria-hidden="true">↗</span></a> traces these decisions.</figcaption>
             </figure>
+                </section>
+                <section class="research-panel experiment-summary" id="spirit-experiments" aria-labelledby="experiments-heading">
+                  <p class="method-eyebrow">Evaluation</p>
+                  <h4 id="experiments-heading">Performance across workloads.</h4>
+                  <p>SPIRIT achieves up to <strong>1.74×</strong> speedup with FP16 self-drafts and <strong>2.48x</strong> with NF4 self-drafts over autoregressive decoding, with full-target verification. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving.</p>
+                  <p>For the full evaluation, see the <a href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf" type="application/pdf" target="_blank" rel="noopener">paper (PDF) <span aria-hidden="true">↗</span></a>.</p>
+                </section>
                 <button class="details-close" type="button" aria-controls="spirit-details" hidden>Close research details <span aria-hidden="true">↑</span></button>
               </div>
             </details>

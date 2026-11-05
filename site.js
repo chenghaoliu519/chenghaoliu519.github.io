@@ -32,6 +32,73 @@ if (detailsSummary && closeDetails) {
   });
 }
 
+// Enhance the research links into mutually exclusive, keyboard-accessible tabs.
+const researchTabs = document.querySelector(".research-tabs");
+const researchViews = Array.from(researchTabs?.querySelectorAll("a") || [])
+  .map((tab) => ({ tab, panel: document.getElementById(tab.hash.slice(1)) }))
+  .filter(({ panel }) => panel);
+
+if (researchTabs && researchViews.length) {
+  researchTabs.setAttribute("role", "tablist");
+  for (const { tab, panel } of researchViews) {
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-controls", panel.id);
+    panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("aria-labelledby", tab.id);
+    panel.tabIndex = 0;
+  }
+
+  function selectResearchView(view, { focus = false, updateHash = false, scroll = false } = {}) {
+    for (const item of researchViews) {
+      const active = item === view;
+      item.panel.hidden = !active;
+      item.tab.setAttribute("aria-selected", String(active));
+      item.tab.tabIndex = active ? 0 : -1;
+    }
+    if (focus) view.tab.focus({ preventScroll: true });
+    if (updateHash) history.replaceState(null, "", view.tab.hash);
+    if (scroll) view.panel.scrollIntoView({ block: "start", behavior: "instant" });
+  }
+
+  function revealLinkedResearchView() {
+    let target;
+    try {
+      target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    } catch { return; }
+    const view = researchViews.find(({ panel }) => panel === target || panel.contains(target));
+    if (!view) return;
+    selectResearchView(view);
+    for (let details = target.closest("details"); details; details = details.parentElement?.closest("details")) {
+      details.open = true;
+    }
+    requestAnimationFrame(() => target.scrollIntoView({ block: "start", behavior: "instant" }));
+  }
+
+  for (const [index, view] of researchViews.entries()) {
+    view.tab.addEventListener("click", (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      selectResearchView(view, { updateHash: true, scroll: true });
+    });
+    view.tab.addEventListener("keydown", (event) => {
+      let next;
+      if (event.key === "ArrowRight") next = (index + 1) % researchViews.length;
+      else if (event.key === "ArrowLeft") next = (index + researchViews.length - 1) % researchViews.length;
+      else if (event.key === "Home") next = 0;
+      else if (event.key === "End") next = researchViews.length - 1;
+      else if (event.key === " ") next = index;
+      else return;
+      event.preventDefault();
+      selectResearchView(researchViews[next], { focus: true, updateHash: true, scroll: true });
+    });
+  }
+
+  selectResearchView(researchViews[0]);
+  revealLinkedResearchView();
+  window.addEventListener("hashchange", revealLinkedResearchView);
+  window.addEventListener("load", revealLinkedResearchView);
+}
+
 // Track native scrolling, including short final sections that cannot reach the
 // top of the viewport. Use the same offset as the page's anchor navigation.
 const navigationItems = Array.from(document.querySelectorAll(".site-header nav a"))
