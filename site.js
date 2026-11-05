@@ -48,7 +48,7 @@ if (researchTabs && researchViews.length) {
     panel.tabIndex = 0;
   }
 
-  function selectResearchView(view, { focus = false, updateHash = false, scroll = false } = {}) {
+  function selectResearchView(view, { focus = false, scroll = false } = {}) {
     for (const item of researchViews) {
       const active = item === view;
       item.panel.hidden = !active;
@@ -56,7 +56,6 @@ if (researchTabs && researchViews.length) {
       item.tab.tabIndex = active ? 0 : -1;
     }
     if (focus) view.tab.focus({ preventScroll: true });
-    if (updateHash) history.replaceState(null, "", view.tab.hash);
     if (scroll) view.panel.scrollIntoView({ block: "start", behavior: "instant" });
   }
 
@@ -78,7 +77,7 @@ if (researchTabs && researchViews.length) {
     view.tab.addEventListener("click", (event) => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
-      selectResearchView(view, { updateHash: true, scroll: true });
+      selectResearchView(view, { scroll: true });
     });
     view.tab.addEventListener("keydown", (event) => {
       let next;
@@ -89,14 +88,31 @@ if (researchTabs && researchViews.length) {
       else if (event.key === " ") next = index;
       else return;
       event.preventDefault();
-      selectResearchView(researchViews[next], { focus: true, updateHash: true, scroll: true });
+      selectResearchView(researchViews[next], { focus: true, scroll: true });
     });
   }
 
-  selectResearchView(researchViews[0]);
-  revealLinkedResearchView();
+  // Start collapsed, including restored pages and URLs left by older tab navigation.
+  function resetResearchDetails() {
+    let target;
+    try {
+      target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    } catch { /* An unrelated or malformed fragment must not affect the default. */ }
+    if (target && researchDetails?.contains(target)) {
+      history.replaceState(history.state, "", location.pathname + location.search);
+    }
+    if (researchDetails) {
+      researchDetails.open = false;
+      for (const details of researchDetails.querySelectorAll("details")) details.open = false;
+    }
+    selectResearchView(researchViews[0]);
+  }
+
+  resetResearchDetails();
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) resetResearchDetails();
+  });
   window.addEventListener("hashchange", revealLinkedResearchView);
-  window.addEventListener("load", revealLinkedResearchView);
 }
 
 // Track native scrolling, including short final sections that cannot reach the

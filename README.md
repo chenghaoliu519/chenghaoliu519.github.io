@@ -136,10 +136,13 @@ is visible at a time, with Problem selected initially. Within-request search and
 cross-request profile reuse are both part of Method. The Experiments panel reuses
 the existing published summary; the poster results figure is still pending.
 The throughput formula defines α, β, and ν directly beside the equation; ν uses
-total decode time. Tabs support arrow keys and Home/End, preserve direct section
-and figure links, and stay available while reading long panels. Without JavaScript,
-the links remain anchors and all panels are readable. The top-level navigation
-scroll tracker remains scoped to the site header.
+total decode time. Research details start closed on page entry, reload, and
+return from the browser’s back/forward cache. Tab changes do not alter the URL;
+stale research fragments are cleared on entry to avoid automatic expansion.
+Tabs support arrow keys and Home/End and stay available while reading long panels.
+Explicit in-page section and figure links still reveal their targets. Without
+JavaScript, the links remain anchors and all panels are readable. The top-level
+navigation scroll tracker remains scoped to the site header.
 Within-request search uses the calibrated score;
 cross-request mismatch detection uses request-head throughput and acceptance.
 The expanded details include the empirical motivation table, confidence-guided ratio zooming, fixed-ratio random/Bayesian proposals, and the distinction between productive windows and uncommitted request-head trials.
