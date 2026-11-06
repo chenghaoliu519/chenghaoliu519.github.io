@@ -28,7 +28,7 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
     <script src="theme.js?v=3efb3f2dd9f7"></script>
-    <link rel="stylesheet" href="styles.css?v=56b119b6e780">
+    <link rel="stylesheet" href="styles.css?v=cdbe955aa06f">
     <link rel="stylesheet" href="theme.css?v=99513c42055d">
     <script src="site.js?v=622ade7aa09c" defer></script>
     <link rel="stylesheet" href="chatbot/guide.css?v=bd0671b087d8">
@@ -145,15 +145,17 @@
               <summary><span>Research details</span><span class="expand-icon" aria-hidden="true"></span></summary>
               <div class="summary-content" id="spirit-details">
                 <nav class="research-tabs" aria-label="Research topics">
-                  <a id="spirit-problem-tab" href="#spirit-motivation"><svg class="research-tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M9.8 9a2.25 2.25 0 0 1 4.4.7c0 1.7-2.2 1.8-2.2 3.3M12 16h.01"/></svg><span>Problem</span></a>
-                  <a id="spirit-method-tab" href="#spirit-method"><svg class="research-tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="6" height="6" rx="1.5"/><rect x="14.5" y="14.5" width="6" height="6" rx="1.5"/><path d="M9.5 6.5h5a3 3 0 0 1 3 3v5M14.5 17.5h-5a3 3 0 0 1-3-3v-5"/></svg><span>Method</span></a>
-                  <a id="spirit-experiments-tab" href="#spirit-experiments"><svg class="research-tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 19.5h16M6.5 15.5v-4M12 15.5v-8M17.5 15.5v-12"/></svg><span>Experiments</span></a>
+                  <a id="spirit-problem-tab" href="#spirit-motivation"><span>Problem</span></a>
+                  <a id="spirit-method-tab" href="#spirit-method"><span>Method</span></a>
+                  <a id="spirit-experiments-tab" href="#spirit-experiments"><span>Experiments</span></a>
                 </nav>
                 <section class="research-panel" id="spirit-motivation" aria-labelledby="motivation-heading">
                 <section class="motivation-evidence" aria-labelledby="motivation-heading">
-                  <div class="motivation-copy">
+                  <header class="research-section-header">
                     <p class="method-eyebrow">Why optimize throughput?</p>
                     <h4 id="motivation-heading">Agreement leaves execution cost unseen.</h4>
+                  </header>
+                  <div class="motivation-copy">
                     <p>Draft acceptance captures only draft–target consistency. Realized throughput couples the <strong>useful token yield</strong> of drafted work—including the verifier-token bonus—with the configuration’s <strong>intrinsic execution rate</strong>. Optimizing agreement alone can therefore favor a computationally expensive draft over one that commits more tokens per second.</p>
                     <p>The measured landscape is structured: skip ratio organizes the dominant consistency–speed trade-off, while attention/MLP placement explains variation within each ratio. SPIRIT exploits this structure to reduce a combinatorial mask search to <strong>ratio-first localization and fixed-ratio refinement</strong>, evaluating within-request candidates through the same speculative execution that produces output tokens.</p>
                   </div>
@@ -181,13 +183,17 @@
                 </section>
                 </section>
                 <section class="research-panel" id="spirit-method" aria-labelledby="method-heading">
+                  <header class="research-section-header">
+                    <p class="method-eyebrow">Online adaptation</p>
+                    <h4 id="method-heading">Adapt within requests. Reuse across requests.</h4>
+                  </header>
                   <p class="research-intro">SPIRIT uses the target model itself to produce speculative drafts and selects layer-skipping configurations through hierarchical online search. Its controller combines window-level throughput feedback, length-aware normalization, and profile reuse to adapt to changing workloads without offline profiling or a separately trained draft model.</p>
             <figure class="method-figure" aria-labelledby="method-heading" aria-describedby="method-caption">
               <div class="method-canvas">
               <div class="method-header">
                 <div>
                   <p class="method-eyebrow">Within a request</p>
-                  <h4 id="method-heading">Search while decoding.</h4>
+                  <h5 class="method-loop-heading">Search while decoding.</h5>
                   <p class="method-premise">Each window commits output tokens and measures its draft. A lightweight boundary update chooses the next configuration.</p>
                 </div>
                 <div class="objective">
@@ -392,8 +398,10 @@
             </figure>
                 </section>
                 <section class="research-panel experiment-summary" id="spirit-experiments" aria-labelledby="experiments-heading">
-                  <p class="method-eyebrow">Evaluation</p>
-                  <h4 id="experiments-heading">Performance across workloads.</h4>
+                  <header class="research-section-header">
+                    <p class="method-eyebrow">Evaluation</p>
+                    <h4 id="experiments-heading">Performance across workloads.</h4>
+                  </header>
                   <dl class="experiment-metrics" aria-label="Maximum measured decoding speedup">
                     <div><dt>FP16 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>1.74×</strong></dd></div>
                     <div><dt>NF4 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>2.48x</strong></dd></div>
