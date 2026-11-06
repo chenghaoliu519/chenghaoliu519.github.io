@@ -131,6 +131,11 @@ signature, shows active and historical ratio/layer configurations, and labels
 the stay/switch/refine/restart choices. Historical profiles are probed on the
 same request head only when mismatch rises. This diagram uses responsive HTML
 labels and vector connectors so its meaning stays readable on narrow screens.
+The research reader uses a shared bordered surface and full-width topic navigation,
+with small line icons on desktop and a blue underline for the selected topic.
+Mobile tabs keep text labels only. Evidence and the throughput objective use
+subtle inset surfaces; the method diagrams stay on the page background. The
+existing FP16/NF4 maximum speedups are presented as paired typographic metrics.
 The expanded details offer Problem, Method, and Experiments tabs. Only one panel
 is visible at a time, with Problem selected initially. Within-request search and
 cross-request profile reuse are both part of Method. The Experiments panel reuses
