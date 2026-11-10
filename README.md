@@ -81,7 +81,7 @@ source code, phone numbers, and personal photographs. Do not copy private
 project archives or credentials into this repository.
 
 The author-provided NeurIPS 2026 camera-ready is published at
-`assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf`. The homepage links it directly.
+`assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf`. The homepage links it directly beside the publication summary.
 The three approved poster figures appear as independently expandable parts of
 the Problem, Method, and Experiments panels, behind compact “More detail”
 controls with full-size links. The method figure sits inside the method canvas
@@ -92,10 +92,12 @@ versioned. The separate method-flow PDF is published at
 `assets/papers/spirit_flow.pdf` and linked in the method caption as “control-flow
 diagram (PDF).”
 
-The Experiments panel also links the author-supplied complete poster at
-`assets/figures/spirit-poster-neurips2026.png` and presentation at
-`assets/slides/SPIRIT-NeurIPS2026.pptx`. These are exact source copies; the
-presentation link downloads the PPTX. The latest supplied `results/results.png`
+The publication summary and Experiments panel both link the author-supplied
+complete poster at `assets/figures/spirit-poster-neurips2026.png`, the presentation
+PDF at `assets/slides/SPIRIT-NeurIPS2026.pdf`, and its PPTX download at
+`assets/slides/SPIRIT-NeurIPS2026.pptx`. These are exact source copies of the
+paired presentation exports; all 41 slide titles match between PDF and PPTX.
+Presentation links carry content hashes to refresh updated exports. The latest supplied `results/results.png`
 is byte-identical to the versioned V23 figure already used for the results
 disclosure. The poster and presentation confirm the comparison scopes and
 broader HumanEval, architecture, and batching evaluations.
@@ -107,6 +109,8 @@ the same ordered 1,000-request TinyStories stream on one RTX A6000 per run.
 Timing excludes prefill and includes online search and profile updates.
 Keep the maximum distinct from the pooled result and the older supplementary
 2.21× headline. The FP16 maximum remains 1.74×.
+The publication headline explicitly labels NF4 self-drafting and the best
+1,000-request run; Google Scholar is available in the introductory links.
 
 The V23 results copy is checked against its supplied data and provenance:
 SPIRIT leads SWIFT and D&V in all nine Table 1 settings. SpecBench's +17.2%
@@ -147,10 +151,14 @@ The introduction stays left-aligned. The publication pairs its title and short
 description with a compact conceptual diagram on desktop, stacking them on
 mobile. The header contains navigation only; the publication omits the author
 row. Native expandable research details contain the full summary, formula, and
-control diagram; the three nested figure disclosures also work without JavaScript. The default diagram introduces
+control diagram; the three figure disclosures and two method-detail disclosures
+also work without JavaScript. The default diagram introduces
 self-drafting, full verification, and throughput-guided ratio/layer adaptation.
 The expanded diagram adds calibrated feedback, ratio-first search, and profile
-reuse. The within-request loop shows token proposals, full-target verification,
+reuse. The default Method view keeps the throughput equation, a compact
+Measure / Calibrate / Search sequence, and the request-head reuse overview.
+“Search details” and “Profile reuse details” start closed and retain the full
+diagrams and algorithm steps for readers who expand them. The within-request loop shows token proposals, full-target verification,
 committed output and timing; names length correction and EMA smoothing between
 the measured throughput and controller score; and separates ratio localization
 from layer-pattern refinement at a fixed ratio. Labels stay readable HTML rather

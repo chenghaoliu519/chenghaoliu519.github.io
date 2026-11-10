@@ -146,3 +146,31 @@ test('local fallback handles public questions and refuses unsupported private de
   assert.match(localAnswer('Can I download unpublished papers?').answer, /does not publish/);
   assert.match(localAnswer('How was 2.48 measured? 1,000 requests?').answer, /2\.478/);
 });
+
+
+test('specific experiment questions retain their comparison scope', () => {
+  const spec = localAnswer('What is SPIRIT throughput on SpecBench?');
+  assert.match(spec.answer, /17\.2%/);
+  assert.match(spec.answer, /SWIFT/);
+  assert.match(spec.answer, /full-stream/);
+  assert.deepEqual(spec.sourceIds, ['results', 'paper']);
+  const reuse = localAnswer('profile reuse 带来多少吞吐提升？', 'zh');
+  assert.match(reuse.answer, /9\.8–10\.3%/);
+  assert.match(reuse.answer, /不使用复用/);
+  const precision = localAnswer('How does NF4 compare with FP16?');
+  assert.match(precision.answer, /23\.6%/);
+  assert.match(precision.answer, /three-task/);
+  const peaks = localAnswer('What are the FP16 and NF4 headline speedups?');
+  assert.match(peaks.answer, /1\.74×/);
+  assert.match(peaks.answer, /2\.48×/);
+  const pooled = localAnswer('How is the pooled result measured?');
+  assert.match(pooled.answer, /2\.4646542577×/);
+  assert.match(pooled.answer, /27 completed/);
+});
+
+test('public material requests distinguish viewing slides from downloading the deck', () => {
+  assert.deepEqual(localAnswer('Where are the poster and presentation?').sourceIds, ['paper', 'poster', 'slides']);
+  assert.deepEqual(localAnswer('Are the slides available?').sourceIds, ['paper', 'poster', 'slides']);
+  assert.deepEqual(localAnswer('Can I download the PPTX?').sourceIds, ['slides', 'slideDeck']);
+  assert.deepEqual(localAnswer('PPT 在哪里下载？', 'zh').sourceIds, ['slides', 'slideDeck']);
+});

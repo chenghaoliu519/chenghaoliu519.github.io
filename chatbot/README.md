@@ -40,8 +40,9 @@ origin or place any secret in the client configuration.
   Answers have a copy control, with text selection as a fallback if clipboard
   access fails.
   On mobile, the welcome panel fits its content and expands for conversation.
-- On mobile, the cat can be minimized to a small edge tab and restored without
-  losing the conversation. The choice lasts for the current page visit.
+- On mobile, opening research details automatically minimizes the cat to a
+  small edge tab; closing details restores it. Explicit minimize/restore choices
+  take precedence for the current page visit, without losing the conversation.
   The input grows to four lines before scrolling internally. New replies open
   at their beginning; readers who scroll back while waiting keep their position
   and can use the new-answer button to jump to the reply.
@@ -58,6 +59,11 @@ origin or place any secret in the client configuration.
   under their own policies. Do not describe this as zero-retention or local AI.
 - Replies are rendered as text, and related source links are selected from the
   site's public topic index, never from model-generated URLs.
+  Method and results links open the corresponding research tab, including any
+  ancestor disclosures, without changing the URL or the next visit's closed default.
+  Public material links include the poster, PDF slides, and the PPTX download.
+  SpecBench, reuse, precision, and sustained-run facts retain separate baselines
+  and timing scopes in both the AI prompt and curated fallback.
   Grounding instructions reduce hallucinations; they do not guarantee factual
   accuracy. Check answers when updating the model or knowledge.
 - Questions are limited to 500 characters and requests to 16 KiB bodies, with a

@@ -1,5 +1,5 @@
 import { CHAT_ENDPOINT } from './config.mjs?v=3ecaa7461fe7';
-import { localAnswer, sources } from './knowledge.mjs?v=adafbf3b22da';
+import { localAnswer, sources } from './knowledge.mjs?v=c4dcf693d5b8';
 import { MAX_QUESTION_LENGTH, MAX_ANSWER_LENGTH, MAX_TURNS, createChatPayload } from './conversation.mjs?v=a0c346b920fe';
 
 const get = id => document.getElementById(`guide-${id}`);
@@ -21,6 +21,18 @@ let pending = null;
 let generation = 0;
 let cooldownUntil = 0;
 let unreadAnswer = null;
+
+// Keep reading space clear on small screens, while respecting an explicit choice.
+const mobileViewport = matchMedia('(max-width: 600px)');
+const researchDetails = document.querySelector('.paper-summary');
+let dockPreference = null;
+function syncDock() {
+  const minimized = dockPreference ?? (mobileViewport.matches && Boolean(researchDetails?.open));
+  dock.toggleAttribute('data-minimized', minimized);
+}
+researchDetails?.addEventListener('toggle', syncDock);
+mobileViewport.addEventListener('change', syncDock);
+syncDock();
 
 const copy = {
   subtitle: 'Chenghao’s research guide', greeting: 'A little guide. A closer look.',
@@ -78,17 +90,18 @@ function open() {
 function close() { dialog.close(); }
 launcher.addEventListener('click', open);
 get('minimize').addEventListener('click', () => {
-  dock.dataset.minimized = '';
+  dockPreference = true; syncDock();
   get('restore').focus({ preventScroll: true });
 });
 get('restore').addEventListener('click', () => {
-  delete dock.dataset.minimized;
+  dockPreference = false; syncDock();
   launcher.focus({ preventScroll: true });
 });
 get('close').addEventListener('click', close);
 dialog.addEventListener('close', () => {
   document.documentElement.classList.remove('guide-is-open');
-  launcher.focus({ preventScroll: true });
+  const control = mobileViewport.matches && dock.hasAttribute('data-minimized') ? get('restore') : launcher;
+  control.focus({ preventScroll: true });
 });
 dialog.addEventListener('click', event => {
   if (event.target !== dialog) return;
@@ -200,21 +213,33 @@ function appendMessage(role, text, ids = [], mode = '', lang = language) {
     for (const id of [...new Set(ids)].slice(0, 3)) {
       const source = sources[id]; if (!source) continue;
       const link = document.createElement('a');
-      link.href = source.href; link.textContent = `${source.en} ↗`;
+      link.href = source.href; link.textContent = source.en + (source.download ? ' ↓' : ' ↗');
       if (source.href.startsWith('#')) {
         link.addEventListener('click', event => {
           event.preventDefault(); close();
           requestAnimationFrame(() => {
-            if (id === 'method') document.querySelector('.paper-summary').open = true;
             const target = document.querySelector(source.href);
             if (!target) return;
+            for (let details = target.closest('details'); details; details = details.parentElement?.closest('details')) {
+              details.open = true;
+            }
+            const panel = target.closest('.research-panel');
+            if (panel) {
+              const tab = Array.from(document.querySelectorAll('.research-tabs a')).find(link => link.hash === '#' + panel.id);
+              tab?.click();
+            }
+            const previousTabindex = target.getAttribute('tabindex');
             target.setAttribute('tabindex', '-1');
             target.focus({ preventScroll: true });
             target.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
-            target.addEventListener('blur', () => target.removeAttribute('tabindex'), { once: true });
+            target.addEventListener('blur', () => {
+              if (previousTabindex === null) target.removeAttribute('tabindex');
+              else target.setAttribute('tabindex', previousTabindex);
+            }, { once: true });
           });
         });
-      } else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+      } else if (source.download) { link.download = ''; }
+      else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
       links.append(link);
     }
     item.append(links);

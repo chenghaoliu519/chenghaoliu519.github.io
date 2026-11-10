@@ -28,11 +28,11 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
     <script src="theme.js?v=3efb3f2dd9f7"></script>
-    <link rel="stylesheet" href="styles.css?v=0d350a34df0f">
+    <link rel="stylesheet" href="styles.css?v=ae41c5eeabb2">
     <link rel="stylesheet" href="theme.css?v=99513c42055d">
     <script src="site.js?v=622ade7aa09c" defer></script>
     <link rel="stylesheet" href="chatbot/guide.css?v=bd0671b087d8">
-    <script type="module" src="chatbot/guide.mjs?v=9a94f67529f8"></script>
+    <script type="module" src="chatbot/guide.mjs?v=a5af64c3fee8"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -65,7 +65,7 @@
             <div class="hero-links" aria-label="Profile links">
               <a class="primary-link" href="mailto:liuchenghao97@gmail.com">Get in touch <span aria-hidden="true">→</span></a>
               <a class="text-link" href="https://github.com/chenghaoliu519">GitHub <span aria-hidden="true">↗</span></a>
-              <a class="text-link" href="https://www.linkedin.com/in/chenghao-liu-12a058240/">LinkedIn <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://scholar.google.com/citations?user=xTdwnGcAAAAJ">Google Scholar <span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </div>
@@ -89,10 +89,13 @@
             </div>
             <h3>SPIRIT: Speed-Driven Online Adaptation for <span class="keep-together">Self-Speculative</span> Decoding</h3>
             <p class="publication-description">Training-free self-speculative decoding that adapts online to optimize window-level realized throughput rather than token agreement alone.</p>
-            <p class="publication-result"><span class="result-metric">Up to <strong>2.48x</strong></span> <span class="result-context">throughput over autoregressive decoding.</span></p>
-            <div class="publication-links">
-              <a class="primary-link paper-link" href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf" type="application/pdf">Read the paper <span class="file-label">PDF</span><span aria-hidden="true">↗</span></a>
-            </div>
+            <p class="publication-result"><span class="result-metric">Up to <strong>2.48x</strong></span> <span class="result-context">throughput over autoregressive decoding.</span> <span class="result-scope">NF4 self-draft · best 1,000-request run</span></p>
+            <nav class="publication-links" aria-label="SPIRIT materials">
+              <a class="primary-link" href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf" type="application/pdf" target="_blank" rel="noopener">Paper <span class="resource-format">PDF</span><span aria-hidden="true">↗</span></a>
+              <a class="primary-link" href="assets/figures/spirit-poster-neurips2026.png" type="image/png" target="_blank" rel="noopener">Poster <span class="resource-format">PNG</span><span aria-hidden="true">↗</span></a>
+              <a class="primary-link" href="assets/slides/SPIRIT-NeurIPS2026.pdf?v=93ae0f35b67e" type="application/pdf" target="_blank" rel="noopener">Slides <span class="resource-format">PDF</span><span aria-hidden="true">↗</span></a>
+              <a class="slide-download" href="assets/slides/SPIRIT-NeurIPS2026.pptx?v=eaf328476dee" type="application/vnd.openxmlformats-officedocument.presentationml.presentation" aria-label="Download the presentation as PowerPoint" download>PPTX <span aria-hidden="true">↓</span></a>
+            </nav>
             </div>
             <figure class="method-preview" aria-labelledby="preview-heading" aria-describedby="preview-caption">
               <h4 id="preview-heading">Throughput drives adaptation.</h4>
@@ -209,6 +212,14 @@
                 </div>
               </div>
 
+              <ol class="method-overview" aria-label="Within-request adaptation">
+                <li><span class="overview-step" aria-hidden="true">01</span><div><h6>Measure</h6><p>Commit output while observing throughput and draft acceptance.</p></div></li>
+                <li><span class="overview-step" aria-hidden="true">02</span><div><h6>Calibrate</h6><p>Correct for prefix length and smooth feedback into score <i>Q</i><sub>w</sub>.</p></div></li>
+                <li><span class="overview-step" aria-hidden="true">03</span><div><h6>Search</h6><p>Localize the skip ratio, then refine the layer pattern for subsequent windows.</p></div></li>
+              </ol>
+              <details class="method-detail" id="within-request-details">
+                <summary><span>Search details</span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+                <div class="method-detail-content">
               <div class="runtime-control">
                 <ol class="control-flow">
                   <li class="control-node">
@@ -311,12 +322,18 @@
                   </ol>
                 </section>
               </div>
+                </div>
+              </details>
 
               <div class="profile-control" id="spirit-reuse">
                 <div class="reuse-header">
                   <span class="node-label">Across requests</span>
                   <h5>Reuse when workloads recur.</h5>
                 </div>
+                <p class="reuse-overview">Compare raw throughput and acceptance at each request head with the active profile’s history. Supported shifts trigger probes on that same head, informing whether to stay, switch, switch and refine, or restart.</p>
+                <details class="method-detail" id="profile-reuse-details">
+                  <summary><span>Profile reuse details</span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+                  <div class="method-detail-content">
                 <p class="profile-definition">A profile pairs a skip ratio and layer pattern with a request-head signature: the mean and standard deviation of throughput and draft acceptance.</p>
                 <div class="reuse-flow">
                   <div class="reuse-stage">
@@ -382,6 +399,8 @@
                     </dl>
                   </div>
                 </div>
+                  </div>
+                </details>
               </div>
 
                 <details class="figure-disclosure" id="method-figure-details">
@@ -430,7 +449,8 @@
                   <nav class="experiment-resources" aria-label="SPIRIT research materials">
                     <a href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf" type="application/pdf" target="_blank" rel="noopener">Paper <span class="resource-format">PDF</span><span aria-hidden="true">↗</span></a>
                     <a href="assets/figures/spirit-poster-neurips2026.png" type="image/png" target="_blank" rel="noopener">Poster <span class="resource-format">PNG</span><span aria-hidden="true">↗</span></a>
-                    <a href="assets/slides/SPIRIT-NeurIPS2026.pptx" type="application/vnd.openxmlformats-officedocument.presentationml.presentation" download>Slides <span class="resource-format">PPTX</span><span aria-hidden="true">↓</span></a>
+                    <a href="assets/slides/SPIRIT-NeurIPS2026.pdf?v=93ae0f35b67e" type="application/pdf" target="_blank" rel="noopener">Slides <span class="resource-format">PDF</span><span aria-hidden="true">↗</span></a>
+                    <a href="assets/slides/SPIRIT-NeurIPS2026.pptx?v=eaf328476dee" type="application/vnd.openxmlformats-officedocument.presentationml.presentation" aria-label="Download the presentation as PowerPoint" download>PPTX <span aria-hidden="true">↓</span></a>
                   </nav>
                   <details class="figure-disclosure" id="results-figure-details">
                     <summary><span class="figure-show">More detail<span class="sr-only">: results poster</span></span><span class="figure-hide">Less detail<span class="sr-only">: results poster</span></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>

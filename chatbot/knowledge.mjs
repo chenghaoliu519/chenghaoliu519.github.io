@@ -5,7 +5,11 @@ export const sources = {
   background: { href: '#background', en: 'Background', zh: '教育与经历' },
   research: { href: '#research', en: 'Research interests', zh: '研究方向' },
   spirit: { href: '#publications', en: 'SPIRIT', zh: 'SPIRIT 研究介绍' },
-  method: { href: '#spirit-details', en: 'How SPIRIT works', zh: 'SPIRIT 方法详解' },
+  method: { href: '#spirit-method', en: 'How SPIRIT works', zh: 'SPIRIT 方法详解' },
+  results: { href: '#spirit-experiments', en: 'Experimental results', zh: '实验结果' },
+  poster: { href: '/assets/figures/spirit-poster-neurips2026.png', en: 'Research poster', zh: '完整研究海报' },
+  slides: { href: '/assets/slides/SPIRIT-NeurIPS2026.pdf?v=93ae0f35b67e', en: 'Slides (PDF)', zh: '幻灯片 PDF' },
+  slideDeck: { href: '/assets/slides/SPIRIT-NeurIPS2026.pptx?v=eaf328476dee', en: 'Download slides (PPTX)', zh: '下载演示文稿', download: true },
   paper: { href: '/assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf', en: 'SPIRIT paper (PDF)', zh: 'SPIRIT 论文 PDF' },
   contact: { href: '#contact', en: 'Get in touch', zh: '联系方式' },
   measurement: {
@@ -58,16 +62,16 @@ export const facts = [
     zh: '跨请求时，SPIRIT 保存比例、层配置及请求开头的统计特征。当当前吞吐量和接受率与已有特征不再匹配时，它在同一请求开头比较当前配置与少量历史候选，选择继续使用、切换、切换后细化，或在没有合适配置时重新搜索。'
   },
   {
-    id: 'results', sourceIds: ['spirit', 'paper'],
+    id: "results", sourceIds: ["results","paper"],
     match: /\b(results?|speedup|performance|faster|gain|nf4|fp16|precision|quantiz)\b|结果|加速|性能|收益|精度|量化|多快|2\.48|1\.74/i,
-    en: 'SPIRIT achieves up to 1.74× speedup with FP16 self-drafts and 2.48× with NF4 self-drafts over autoregressive decoding, while retaining full-target verification. Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving. These are measured results, not a guarantee for every model or workload.',
-    zh: 'SPIRIT 相对自回归解码，在 FP16 自草稿下最高达到 1.74× 加速，在 NF4 自草稿下最高达到 2.48×，同时保留完整目标模型验证。扩展评估覆盖 LLaMA、Qwen、Mixtral、SpecBench 的全部六类任务和批量服务。这些是实测结果，并非所有模型和任务都达到同一加速比。'
+    en: "SPIRIT achieves up to 1.74× speedup with FP16 self-drafts and 2.48× with NF4 self-drafts over autoregressive decoding, with full-target verification. It leads SWIFT and D&V in all nine evaluated LLaMA-2 model–task settings with FP16 drafts. Separate evaluations cover SpecBench, recurring workloads, sustained 1,000-request decoding, Qwen and Mixtral, batching, and HumanEval. The headline values are maxima from their stated settings.",
+    zh: "SPIRIT 相对自回归解码，在 FP16 自草稿下最高达到 1.74×，在 NF4 自草稿下最高达到 2.48×，同时保留完整目标模型验证。在九组 LLaMA-2 模型与任务的 FP16 对比中，吞吐量均高于 SWIFT 和 D&V。独立评估还覆盖 SpecBench、循环工作负载、1,000 请求持续解码、Qwen、Mixtral、批量服务和 HumanEval；两个最高值各自对应特定实验条件。"
   },
   {
-    id: 'measurement', sourceIds: ['measurement'],
-    match: /\b(protocol|hardware|a6000|1000|1,000|seeds?|cumulative|2\.14|reproduc|measurement|measured how)\b|口径|硬件|种子|累计|复现|怎么测|如何测|两台/i,
-    en: 'The camera-ready paper reports up to 2.48× decode speedup with NF4 self-drafts. Appendix C.7 uses LLaMA-2-13B on the same ordered stream of 1,000 TinyStories requests, one RTX A6000 per run, an NF4 draft, and a full FP16 verifier. It reports 2.465× pooled across eight runs and 2.478× for the best complete run, rounded to 2.48×. Timing excludes prefill and includes online search and profile updates; the maximum is not the pooled result.',
-    zh: 'Camera-ready 论文报告 NF4 自草稿下最高 2.48× 的 decode 加速。附录 C.7 使用 LLaMA-2-13B、同序的 1,000 个 TinyStories 请求、每次一张 RTX A6000，以及 NF4 草稿和完整 FP16 验证器。论文报告八次运行合并为 2.465×，最好完整运行为 2.478×，四舍五入为 2.48×。计时排除 prefill，包含在线搜索和配置更新；最高值不等于合并结果。'
+    id: "measurement", sourceIds: ["results","measurement"],
+    match: /\b(protocol|hardware|a6000|1000|1,000|seeds?|cumulative|pooled|reproduc|measurement|measured how)\b|口径|硬件|种子|累计|汇总|合并|复现|怎么测|如何测|两台|2\.14|2\.46/i,
+    en: "The independent long-stream study uses LLaMA-2-13B, fused NF4 drafts, full FP16 verification, and the same ordered 1,000-request TinyStories stream on one RTX A6000 per run. Eight historical best-per-seed runs were selected from 27 completed candidates: the best complete run is 2.478× (2.48× at two decimals), while pooled throughput is 2.4646542577× (2.46× at two decimals). Decode timing includes within-run search and profile updates, excluding prefill, loading, setup, and earlier candidate attempts. This is separate from the paired three-task NF4/FP16 study.",
+    zh: "独立长序列实验使用 LLaMA-2-13B、融合 NF4 自草稿、完整 FP16 验证器和同序的 1,000 个 TinyStories 请求，每次运行一张 RTX A6000。从 27 个已完成候选中选取八个 seed 各自的历史最佳运行：最佳完整运行是 2.478×，展示为 2.48×；合并吞吐量为 2.4646542577×，直接保留两位小数是 2.46×。解码计时包含本次运行的在线搜索和配置更新，排除 prefill、加载、初始化及此前候选尝试。它与三任务 NF4/FP16 配对实验是两组独立评估。"
   },
   {
     id: 'verification', sourceIds: ['spirit', 'method'],
@@ -76,23 +80,53 @@ export const facts = [
     zh: 'SPIRIT 复用目标模型进行自草稿，并保留完整目标模型验证。跳层或降低草稿精度改变的是候选生成成本，候选仍由完整模型验证。它不需要训练，也不需要单独训练的草稿模型。公开介绍没有承诺所有部署精度下的执行都逐位完全一致。'
   },
   {
-    id: 'availability', sourceIds: ['paper', 'contact'],
+    id: "availability", sourceIds: ["paper","poster","slides"],
     match: /\b(download|source code|repository|pdf|arxiv|cv|resume|unpublished|under review)\b|下载|源码|代码|简历|未发表|在投/i,
-    en: 'The SPIRIT camera-ready paper is available from the homepage’s Read the paper link and the PDF source below. The research details also link the motivation and method figures. The site does not publish a source-code release, full CV, or unpublished manuscripts. For other materials or collaboration, contact liuchenghao97@gmail.com.',
-    zh: 'SPIRIT 的 camera-ready 论文已公开，可以点击主页的 Read the paper 或下方 PDF 来源链接。研究详情还提供动机图和方法图。网站未发布源码、完整简历或未发表稿件；其他材料和合作可联系 liuchenghao97@gmail.com。'
+    en: "The SPIRIT paper, complete poster, and presentation are available beside the publication summary. Slides can be read as a PDF or downloaded as PPTX. The site does not publish a SPIRIT source-code release, full CV, or unpublished manuscripts. For other materials or collaboration, contact liuchenghao97@gmail.com.",
+    zh: "SPIRIT 论文、完整海报和演示文稿都可以从主页论文简介旁直接打开；幻灯片支持 PDF 在线查看和 PPTX 下载。网站未发布 SPIRIT 源码、完整简历或未发表稿件；其他材料和合作可联系 liuchenghao97@gmail.com。"
   },
   {
     id: 'contact', sourceIds: ['contact'],
-    match: /\b(contact|email|collaborat|reach|hire|recruit|available|message)\b|联系|邮箱|合作|招聘|找他|发邮件/i,
+    match: /\b(contact|email|collaborat|reach|hire|recruit|message)\b|联系|邮箱|合作|招聘|找他|发邮件/i,
     en: 'For research conversations and collaboration, email Chenghao at liuchenghao97@gmail.com. His GitHub profile is chenghaoliu519. I’m a site guide, so I cannot send messages or make commitments on his behalf.',
     zh: '科研交流或合作可以发送邮件至 liuchenghao97@gmail.com；他的 GitHub 用户名是 chenghaoliu519。我是网站助手，不能代他发送消息或作出承诺。'
+  },
+  {
+    id: "specbench", sourceIds: ["results","paper"],
+    match: /\bspecbench\b|17\.2/i,
+    en: "On SpecBench with LLaMA-2-13B and the same self-speculative backend, SPIRIT reaches 1.462× full-stream throughput over AR versus 1.247× for SWIFT, a 17.2% relative increase. This includes online exploration and profile updates. The six post-adaptation task comparisons are a separate summary, reported as three-seed means and standard deviations.",
+    zh: "SpecBench 使用 LLaMA-2-13B 和相同的自推测后端，SPIRIT 全流程吞吐量相对 AR 为 1.462×，SWIFT 为 1.247×，因此相对 SWIFT 提高 17.2%。这一口径包含在线探索和配置更新。海报中的六任务图则是适应完成后的另一组统计，误差条为三个 seed 的标准差。"
+  },
+  {
+    id: "reuse_results", sourceIds: ["results","method"],
+    match: /(?=[\s\S]*(?:\breuse\b|复用))(?=[\s\S]*(?:\b(?:benefit\w*|gain\w*|speedup|improv\w*|results?|throughput)\b|收益|提升|结果|加速|吞吐))|9\.8|10\.3/i,
+    en: "In 600-request FP16 streams that change task every 100 requests, profile reuse improves throughput by 9.8–10.3% over SPIRIT without reuse. On LLaMA-2-13B the speedup over AR rises from 1.43× to 1.57×; on 70B it rises from 1.45× to 1.60×. These are recurring-workload experiments, separate from the stable TinyStories long-stream study.",
+    zh: "在每 100 个请求切换任务、共 600 个请求的 FP16 流中，profile reuse 相比不使用复用的 SPIRIT 提高 9.8–10.3% 的吞吐量。LLaMA-2-13B 相对 AR 的加速从 1.43× 提高到 1.57×，70B 从 1.45× 提高到 1.60×。这组循环工作负载实验与稳定 TinyStories 的长序列实验相互独立。"
+  },
+  {
+    id: "precision", sourceIds: ["results","paper"],
+    match: /(?=[\s\S]*(?:\bnf4\b|量化))(?=[\s\S]*(?:\b(?:vs|versus|compar\w*|relative|precision)\b|对比|相比|比较|精度))|\bquantiz\w*\b|23\.6|精度对比/i,
+    en: "In the separate three-task LLaMA-2-13B precision study, NF4 self-drafts deliver 23.6% higher aggregate throughput than FP16 self-drafts, with a request-paired bootstrap 95% interval of 21.4–26.3%. Overall speedups over AR are 1.981× and 1.603× respectively. Both use the same FP16 verifier, with ratio and layer configurations optimized separately. This comparison does not use the selected 2.48× TinyStories run.",
+    zh: "独立的三任务 LLaMA-2-13B 精度实验中，NF4 自草稿相比 FP16 自草稿提高 23.6% 的合并吞吐量，请求配对 bootstrap 的 95% 区间为 21.4–26.3%。两者相对 AR 分别为 1.981× 和 1.603×，使用同一个 FP16 验证器，并分别优化比例和层配置。这个比较不使用所选 TinyStories 运行的 2.48× 结果。"
+  },
+  {
+    id: "materials", sourceIds: ["paper","poster","slides"],
+    match: /\b(poster|slides?|presentation|materials?)\b|海报|幻灯|演示文稿|报告材料/i,
+    en: "The homepage provides the full paper, complete research poster, and presentation next to the SPIRIT summary. Slides open as a PDF for reading, with a separate PowerPoint download. Research details contain expandable motivation, method, and experimental-results figures.",
+    zh: "主页 SPIRIT 简介旁提供完整论文、研究海报和演示文稿入口。幻灯片可以打开 PDF 在线阅读，也有单独的 PowerPoint 下载链接。Research details 中还可分别展开动机图、方法图和实验结果图。"
+  },
+  {
+    id: "slide_download", sourceIds: ["slides","slideDeck"],
+    match: /\b(pptx?|powerpoint)\b|下载[\s\S]*(?:幻灯|演示)|(?:幻灯|演示)[\s\S]*下载/i,
+    en: "The SPIRIT presentation is available as a PDF for browser viewing and as a PowerPoint file for download. Use Slides (PDF) to read it or Download slides (PPTX) for the presentation file.",
+    zh: "SPIRIT 演示文稿提供 PDF 在线阅读版和 PowerPoint 下载版。可以点击 Slides (PDF) 查看，或点击 Download slides (PPTX) 下载演示文件。"
   }
 ];
 
 export function localAnswer(question, language = 'en') {
   const lang = language === 'zh' ? 'zh' : 'en';
   // More specific topics override broad mentions such as “SPIRIT”.
-  const priority = ['contact', 'availability', 'measurement', 'experience', 'reuse', 'search', 'results', 'objective', 'verification', 'background', 'research', 'spirit'];
+  const priority = ['contact', 'slide_download', 'materials', 'availability', 'measurement', 'specbench', 'reuse_results', 'precision', 'experience', 'reuse', 'search', 'results', 'objective', 'verification', 'background', 'research', 'spirit'];
   const fact = priority.map(id => facts.find(item => item.id === id)).find(item => item.match.test(question));
   if (fact) return { answer: fact[lang], sourceIds: fact.sourceIds, mode: 'local' };
   return {
