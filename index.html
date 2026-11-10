@@ -28,7 +28,7 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
     <script src="theme.js?v=3efb3f2dd9f7"></script>
-    <link rel="stylesheet" href="styles.css?v=cdbe955aa06f">
+    <link rel="stylesheet" href="styles.css?v=0d350a34df0f">
     <link rel="stylesheet" href="theme.css?v=99513c42055d">
     <script src="site.js?v=622ade7aa09c" defer></script>
     <link rel="stylesheet" href="chatbot/guide.css?v=bd0671b087d8">
@@ -400,15 +400,47 @@
                 <section class="research-panel experiment-summary" id="spirit-experiments" aria-labelledby="experiments-heading">
                   <header class="research-section-header">
                     <p class="method-eyebrow">Evaluation</p>
-                    <h4 id="experiments-heading">Performance across workloads.</h4>
+                    <h4 id="experiments-heading">Sustained speedups across workloads.</h4>
                   </header>
                   <dl class="experiment-metrics" aria-label="Maximum measured decoding speedup">
                     <div><dt>FP16 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>1.74×</strong></dd></div>
                     <div><dt>NF4 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>2.48x</strong></dd></div>
                   </dl>
-                  <p class="experiment-context">Speedup over autoregressive decoding, with full-target verification.</p>
-                  <p>Broader evaluations cover LLaMA, Qwen, and Mixtral models, all six SpecBench workloads, and batched serving.</p>
-                  <p>For the full evaluation, see the <a href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf" type="application/pdf" target="_blank" rel="noopener">paper (PDF) <span aria-hidden="true">↗</span></a>.</p>
+                  <p class="experiment-context">Decode throughput relative to autoregressive decoding (AR), with full-target verification.</p>
+                  <div class="experiment-findings">
+                    <section aria-labelledby="results-breadth-heading">
+                      <h5 id="results-breadth-heading">Across models and tasks</h5>
+                      <p>SPIRIT leads SWIFT and D&amp;V in <strong>all nine LLaMA-2 model–task settings</strong> with FP16 self-drafts. On SpecBench, it delivers <strong>17.2% higher full-stream throughput</strong> than SWIFT on the same backend, including online exploration and profile updates.</p>
+                    </section>
+                    <section aria-labelledby="results-reuse-heading">
+                      <h5 id="results-reuse-heading">When workloads change</h5>
+                      <p>On 600-request FP16 streams with task changes every 100 requests, profile reuse adds <strong>9.8–10.3% throughput</strong> over SPIRIT without reuse on LLaMA-2-13B and 70B. Returning tasks benefit from configurations found earlier.</p>
+                    </section>
+                    <section aria-labelledby="results-sustained-heading">
+                      <h5 id="results-sustained-heading">Over 1,000 requests</h5>
+                      <p>On LLaMA-2-13B with NF4 drafts and full FP16 verification, eight 1,000-request TinyStories runs achieve <strong>2.46× pooled speedup</strong>. Cumulative decode throughput stays above AR throughout every displayed run.</p>
+                    </section>
+                    <section aria-labelledby="results-precision-heading">
+                      <h5 id="results-precision-heading">With lower-precision drafts</h5>
+                      <p>In a separate three-task LLaMA-2-13B comparison, NF4 self-drafts deliver <strong>23.6% higher aggregate throughput</strong> than FP16 self-drafts (95% CI: 21.4–26.3%). Both draft precisions use the same FP16 verifier and are optimized separately.</p>
+                    </section>
+                  </div>
+                  <p class="experiment-note">Sustained results use one historical best run per seed from 27 completed candidates. Decode timing includes online search and profile updates; it excludes prefill, model loading, setup, and earlier attempts.</p>
+                  <p class="experiment-context">Additional evaluations cover Qwen and Mixtral architectures, batched serving, and HumanEval code generation. Full protocols and comparisons are available in the research materials.</p>
+                  <nav class="experiment-resources" aria-label="SPIRIT research materials">
+                    <a href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf" type="application/pdf" target="_blank" rel="noopener">Paper <span class="resource-format">PDF</span><span aria-hidden="true">↗</span></a>
+                    <a href="assets/figures/spirit-poster-neurips2026.png" type="image/png" target="_blank" rel="noopener">Poster <span class="resource-format">PNG</span><span aria-hidden="true">↗</span></a>
+                    <a href="assets/slides/SPIRIT-NeurIPS2026.pptx" type="application/vnd.openxmlformats-officedocument.presentationml.presentation" download>Slides <span class="resource-format">PPTX</span><span aria-hidden="true">↓</span></a>
+                  </nav>
+                  <details class="figure-disclosure" id="results-figure-details">
+                    <summary><span class="figure-show">More detail<span class="sr-only">: results poster</span></span><span class="figure-hide">Less detail<span class="sr-only">: results poster</span></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+                    <figure class="figure-panel">
+                      <a class="figure-image-link" href="assets/figures/spirit-results-v23.png" target="_blank" rel="noopener" aria-label="Open the results figure at full size in a new tab">
+                        <img src="assets/figures/spirit-results-v23.png" width="4400" height="3440" loading="lazy" decoding="async" alt="SPIRIT results poster: search and adaptation cost, profile reuse, nine FP16 model–task comparisons, SpecBench, batched serving, and sustained NF4 decoding over 1,000 requests.">
+                      </a>
+                      <figcaption>The complete results overview, including search behavior, adaptation cost, and workload comparisons. <a href="assets/figures/spirit-results-v23.png" target="_blank" rel="noopener">Open full-size figure <span aria-hidden="true">↗</span></a></figcaption>
+                    </figure>
+                  </details>
                 </section>
                 <button class="details-close" type="button" aria-controls="spirit-details" hidden>Close research details <span aria-hidden="true">↑</span></button>
               </div>

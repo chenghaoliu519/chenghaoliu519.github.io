@@ -82,13 +82,23 @@ project archives or credentials into this repository.
 
 The author-provided NeurIPS 2026 camera-ready is published at
 `assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf`. The homepage links it directly.
-The two approved poster figures appear as independently expandable parts of the
-Problem and Method panels, behind compact “More detail” controls with full-size links. The
-method figure sits inside the method canvas after the two control loops. They are stored as `assets/figures/spirit-motivation-v06.png` and
-`assets/figures/spirit-method-v32.png`. These are exact copies of the supplied
-versions; keep future replacements versioned. The separate method-flow PDF is published at
+The three approved poster figures appear as independently expandable parts of
+the Problem, Method, and Experiments panels, behind compact “More detail”
+controls with full-size links. The method figure sits inside the method canvas
+after the two control loops. The assets are `assets/figures/spirit-motivation-v06.png`,
+`assets/figures/spirit-method-v32.png`, and `assets/figures/spirit-results-v23.png`.
+These are exact copies of the supplied versions; keep future replacements
+versioned. The separate method-flow PDF is published at
 `assets/papers/spirit_flow.pdf` and linked in the method caption as “control-flow
 diagram (PDF).”
+
+The Experiments panel also links the author-supplied complete poster at
+`assets/figures/spirit-poster-neurips2026.png` and presentation at
+`assets/slides/SPIRIT-NeurIPS2026.pptx`. These are exact source copies; the
+presentation link downloads the PPTX. The latest supplied `results/results.png`
+is byte-identical to the versioned V23 figure already used for the results
+disclosure. The poster and presentation confirm the comparison scopes and
+broader HumanEval, architecture, and batching evaluations.
 
 The headline 2.48× is the camera-ready's NF4 maximum. Appendix C.7 reports
 2.478× for the best complete run (rounded to 2.48×), and 2.465× pooled across
@@ -97,6 +107,25 @@ the same ordered 1,000-request TinyStories stream on one RTX A6000 per run.
 Timing excludes prefill and includes online search and profile updates.
 Keep the maximum distinct from the pooled result and the older supplementary
 2.21× headline. The FP16 maximum remains 1.74×.
+
+The V23 results copy is checked against its supplied data and provenance:
+SPIRIT leads SWIFT and D&V in all nine Table 1 settings. SpecBench's +17.2%
+compares full-stream throughput (1.462 / 1.247), including online exploration
+and updates; it is separate from the six post-adaptation task means. Reuse adds
+9.8–10.3% over the no-reuse variant in two 600-request streams, each changing
+tasks every 100 requests.
+
+The sustained NF4 result pools eight historical best-per-seed local runs from
+27 completed candidates. The raw pooled speedup is 2.4646542576762034,
+displayed as 2.46× directly from the unrounded value. Earlier candidate attempts
+are excluded from each selected run's decode timing. The poster's author-reported
+“eight runs per seed” describes additional experiment scale; its displayed
+curves and pooled statistic still use eight selected local records, one per seed.
+
+The +23.6% NF4/FP16 throughput ratio and 95% CI of +21.4–26.3% come from the
+separate three-task LLaMA-2-13B comparison (Table 5). Both variants keep the
+same FP16 verifier and optimize configurations separately. This comparison
+must not be derived from, or pooled with, the selected TinyStories trajectories.
 
 The motivation table comes from the V06 figure's fixed-configuration sweep:
 LLaMA-2-13B, CNN/DM, FP16, 21 skip ratios × 24 patterns, and the same 24 prompts
@@ -118,7 +147,7 @@ The introduction stays left-aligned. The publication pairs its title and short
 description with a compact conceptual diagram on desktop, stacking them on
 mobile. The header contains navigation only; the publication omits the author
 row. Native expandable research details contain the full summary, formula, and
-control diagram; the two nested figure disclosures also work without JavaScript. The default diagram introduces
+control diagram; the three nested figure disclosures also work without JavaScript. The default diagram introduces
 self-drafting, full verification, and throughput-guided ratio/layer adaptation.
 The expanded diagram adds calibrated feedback, ratio-first search, and profile
 reuse. The within-request loop shows token proposals, full-target verification,
@@ -138,8 +167,11 @@ rule separates them. The method and experiment panels use the same heading
 hierarchy and quiet dividers. Existing FP16/NF4 maxima remain paired metrics.
 The expanded details offer Problem, Method, and Experiments tabs. Only one panel
 is visible at a time, with Problem selected initially. Within-request search and
-cross-request profile reuse are both part of Method. The Experiments panel reuses
-the existing published summary; the poster results figure is still pending.
+cross-request profile reuse are both part of Method. The Experiments panel pairs
+the FP16/NF4 peak metrics with four concise findings: coverage across models and
+tasks, reuse under workload shifts, sustained 1,000-request decoding, and the
+separate draft-precision comparison. Findings use an unboxed two-column layout
+that stacks on mobile. The complete V23 results poster is collapsed initially.
 The throughput formula defines α, β, and ν directly beside the equation; ν uses
 total decode time. Research details start closed on page entry, reload, and
 return from the browser’s back/forward cache. Tab changes do not alter the URL;

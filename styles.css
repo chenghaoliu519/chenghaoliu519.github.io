@@ -536,7 +536,7 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 .research-panel .configuration-return > span { background: var(--paper); }
 .research-panel .method-figure > figcaption { max-width: 880px; margin: 18px 0 0; }
 .research-panel .figure-disclosure > summary { width: fit-content; max-width: 100%; padding: 10px 0; font-size: 13px; }
-.experiment-summary { max-width: 790px; }
+.experiment-summary { max-width: none; }
 .experiment-summary > p { max-width: 74ch; font-size: 15px; line-height: 1.85; }
 .experiment-summary a { color: var(--accent); }
 .experiment-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; max-width: 650px; margin: 28px 0 24px; padding: 0 0 25px; border-bottom: 1px solid var(--rule); }
@@ -547,6 +547,15 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 .experiment-metrics strong { display: block; margin-top: 4px; font-size: 56px; font-weight: 500; line-height: 1.1; letter-spacing: -2.5px; font-variant-numeric: tabular-nums; }
 .experiment-metrics > div:last-child strong { color: var(--accent); }
 .experiment-summary > .experiment-context { font-size: 13px; }
+.experiment-findings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 44px; max-width: 880px; margin: 32px 0; }
+.experiment-findings h5 { margin: 0 0 10px; color: var(--ink); font-size: 17px; font-weight: 550; line-height: 1.4; letter-spacing: -.2px; }
+.experiment-findings p { margin: 0; font-size: 14px; line-height: 1.85; }
+.experiment-summary > .experiment-note { max-width: 880px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+.experiment-summary > .figure-disclosure { margin-top: 24px; }
+.experiment-resources { display: flex; flex-wrap: wrap; gap: 4px 28px; margin-top: 8px; }
+.experiment-resources a { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-size: 13px; text-decoration: none; }
+.experiment-resources a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.experiment-resources .resource-format { color: var(--muted); font-size: 10px; letter-spacing: .03em; }
 @media (max-width: 900px) {
   .research-panel > .motivation-evidence { grid-template-columns: minmax(0, 1fr); }
   .research-panel .motivation-copy { max-width: 78ch; }
@@ -561,6 +570,7 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
   .research-section-header, .motivation-evidence > .research-section-header { margin-bottom: 22px; }
   .research-panel .motivation-copy > p, .research-intro, .experiment-summary > p { font-size: 14px; line-height: 1.85; }
   .method-loop-heading { font-size: 21px; }
+  .experiment-findings { grid-template-columns: minmax(0, 1fr); gap: 24px; margin: 28px 0; }
   .experiment-metrics { gap: 24px; margin: 24px 0 20px; padding-bottom: 22px; }
   .experiment-metrics strong { font-size: 44px; letter-spacing: -1.8px; }
 }
