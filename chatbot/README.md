@@ -62,6 +62,8 @@ origin or place any secret in the client configuration.
   Method and results links open the corresponding research tab, including any
   ancestor disclosures, without changing the URL or the next visit's closed default.
   Public material links include the paper, poster, and PDF slides.
+  Research figures are integrated directly into their sections; the materials
+  answer does not direct readers to expandable poster images.
   SpecBench, reuse, precision, and sustained-run facts retain separate baselines
   and timing scopes in both the AI prompt and curated fallback.
   Grounding instructions reduce hallucinations; they do not guarantee factual

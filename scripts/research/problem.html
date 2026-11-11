@@ -1,0 +1,50 @@
+<section class="research-panel native-research" id="spirit-motivation" aria-labelledby="motivation-heading">
+  <header class="research-section-header">
+    <p class="method-eyebrow">The problem</p>
+    <h4 id="motivation-heading">Agreement alone misses the execution cost.</h4>
+  </header>
+  <p class="research-intro">Skipping attention or MLP sublayers changes both <strong>draft–target consistency</strong> and <strong>the cost of each draft–verify round</strong>. Acceptance observes only consistency. Useful throughput also accounts for verifier-produced tokens and how quickly the chosen configuration executes.</p>
+
+  <div class="mechanism-band" aria-label="How layer skipping changes throughput">
+    <div class="mechanism-choice">
+      <p class="diagram-label">Choose where to skip</p>
+      <div class="layer-strip" role="img" aria-label="Schematic layer mask: five of eight attention/MLP sublayers execute; three are skipped."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div>
+      <p class="diagram-note">A = attention · M = MLP<br>Dashed sublayers are skipped.</p>
+    </div>
+    <div class="mechanism-effects">
+      <p class="diagram-label">One choice, two effects</p>
+      <div class="effect-pair"><div><strong><i>α</i> + <i>β</i></strong><span>Useful token yield</span></div><span class="effect-times" aria-hidden="true">×</span><div><strong><i>ν</i></strong><span>Execution rate</span></div></div>
+      <p class="diagram-note">Acceptance and verifier bonus × drafted tokens per decode second.</p>
+    </div>
+    <div class="mechanism-objective">
+      <p class="diagram-label">Optimize what is served</p>
+      <div class="plain-fraction" aria-label="Committed output tokens divided by elapsed decode time"><span>Committed output tokens</span><span>Elapsed decode time</span></div>
+      <p class="diagram-note">Measured through full-target verification.</p>
+    </div>
+  </div>
+
+  <div class="evidence-grid motivation-charts" id="motivation-figure-details">
+    <figure class="evidence-figure" aria-labelledby="acceptance-heading">
+      <h5 id="acceptance-heading">The most agreeable draft is not the fastest.</h5>
+      <p class="plot-unit">Decode throughput · tokens/s</p>
+      {{motivation_scatter}}
+      <p class="plot-axis-caption">Draft acceptance (%)</p>
+      <div class="chart-legend"><span><i class="legend-hollow"></i>Highest acceptance</span><span><i class="legend-dot"></i>Highest throughput</span></div>
+      <dl class="measurement-pair">
+        <div><dt>Highest acceptance</dt><dd>99.41% <span>·</span> 24.36 tok/s</dd></div>
+        <div><dt>Highest throughput</dt><dd>98.02% <span>·</span> <strong>26.39 tok/s</strong></dd></div>
+      </dl>
+      <figcaption>Even within the highlighted ≈96–98% acceptance band, throughput spans <strong>21.99–26.39 tokens/s</strong>. The plot shows 400 configurations with acceptance ≥70%.</figcaption>
+    </figure>
+    <figure class="evidence-figure" aria-labelledby="frontier-heading">
+      <h5 id="frontier-heading">Ratio gives structure. Placement leaves room.</h5>
+      <p class="plot-unit">Decode throughput · tokens/s</p>
+      {{motivation_frontier}}
+      <p class="plot-axis-caption">Skip ratio, <i>r</i></p>
+      <div class="chart-legend"><span><i class="legend-line"></i>Best per ratio</span><span><i class="legend-line neutral"></i>Median</span><span><i class="legend-area"></i>Middle 50%</span></div>
+      <figcaption>The skip ratio organizes the dominant consistency–speed trade-off. At each ratio, different attention/MLP patterns still produce different throughput. The shaded band describes configurations, not uncertainty.</figcaption>
+    </figure>
+  </div>
+  <p class="research-source">Measured configuration sweep · LLaMA-2-13B · CNN/DM · FP16 · 21 skip ratios × 24 patterns · the same 24 prompts per configuration · decode-only.</p>
+  <div class="research-implication"><span>Design implication</span><p>Use realized throughput to localize a promising skip ratio, then refine the layer pattern at that ratio. Evaluate within-request candidates through the same decoding that produces output tokens.</p></div>
+</section>

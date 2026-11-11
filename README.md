@@ -82,10 +82,10 @@ project archives or credentials into this repository.
 
 The author-provided NeurIPS 2026 camera-ready is published at
 `assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf`. The homepage links it directly beside the publication summary.
-The three approved poster figures appear as independently expandable parts of
-the Problem, Method, and Experiments panels, behind compact “More detail”
-controls with full-size links. The method figure sits inside the method canvas
-after the two control loops. The assets are `assets/figures/spirit-motivation-v06.png`,
+The three approved poster components are integrated into Problem, Method, and
+Experiments as responsive HTML and inline SVG. Readers see the measured
+motivation landscape, the control loops, and the experimental evidence directly.
+The original PNGs remain preserved at `assets/figures/spirit-motivation-v06.png`,
 `assets/figures/spirit-method-v32.png`, and `assets/figures/spirit-results-v23.png`.
 These are exact copies of the supplied versions; keep future replacements
 versioned. The separate method-flow PDF is published at
@@ -148,51 +148,53 @@ venue and status remain visible independently.
 The introduction stays left-aligned. The publication pairs its title and short
 description with a compact conceptual diagram on desktop, stacking them on
 mobile. The header contains navigation only; the publication omits the author
-row. Native expandable research details contain the full summary, formula, and
-control diagram; the three figure disclosures and two method-detail disclosures
-also work without JavaScript. The default diagram introduces
-self-drafting, full verification, and throughput-guided ratio/layer adaptation.
-The expanded diagram adds calibrated feedback, ratio-first search, and profile
-reuse. The default Method view keeps the throughput equation, a compact
-Measure / Calibrate / Search sequence, and the request-head reuse overview.
-“Search details” and “Profile reuse details” start closed and retain the full
-diagrams and algorithm steps for readers who expand them. The within-request loop shows token proposals, full-target verification,
-committed output and timing; names length correction and EMA smoothing between
-the measured throughput and controller score; and separates ratio localization
-from layer-pattern refinement at a fixed ratio. Labels stay readable HTML rather
-than shrinking with the vector artwork on small screens.
-The cross-request diagram compares current head statistics with a stored
-signature, shows active and historical ratio/layer configurations, and labels
-the stay/switch/refine/restart choices. Historical profiles are probed on the
-same request head only when mismatch rises. This diagram uses responsive HTML
-labels and vector connectors so its meaning stays readable on narrow screens.
-Research details use compact text tabs, generous spacing, and the same unboxed
-background as the article. Each topic begins with a clear heading. Problem
-explanations and measured evidence share two columns on wide screens; a fine
-rule separates them. The method and experiment panels use the same heading
-hierarchy and quiet dividers. Existing FP16/NF4 maxima remain paired metrics.
-The expanded details offer Problem, Method, and Experiments tabs. Only one panel
-is visible at a time, with Problem selected initially. Within-request search and
-cross-request profile reuse are both part of Method. The Experiments panel pairs
-the FP16/NF4 peak metrics with four concise findings: coverage across models and
-tasks, reuse under workload shifts, sustained 1,000-request decoding, and the
-separate draft-precision comparison. Findings use an unboxed two-column layout
-that stacks on mobile. The complete V23 results poster is collapsed initially.
-The throughput formula defines α, β, and ν directly beside the equation; ν uses
-total decode time. Research details start closed on page entry, reload, and
-return from the browser’s back/forward cache. Tab changes do not alter the URL;
-stale research fragments are cleared on entry to avoid automatic expansion.
-Tabs support arrow keys and Home/End and stay available while reading long panels.
-Explicit in-page section and figure links still reveal their targets. Without
-JavaScript, the links remain anchors and all panels are readable. The top-level
-navigation scroll tracker remains scoped to the site header.
-Within-request search uses the calibrated score;
-cross-request mismatch detection uses request-head throughput and acceptance.
-The expanded details include the empirical motivation table, confidence-guided ratio zooming, fixed-ratio random/Bayesian proposals, and the distinction between productive windows and uncommitted request-head trials.
-The glyphs are conceptual illustrations, not experimental measurements. Labels
-remain responsive HTML; tiny SVG labels are hidden on narrow screens where the
-adjacent text conveys the same meaning. Keep the shared alignment, neutral
-palette, and readable typography; avoid decorative clutter or unapproved work.
+row. Research details contain Problem, Method, and Experiments as mutually exclusive,
+keyboard-accessible tabs. They start closed on entry, reload, stale research
+fragments, and back/forward restoration. Tab changes do not alter the URL.
+Profile reuse stays inside Method. The introduction, top-level publication
+preview, Paper / Poster / Slides PDF links, and the two 2.48x headlines remain.
+
+Problem combines a layer-skipping schematic with the 400-configuration
+acceptance plot and the complete 504-configuration ratio landscape. The latter
+shows the best observation, median, and interquartile range at each of 21 ratios.
+The spread is a distribution over configurations, not a confidence interval.
+
+Method uses readable HTML labels and vector illustrations for productive
+windows, calibrated boundary updates, ratio-first search, and request-head
+profile reuse. Its four reuse outcomes are immediately visible. “Search details”
+and “Profile reuse details” retain deeper algorithm explanations and start closed.
+Within-request score Q uses length correction and EMA; cross-request matching
+uses raw head throughput and acceptance. Request-head trial outputs are not
+committed. The confidence plot and layer masks are explicitly schematic.
+
+Experiments incorporates all nine FP16 comparisons as three native tables,
+SpecBench mean/SD estimates, profile-reuse bars, the published discovery trace,
+normalized adaptation costs, sustained-run curves, the separate precision
+comparison, and matched-batch measurements. Published Figure 3a columns are
+used deliberately, including the requested SPIRIT endpoint of 1.61×. All 27
+discovery observations and all 1,000 prefixes of the eight sustained runs are
+retained. Straight segments connect observations; no smoothing, extrapolation,
+or time-zero measurement is introduced. Full-stream and post-adaptation
+SpecBench scopes, normalized timing and latency, and independent precision
+and selected-run studies stay distinct.
+
+The native SVGs are deterministically rendered from
+`assets/data/spirit-research.json` by `scripts/render_research.py` and the three
+templates under `scripts/research/`. The data preserves the adopted poster's
+frozen values and records source hashes; no GPU measurements are rerun.
+After editing a template, figure data, `research.css`, or `research.js`, run:
+
+    python3 scripts/render_research.py
+    python3 scripts/render_research.py --check
+
+Commit the rebuilt `index.html` with its sources. The renderer uses Python's
+standard library and updates the research stylesheet/script content hashes.
+Graphs have SVG titles and descriptions, theme-aware colors, responsive labels,
+and adjacent HTML conclusions. The sustained graph has accessible full-stream
+and first-50-request controls; both ranges remain readable without JavaScript
+and in print. Existing Mochi source links still select the matching main tab.
+Materials guidance describes the integrated charts rather than poster disclosures.
+
 
 The sharing image is not displayed in the page body. When updating it, render
 `assets/social-card.svg` at 1200 × 630 with the local DM Sans font loaded, and

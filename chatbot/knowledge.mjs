@@ -111,8 +111,8 @@ export const facts = [
   {
     id: "materials", sourceIds: ["paper","poster","slides"],
     match: /\b(poster|slides?|presentation|materials?)\b|海报|幻灯|演示文稿|报告材料/i,
-    en: "The homepage provides the full paper, complete research poster, and presentation next to the SPIRIT summary. Slides open as a PDF for reading. Research details contain expandable motivation, method, and experimental-results figures.",
-    zh: "主页 SPIRIT 简介旁提供完整论文、研究海报和演示文稿入口。幻灯片可以打开 PDF 在线阅读。Research details 中还可分别展开动机图、方法图和实验结果图。"
+    en: "The homepage provides the full paper, complete research poster, and presentation next to the SPIRIT summary. Slides open as a PDF for reading. Research details integrate motivation measurements, method diagrams, and experimental result plots directly into the Problem, Method, and Experiments sections.",
+    zh: "主页 SPIRIT 简介旁提供完整论文、研究海报和演示文稿入口。幻灯片可以打开 PDF 在线阅读。Research details 的 Problem、Method、Experiments 中直接呈现动机实测图、方法流程和实验结果图表。"
   },
   {
     id: "slide_download", sourceIds: ["slides"],

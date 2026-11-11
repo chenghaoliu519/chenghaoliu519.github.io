@@ -1,0 +1,98 @@
+<section class="research-panel native-research" id="spirit-method" aria-labelledby="method-heading">
+  <header class="research-section-header">
+    <p class="method-eyebrow">The method</p>
+    <h4 id="method-heading">Search while decoding. Reuse when workloads recur.</h4>
+  </header>
+  <p class="research-intro">SPIRIT adapts a self-draft configuration <i>c</i> = (<i>r</i>, <i>L</i>): how much computation to skip, and which sublayers to skip. It needs neither offline profiling nor a separately trained draft model.</p>
+
+  <div class="objective-strip">
+    <div>
+      <p class="diagram-label">The serving objective</p>
+      <div class="native-equation" role="math" aria-label="S sub w equals G sub w divided by T sub w, equals alpha sub w plus beta sub w, multiplied by nu sub w."><i>S</i><sub>w</sub> = <span class="fraction"><span><i>G</i><sub>w</sub></span><span><i>T</i><sub>w</sub></span></span> = (<i>α</i><sub>w</sub> + <i>β</i><sub>w</sub>) <i>ν</i><sub>w</sub></div>
+      <p class="diagram-note">Committed tokens / elapsed decode time</p>
+    </div>
+    <dl class="native-symbols"><div><dt><i>α</i><sub>w</sub></dt><dd>Accepted / proposed draft tokens</dd></div><div><dt><i>β</i><sub>w</sub></dt><dd>Extra verifier tokens per proposed draft token</dd></div><div><dt><i>ν</i><sub>w</sub></dt><dd>Proposed draft tokens / total decode time</dd></div></dl>
+  </div>
+
+  <section class="method-loop" aria-labelledby="window-loop-heading">
+    <header class="evidence-heading"><p class="method-eyebrow">Within a request</p><h5 id="window-loop-heading">Measure the draft path while it serves tokens.</h5></header>
+    <div class="window-loop" id="method-figure-details">
+      <section class="decode-window" aria-label="Current decoding window">
+        <p class="diagram-label">Window <i>w</i></p>
+        <div class="layer-pipeline"><div><span>Self-draft with <i>c</i><sub>w</sub></span><div class="layer-strip" role="img" aria-label="Current draft configuration; four of eight illustrative sublayers skipped."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div></div><div><span>Full target verifies</span><div class="layer-strip" role="img" aria-label="Full target verifier; all eight illustrative sublayers execute."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div></div></div>
+        <div class="committed-output"><span class="output-tokens" aria-hidden="true"><b></b><b></b><b></b><b></b></span><span>Commit accepted + verifier tokens</span></div>
+        <p class="window-stat"><i>G</i><sub>w</sub> tokens in <i>T</i><sub>w</sub> seconds</p>
+      </section>
+      <section class="window-boundary" aria-label="Window-boundary controller update">
+        <p class="diagram-label">At the window boundary</p>
+        <div class="boundary-equation" role="math" aria-label="Q sub w equals EMA of S sub w times the prefix-length correction factor."><i>Q</i><sub>w</sub> = EMA[<i>S</i><sub>w</sub> · <i>f</i><sub>len</sub>(<i>x</i><sub>w</sub>)]</div>
+        <p>Correct for prefix growth.<br>Smooth window noise.</p>
+        <div class="boundary-selection"><strong>Choose the next (<i>r</i>, <i>L</i>)</strong><span>Ratio localization → pattern refinement</span></div>
+        <p class="diagram-note">Boundary updates need no additional model forward pass.</p>
+      </section>
+      <section class="decode-window next-window" aria-label="Next decoding window">
+        <p class="diagram-label">Window <i>w</i> + 1</p>
+        <div class="layer-pipeline"><div><span>Self-draft with <i>c</i><sub>w+1</sub></span><div class="layer-strip" role="img" aria-label="Next draft configuration; four of eight illustrative sublayers skipped."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div></div></div>
+        <p>Run the selected configuration in the next productive window.</p>
+        <div class="round-sequence" aria-label="Repeated draft, verify and commit rounds"><span>D → V <b>▪▪</b></span><span>D → V <b>▪▪▪</b></span><span aria-hidden="true">…</span></div>
+        <p class="diagram-note">Full-target verification continues throughout.</p>
+      </section>
+    </div>
+    <p class="feedback-return"><span aria-hidden="true">↺</span> Observe, update, and decode again until the request ends.</p>
+    <details class="method-detail native-detail" id="within-request-details">
+      <summary><span>Search details</span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+      <div class="search-stages">
+        <section aria-labelledby="ratio-search-heading">
+          <p class="method-eyebrow">Stage I · Skip ratio</p>
+          <h6 id="ratio-search-heading">How much should the draft skip?</h6>
+          <p>Compare confidence bounds on window scores. The leader has the highest mean <i>Q</i>; a rival’s upper bound still reaches the leader’s lower bound.</p>
+          <div class="chart-legend"><span><i class="legend-dot teal"></i>Leader</span><span><i class="legend-dot"></i>Rival</span><span><i class="legend-hollow muted"></i>Ruled out</span></div>
+          {{ratio_schematic}}
+          <ol class="algorithm-steps"><li>Zoom into the unresolved bracket; probe the midpoint of its wider side.</li><li>Decode, update confidence, and compare the bounds again.</li><li>Confirm the leader and validate the edges before locking <i>r</i><sup>★</sup>.</li></ol>
+          <p class="research-source">Algorithm schematic; positions and intervals are illustrative.</p>
+        </section>
+        <section aria-labelledby="layer-search-heading">
+          <p class="method-eyebrow">Stage II · Layer pattern</p>
+          <h6 id="layer-search-heading">Which sublayers should it skip?</h6>
+          <p>Keep the skip count fixed. Mix broad coverage with proposals informed by configurations already scored at this ratio.</p>
+          <div class="proposal-pair">
+            <div><p class="proposal-label">Random <span>96%</span></p><div class="layer-strip" role="img" aria-label="Random proposal: four illustrative sublayers skipped."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div><p class="diagram-note">Explore layer positions.</p></div>
+            <div><p class="proposal-label prior-proposal">GP-UCB <span>4%</span></p><div class="layer-strip" role="img" aria-label="Bayesian proposal: the same skip count, at different positions."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div><p class="diagram-note">Use prior scores.</p></div>
+          </div>
+          <div class="proposal-evaluation"><span>Run in the next productive window</span><strong>Observe <i>Q</i><sub>w+1</sub></strong></div>
+          <ol class="algorithm-steps"><li>Record the candidate pattern and observed score.</li><li>Retain the best observed pattern if it improves.</li><li>Stop when stable or the request’s search budget is spent.</li></ol>
+          <p class="research-source">The proposal mix shown is the configuration used in the method figure. Both masks skip four of eight illustrative sublayers.</p>
+        </section>
+      </div>
+    </details>
+  </section>
+
+  <section class="method-loop profile-loop" id="spirit-reuse" aria-labelledby="reuse-heading">
+    <header class="evidence-heading"><p class="method-eyebrow">Across requests</p><h5 id="reuse-heading">Recognize a returning workload.</h5></header>
+    <p class="research-intro compact-intro">A profile pairs a skip ratio and layer pattern with its request-head history: the mean and standard deviation of <strong>raw throughput <i>S</i></strong> and <strong>draft acceptance <i>α</i></strong>.</p>
+    <div class="profile-overview">
+      <div class="profile-record"><p class="diagram-label">Stored configuration</p><div class="layer-strip" role="img" aria-label="Stored ratio and pattern; four of eight illustrative sublayers skipped."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div><p class="diagram-note">Ratio <i>r</i><sup>★</sup> + layer pattern <i>L</i><sup>★</sup></p></div>
+      <div class="profile-signature" role="img" aria-label="Schematic signature comparison: the current request-head throughput and acceptance depart from the stored ranges.">
+        <p class="diagram-label">Request-head signature</p>
+        <div class="head-signature-row" aria-hidden="true"><span>Throughput <i>S</i></span><div><b></b><i></i></div></div>
+        <div class="head-signature-row" aria-hidden="true"><span>Acceptance <i>α</i></span><div><b></b><i></i></div></div>
+        <p class="diagram-note">Stored mean ± SD <span class="signature-divider">·</span> <span class="current-head-key">Current head</span></p>
+      </div>
+      <div class="profile-next"><p class="diagram-label">Continue or compare</p><p>Compatible heads keep serving.<br>Supported deviations trigger probes of the active and stored profiles.</p><p class="diagram-note">Every trial uses the same request head. Trial outputs are not committed.</p></div>
+    </div>
+    <dl class="profile-outcomes">
+      <div><dt>Stay</dt><dd>Keep the active profile when it fits or trials are inconclusive.</dd></div>
+      <div><dt>Switch</dt><dd>Reuse an eligible stored configuration.</dd></div>
+      <div><dt>Switch + refine</dt><dd>Reuse its ratio; refine the layer pattern.</dd></div>
+      <div><dt>Restart</dt><dd>Search again when drift persists and no profile fits.</dd></div>
+    </dl>
+    <details class="method-detail native-detail" id="profile-reuse-details">
+      <summary><span>Profile reuse details</span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+      <div class="reuse-rules">
+        <div><h6>Compare each profile with its own history.</h6><div class="boundary-equation" role="math" aria-label="d of p equals absolute z S plus omega times absolute z alpha."><i>d</i>(<i>p</i>) = |<i>z</i><sub>S</sub>| + <i>ω</i>|<i>z</i><sub>α</sub>|</div><p>Each <i>z</i> is the head measurement’s deviation from that profile’s historical mean, divided by its historical standard deviation. Lower <i>d</i> indicates a closer fit.</p></div>
+        <div><h6>A switch must pass all three checks.</h6><ul class="eligibility-list"><li>A closer fit to the candidate’s own history</li><li>Higher relative probe merit</li><li>Safe throughput</li></ul><p>Request-head matching uses raw throughput and acceptance. The calibrated score <i>Q</i><sub>w</sub> guides within-request search.</p></div>
+      </div>
+    </details>
+  </section>
+  <p class="research-source method-source">Schematic control flow. Within-request evaluation commits tokens; cross-request trials compare profiles separately. The <a class="method-flow-link" href="assets/papers/spirit_flow.pdf" type="application/pdf" target="_blank" rel="noopener">control-flow diagram (PDF) <span aria-hidden="true">↗</span></a> gives the complete decision sequence.</p>
+</section>

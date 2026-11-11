@@ -1,0 +1,91 @@
+<section class="research-panel native-research experiment-summary" id="spirit-experiments" aria-labelledby="experiments-heading">
+  <header class="research-section-header"><p class="method-eyebrow">The evidence</p><h4 id="experiments-heading">Online adaptation delivers sustained speedups.</h4></header>
+  <dl class="experiment-metrics" aria-label="Maximum measured decoding speedup"><div><dt>FP16 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>1.74×</strong></dd></div><div><dt>NF4 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>2.48x</strong></dd></div></dl>
+  <p class="experiment-context">Decode throughput relative to autoregressive decoding (AR), with full-target verification. The headline values are maxima from their respective settings.</p>
+
+  <div id="results-figure-details">
+    <section class="results-block" aria-labelledby="models-heading">
+      <header class="evidence-heading"><p class="method-eyebrow">Models &amp; tasks</p><h5 id="models-heading">Leads in all nine FP16 model–task settings.</h5><p>Summarization, reasoning, and text generation across the LLaMA-2 family.</p></header>
+      <div class="model-tables">{{fp16_tables}}</div>
+      <p class="research-source">Speedup / AR · FP16 self-drafts · paper Table 1. Each table uses the matching autoregressive baseline.</p>
+    </section>
+
+    <div class="evidence-grid results-grid">
+      <figure class="evidence-figure" aria-labelledby="specbench-heading">
+        <p class="method-eyebrow">SpecBench</p><h5 id="specbench-heading"><span class="inline-gain">+17.2%</span> full-stream throughput over SWIFT.</h5>
+        <p class="evidence-intro">1.462× versus 1.247× over AR on the same backend, including exploration and profile updates.</p>
+        <div class="plot-subheading">After adaptation · six task comparisons</div>
+        <div class="chart-legend"><span><i class="legend-hollow"></i>SWIFT</span><span><i class="legend-dot"></i>SPIRIT</span></div>
+        {{specbench}}
+        <p class="plot-axis-caption">Speedup / AR</p>
+        <figcaption>LLaMA-2-13B · three-seed mean ± SD. These task estimates describe post-adaptation performance; the +17.2% headline uses the full stream.</figcaption>
+      </figure>
+      <figure class="evidence-figure" aria-labelledby="reuse-results-heading">
+        <p class="method-eyebrow">Profile reuse</p><h5 id="reuse-results-heading"><span class="inline-gain teal-value">+9.8–10.3%</span> when workloads recur.</h5>
+        <p class="evidence-intro">Returning tasks benefit from configurations found earlier, instead of starting each search again.</p>
+        <div class="chart-legend"><span><i class="legend-block neutral"></i>Without reuse</span><span><i class="legend-block teal"></i>Full SPIRIT</span></div>
+        <p class="plot-unit">Full-stream speedup / AR</p>
+        {{reuse}}
+        <div class="workload-sequence"><div><span>First pass</span><p>Stories → CNN/DM → GSM8K</p></div><div><span>Workloads return</span><p>Stories → CNN/DM → GSM8K</p></div></div>
+        <figcaption>600-request FP16 streams · task shifts every 100 requests. The gain compares full SPIRIT with SPIRIT without profile reuse.</figcaption>
+      </figure>
+    </div>
+
+    <section class="results-block" aria-labelledby="adaptation-heading">
+      <header class="evidence-heading"><p class="method-eyebrow">Why adaptation pays off</p><h5 id="adaptation-heading">Search quality and update cost both matter.</h5></header>
+      <div class="evidence-grid">
+        <figure class="evidence-figure" aria-labelledby="discovery-heading">
+          <h6 id="discovery-heading">Choose configurations for speed.</h6>
+          <p class="evidence-intro">The published search trace ends at <strong>1.61× for SPIRIT</strong>, compared with 1.41× for SWIFT and 1.22× for D&amp;V.</p>
+          <div class="chart-legend"><span><i class="legend-line"></i>SPIRIT</span><span><i class="legend-line neutral"></i>SWIFT</span><span><i class="legend-line third"></i>D&amp;V</span></div>
+          <p class="plot-unit">Replay speedup / AR</p>
+          {{discovery}}
+          <p class="plot-axis-caption">Online configuration-discovery time (s)</p>
+          <div class="chart-legend line-style-key"><span><i class="legend-line ink"></i>Current choice</span><span><i class="legend-line ink dashed"></i>Best found so far</span></div>
+          {{ablation_table}}
+          <figcaption>Paper Fig. 3a · 13B · CNN/DM · FP16 · the same 20-request replay probe for all choices. The ablation uses separate three-task means.</figcaption>
+        </figure>
+        <figure class="evidence-figure" aria-labelledby="cost-heading">
+          <h6 id="cost-heading">Productive decoding doubles as evaluation.</h6>
+          <p class="evidence-intro">Controller updates account for <strong>8.2%</strong> of measured adaptation time in SPIRIT, versus <strong>76.6%</strong> in SWIFT.</p>
+          <div class="chart-legend"><span><i class="legend-block draft"></i>Draft</span><span><i class="legend-block verify"></i>Verify</span><span><i class="legend-block update"></i>Update</span></div>
+          <p class="plot-unit">Mean total time · normalized ms</p>
+          {{cost}}
+          <figcaption>Paper Fig. 3b · 13B · CNN/DM · FP16 · 13 requests, one seed. Published normalization divides SPIRIT window means by six speculative steps; SWIFT uses window means. Stacks include the &lt;1% residual execution time. These are normalized adaptation costs, not request latencies.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="results-block" aria-labelledby="sustained-heading">
+      <header class="evidence-heading"><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist over 1,000 requests.</h5></header>
+      <div class="evidence-grid">
+        <figure class="evidence-figure stream-evidence" aria-labelledby="stream-heading">
+          <h6 id="stream-heading"><span class="inline-gain">2.46×</span> pooled decode speedup.</h6>
+          <p class="evidence-intro">Cumulative throughput remains above AR in every displayed run. The best complete run reaches 2.48x.</p>
+          <div class="chart-legend"><span><i class="legend-line"></i>Pooled throughput</span><span><i class="legend-line runs"></i>Eight selected runs</span></div>
+          <div class="chart-views" data-chart-views>
+            <div class="chart-view-controls" role="group" aria-label="Request range" hidden><button type="button" data-chart-select="full" aria-controls="stream-full" aria-pressed="true">1–1,000 requests</button><button type="button" data-chart-select="early" aria-controls="stream-early" aria-pressed="false">First 50</button></div>
+            <div id="stream-full" data-chart-view="full"><p class="plot-unit">Cumulative decode speedup / AR · full stream</p>{{sustained_full}}</div>
+            <div id="stream-early" data-chart-view="early"><p class="plot-unit">Cumulative decode speedup / AR · first 50</p>{{sustained_early}}<p class="research-source">The first 20 requests are the configured search budget in these runs, not a universal convergence time.</p></div>
+          </div>
+          <p class="plot-axis-caption">Requests served</p>
+          <figcaption>LLaMA-2-13B · TinyStories · NF4 self-draft / full FP16 verifier · one RTX A6000 per run. Eight historical best-per-seed runs selected from 27 completed candidates. Pooled speedup is a ratio of pooled token throughputs, not a mean of speedups.</figcaption>
+        </figure>
+        <figure class="evidence-figure" aria-labelledby="precision-heading">
+          <p class="method-eyebrow">Separate three-task study</p><h6 id="precision-heading"><span class="inline-gain">+23.6%</span> throughput with NF4 self-drafts.</h6>
+          <p class="evidence-intro">Relative to FP16 self-drafts, with a request-paired bootstrap 95% interval of <strong>+21.4–26.3%</strong>.</p>
+          <p class="plot-unit">Aggregate speedup / AR · 95% intervals</p>
+          {{precision}}
+          <figcaption>LLaMA-2-13B · CNN/DM, GSM8K, TinyStories · the same FP16 verifier. Each draft precision is optimized separately. This comparison is independent of the selected 1,000-request trajectories.</figcaption>
+        </figure>
+      </div>
+      <p class="research-source">Long-stream timing includes within-run online search and profile updates; it excludes prefill, model loading, setup, and earlier candidate attempts.</p>
+    </section>
+
+    <section class="batch-evidence" aria-labelledby="batch-heading">
+      <div><p class="method-eyebrow">Batched serving</p><h5 id="batch-heading">The gains persist with batching.</h5><p>13B · speedup over matching batched AR · full-model verification at every batch size.</p></div>
+      <dl class="batch-metrics">{{batch_strip}}</dl>
+    </section>
+    <p class="research-source">Further evaluations in the paper cover Qwen and Mixtral architectures and HumanEval code generation.</p>
+  </div>
+</section>
