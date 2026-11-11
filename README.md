@@ -163,10 +163,13 @@ Within-request score Q uses length correction and EMA; cross-request matching
 uses raw head throughput and acceptance. Request-head trial outputs are not
 committed. The confidence plot and layer masks are explicitly schematic.
 
-Experiments incorporates all nine FP16 comparisons as three native tables,
-SpecBench mean/SD estimates, profile-reuse bars, the published discovery trace,
-normalized adaptation costs, sustained-run curves, the separate precision
-comparison, and matched-batch measurements. Published Figure 3a columns are
+Experiments leads with all nine FP16 comparisons as three native tables,
+followed immediately by sustained NF4 curves and the separately labeled paired
+precision study. SpecBench, profile reuse, the published discovery trace,
+normalized adaptation costs, and matched-batch measurements follow. The sustained
+figure separates setup, aggregation, and decode timing into labeled paragraphs;
+longer captions use paragraph breaks. Captions and source notes increase to 13px
+on screens up to 600px wide. Published Figure 3a columns are
 used deliberately, including the requested SPIRIT endpoint of 1.61×. All 27
 discovery observations and all 1,000 prefixes of the eight sustained runs are
 retained. Straight segments connect observations; no smoothing, extrapolation,

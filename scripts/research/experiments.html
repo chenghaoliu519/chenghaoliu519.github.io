@@ -10,6 +10,35 @@
       <p class="research-source">Speedup / AR · FP16 self-drafts · paper Table 1. Each table uses the matching autoregressive baseline.</p>
     </section>
 
+    <section class="results-block" aria-labelledby="sustained-heading">
+      <header class="evidence-heading"><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist as optimization costs are amortized.</h5></header>
+      <div class="evidence-grid">
+        <figure class="evidence-figure stream-evidence" aria-labelledby="stream-heading">
+          <h6 id="stream-heading"><span class="inline-gain">2.46×</span> pooled decode speedup.</h6>
+          <p class="evidence-intro">Cumulative throughput remains above AR throughout adaptation in all eight runs. Later requests amortize the initial optimization. The best full-stream run reaches 2.48x.</p>
+          <div class="chart-legend"><span><i class="legend-line"></i>Pooled throughput</span><span><i class="legend-line runs"></i>Eight runs</span></div>
+          <div class="chart-views" data-chart-views>
+            <div class="chart-view-controls" role="group" aria-label="Request range" hidden><button type="button" data-chart-select="full" aria-controls="stream-full" aria-pressed="true">1–1,000 requests</button><button type="button" data-chart-select="early" aria-controls="stream-early" aria-pressed="false">First 50</button></div>
+            <div id="stream-full" data-chart-view="full"><p class="plot-unit">Cumulative decode speedup / AR · full stream</p>{{sustained_full}}</div>
+            <div id="stream-early" data-chart-view="early"><p class="plot-unit">Cumulative decode speedup / AR · first 50</p>{{sustained_early}}<p class="research-source">Search and reuse phases in the first 50 requests.</p></div>
+          </div>
+          <p class="plot-axis-caption">Requests served</p>
+          <figcaption class="caption-notes">
+            <p><span class="caption-label">Setup</span>LLaMA-2-13B · TinyStories · fused NF4 self-draft / full FP16 verifier · one RTX A6000 per run.</p>
+            <p><span class="caption-label">Across runs</span>Eight distinct controller seeds, empty initial controllers, and the same ordered 1,000-request stream. The pooled curve uses each method’s token and time totals across runs.</p>
+            <p><span class="caption-label">Decode timing</span>Includes online search and profile updates; excludes prefill, model loading, and one-time draft setup.</p>
+          </figcaption>
+        </figure>
+        <figure class="evidence-figure" aria-labelledby="precision-heading">
+          <p class="method-eyebrow">Paired draft-precision study</p><h6 id="precision-heading"><span class="inline-gain">+23.6%</span> throughput with NF4 self-drafts.</h6>
+          <p class="evidence-intro">Relative to FP16 self-drafts, with a request-paired bootstrap 95% interval of <strong>+21.4–26.3%</strong>.</p>
+          <p class="plot-unit">Aggregate speedup / AR · 95% intervals</p>
+          {{precision}}
+          <figcaption><p>LLaMA-2-13B · CNN/DM, GSM8K, TinyStories · the same FP16 verifier.</p><p>Each draft precision is optimized separately.</p></figcaption>
+        </figure>
+      </div>
+    </section>
+
     <div class="evidence-grid results-grid">
       <figure class="evidence-figure" aria-labelledby="specbench-heading">
         <p class="method-eyebrow">SpecBench</p><h5 id="specbench-heading"><span class="inline-gain">+17.2%</span> full-stream throughput over SWIFT.</h5>
@@ -27,7 +56,7 @@
         <p class="plot-unit">Full-stream speedup / AR</p>
         {{reuse}}
         <div class="workload-sequence"><div><span>First pass</span><p>Stories → CNN/DM → GSM8K</p></div><div><span>Workloads return</span><p>Stories → CNN/DM → GSM8K</p></div></div>
-        <figcaption>600-request FP16 streams · task shifts every 100 requests. The gain compares full SPIRIT with SPIRIT without profile reuse.</figcaption>
+        <figcaption><p>600-request FP16 streams · task shifts every 100 requests.</p><p>The gain compares full SPIRIT with SPIRIT without profile reuse.</p></figcaption>
       </figure>
     </div>
 
@@ -43,7 +72,7 @@
           <p class="plot-axis-caption">Online configuration-discovery time (s)</p>
           <div class="chart-legend line-style-key"><span><i class="legend-line ink"></i>Current choice</span><span><i class="legend-line ink dashed"></i>Best found so far</span></div>
           {{ablation_table}}
-          <figcaption>Paper Fig. 3a · 13B · CNN/DM · FP16 · the same 20-request replay probe for all choices. The ablation uses separate three-task means.</figcaption>
+          <figcaption><p>Paper Fig. 3a · 13B · CNN/DM · FP16 · the same 20-request replay probe for all choices.</p><p>The ablation uses separate three-task means.</p></figcaption>
         </figure>
         <figure class="evidence-figure" aria-labelledby="cost-heading">
           <h6 id="cost-heading">Productive decoding doubles as evaluation.</h6>
@@ -51,35 +80,9 @@
           <div class="chart-legend"><span><i class="legend-block draft"></i>Draft</span><span><i class="legend-block verify"></i>Verify</span><span><i class="legend-block update"></i>Update</span></div>
           <p class="plot-unit">Mean total time · normalized ms</p>
           {{cost}}
-          <figcaption>Paper Fig. 3b · 13B · CNN/DM · FP16 · step-normalized window timing · 13 requests, one seed. Stacks include the &lt;1% residual execution time.</figcaption>
+          <figcaption><p>Paper Fig. 3b · 13B · CNN/DM · FP16 · step-normalized window timing · 13 requests, one seed.</p><p>Stacks include the &lt;1% residual execution time.</p></figcaption>
         </figure>
       </div>
-    </section>
-
-    <section class="results-block" aria-labelledby="sustained-heading">
-      <header class="evidence-heading"><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist as optimization costs are amortized.</h5></header>
-      <div class="evidence-grid">
-        <figure class="evidence-figure stream-evidence" aria-labelledby="stream-heading">
-          <h6 id="stream-heading"><span class="inline-gain">2.46×</span> pooled decode speedup.</h6>
-          <p class="evidence-intro">Cumulative throughput remains above AR throughout adaptation in all eight runs. Later requests amortize the initial optimization. The best full-stream run reaches 2.48x.</p>
-          <div class="chart-legend"><span><i class="legend-line"></i>Pooled throughput</span><span><i class="legend-line runs"></i>Eight runs</span></div>
-          <div class="chart-views" data-chart-views>
-            <div class="chart-view-controls" role="group" aria-label="Request range" hidden><button type="button" data-chart-select="full" aria-controls="stream-full" aria-pressed="true">1–1,000 requests</button><button type="button" data-chart-select="early" aria-controls="stream-early" aria-pressed="false">First 50</button></div>
-            <div id="stream-full" data-chart-view="full"><p class="plot-unit">Cumulative decode speedup / AR · full stream</p>{{sustained_full}}</div>
-            <div id="stream-early" data-chart-view="early"><p class="plot-unit">Cumulative decode speedup / AR · first 50</p>{{sustained_early}}<p class="research-source">Search and reuse phases in the first 50 requests.</p></div>
-          </div>
-          <p class="plot-axis-caption">Requests served</p>
-          <figcaption>LLaMA-2-13B · TinyStories · fused NF4 self-draft / full FP16 verifier · one RTX A6000 per run. Eight runs with distinct controller seeds, each starting from an empty controller on the same ordered 1,000-request stream. The pooled curve uses each method’s token and time totals across runs.</figcaption>
-        </figure>
-        <figure class="evidence-figure" aria-labelledby="precision-heading">
-          <p class="method-eyebrow">Paired draft-precision study</p><h6 id="precision-heading"><span class="inline-gain">+23.6%</span> throughput with NF4 self-drafts.</h6>
-          <p class="evidence-intro">Relative to FP16 self-drafts, with a request-paired bootstrap 95% interval of <strong>+21.4–26.3%</strong>.</p>
-          <p class="plot-unit">Aggregate speedup / AR · 95% intervals</p>
-          {{precision}}
-          <figcaption>LLaMA-2-13B · CNN/DM, GSM8K, TinyStories · the same FP16 verifier. Each draft precision is optimized separately.</figcaption>
-        </figure>
-      </div>
-      <p class="research-source">Decode timing includes online search and profile updates; it excludes prefill, model loading, and one-time draft setup.</p>
     </section>
 
     <section class="batch-evidence" aria-labelledby="batch-heading">

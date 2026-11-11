@@ -15,6 +15,10 @@
 .evidence-figure > .method-eyebrow { margin-bottom:10px; }
 .evidence-figure .evidence-intro { margin:12px 0 18px; font-size:14px; line-height:1.8; }
 .evidence-figure figcaption { margin-top:17px; color:var(--muted); font-size:12px; line-height:1.85; }
+.evidence-figure figcaption > p { margin:0; }
+.evidence-figure figcaption > p + p { margin-top:9px; }
+.evidence-figure .caption-notes > p + p { margin-top:14px; }
+.caption-label { display:block; margin-bottom:3px; color:var(--ink); font-weight:550; }
 .plot-unit { margin:18px 0 0; color:var(--muted); font-size:12px; line-height:1.6; }
 .plot-axis-caption { margin:0; color:var(--muted); font-size:12px; line-height:1.6; text-align:center; }
 .plot-subheading { margin:22px 0 8px; padding-top:17px; border-top:1px solid var(--rule); color:var(--ink); font-size:13px; font-weight:500; }
@@ -194,6 +198,7 @@
   .batch-evidence { grid-template-columns:minmax(0,1fr); gap:24px; }
 }
 @media (max-width:600px) {
+  .evidence-figure figcaption, .native-research .research-source { font-size:13px; line-height:1.8; }
   .evidence-heading h5, .batch-evidence h5 { font-size:21px; } .evidence-figure h5, .evidence-figure h6 { font-size:19px; }
   .evidence-figure .evidence-intro { font-size:13px; } .inline-gain { font-size:26px; }
   .research-chart text { font-size:16px; } .research-chart .plot-value { font-size:18px; } .research-chart .schematic-note { font-size:15px; }
@@ -219,6 +224,6 @@
 }
 @media print {
   .native-research { --research-teal:#087f73; --research-teal-soft:#e7f3f0; --research-warm:#a7683e; --plot-neutral:#77869b; --plot-third:#a0adbd; --plot-cloud:#93a2b7; --plot-draft:#d7e2ef; --plot-verify:#96abc6; --plot-other:#edf1f6; }
-  .chart-view-controls { display:none; } [data-chart-view][hidden] { display:block; }
+  .chart-view-controls { display:none; } [data-chart-view][hidden] { display:block !important; }
   .evidence-figure, .model-table, .window-loop > section, .profile-outcomes > div { break-inside:avoid; }
 }
