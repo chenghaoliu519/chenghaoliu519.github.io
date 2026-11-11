@@ -7,7 +7,7 @@ export const sources = {
   spirit: { href: '#publications', en: 'SPIRIT', zh: 'SPIRIT 研究介绍' },
   method: { href: '#spirit-method', en: 'How SPIRIT works', zh: 'SPIRIT 方法详解' },
   results: { href: '#spirit-experiments', en: 'Experimental results', zh: '实验结果' },
-  poster: { href: '/assets/figures/spirit-poster-neurips2026.png', en: 'Research poster', zh: '完整研究海报' },
+  poster: { href: '/assets/figures/spirit-poster-neurips2026.png', en: 'Research poster (PNG)', zh: '完整研究海报 PNG' },
   slides: { href: '/assets/slides/SPIRIT-NeurIPS2026.pdf?v=93ae0f35b67e', en: 'Slides (PDF)', zh: '幻灯片 PDF' },
   paper: { href: '/assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf', en: 'SPIRIT paper (PDF)', zh: 'SPIRIT 论文 PDF' },
   contact: { href: '#contact', en: 'Get in touch', zh: '联系方式' },
@@ -81,8 +81,8 @@ export const facts = [
   {
     id: "availability", sourceIds: ["paper","poster","slides"],
     match: /\b(download|source code|repository|pdf|arxiv|cv|resume|unpublished|under review)\b|下载|源码|代码|简历|未发表|在投/i,
-    en: "The SPIRIT paper, complete poster, and presentation are available beside the publication summary. Slides are available as a PDF for reading. The site does not publish a SPIRIT source-code release, full CV, or unpublished manuscripts. For other materials or collaboration, contact liuchenghao97@gmail.com.",
-    zh: "SPIRIT 论文、完整海报和演示文稿都可以从主页论文简介旁直接打开；幻灯片提供 PDF 在线阅读版。网站未发布 SPIRIT 源码、完整简历或未发表稿件；其他材料和合作可联系 liuchenghao97@gmail.com。"
+    en: "The SPIRIT paper (PDF), complete poster (PNG), and presentation slides (PDF) are available beside the publication summary. The site does not publish a SPIRIT source-code release, full CV, or unpublished manuscripts. For other materials or collaboration, contact liuchenghao97@gmail.com.",
+    zh: "主页论文简介旁可以直接打开 SPIRIT 论文 PDF、完整海报 PNG 和幻灯片 PDF。网站未发布 SPIRIT 源码、完整简历或未发表稿件；其他材料和合作可联系 liuchenghao97@gmail.com。"
   },
   {
     id: 'contact', sourceIds: ['contact'],
@@ -111,8 +111,8 @@ export const facts = [
   {
     id: "materials", sourceIds: ["paper","poster","slides"],
     match: /\b(poster|slides?|presentation|materials?)\b|海报|幻灯|演示文稿|报告材料/i,
-    en: "The homepage provides the full paper, complete research poster, and presentation next to the SPIRIT summary. Slides open as a PDF for reading. Research details integrate motivation measurements, method diagrams, and experimental result plots directly into the Problem, Method, and Experiments sections.",
-    zh: "主页 SPIRIT 简介旁提供完整论文、研究海报和演示文稿入口。幻灯片可以打开 PDF 在线阅读。Research details 的 Problem、Method、Experiments 中直接呈现动机实测图、方法流程和实验结果图表。"
+    en: "The homepage provides the full paper as a PDF, the complete research poster as a PNG image, and the presentation slides as a PDF next to the SPIRIT summary. Research details integrate motivation measurements, method diagrams, and experimental result plots directly into the Problem, Method, and Experiments sections.",
+    zh: "主页 SPIRIT 简介旁提供完整论文 PDF、研究海报 PNG 和幻灯片 PDF。Research details 的 Problem、Method、Experiments 中直接呈现动机实测图、方法流程和实验结果图表。"
   },
   {
     id: "slide_download", sourceIds: ["slides"],

@@ -1,5 +1,5 @@
 import { CHAT_ENDPOINT } from './config.mjs?v=3ecaa7461fe7';
-import { localAnswer, sources } from './knowledge.mjs?v=b2492df55093';
+import { localAnswer, sources } from './knowledge.mjs?v=88f1d8909c5e';
 import { MAX_QUESTION_LENGTH, MAX_ANSWER_LENGTH, MAX_TURNS, createChatPayload } from './conversation.mjs?v=a0c346b920fe';
 
 const get = id => document.getElementById(`guide-${id}`);
