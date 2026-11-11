@@ -61,7 +61,7 @@ origin or place any secret in the client configuration.
   site's public topic index, never from model-generated URLs.
   Method and results links open the corresponding research tab, including any
   ancestor disclosures, without changing the URL or the next visit's closed default.
-  Public material links include the poster, PDF slides, and the PPTX download.
+  Public material links include the paper, poster, and PDF slides.
   SpecBench, reuse, precision, and sustained-run facts retain separate baselines
   and timing scopes in both the AI prompt and curated fallback.
   Grounding instructions reduce hallucinations; they do not guarantee factual

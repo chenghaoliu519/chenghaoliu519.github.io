@@ -93,11 +93,9 @@ versioned. The separate method-flow PDF is published at
 diagram (PDF).”
 
 The publication summary and Experiments panel both link the author-supplied
-complete poster at `assets/figures/spirit-poster-neurips2026.png`, the presentation
-PDF at `assets/slides/SPIRIT-NeurIPS2026.pdf`, and its PPTX download at
-`assets/slides/SPIRIT-NeurIPS2026.pptx`. These are exact source copies of the
-paired presentation exports; all 41 slide titles match between PDF and PPTX.
-Presentation links carry content hashes to refresh updated exports. The latest supplied `results/results.png`
+complete poster at `assets/figures/spirit-poster-neurips2026.png` and the presentation
+PDF at `assets/slides/SPIRIT-NeurIPS2026.pdf`. These are exact source copies of the
+supplied exports. The presentation link carries a content hash to refresh updated exports. The latest supplied `results/results.png`
 is byte-identical to the versioned V23 figure already used for the results
 disclosure. The poster and presentation confirm the comparison scopes and
 broader HumanEval, architecture, and batching evaluations.

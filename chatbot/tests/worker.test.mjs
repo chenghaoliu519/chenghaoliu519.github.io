@@ -168,9 +168,9 @@ test('specific experiment questions retain their comparison scope', () => {
   assert.match(pooled.answer, /27 completed/);
 });
 
-test('public material requests distinguish viewing slides from downloading the deck', () => {
+test('public material requests link to the PDF slides', () => {
   assert.deepEqual(localAnswer('Where are the poster and presentation?').sourceIds, ['paper', 'poster', 'slides']);
   assert.deepEqual(localAnswer('Are the slides available?').sourceIds, ['paper', 'poster', 'slides']);
-  assert.deepEqual(localAnswer('Can I download the PPTX?').sourceIds, ['slides', 'slideDeck']);
-  assert.deepEqual(localAnswer('PPT 在哪里下载？', 'zh').sourceIds, ['slides', 'slideDeck']);
+  assert.deepEqual(localAnswer('Can I download the PPTX?').sourceIds, ['slides']);
+  assert.deepEqual(localAnswer('PPT 在哪里下载？', 'zh').sourceIds, ['slides']);
 });

@@ -1,5 +1,5 @@
 import { CHAT_ENDPOINT } from './config.mjs?v=3ecaa7461fe7';
-import { localAnswer, sources } from './knowledge.mjs?v=c4dcf693d5b8';
+import { localAnswer, sources } from './knowledge.mjs?v=b2de83f233d2';
 import { MAX_QUESTION_LENGTH, MAX_ANSWER_LENGTH, MAX_TURNS, createChatPayload } from './conversation.mjs?v=a0c346b920fe';
 
 const get = id => document.getElementById(`guide-${id}`);
@@ -213,7 +213,7 @@ function appendMessage(role, text, ids = [], mode = '', lang = language) {
     for (const id of [...new Set(ids)].slice(0, 3)) {
       const source = sources[id]; if (!source) continue;
       const link = document.createElement('a');
-      link.href = source.href; link.textContent = source.en + (source.download ? ' ↓' : ' ↗');
+      link.href = source.href; link.textContent = source.en + ' ↗';
       if (source.href.startsWith('#')) {
         link.addEventListener('click', event => {
           event.preventDefault(); close();
@@ -238,8 +238,7 @@ function appendMessage(role, text, ids = [], mode = '', lang = language) {
             }, { once: true });
           });
         });
-      } else if (source.download) { link.download = ''; }
-      else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+      } else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
       links.append(link);
     }
     item.append(links);

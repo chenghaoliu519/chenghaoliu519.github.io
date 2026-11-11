@@ -442,8 +442,6 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 
 /* Evidence and optional research depth stay inside the native details panel. */
 .publication-links { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 18px; margin-top: 13px; }
-.publication-links .slide-download { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; color: var(--muted); font-size: 11px; text-decoration: none; }
-.publication-links .slide-download:hover { color: var(--accent); text-decoration: underline; }
 .paper-link { gap: 8px; }
 .file-label { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .5px; line-height: 1.5; border: 1px solid var(--rule-strong); border-radius: 4px; padding: 1px 5px; color: var(--muted); }
 .motivation-evidence { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 24px 44px; margin-top: 34px; padding: 28px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }

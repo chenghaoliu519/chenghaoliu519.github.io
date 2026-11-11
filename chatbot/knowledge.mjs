@@ -9,7 +9,6 @@ export const sources = {
   results: { href: '#spirit-experiments', en: 'Experimental results', zh: '实验结果' },
   poster: { href: '/assets/figures/spirit-poster-neurips2026.png', en: 'Research poster', zh: '完整研究海报' },
   slides: { href: '/assets/slides/SPIRIT-NeurIPS2026.pdf?v=93ae0f35b67e', en: 'Slides (PDF)', zh: '幻灯片 PDF' },
-  slideDeck: { href: '/assets/slides/SPIRIT-NeurIPS2026.pptx?v=eaf328476dee', en: 'Download slides (PPTX)', zh: '下载演示文稿', download: true },
   paper: { href: '/assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf', en: 'SPIRIT paper (PDF)', zh: 'SPIRIT 论文 PDF' },
   contact: { href: '#contact', en: 'Get in touch', zh: '联系方式' },
   measurement: {
@@ -82,8 +81,8 @@ export const facts = [
   {
     id: "availability", sourceIds: ["paper","poster","slides"],
     match: /\b(download|source code|repository|pdf|arxiv|cv|resume|unpublished|under review)\b|下载|源码|代码|简历|未发表|在投/i,
-    en: "The SPIRIT paper, complete poster, and presentation are available beside the publication summary. Slides can be read as a PDF or downloaded as PPTX. The site does not publish a SPIRIT source-code release, full CV, or unpublished manuscripts. For other materials or collaboration, contact liuchenghao97@gmail.com.",
-    zh: "SPIRIT 论文、完整海报和演示文稿都可以从主页论文简介旁直接打开；幻灯片支持 PDF 在线查看和 PPTX 下载。网站未发布 SPIRIT 源码、完整简历或未发表稿件；其他材料和合作可联系 liuchenghao97@gmail.com。"
+    en: "The SPIRIT paper, complete poster, and presentation are available beside the publication summary. Slides are available as a PDF for reading. The site does not publish a SPIRIT source-code release, full CV, or unpublished manuscripts. For other materials or collaboration, contact liuchenghao97@gmail.com.",
+    zh: "SPIRIT 论文、完整海报和演示文稿都可以从主页论文简介旁直接打开；幻灯片提供 PDF 在线阅读版。网站未发布 SPIRIT 源码、完整简历或未发表稿件；其他材料和合作可联系 liuchenghao97@gmail.com。"
   },
   {
     id: 'contact', sourceIds: ['contact'],
@@ -112,14 +111,14 @@ export const facts = [
   {
     id: "materials", sourceIds: ["paper","poster","slides"],
     match: /\b(poster|slides?|presentation|materials?)\b|海报|幻灯|演示文稿|报告材料/i,
-    en: "The homepage provides the full paper, complete research poster, and presentation next to the SPIRIT summary. Slides open as a PDF for reading, with a separate PowerPoint download. Research details contain expandable motivation, method, and experimental-results figures.",
-    zh: "主页 SPIRIT 简介旁提供完整论文、研究海报和演示文稿入口。幻灯片可以打开 PDF 在线阅读，也有单独的 PowerPoint 下载链接。Research details 中还可分别展开动机图、方法图和实验结果图。"
+    en: "The homepage provides the full paper, complete research poster, and presentation next to the SPIRIT summary. Slides open as a PDF for reading. Research details contain expandable motivation, method, and experimental-results figures.",
+    zh: "主页 SPIRIT 简介旁提供完整论文、研究海报和演示文稿入口。幻灯片可以打开 PDF 在线阅读。Research details 中还可分别展开动机图、方法图和实验结果图。"
   },
   {
-    id: "slide_download", sourceIds: ["slides","slideDeck"],
+    id: "slide_download", sourceIds: ["slides"],
     match: /\b(pptx?|powerpoint)\b|下载[\s\S]*(?:幻灯|演示)|(?:幻灯|演示)[\s\S]*下载/i,
-    en: "The SPIRIT presentation is available as a PDF for browser viewing and as a PowerPoint file for download. Use Slides (PDF) to read it or Download slides (PPTX) for the presentation file.",
-    zh: "SPIRIT 演示文稿提供 PDF 在线阅读版和 PowerPoint 下载版。可以点击 Slides (PDF) 查看，或点击 Download slides (PPTX) 下载演示文件。"
+    en: "The SPIRIT presentation is available as a PDF. Open Slides (PDF) beside the publication summary to read it in your browser.",
+    zh: "SPIRIT 演示文稿提供 PDF 在线阅读版，可以点击主页论文简介旁的 Slides (PDF) 查看。"
   }
 ];
 
