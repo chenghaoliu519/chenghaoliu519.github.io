@@ -144,7 +144,7 @@ test('local fallback handles public questions and refuses unsupported private de
   assert.match(localAnswer('SPIRIT 跨请求如何复用？', 'zh').answer, /历史候选/);
   assert.match(localAnswer('What is his phone number?').answer, /don’t have public information/);
   assert.match(localAnswer('Can I download unpublished papers?').answer, /does not publish/);
-  assert.match(localAnswer('How was 2.48 measured? 1,000 requests?').answer, /2\.478/);
+  assert.match(localAnswer('How was 2.48 measured? 1,000 requests?').answer, /best full-stream run reaching 2\.48×/);
 });
 
 
@@ -164,8 +164,8 @@ test('specific experiment questions retain their comparison scope', () => {
   assert.match(peaks.answer, /1\.74×/);
   assert.match(peaks.answer, /2\.48×/);
   const pooled = localAnswer('How is the pooled result measured?');
-  assert.match(pooled.answer, /2\.4646542577×/);
-  assert.match(pooled.answer, /27 completed/);
+  assert.match(pooled.answer, /2\.46×/);
+  assert.match(pooled.answer, /eight runs with distinct controller seeds/);
 });
 
 test('public material requests link to the PDF slides', () => {

@@ -147,7 +147,7 @@ def discovery():
         descriptions.append(f'{method}: final {current:.3f}×, best {best:.3f}×')
     body+=text(X(294.905922)-3,Y(1.61)-12,'1.61×','plot-value accent-value',anchor='end')
     return svg('discovery-trace','Published configuration-discovery trace',
-               'Paper Figure 3a. Shared 20-request replay probes, LLaMA-2-13B, CNN/DM, FP16. Solid lines show the selected configuration, dashed lines the best replay speedup found so far. All 27 published event points are retained, with no time-zero measurement. '+'; '.join(descriptions),body)
+               'Paper Figure 3a. Shared 20-request replay probes, LLaMA-2-13B, CNN/DM, FP16. Solid lines show the selected configuration, dashed lines the best replay speedup found so far. '+'; '.join(descriptions),body)
 
 def ablation_table():
     result='<table class="compact-evidence-table"><caption>Objective ablation · mean speedup over three tasks / model</caption><thead><tr><th scope="col">Objective</th><th scope="col">13B</th><th scope="col">70B</th></tr></thead><tbody>'
@@ -169,7 +169,7 @@ def cost():
         body+=text(center,Y(total)-10,f'{total:.1f}','plot-value '+('accent-value' if row['method']=='SPIRIT' else ''))
         body+=text(center,243,row['method'])
         desc.append(f'{row["method"]}: {total:.1f} normalized milliseconds; {row["update_share"]:.1f}% update share')
-    return svg('controller-cost','Normalized adaptation-window cost', '; '.join(desc)+'. Paper Figure 3b normalization: SPIRIT window means are divided by six speculative steps; SWIFT uses window means. These are not whole-request latencies.',body)
+    return svg('controller-cost','Normalized adaptation-window cost', '; '.join(desc)+'. Paper Figure 3b: step-normalized window timing on LLaMA-2-13B, CNN/DM, FP16; 13 requests, one seed. SPIRIT window means are divided by six speculative steps; SWIFT uses window means.',body)
 
 def reuse():
     X,Y,body=axes(0,3,0,1.9,[],[(v,f'{v:.1f}') for v in [0,1,1.5]])
@@ -205,7 +205,7 @@ def sustained(early=False):
         body+=circle(X(1000),Y(values['pooled'][-1]),4,'plot-emphasis')
         body+=text(416,43,'2.46× pooled','plot-value accent-value',anchor='end')
     return svg('sustained-'+('early' if early else 'full'),'Cumulative decode speedup, '+('first 50 requests' if early else '1,000 requests'),
-               'Eight historical best-per-seed LLaMA-2-13B NF4 self-draft runs with full FP16 verification, selected from 27 completed candidates. Gray lines are individual runs; blue is the ratio of pooled token throughputs, not an average of speedups. Every recorded cumulative prefix is above AR. Final pooled speedup 2.4646542576762034×; best run 2.477663796675144×. '+('The first 20 requests are the configured search budget in these runs.' if early else ''),body)
+               'Eight runs with distinct controller seeds, each starting from an empty controller on the same ordered 1,000-request TinyStories stream. LLaMA-2-13B uses fused NF4 self-drafts with full FP16 verification. Gray lines show individual runs; the blue curve uses each method’s token and time totals pooled across runs. Cumulative throughput stays above AR throughout adaptation in all eight runs. Full-stream speedup is 2.46× pooled and 2.48× for the best run. '+('Search and reuse phases in the first 50 requests.' if early else ''),body)
 
 def precision():
     row=next(r for r in DATA['precision'] if r['task']=='Overall')

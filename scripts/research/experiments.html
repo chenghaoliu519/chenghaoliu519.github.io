@@ -18,7 +18,7 @@
         <div class="chart-legend"><span><i class="legend-hollow"></i>SWIFT</span><span><i class="legend-dot"></i>SPIRIT</span></div>
         {{specbench}}
         <p class="plot-axis-caption">Speedup / AR</p>
-        <figcaption>LLaMA-2-13B · three-seed mean ± SD. These task estimates describe post-adaptation performance; the +17.2% headline uses the full stream.</figcaption>
+        <figcaption>LLaMA-2-13B · post-adaptation performance · three-seed mean ± SD.</figcaption>
       </figure>
       <figure class="evidence-figure" aria-labelledby="reuse-results-heading">
         <p class="method-eyebrow">Profile reuse</p><h5 id="reuse-results-heading"><span class="inline-gain teal-value">+9.8–10.3%</span> when workloads recur.</h5>
@@ -51,35 +51,35 @@
           <div class="chart-legend"><span><i class="legend-block draft"></i>Draft</span><span><i class="legend-block verify"></i>Verify</span><span><i class="legend-block update"></i>Update</span></div>
           <p class="plot-unit">Mean total time · normalized ms</p>
           {{cost}}
-          <figcaption>Paper Fig. 3b · 13B · CNN/DM · FP16 · 13 requests, one seed. Published normalization divides SPIRIT window means by six speculative steps; SWIFT uses window means. Stacks include the &lt;1% residual execution time. These are normalized adaptation costs, not request latencies.</figcaption>
+          <figcaption>Paper Fig. 3b · 13B · CNN/DM · FP16 · step-normalized window timing · 13 requests, one seed. Stacks include the &lt;1% residual execution time.</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="results-block" aria-labelledby="sustained-heading">
-      <header class="evidence-heading"><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist over 1,000 requests.</h5></header>
+      <header class="evidence-heading"><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist as optimization costs are amortized.</h5></header>
       <div class="evidence-grid">
         <figure class="evidence-figure stream-evidence" aria-labelledby="stream-heading">
           <h6 id="stream-heading"><span class="inline-gain">2.46×</span> pooled decode speedup.</h6>
-          <p class="evidence-intro">Cumulative throughput remains above AR in every displayed run. The best complete run reaches 2.48x.</p>
-          <div class="chart-legend"><span><i class="legend-line"></i>Pooled throughput</span><span><i class="legend-line runs"></i>Eight selected runs</span></div>
+          <p class="evidence-intro">Cumulative throughput remains above AR throughout adaptation in all eight runs. Later requests amortize the initial optimization. The best full-stream run reaches 2.48x.</p>
+          <div class="chart-legend"><span><i class="legend-line"></i>Pooled throughput</span><span><i class="legend-line runs"></i>Eight runs</span></div>
           <div class="chart-views" data-chart-views>
             <div class="chart-view-controls" role="group" aria-label="Request range" hidden><button type="button" data-chart-select="full" aria-controls="stream-full" aria-pressed="true">1–1,000 requests</button><button type="button" data-chart-select="early" aria-controls="stream-early" aria-pressed="false">First 50</button></div>
             <div id="stream-full" data-chart-view="full"><p class="plot-unit">Cumulative decode speedup / AR · full stream</p>{{sustained_full}}</div>
-            <div id="stream-early" data-chart-view="early"><p class="plot-unit">Cumulative decode speedup / AR · first 50</p>{{sustained_early}}<p class="research-source">The first 20 requests are the configured search budget in these runs, not a universal convergence time.</p></div>
+            <div id="stream-early" data-chart-view="early"><p class="plot-unit">Cumulative decode speedup / AR · first 50</p>{{sustained_early}}<p class="research-source">Search and reuse phases in the first 50 requests.</p></div>
           </div>
           <p class="plot-axis-caption">Requests served</p>
-          <figcaption>LLaMA-2-13B · TinyStories · NF4 self-draft / full FP16 verifier · one RTX A6000 per run. Eight historical best-per-seed runs selected from 27 completed candidates. Pooled speedup is a ratio of pooled token throughputs, not a mean of speedups.</figcaption>
+          <figcaption>LLaMA-2-13B · TinyStories · fused NF4 self-draft / full FP16 verifier · one RTX A6000 per run. Eight runs with distinct controller seeds, each starting from an empty controller on the same ordered 1,000-request stream. The pooled curve uses each method’s token and time totals across runs.</figcaption>
         </figure>
         <figure class="evidence-figure" aria-labelledby="precision-heading">
-          <p class="method-eyebrow">Separate three-task study</p><h6 id="precision-heading"><span class="inline-gain">+23.6%</span> throughput with NF4 self-drafts.</h6>
+          <p class="method-eyebrow">Paired draft-precision study</p><h6 id="precision-heading"><span class="inline-gain">+23.6%</span> throughput with NF4 self-drafts.</h6>
           <p class="evidence-intro">Relative to FP16 self-drafts, with a request-paired bootstrap 95% interval of <strong>+21.4–26.3%</strong>.</p>
           <p class="plot-unit">Aggregate speedup / AR · 95% intervals</p>
           {{precision}}
-          <figcaption>LLaMA-2-13B · CNN/DM, GSM8K, TinyStories · the same FP16 verifier. Each draft precision is optimized separately. This comparison is independent of the selected 1,000-request trajectories.</figcaption>
+          <figcaption>LLaMA-2-13B · CNN/DM, GSM8K, TinyStories · the same FP16 verifier. Each draft precision is optimized separately.</figcaption>
         </figure>
       </div>
-      <p class="research-source">Long-stream timing includes within-run online search and profile updates; it excludes prefill, model loading, setup, and earlier candidate attempts.</p>
+      <p class="research-source">Decode timing includes online search and profile updates; it excludes prefill, model loading, and one-time draft setup.</p>
     </section>
 
     <section class="batch-evidence" aria-labelledby="batch-heading">

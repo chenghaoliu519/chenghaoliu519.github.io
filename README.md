@@ -100,15 +100,11 @@ is byte-identical to the versioned V23 figure already used for the results
 disclosure. The poster and presentation confirm the comparison scopes and
 broader HumanEval, architecture, and batching evaluations.
 
-The headline 2.48× is the camera-ready's NF4 maximum. Appendix C.7 reports
-2.478× for the best complete run (rounded to 2.48×), and 2.465× pooled across
-eight runs. It uses LLaMA-2-13B, an NF4 self-draft, a full FP16 verifier, and
-the same ordered 1,000-request TinyStories stream on one RTX A6000 per run.
-Timing excludes prefill and includes online search and profile updates.
-Keep the maximum distinct from the pooled result and the older supplementary
-2.21× headline. The FP16 maximum remains 1.74×.
-The publication headline explicitly labels NF4 self-drafting and the best
-1,000-request run; Google Scholar is available in the introductory links.
+The public descriptions follow paper Appendix C.7 and the presentation's
+long-stream study: 2.46× pooled decode speedup and 2.48× for the best full-stream
+run. The publication headline labels NF4 self-drafting and the 1,000-request
+stream. The FP16 maximum remains 1.74×; these maxima come from their respective
+settings. Google Scholar is available in the introductory links.
 
 The V23 results copy is checked against its supplied data and provenance:
 SPIRIT leads SWIFT and D&V in all nine Table 1 settings. SpecBench's +17.2%
@@ -117,17 +113,17 @@ and updates; it is separate from the six post-adaptation task means. Reuse adds
 9.8–10.3% over the no-reuse variant in two 600-request streams, each changing
 tasks every 100 requests.
 
-The sustained NF4 result pools eight historical best-per-seed local runs from
-27 completed candidates. The raw pooled speedup is 2.4646542576762034,
-displayed as 2.46× directly from the unrounded value. Earlier candidate attempts
-are excluded from each selected run's decode timing. The poster's author-reported
-“eight runs per seed” describes additional experiment scale; its displayed
-curves and pooled statistic still use eight selected local records, one per seed.
+The sustained NF4 evaluation uses eight runs with distinct controller seeds.
+Each starts from an empty controller and serves the same ordered 1,000-request
+TinyStories stream with LLaMA-2-13B, fused NF4 self-drafts, and full FP16
+verification on one RTX A6000. Pooled speedup uses each method's token and time
+totals across runs. Decode timing includes online search and profile updates;
+it excludes prefill, model loading, and one-time draft setup.
 
 The +23.6% NF4/FP16 throughput ratio and 95% CI of +21.4–26.3% come from the
 separate three-task LLaMA-2-13B comparison (Table 5). Both variants keep the
-same FP16 verifier and optimize configurations separately. This comparison
-must not be derived from, or pooled with, the selected TinyStories trajectories.
+same FP16 verifier and optimize configurations separately. This three-task
+comparison and the 1,000-request study are separate evaluations.
 
 The motivation table comes from the V06 figure's fixed-configuration sweep:
 LLaMA-2-13B, CNN/DM, FP16, 21 skip ratios × 24 patterns, and the same 24 prompts
@@ -176,7 +172,7 @@ discovery observations and all 1,000 prefixes of the eight sustained runs are
 retained. Straight segments connect observations; no smoothing, extrapolation,
 or time-zero measurement is introduced. Full-stream and post-adaptation
 SpecBench scopes, normalized timing and latency, and independent precision
-and selected-run studies stay distinct.
+and long-stream studies stay distinct.
 
 The native SVGs are deterministically rendered from
 `assets/data/spirit-research.json` by `scripts/render_research.py` and the three

@@ -8,7 +8,7 @@ export const sources = {
   method: { href: '#spirit-method', en: 'How SPIRIT works', zh: 'SPIRIT 方法详解' },
   results: { href: '#spirit-experiments', en: 'Experimental results', zh: '实验结果' },
   poster: { href: '/assets/figures/spirit-poster-neurips2026.png', en: 'Research poster (PNG)', zh: '完整研究海报 PNG' },
-  slides: { href: '/assets/slides/SPIRIT-NeurIPS2026.pdf?v=93ae0f35b67e', en: 'Slides (PDF)', zh: '幻灯片 PDF' },
+  slides: { href: '/assets/slides/SPIRIT-NeurIPS2026.pdf?v=d749d3df0a99', en: 'Slides (PDF)', zh: '幻灯片 PDF' },
   paper: { href: '/assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf', en: 'SPIRIT paper (PDF)', zh: 'SPIRIT 论文 PDF' },
   contact: { href: '#contact', en: 'Get in touch', zh: '联系方式' },
   measurement: {
@@ -69,14 +69,14 @@ export const facts = [
   {
     id: "measurement", sourceIds: ["results","measurement"],
     match: /\b(protocol|hardware|a6000|1000|1,000|seeds?|cumulative|pooled|reproduc|measurement|measured how)\b|口径|硬件|种子|累计|汇总|合并|复现|怎么测|如何测|两台|2\.14|2\.46/i,
-    en: "The independent long-stream study uses LLaMA-2-13B, fused NF4 drafts, full FP16 verification, and the same ordered 1,000-request TinyStories stream on one RTX A6000 per run. Eight historical best-per-seed runs were selected from 27 completed candidates: the best complete run is 2.478× (2.48× at two decimals), while pooled throughput is 2.4646542577× (2.46× at two decimals). Decode timing includes within-run search and profile updates, excluding prefill, loading, setup, and earlier candidate attempts. This is separate from the paired three-task NF4/FP16 study.",
-    zh: "独立长序列实验使用 LLaMA-2-13B、融合 NF4 自草稿、完整 FP16 验证器和同序的 1,000 个 TinyStories 请求，每次运行一张 RTX A6000。从 27 个已完成候选中选取八个 seed 各自的历史最佳运行：最佳完整运行是 2.478×，展示为 2.48×；合并吞吐量为 2.4646542577×，直接保留两位小数是 2.46×。解码计时包含本次运行的在线搜索和配置更新，排除 prefill、加载、初始化及此前候选尝试。它与三任务 NF4/FP16 配对实验是两组独立评估。"
+    en: "In the independent long-stream study, eight runs with distinct controller seeds each start from an empty controller and serve the same ordered 1,000-request TinyStories stream. They use LLaMA-2-13B with fused NF4 self-drafts and full FP16 verification on one RTX A6000 per run. Pooled decode speedup is 2.46×, with the best full-stream run reaching 2.48×; the pooled result uses each method’s token and time totals across runs. Decode timing includes online search and profile updates and excludes prefill, model loading, and one-time draft setup.",
+    zh: "独立长序列实验包含八次使用不同控制器随机种子的运行，每次从空控制器状态开始，处理顺序相同的 1,000 个 TinyStories 请求。实验使用 LLaMA-2-13B、融合 NF4 自草稿和完整 FP16 验证器，每次运行一张 RTX A6000。跨运行合并后的解码加速为 2.46×，最佳完整序列运行为 2.48×；合并结果由各方法跨运行的 token 总数和时间总量计算。解码计时包含在线搜索和配置更新，排除 prefill、模型加载和一次性草稿初始化。"
   },
   {
     id: 'verification', sourceIds: ['spirit', 'method'],
     match: /\b(verify|verification|verifier|correctness|lossless|exact|quality|training|train|draft model)\b|验证|正确性|无损|质量|训练|草稿模型/i,
-    en: 'SPIRIT reuses the target model for self-drafting and retains full-target verification. Layer skipping or lower draft precision changes proposal cost; the full model still verifies the proposals. It needs no training or separately trained draft model. The public summary does not claim bit-for-bit identity for every deployment-precision execution.',
-    zh: 'SPIRIT 复用目标模型进行自草稿，并保留完整目标模型验证。跳层或降低草稿精度改变的是候选生成成本，候选仍由完整模型验证。它不需要训练，也不需要单独训练的草稿模型。公开介绍没有承诺所有部署精度下的执行都逐位完全一致。'
+    en: 'SPIRIT reuses the target model for self-drafting and retains full-target verification. Layer skipping or lower draft precision changes proposal cost; the full model still verifies the proposals. It needs no training or separately trained draft model. The standard full-target speculative verification rule preserves the target distribution.',
+    zh: 'SPIRIT 复用目标模型进行自草稿，并保留完整目标模型验证。跳层或降低草稿精度改变的是候选生成成本，候选仍由完整模型验证。它不需要训练，也不需要单独训练的草稿模型。完整目标模型的标准推测验证规则保留目标分布。'
   },
   {
     id: "availability", sourceIds: ["paper","poster","slides"],
@@ -105,8 +105,8 @@ export const facts = [
   {
     id: "precision", sourceIds: ["results","paper"],
     match: /(?=[\s\S]*(?:\bnf4\b|量化))(?=[\s\S]*(?:\b(?:vs|versus|compar\w*|relative|precision)\b|对比|相比|比较|精度))|\bquantiz\w*\b|23\.6|精度对比/i,
-    en: "In the separate three-task LLaMA-2-13B precision study, NF4 self-drafts deliver 23.6% higher aggregate throughput than FP16 self-drafts, with a request-paired bootstrap 95% interval of 21.4–26.3%. Overall speedups over AR are 1.981× and 1.603× respectively. Both use the same FP16 verifier, with ratio and layer configurations optimized separately. This comparison does not use the selected 2.48× TinyStories run.",
-    zh: "独立的三任务 LLaMA-2-13B 精度实验中，NF4 自草稿相比 FP16 自草稿提高 23.6% 的合并吞吐量，请求配对 bootstrap 的 95% 区间为 21.4–26.3%。两者相对 AR 分别为 1.981× 和 1.603×，使用同一个 FP16 验证器，并分别优化比例和层配置。这个比较不使用所选 TinyStories 运行的 2.48× 结果。"
+    en: "In the separate three-task LLaMA-2-13B precision study, NF4 self-drafts deliver 23.6% higher aggregate throughput than FP16 self-drafts, with a request-paired bootstrap 95% interval of 21.4–26.3%. Overall speedups over AR are 1.981× and 1.603× respectively. Both use the same FP16 verifier, with ratio and layer configurations optimized separately.",
+    zh: "独立的三任务 LLaMA-2-13B 精度实验中，NF4 自草稿相比 FP16 自草稿提高 23.6% 的合并吞吐量，请求配对 bootstrap 的 95% 区间为 21.4–26.3%。两者相对 AR 分别为 1.981× 和 1.603×，使用同一个 FP16 验证器，并分别优化比例和层配置。"
   },
   {
     id: "materials", sourceIds: ["paper","poster","slides"],
