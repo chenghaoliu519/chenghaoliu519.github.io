@@ -565,9 +565,6 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 .experiment-findings p { margin: 0; font-size: 14px; line-height: 1.85; }
 .experiment-summary > .experiment-note { max-width: 880px; color: var(--muted); font-size: 12px; line-height: 1.8; }
 .experiment-summary > .figure-disclosure { margin-top: 24px; }
-.experiment-resources { display: flex; flex-wrap: wrap; gap: 4px 28px; margin-top: 8px; }
-.experiment-resources a { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-size: 13px; text-decoration: none; }
-.experiment-resources a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .resource-format { color: var(--muted); font-size: 10px; letter-spacing: .03em; }
 @media (max-width: 900px) {
   .research-panel > .motivation-evidence { grid-template-columns: minmax(0, 1fr); }

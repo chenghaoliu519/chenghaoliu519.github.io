@@ -92,7 +92,7 @@ versioned. The separate method-flow PDF is published at
 `assets/papers/spirit_flow.pdf` and linked in the method caption as “control-flow
 diagram (PDF).”
 
-The publication summary and Experiments panel both link the author-supplied
+The publication summary links the author-supplied
 complete poster at `assets/figures/spirit-poster-neurips2026.png` and the presentation
 PDF at `assets/slides/SPIRIT-NeurIPS2026.pdf`. These are exact source copies of the
 supplied exports. The presentation link carries a content hash to refresh updated exports. The latest supplied `results/results.png`
