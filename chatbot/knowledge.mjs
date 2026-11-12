@@ -11,7 +11,7 @@ export const sources = {
   nf4_results: { href: '#experiment-nf4', en: 'NF4 decoding', zh: 'NF4 解码实验' },
   adaptation_results: { href: '#experiment-adaptation', en: 'Online adaptation', zh: '在线适应实验' },
   poster: { href: '/assets/figures/spirit-poster-neurips2026.png', en: 'Research poster (PNG)', zh: '完整研究海报 PNG' },
-  slides: { href: '/assets/slides/SPIRIT-NeurIPS2026.pdf?v=930692eb2c1d', en: 'Slides (PDF)', zh: '幻灯片 PDF' },
+  slides: { href: '/assets/slides/SPIRIT-NeurIPS2026.pdf?v=0f0e927df69d', en: 'Slides (PDF)', zh: '幻灯片 PDF' },
   paper: { href: '/assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf', en: 'SPIRIT paper (PDF)', zh: 'SPIRIT 论文 PDF' },
   contact: { href: '#contact', en: 'Get in touch', zh: '联系方式' },
   measurement: {
