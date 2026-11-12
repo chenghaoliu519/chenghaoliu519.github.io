@@ -4,13 +4,38 @@
   <p class="experiment-context">Decode throughput relative to autoregressive decoding (AR), with full-target verification. The headline values are maxima from their respective settings.</p>
 
   <div id="results-figure-details">
-    <section class="results-block" aria-labelledby="models-heading">
+    <nav class="experiment-tabs" aria-label="Experiment topics">
+      <a id="experiment-models-tab" href="#experiment-models">Models &amp; tasks</a>
+      <a id="experiment-nf4-tab" href="#experiment-nf4">NF4 decoding</a>
+      <a id="experiment-adaptation-tab" href="#experiment-adaptation">Online adaptation</a>
+    </nav>
+    <div class="experiment-panel" id="experiment-models">
+<section class="results-block" aria-labelledby="models-heading">
       <header class="evidence-heading"><p class="method-eyebrow">Models &amp; tasks</p><h5 id="models-heading">Leads in all nine FP16 model–task settings.</h5><p>Summarization, reasoning, and text generation across the LLaMA-2 family.</p></header>
       <div class="model-tables">{{fp16_tables}}</div>
       <p class="research-source">Speedup / AR · FP16 self-drafts · paper Table 1. Each table uses the matching autoregressive baseline.</p>
     </section>
-
-    <section class="results-block" aria-labelledby="sustained-heading">
+      <div class="evidence-grid experiment-comparisons">
+<figure class="evidence-figure" aria-labelledby="specbench-heading">
+        <p class="method-eyebrow">SpecBench</p><h5 id="specbench-heading"><span class="inline-gain">+17.2%</span> full-stream throughput over SWIFT.</h5>
+        <p class="evidence-intro">1.462× versus 1.247× over AR on the same backend, including exploration and profile updates.</p>
+        <div class="plot-subheading">After adaptation · six task comparisons</div>
+        <div class="chart-legend"><span><i class="legend-hollow"></i>SWIFT</span><span><i class="legend-dot"></i>SPIRIT</span></div>
+        {{specbench}}
+        <p class="plot-axis-caption">Speedup / AR</p>
+        <figcaption>LLaMA-2-13B · post-adaptation performance · three-seed mean ± SD.</figcaption>
+      </figure>
+        <div class="serving-summary">
+<section class="batch-evidence" aria-labelledby="batch-heading">
+      <div><p class="method-eyebrow">Batched serving</p><h5 id="batch-heading">The gains persist with batching.</h5><p>13B · speedup over matching batched AR · full-model verification at every batch size.</p></div>
+      <dl class="batch-metrics">{{batch_strip}}</dl>
+    </section>
+<p class="research-source">Further evaluations in the paper cover Qwen and Mixtral architectures and HumanEval code generation.</p>
+        </div>
+      </div>
+    </div>
+    <div class="experiment-panel" id="experiment-nf4">
+<section class="results-block" aria-labelledby="sustained-heading">
       <header class="evidence-heading"><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist as optimization costs are amortized.</h5></header>
       <div class="evidence-grid">
         <figure class="evidence-figure stream-evidence" aria-labelledby="stream-heading">
@@ -38,29 +63,9 @@
         </figure>
       </div>
     </section>
-
-    <div class="evidence-grid results-grid">
-      <figure class="evidence-figure" aria-labelledby="specbench-heading">
-        <p class="method-eyebrow">SpecBench</p><h5 id="specbench-heading"><span class="inline-gain">+17.2%</span> full-stream throughput over SWIFT.</h5>
-        <p class="evidence-intro">1.462× versus 1.247× over AR on the same backend, including exploration and profile updates.</p>
-        <div class="plot-subheading">After adaptation · six task comparisons</div>
-        <div class="chart-legend"><span><i class="legend-hollow"></i>SWIFT</span><span><i class="legend-dot"></i>SPIRIT</span></div>
-        {{specbench}}
-        <p class="plot-axis-caption">Speedup / AR</p>
-        <figcaption>LLaMA-2-13B · post-adaptation performance · three-seed mean ± SD.</figcaption>
-      </figure>
-      <figure class="evidence-figure" aria-labelledby="reuse-results-heading">
-        <p class="method-eyebrow">Profile reuse</p><h5 id="reuse-results-heading"><span class="inline-gain teal-value">+9.8–10.3%</span> when workloads recur.</h5>
-        <p class="evidence-intro">Returning tasks benefit from configurations found earlier, instead of starting each search again.</p>
-        <div class="chart-legend"><span><i class="legend-block neutral"></i>Without reuse</span><span><i class="legend-block teal"></i>Full SPIRIT</span></div>
-        <p class="plot-unit">Full-stream speedup / AR</p>
-        {{reuse}}
-        <div class="workload-sequence"><div><span>First pass</span><p>Stories → CNN/DM → GSM8K</p></div><div><span>Workloads return</span><p>Stories → CNN/DM → GSM8K</p></div></div>
-        <figcaption><p>600-request FP16 streams · task shifts every 100 requests.</p><p>The gain compares full SPIRIT with SPIRIT without profile reuse.</p></figcaption>
-      </figure>
     </div>
-
-    <section class="results-block" aria-labelledby="adaptation-heading">
+    <div class="experiment-panel" id="experiment-adaptation">
+<section class="results-block" aria-labelledby="adaptation-heading">
       <header class="evidence-heading"><p class="method-eyebrow">Why adaptation pays off</p><h5 id="adaptation-heading">Search quality and update cost both matter.</h5></header>
       <div class="evidence-grid">
         <figure class="evidence-figure" aria-labelledby="discovery-heading">
@@ -84,11 +89,15 @@
         </figure>
       </div>
     </section>
-
-    <section class="batch-evidence" aria-labelledby="batch-heading">
-      <div><p class="method-eyebrow">Batched serving</p><h5 id="batch-heading">The gains persist with batching.</h5><p>13B · speedup over matching batched AR · full-model verification at every batch size.</p></div>
-      <dl class="batch-metrics">{{batch_strip}}</dl>
-    </section>
-    <p class="research-source">Further evaluations in the paper cover Qwen and Mixtral architectures and HumanEval code generation.</p>
+<figure class="evidence-figure reuse-evidence" aria-labelledby="reuse-results-heading">
+<div class="reuse-overview"><p class="method-eyebrow">Profile reuse</p><h5 id="reuse-results-heading"><span class="inline-gain teal-value">+9.8–10.3%</span> when workloads recur.</h5>
+        <p class="evidence-intro">Returning tasks benefit from configurations found earlier, instead of starting each search again.</p>
+<div class="workload-sequence"><div><span>First pass</span><p>Stories → CNN/DM → GSM8K</p></div><div><span>Workloads return</span><p>Stories → CNN/DM → GSM8K</p></div></div></div>
+<div class="reuse-chart"><div class="chart-legend"><span><i class="legend-block neutral"></i>Without reuse</span><span><i class="legend-block teal"></i>Full SPIRIT</span></div>
+        <p class="plot-unit">Full-stream speedup / AR</p>
+        {{reuse}}</div>
+<figcaption><p>600-request FP16 streams · task shifts every 100 requests.</p><p>The gain compares full SPIRIT with SPIRIT without profile reuse.</p></figcaption>
+</figure>
+    </div>
   </div>
 </section>

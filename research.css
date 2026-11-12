@@ -154,6 +154,26 @@
 .eligibility-list { padding-left:18px; display:grid; gap:9px; margin:17px 0; font-size:13px; line-height:1.7; } .eligibility-list li::marker { color:var(--research-teal); }
 .native-research .method-source { margin-top:24px; }
 
+/* Experiment pages stay secondary to the main research navigation. */
+.experiment-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; max-width:660px; margin:30px 0 32px; padding:5px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); scroll-margin-top:38px; }
+.experiment-tabs a { display:flex; align-items:center; justify-content:center; min-height:44px; padding:9px 12px; border:1px solid transparent; border-radius:8px; color:var(--muted); font-size:13px; line-height:1.5; font-weight:500; text-align:center; text-decoration:none; text-wrap:balance; transition:color 160ms ease, background 160ms ease; }
+.experiment-tabs a:hover { color:var(--ink); }
+.experiment-tabs a[aria-selected="true"] { border-color:var(--rule); background:var(--paper); color:var(--accent); box-shadow:0 1px 3px rgb(0 0 0 / 4%); }
+.experiment-tabs a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.experiment-panel { min-width:0; }
+.experiment-panel:focus-visible { outline:2px solid var(--accent); outline-offset:8px; border-radius:3px; }
+.experiment-panel > .results-block:first-child { margin-top:0; padding-top:0; border-top:0; }
+.experiment-panel + .experiment-panel { margin-top:36px; }
+.experiment-tabs[role="tablist"] ~ .experiment-panel { margin-top:0; }
+.experiment-comparisons { margin-top:32px; padding-top:26px; border-top:1px solid var(--rule); }
+.serving-summary { min-width:0; }
+.serving-summary .batch-evidence { display:block; margin:0; padding:0; border:0; }
+.serving-summary .batch-metrics { margin-top:24px; }
+.reuse-evidence { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 48px; margin-top:32px; padding-top:26px; border-top:1px solid var(--rule); }
+.reuse-evidence > div { min-width:0; }
+.reuse-overview > .method-eyebrow { margin-bottom:10px; }
+.reuse-evidence > figcaption { grid-column:1 / -1; }
+
 /* Model comparisons remain genuine tables with usable mobile widths. */
 .results-block { margin-top:38px; padding-top:27px; border-top:1px solid var(--rule); }
 .results-grid { margin-top:34px; }
@@ -188,6 +208,8 @@
   .model-tables { gap:20px; } .model-table { font-size:11px; } .model-table thead th { font-size:10px; }
 }
 @media (max-width:850px) {
+  .serving-summary { padding-top:26px; border-top:1px solid var(--rule); }
+  .reuse-evidence { grid-template-columns:minmax(0,1fr); gap:0; }
   .evidence-grid { grid-template-columns:minmax(0,1fr); gap:36px; } .evidence-figure { max-width:580px; width:100%; }
   .mechanism-band { grid-template-columns:1fr 1fr; }
   .mechanism-objective { grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:13px; }
@@ -198,6 +220,8 @@
   .batch-evidence { grid-template-columns:minmax(0,1fr); gap:24px; }
 }
 @media (max-width:600px) {
+  .experiment-tabs { margin:24px 0 28px; }
+  .experiment-tabs a { padding:9px 8px; }
   .evidence-figure figcaption, .native-research .research-source { font-size:13px; line-height:1.8; }
   .evidence-heading h5, .batch-evidence h5 { font-size:21px; } .evidence-figure h5, .evidence-figure h6 { font-size:19px; }
   .evidence-figure .evidence-intro { font-size:13px; } .inline-gain { font-size:26px; }
@@ -217,6 +241,7 @@
   .workload-sequence { gap:12px; } .workload-sequence p { font-size:10px; }
 }
 @media (max-width:360px) {
+  .experiment-tabs a { font-size:12px; }
   .research-chart text { font-size:19px; } .research-chart .plot-value { font-size:21px; } .research-chart .schematic-note { font-size:16px; }
   .native-equation { font-size:23px; } .proposal-pair { grid-template-columns:minmax(0,1fr); } .proposal-pair .layer-strip { max-width:270px; gap:4px; }
   .model-table { font-size:12px; } .model-table thead th { font-size:11px; } .batch-metrics dd { font-size:26px; }
@@ -224,6 +249,8 @@
 }
 @media print {
   .native-research { --research-teal:#087f73; --research-teal-soft:#e7f3f0; --research-warm:#a7683e; --plot-neutral:#77869b; --plot-third:#a0adbd; --plot-cloud:#93a2b7; --plot-draft:#d7e2ef; --plot-verify:#96abc6; --plot-other:#edf1f6; }
-  .chart-view-controls { display:none; } [data-chart-view][hidden] { display:block !important; }
+  .experiment-tabs, .chart-view-controls { display:none; }
+  .experiment-panel[hidden], [data-chart-view][hidden] { display:block !important; }
+  .experiment-tabs[role="tablist"] ~ .experiment-panel + .experiment-panel { margin-top:28px; }
   .evidence-figure, .model-table, .window-loop > section, .profile-outcomes > div { break-inside:avoid; }
 }

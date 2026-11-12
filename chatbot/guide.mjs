@@ -1,5 +1,5 @@
 import { CHAT_ENDPOINT } from './config.mjs?v=3ecaa7461fe7';
-import { localAnswer, sources } from './knowledge.mjs?v=734ca34c14bd';
+import { localAnswer, sources } from './knowledge.mjs?v=1ee5d5868d4a';
 import { MAX_QUESTION_LENGTH, MAX_ANSWER_LENGTH, MAX_TURNS, createChatPayload } from './conversation.mjs?v=a0c346b920fe';
 
 const get = id => document.getElementById(`guide-${id}`);
@@ -228,10 +228,17 @@ function appendMessage(role, text, ids = [], mode = '', lang = language) {
               const tab = Array.from(document.querySelectorAll('.research-tabs a')).find(link => link.hash === '#' + panel.id);
               tab?.click();
             }
+            const experimentPanel = target.closest('.experiment-panel');
+            if (experimentPanel) {
+              const tab = Array.from(document.querySelectorAll('.experiment-tabs a')).find(link => link.hash === '#' + experimentPanel.id);
+              tab?.click();
+            }
             const previousTabindex = target.getAttribute('tabindex');
             target.setAttribute('tabindex', '-1');
             target.focus({ preventScroll: true });
-            target.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+            const destination = experimentPanel === target
+              ? document.querySelector('.experiment-tabs') || target : target;
+            destination.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
             target.addEventListener('blur', () => {
               if (previousTabindex === null) target.removeAttribute('tabindex');
               else target.setAttribute('tabindex', previousTabindex);

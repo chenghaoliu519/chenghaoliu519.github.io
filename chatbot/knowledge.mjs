@@ -7,6 +7,9 @@ export const sources = {
   spirit: { href: '#publications', en: 'SPIRIT', zh: 'SPIRIT 研究介绍' },
   method: { href: '#spirit-method', en: 'How SPIRIT works', zh: 'SPIRIT 方法详解' },
   results: { href: '#spirit-experiments', en: 'Experimental results', zh: '实验结果' },
+  model_results: { href: '#experiment-models', en: 'Models & tasks', zh: '模型与任务实验' },
+  nf4_results: { href: '#experiment-nf4', en: 'NF4 decoding', zh: 'NF4 解码实验' },
+  adaptation_results: { href: '#experiment-adaptation', en: 'Online adaptation', zh: '在线适应实验' },
   poster: { href: '/assets/figures/spirit-poster-neurips2026.png', en: 'Research poster (PNG)', zh: '完整研究海报 PNG' },
   slides: { href: '/assets/slides/SPIRIT-NeurIPS2026.pdf?v=930692eb2c1d', en: 'Slides (PDF)', zh: '幻灯片 PDF' },
   paper: { href: '/assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf', en: 'SPIRIT paper (PDF)', zh: 'SPIRIT 论文 PDF' },
@@ -67,7 +70,7 @@ export const facts = [
     zh: "SPIRIT 相对自回归解码，在 FP16 自草稿下最高达到 1.74×，在 NF4 自草稿下最高达到 2.48×，同时保留完整目标模型验证。在九组 LLaMA-2 模型与任务的 FP16 对比中，吞吐量均高于 SWIFT 和 D&V。独立评估还覆盖 SpecBench、循环工作负载、1,000 请求持续解码、Qwen、Mixtral、批量服务和 HumanEval；两个最高值各自对应特定实验条件。"
   },
   {
-    id: "measurement", sourceIds: ["results","measurement"],
+    id: "measurement", sourceIds: ["nf4_results","measurement"],
     match: /\b(protocol|hardware|a6000|1000|1,000|seeds?|cumulative|pooled|reproduc|measurement|measured how)\b|口径|硬件|种子|累计|汇总|合并|复现|怎么测|如何测|两台|2\.14|2\.46/i,
     en: "In the independent long-stream study, eight runs with distinct controller seeds each start from an empty controller and serve the same ordered 1,000-request TinyStories stream. They use LLaMA-2-13B with fused NF4 self-drafts and full FP16 verification on one RTX A6000 per run. Pooled decode speedup is 2.46×, with the best full-stream run reaching 2.48×; the pooled result uses each method’s token and time totals across runs. Decode timing includes online search and profile updates and excludes prefill, model loading, and one-time draft setup.",
     zh: "独立长序列实验包含八次使用不同控制器随机种子的运行，每次从空控制器状态开始，处理顺序相同的 1,000 个 TinyStories 请求。实验使用 LLaMA-2-13B、融合 NF4 自草稿和完整 FP16 验证器，每次运行一张 RTX A6000。跨运行合并后的解码加速为 2.46×，最佳完整序列运行为 2.48×；合并结果由各方法跨运行的 token 总数和时间总量计算。解码计时包含在线搜索和配置更新，排除 prefill、模型加载和一次性草稿初始化。"
@@ -91,19 +94,19 @@ export const facts = [
     zh: '科研交流或合作可以发送邮件至 liuchenghao97@gmail.com；他的 GitHub 用户名是 chenghaoliu519。我是网站助手，不能代他发送消息或作出承诺。'
   },
   {
-    id: "specbench", sourceIds: ["results","paper"],
+    id: "specbench", sourceIds: ["model_results","paper"],
     match: /\bspecbench\b|17\.2/i,
     en: "On SpecBench with LLaMA-2-13B and the same self-speculative backend, SPIRIT reaches 1.462× full-stream throughput over AR versus 1.247× for SWIFT, a 17.2% relative increase. This includes online exploration and profile updates. The six post-adaptation task comparisons are a separate summary, reported as three-seed means and standard deviations.",
     zh: "SpecBench 使用 LLaMA-2-13B 和相同的自推测后端，SPIRIT 全流程吞吐量相对 AR 为 1.462×，SWIFT 为 1.247×，因此相对 SWIFT 提高 17.2%。这一口径包含在线探索和配置更新。海报中的六任务图则是适应完成后的另一组统计，误差条为三个 seed 的标准差。"
   },
   {
-    id: "reuse_results", sourceIds: ["results","method"],
+    id: "reuse_results", sourceIds: ["adaptation_results","method"],
     match: /(?=[\s\S]*(?:\breuse\b|复用))(?=[\s\S]*(?:\b(?:benefit\w*|gain\w*|speedup|improv\w*|results?|throughput)\b|收益|提升|结果|加速|吞吐))|9\.8|10\.3/i,
     en: "In 600-request FP16 streams that change task every 100 requests, profile reuse improves throughput by 9.8–10.3% over SPIRIT without reuse. On LLaMA-2-13B the speedup over AR rises from 1.43× to 1.57×; on 70B it rises from 1.45× to 1.60×. These are recurring-workload experiments, separate from the stable TinyStories long-stream study.",
     zh: "在每 100 个请求切换任务、共 600 个请求的 FP16 流中，profile reuse 相比不使用复用的 SPIRIT 提高 9.8–10.3% 的吞吐量。LLaMA-2-13B 相对 AR 的加速从 1.43× 提高到 1.57×，70B 从 1.45× 提高到 1.60×。这组循环工作负载实验与稳定 TinyStories 的长序列实验相互独立。"
   },
   {
-    id: "precision", sourceIds: ["results","paper"],
+    id: "precision", sourceIds: ["nf4_results","paper"],
     match: /(?=[\s\S]*(?:\bnf4\b|量化))(?=[\s\S]*(?:\b(?:vs|versus|compar\w*|relative|precision)\b|对比|相比|比较|精度))|\bquantiz\w*\b|23\.6|精度对比/i,
     en: "In the separate three-task LLaMA-2-13B precision study, NF4 self-drafts deliver 23.6% higher aggregate throughput than FP16 self-drafts, with a request-paired bootstrap 95% interval of 21.4–26.3%. Overall speedups over AR are 1.981× and 1.603× respectively. Both use the same FP16 verifier, with ratio and layer configurations optimized separately.",
     zh: "独立的三任务 LLaMA-2-13B 精度实验中，NF4 自草稿相比 FP16 自草稿提高 23.6% 的合并吞吐量，请求配对 bootstrap 的 95% 区间为 21.4–26.3%。两者相对 AR 分别为 1.981× 和 1.603×，使用同一个 FP16 验证器，并分别优化比例和层配置。"

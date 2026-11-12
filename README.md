@@ -163,10 +163,13 @@ Within-request score Q uses length correction and EMA; cross-request matching
 uses raw head throughput and acceptance. Request-head trial outputs are not
 committed. The confidence plot and layer masks are explicitly schematic.
 
-Experiments leads with all nine FP16 comparisons as three native tables,
-followed immediately by sustained NF4 curves and the separately labeled paired
-precision study. SpecBench, profile reuse, the published discovery trace,
-normalized adaptation costs, and matched-batch measurements follow. The sustained
+Experiments uses three mutually exclusive subpages: Models & tasks contains
+the nine FP16 comparisons, SpecBench, and matched-batch results; NF4 decoding
+contains sustained decoding and the separately labeled paired precision study;
+Online adaptation contains configuration discovery, update costs, and reuse.
+Models & tasks is selected initially. The secondary tabs support arrow keys,
+Home/End, and Space without changing the URL. The current selection is retained
+while switching main research topics and resets on a restored page. The sustained
 figure separates setup, aggregation, and decode timing into labeled paragraphs;
 longer captions use paragraph breaks. Captions and source notes increase to 13px
 on screens up to 600px wide. Published Figure 3a columns are
@@ -191,7 +194,9 @@ standard library and updates the research stylesheet/script content hashes.
 Graphs have SVG titles and descriptions, theme-aware colors, responsive labels,
 and adjacent HTML conclusions. The sustained graph has accessible full-stream
 and first-50-request controls; both ranges remain readable without JavaScript
-and in print. Existing Mochi source links still select the matching main tab.
+and in print. All experiment subpages remain visible without JavaScript and in
+print. Mochi's experiment source links open the matching main tab and subpage;
+links to individual figure anchors also reveal their containing subpage.
 Materials guidance describes the integrated charts rather than poster disclosures.
 
 
