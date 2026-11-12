@@ -33,7 +33,7 @@
     <script src="site.js?v=622ade7aa09c" defer></script>
     <link rel="stylesheet" href="chatbot/guide.css?v=bd0671b087d8">
     <script type="module" src="chatbot/guide.mjs?v=faf6af30aea8"></script>
-    <link rel="stylesheet" href="research.css?v=35ca8d135367">
+    <link rel="stylesheet" href="research.css?v=e005f88e4e58">
     <script src="research.js?v=d45f4a188da7" defer></script>
   </head>
   <body>
@@ -204,12 +204,25 @@
   <p class="research-source">Measured configuration sweep · LLaMA-2-13B · CNN/DM · FP16 · 21 skip ratios × 24 patterns · the same 24 prompts per configuration · decode-only.</p>
   <div class="research-implication"><span>Design implication</span><p>Use realized throughput to localize a promising skip ratio, then refine the layer pattern at that ratio. Evaluate within-request candidates through the same decoding that produces output tokens.</p></div>
 </section>
-<section class="research-panel native-research" id="spirit-method" aria-labelledby="method-heading">
+<section class="research-panel native-research method-page" id="spirit-method" aria-labelledby="method-heading">
+  <div class="method-overview-header">
+    <div class="method-intro">
   <header class="research-section-header">
     <p class="method-eyebrow">The method</p>
     <h4 id="method-heading">Search while decoding. Reuse when workloads recur.</h4>
   </header>
   <p class="research-intro">SPIRIT adapts a self-draft configuration <i>c</i> = (<i>r</i>, <i>L</i>): how much computation to skip, and which sublayers to skip. It needs neither offline profiling nor a separately trained draft model.</p>
+
+    </div>
+    <aside class="configuration-card" aria-label="Self-draft configuration">
+      <p class="method-eyebrow">The self-draft configuration</p>
+      <div class="configuration-equation" role="math" aria-label="c equals the pair r and L."><i>c</i> = (<i>r</i>, <i>L</i>)</div>
+      <dl class="configuration-key">
+        <div><dt><i>r</i></dt><dd>Skip ratio<span>How much computation to skip</span></dd></div>
+        <div><dt><i>L</i></dt><dd>Layer pattern<span>Which sublayers to skip</span></dd></div>
+      </dl>
+    </aside>
+  </div>
 
   <div class="objective-strip">
     <div>
@@ -221,23 +234,23 @@
   </div>
 
   <section class="method-loop" aria-labelledby="window-loop-heading">
-    <header class="evidence-heading"><p class="method-eyebrow">Within a request</p><h5 id="window-loop-heading">Measure the draft path while it serves tokens.</h5></header>
+    <header class="evidence-heading method-phase-heading"><span class="method-section-number" aria-hidden="true">01</span><div><p class="method-eyebrow">Within a request</p><h5 id="window-loop-heading">Measure the draft path while it serves tokens.</h5></div></header>
     <div class="window-loop" id="method-figure-details">
       <section class="decode-window" aria-label="Current decoding window">
-        <p class="diagram-label">Window <i>w</i></p>
+        <div class="window-step-heading"><span class="window-step-number" aria-hidden="true">1</span><div><p class="window-context">Window <i>w</i></p><h6>Serve &amp; measure</h6></div></div>
         <div class="layer-pipeline"><div><span>Self-draft with <i>c</i><sub>w</sub></span><div class="layer-strip" role="img" aria-label="Current draft configuration; four of eight illustrative sublayers skipped."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div></div><div><span>Full target verifies</span><div class="layer-strip" role="img" aria-label="Full target verifier; all eight illustrative sublayers execute."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div></div></div>
         <div class="committed-output"><span class="output-tokens" aria-hidden="true"><b></b><b></b><b></b><b></b></span><span>Commit accepted + verifier tokens</span></div>
         <p class="window-stat"><i>G</i><sub>w</sub> tokens in <i>T</i><sub>w</sub> seconds</p>
       </section>
       <section class="window-boundary" aria-label="Window-boundary controller update">
-        <p class="diagram-label">At the window boundary</p>
+        <div class="window-step-heading"><span class="window-step-number" aria-hidden="true">2</span><div><p class="window-context">At the window boundary</p><h6>Update the configuration</h6></div></div>
         <div class="boundary-equation" role="math" aria-label="Q sub w equals EMA of S sub w times the prefix-length correction factor."><i>Q</i><sub>w</sub> = EMA[<i>S</i><sub>w</sub> · <i>f</i><sub>len</sub>(<i>x</i><sub>w</sub>)]</div>
         <p>Correct for prefix growth.<br>Smooth window noise.</p>
         <div class="boundary-selection"><strong>Choose the next (<i>r</i>, <i>L</i>)</strong><span>Ratio localization → pattern refinement</span></div>
         <p class="diagram-note">Boundary updates need no additional model forward pass.</p>
       </section>
       <section class="decode-window next-window" aria-label="Next decoding window">
-        <p class="diagram-label">Window <i>w</i> + 1</p>
+        <div class="window-step-heading"><span class="window-step-number" aria-hidden="true">3</span><div><p class="window-context">Window <i>w</i> + 1</p><h6>Continue decoding</h6></div></div>
         <div class="layer-pipeline"><div><span>Self-draft with <i>c</i><sub>w+1</sub></span><div class="layer-strip" role="img" aria-label="Next draft configuration; four of eight illustrative sublayers skipped."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div></div></div>
         <p>Run the selected configuration in the next productive window.</p>
         <div class="round-sequence" aria-label="Repeated draft, verify and commit rounds"><span>D → V <b>▪▪</b></span><span>D → V <b>▪▪▪</b></span><span aria-hidden="true">…</span></div>
@@ -246,7 +259,7 @@
     </div>
     <p class="feedback-return"><span aria-hidden="true">↺</span> Observe, update, and decode again until the request ends.</p>
     <details class="method-detail native-detail" id="within-request-details">
-      <summary><span>Search details</span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+      <summary><span class="detail-summary-copy"><span>Search details</span><small aria-hidden="true">Ratio localization · layer refinement</small></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
       <div class="search-stages">
         <section aria-labelledby="ratio-search-heading">
           <p class="method-eyebrow">Stage I · Skip ratio</p>
@@ -274,7 +287,7 @@
   </section>
 
   <section class="method-loop profile-loop" id="spirit-reuse" aria-labelledby="reuse-heading">
-    <header class="evidence-heading"><p class="method-eyebrow">Across requests</p><h5 id="reuse-heading">Recognize a returning workload.</h5></header>
+    <header class="evidence-heading method-phase-heading"><span class="method-section-number" aria-hidden="true">02</span><div><p class="method-eyebrow">Across requests</p><h5 id="reuse-heading">Recognize a returning workload.</h5></div></header>
     <p class="research-intro compact-intro">A profile pairs a skip ratio and layer pattern with its request-head history: the mean and standard deviation of <strong>raw throughput <i>S</i></strong> and <strong>draft acceptance <i>α</i></strong>.</p>
     <div class="profile-overview">
       <div class="profile-record"><p class="diagram-label">Stored configuration</p><div class="layer-strip" role="img" aria-label="Stored ratio and pattern; four of eight illustrative sublayers skipped."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div><p class="diagram-note">Ratio <i>r</i><sup>★</sup> + layer pattern <i>L</i><sup>★</sup></p></div>
@@ -286,6 +299,7 @@
       </div>
       <div class="profile-next"><p class="diagram-label">Continue or compare</p><p>Compatible heads keep serving.<br>Supported deviations trigger probes of the active and stored profiles.</p><p class="diagram-note">Every trial uses the same request head. Trial outputs are not committed.</p></div>
     </div>
+    <p class="profile-outcomes-label">Choose how to continue</p>
     <dl class="profile-outcomes">
       <div><dt>Stay</dt><dd>Keep the active profile when it fits or trials are inconclusive.</dd></div>
       <div><dt>Switch</dt><dd>Reuse an eligible stored configuration.</dd></div>
@@ -293,7 +307,7 @@
       <div><dt>Restart</dt><dd>Search again when drift persists and no profile fits.</dd></div>
     </dl>
     <details class="method-detail native-detail" id="profile-reuse-details">
-      <summary><span>Profile reuse details</span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+      <summary><span class="detail-summary-copy"><span>Profile reuse details</span><small aria-hidden="true">History matching · switch eligibility</small></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
       <div class="reuse-rules">
         <div><h6>Compare each profile with its own history.</h6><div class="boundary-equation" role="math" aria-label="d of p equals absolute z S plus omega times absolute z alpha."><i>d</i>(<i>p</i>) = |<i>z</i><sub>S</sub>| + <i>ω</i>|<i>z</i><sub>α</sub>|</div><p>Each <i>z</i> is the head measurement’s deviation from that profile’s historical mean, divided by its historical standard deviation. Lower <i>d</i> indicates a closer fit.</p></div>
         <div><h6>A switch must pass all three checks.</h6><ul class="eligibility-list"><li>A closer fit to the candidate’s own history</li><li>Higher relative probe merit</li><li>Safe throughput</li></ul><p>Request-head matching uses raw throughput and acceptance. The calibrated score <i>Q</i><sub>w</sub> guides within-request search.</p></div>

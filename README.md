@@ -159,6 +159,12 @@ Method uses readable HTML labels and vector illustrations for productive
 windows, calibrated boundary updates, ratio-first search, and request-head
 profile reuse. Its four reuse outcomes are immediately visible. “Search details”
 and “Profile reuse details” retain deeper algorithm explanations and start closed.
+Method introduces the self-draft configuration and throughput objective, then
+uses numbered sections for productive within-request search and cross-request
+profile reuse. Step cards show the decoding loop; separate profile and outcome
+cards explain reuse. Search and reuse details stay collapsed initially. The
+disclosures retain ordinary keyboard-accessible details/summary behavior.
+
 Within-request score Q uses length correction and EMA; cross-request matching
 uses raw head throughput and acceptance. Request-head trial outputs are not
 committed. The confidence plot and layer masks are explicitly schematic.
