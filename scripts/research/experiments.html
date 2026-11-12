@@ -1,13 +1,26 @@
 <section class="research-panel native-research experiment-summary" id="spirit-experiments" aria-labelledby="experiments-heading">
+  <div class="experiment-overview">
+    <div class="experiment-intro">
   <header class="research-section-header"><p class="method-eyebrow">The evidence</p><h4 id="experiments-heading">Online adaptation delivers sustained speedups.</h4></header>
-  <dl class="experiment-metrics" aria-label="Maximum measured decoding speedup"><div><dt>FP16 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>1.74×</strong></dd></div><div><dt>NF4 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>2.48x</strong></dd></div></dl>
   <p class="experiment-context">Decode throughput relative to autoregressive decoding (AR), with full-target verification. The headline values are maxima from their respective settings.</p>
+    </div>
+  <dl class="experiment-metrics" aria-label="Maximum measured decoding speedup"><div><dt>FP16 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>1.74×</strong></dd></div><div><dt>NF4 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>2.48x</strong></dd></div></dl>
+  </div>
 
   <div id="results-figure-details">
     <nav class="experiment-tabs" aria-label="Experiment topics">
-      <a id="experiment-models-tab" href="#experiment-models">Models &amp; tasks</a>
-      <a id="experiment-nf4-tab" href="#experiment-nf4">NF4 decoding</a>
-      <a id="experiment-adaptation-tab" href="#experiment-adaptation">Online adaptation</a>
+      <a id="experiment-models-tab" href="#experiment-models" aria-label="Models &amp; tasks">
+        <svg class="experiment-tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M10 10v10"/></svg>
+        <span class="experiment-tab-copy"><span class="experiment-tab-label">Models &amp; tasks</span><span class="experiment-tab-hint" aria-hidden="true">FP16 · SpecBench · batching</span></span>
+      </a>
+      <a id="experiment-nf4-tab" href="#experiment-nf4" aria-label="NF4 decoding">
+        <svg class="experiment-tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m13 3-8 11h6l-1 7 9-12h-6l1-6Z"/></svg>
+        <span class="experiment-tab-copy"><span class="experiment-tab-label">NF4 decoding</span><span class="experiment-tab-hint" aria-hidden="true">Sustained gains · precision</span></span>
+      </a>
+      <a id="experiment-adaptation-tab" href="#experiment-adaptation" aria-label="Online adaptation">
+        <svg class="experiment-tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 7a7 7 0 0 1 11.5-1L20 9M4 15l2.4 3A7 7 0 0 0 18 17"/></svg>
+        <span class="experiment-tab-copy"><span class="experiment-tab-label">Online adaptation</span><span class="experiment-tab-hint" aria-hidden="true">Search · update cost · reuse</span></span>
+      </a>
     </nav>
     <div class="experiment-panel" id="experiment-models">
 <section class="results-block" aria-labelledby="models-heading">
@@ -16,7 +29,7 @@
       <p class="research-source">Speedup / AR · FP16 self-drafts · paper Table 1. Each table uses the matching autoregressive baseline.</p>
     </section>
       <div class="evidence-grid experiment-comparisons">
-<figure class="evidence-figure" aria-labelledby="specbench-heading">
+<figure class="evidence-figure result-card" aria-labelledby="specbench-heading">
         <p class="method-eyebrow">SpecBench</p><h5 id="specbench-heading"><span class="inline-gain">+17.2%</span> full-stream throughput over SWIFT.</h5>
         <p class="evidence-intro">1.462× versus 1.247× over AR on the same backend, including exploration and profile updates.</p>
         <div class="plot-subheading">After adaptation · six task comparisons</div>
@@ -25,7 +38,7 @@
         <p class="plot-axis-caption">Speedup / AR</p>
         <figcaption>LLaMA-2-13B · post-adaptation performance · three-seed mean ± SD.</figcaption>
       </figure>
-        <div class="serving-summary">
+        <div class="serving-summary result-card">
 <section class="batch-evidence" aria-labelledby="batch-heading">
       <div><p class="method-eyebrow">Batched serving</p><h5 id="batch-heading">The gains persist with batching.</h5><p>13B · speedup over matching batched AR · full-model verification at every batch size.</p></div>
       <dl class="batch-metrics">{{batch_strip}}</dl>
@@ -38,8 +51,8 @@
 <section class="results-block" aria-labelledby="sustained-heading">
       <header class="evidence-heading"><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist as optimization costs are amortized.</h5></header>
       <div class="evidence-grid">
-        <figure class="evidence-figure stream-evidence" aria-labelledby="stream-heading">
-          <h6 id="stream-heading"><span class="inline-gain">2.46×</span> pooled decode speedup.</h6>
+        <figure class="evidence-figure result-card stream-evidence" aria-labelledby="stream-heading">
+          <p class="method-eyebrow">1,000-request stream</p><h6 id="stream-heading"><span class="inline-gain">2.46×</span> pooled decode speedup.</h6>
           <p class="evidence-intro">Cumulative throughput remains above AR throughout adaptation in all eight runs. Later requests amortize the initial optimization. The best full-stream run reaches 2.48x.</p>
           <div class="chart-legend"><span><i class="legend-line"></i>Pooled throughput</span><span><i class="legend-line runs"></i>Eight runs</span></div>
           <div class="chart-views" data-chart-views>
@@ -54,7 +67,7 @@
             <p><span class="caption-label">Decode timing</span>Includes online search and profile updates; excludes prefill, model loading, and one-time draft setup.</p>
           </figcaption>
         </figure>
-        <figure class="evidence-figure" aria-labelledby="precision-heading">
+        <figure class="evidence-figure result-card" aria-labelledby="precision-heading">
           <p class="method-eyebrow">Paired draft-precision study</p><h6 id="precision-heading"><span class="inline-gain">+23.6%</span> throughput with NF4 self-drafts.</h6>
           <p class="evidence-intro">Relative to FP16 self-drafts, with a request-paired bootstrap 95% interval of <strong>+21.4–26.3%</strong>.</p>
           <p class="plot-unit">Aggregate speedup / AR · 95% intervals</p>
@@ -68,7 +81,7 @@
 <section class="results-block" aria-labelledby="adaptation-heading">
       <header class="evidence-heading"><p class="method-eyebrow">Why adaptation pays off</p><h5 id="adaptation-heading">Search quality and update cost both matter.</h5></header>
       <div class="evidence-grid">
-        <figure class="evidence-figure" aria-labelledby="discovery-heading">
+        <figure class="evidence-figure result-card" aria-labelledby="discovery-heading">
           <h6 id="discovery-heading">Choose configurations for speed.</h6>
           <p class="evidence-intro">The published search trace ends at <strong>1.61× for SPIRIT</strong>, compared with 1.41× for SWIFT and 1.22× for D&amp;V.</p>
           <div class="chart-legend"><span><i class="legend-line"></i>SPIRIT</span><span><i class="legend-line neutral"></i>SWIFT</span><span><i class="legend-line third"></i>D&amp;V</span></div>
@@ -79,7 +92,7 @@
           {{ablation_table}}
           <figcaption><p>Paper Fig. 3a · 13B · CNN/DM · FP16 · the same 20-request replay probe for all choices.</p><p>The ablation uses separate three-task means.</p></figcaption>
         </figure>
-        <figure class="evidence-figure" aria-labelledby="cost-heading">
+        <figure class="evidence-figure result-card" aria-labelledby="cost-heading">
           <h6 id="cost-heading">Productive decoding doubles as evaluation.</h6>
           <p class="evidence-intro">Controller updates account for <strong>8.2%</strong> of measured adaptation time in SPIRIT, versus <strong>76.6%</strong> in SWIFT.</p>
           <div class="chart-legend"><span><i class="legend-block draft"></i>Draft</span><span><i class="legend-block verify"></i>Verify</span><span><i class="legend-block update"></i>Update</span></div>
@@ -89,7 +102,7 @@
         </figure>
       </div>
     </section>
-<figure class="evidence-figure reuse-evidence" aria-labelledby="reuse-results-heading">
+<figure class="evidence-figure result-card reuse-evidence" aria-labelledby="reuse-results-heading">
 <div class="reuse-overview"><p class="method-eyebrow">Profile reuse</p><h5 id="reuse-results-heading"><span class="inline-gain teal-value">+9.8–10.3%</span> when workloads recur.</h5>
         <p class="evidence-intro">Returning tasks benefit from configurations found earlier, instead of starting each search again.</p>
 <div class="workload-sequence"><div><span>First pass</span><p>Stories → CNN/DM → GSM8K</p></div><div><span>Workloads return</span><p>Stories → CNN/DM → GSM8K</p></div></div></div>

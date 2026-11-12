@@ -167,6 +167,11 @@ Experiments uses three mutually exclusive subpages: Models & tasks contains
 the nine FP16 comparisons, SpecBench, and matched-batch results; NF4 decoding
 contains sustained decoding and the separately labeled paired precision study;
 Online adaptation contains configuration discovery, update costs, and reuse.
+The experiment overview pairs the conclusion with the two headline metrics.
+Outlined topic choices introduce each subpage; model tables highlight the SPIRIT
+column and result surfaces group each chart with its measurement scope. The
+main research navigation and request-range controls share rounded pill styling.
+
 Models & tasks is selected initially. The secondary tabs support arrow keys,
 Home/End, and Space without changing the URL. The current selection is retained
 while switching main research topics and resets on a restored page. The sustained
@@ -184,13 +189,13 @@ The native SVGs are deterministically rendered from
 `assets/data/spirit-research.json` by `scripts/render_research.py` and the three
 templates under `scripts/research/`. The data preserves the adopted poster's
 frozen values and records source hashes; no GPU measurements are rerun.
-After editing a template, figure data, `research.css`, or `research.js`, run:
+After editing a template, figure data, `styles.css`, `research.css`, or `research.js`, run:
 
     python3 scripts/render_research.py
     python3 scripts/render_research.py --check
 
 Commit the rebuilt `index.html` with its sources. The renderer uses Python's
-standard library and updates the research stylesheet/script content hashes.
+standard library and updates the site/research stylesheet and research script content hashes.
 Graphs have SVG titles and descriptions, theme-aware colors, responsive labels,
 and adjacent HTML conclusions. The sustained graph has accessible full-stream
 and first-50-request controls; both ranges remain readable without JavaScript

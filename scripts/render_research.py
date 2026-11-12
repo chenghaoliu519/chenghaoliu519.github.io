@@ -104,12 +104,12 @@ def ratio_schematic():
 def fp16_tables():
     result=''
     for model in ['13B-Chat','13B','70B']:
-        result+=f'<table class="model-table"><caption>LLaMA-2-{model}</caption><thead><tr><th scope="col">Task</th><th scope="col">SWIFT</th><th scope="col">D&amp;V</th><th scope="col">SPIRIT</th></tr></thead><tbody>'
+        result+=f'<div class="model-table-card"><table class="model-table"><caption>LLaMA-2-{model}</caption><thead><tr><th scope="col">Task</th><th scope="col">SWIFT</th><th scope="col">D&amp;V</th><th scope="col">SPIRIT</th></tr></thead><tbody>'
         for task in ['CNN/DM','GSM8K','TinyStories']:
             values={r['method']:r['speedup'] for r in DATA['fp16'] if r['model']==model and r['task']==task}
             assert values['SPIRIT']>max(values['SWIFT'],values['D&V'])
             result+=f'<tr><th scope="row">{task}</th><td>{values["SWIFT"]:.2f}</td><td>{values["D&V"]:.2f}</td><td><strong>{values["SPIRIT"]:.2f}</strong></td></tr>'
-        result+='</tbody></table>'
+        result+='</tbody></table></div>'
     return result
 
 def specbench():
@@ -252,7 +252,7 @@ def main():
         start=original.index('                <section class="research-panel" id="spirit-motivation"')
         end=original.index('                <button class="details-close"',start)
     rendered=original[:start]+START+'\n'+build()+'\n'+END+'\n'+original[end:]
-    for name in ['research.css','research.js']:
+    for name in ['styles.css','research.css','research.js']:
         digest=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()[:12]
         if name not in rendered:
             tag=f'    <link rel="stylesheet" href="{name}?v={digest}">\n' if name.endswith('.css') else f'    <script src="{name}?v={digest}" defer></script>\n'

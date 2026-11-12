@@ -154,30 +154,77 @@
 .eligibility-list { padding-left:18px; display:grid; gap:9px; margin:17px 0; font-size:13px; line-height:1.7; } .eligibility-list li::marker { color:var(--research-teal); }
 .native-research .method-source { margin-top:24px; }
 
-/* Experiment pages stay secondary to the main research navigation. */
-.experiment-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; max-width:660px; margin:30px 0 32px; padding:5px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); scroll-margin-top:38px; }
-.experiment-tabs a { display:flex; align-items:center; justify-content:center; min-height:44px; padding:9px 12px; border:1px solid transparent; border-radius:8px; color:var(--muted); font-size:13px; line-height:1.5; font-weight:500; text-align:center; text-decoration:none; text-wrap:balance; transition:color 160ms ease, background 160ms ease; }
-.experiment-tabs a:hover { color:var(--ink); }
-.experiment-tabs a[aria-selected="true"] { border-color:var(--rule); background:var(--paper); color:var(--accent); box-shadow:0 1px 3px rgb(0 0 0 / 4%); }
-.experiment-tabs a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+/* The experiment overview pairs the conclusion with its two measured peaks. */
+.experiment-overview { display:grid; grid-template-columns:1.15fr 1fr; gap:44px; align-items:center; margin-bottom:32px; }
+.experiment-intro { min-width:0; }
+.experiment-intro .research-section-header { margin-bottom:0; }
+.experiment-intro .research-section-header h4 { font-size:29px; }
+.experiment-intro .experiment-context { max-width:62ch; margin:16px 0 0; font-size:13px; line-height:1.8; }
+.experiment-overview .experiment-metrics { gap:12px; max-width:none; margin:0; padding:0; border:0; }
+.experiment-overview .experiment-metrics > div { padding:19px 20px; border:1px solid var(--rule); border-radius:16px; background:var(--surface); }
+.experiment-overview .experiment-metrics > div:last-child { border-color:color-mix(in srgb,var(--accent) 18%,var(--rule)); background:color-mix(in srgb,var(--accent-soft) 55%,var(--paper)); }
+.experiment-overview .experiment-metrics strong { font-size:47px; letter-spacing:-1.8px; }
+.experiment-overview .experiment-metrics dt { margin-top:10px; font-size:12px; }
+.experiment-overview .metric-prefix { font-size:11px; }
+
+/* Each secondary choice previews the evidence it contains. */
+.experiment-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0 0 28px; padding:0; scroll-margin-top:50px; }
+.experiment-tabs a { display:flex; align-items:center; gap:13px; min-width:0; min-height:80px; padding:15px 18px; border:1px solid var(--rule); border-radius:14px; background:var(--paper); color:var(--muted); text-decoration:none; transition:border-color 160ms ease,background 160ms ease,box-shadow 160ms ease,color 160ms ease; }
+.experiment-tabs a:hover { border-color:var(--rule-strong); background:var(--surface); color:var(--ink); }
+.experiment-tabs a[aria-selected="true"] { border-color:color-mix(in srgb,var(--accent) 38%,var(--rule)); background:color-mix(in srgb,var(--accent-soft) 55%,var(--paper)); color:var(--accent); box-shadow:0 2px 8px color-mix(in srgb,var(--accent) 7%,transparent); }
+.experiment-tabs a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:14px; }
+.experiment-tab-icon { flex:0 0 21px; width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.experiment-tab-copy { display:block; min-width:0; }
+.experiment-tab-label { display:block; color:inherit; font-size:14px; line-height:1.4; font-weight:550; }
+.experiment-tab-hint { display:block; margin-top:5px; color:var(--muted); font-size:11px; line-height:1.5; }
 .experiment-panel { min-width:0; }
 .experiment-panel:focus-visible { outline:2px solid var(--accent); outline-offset:8px; border-radius:3px; }
 .experiment-panel > .results-block:first-child { margin-top:0; padding-top:0; border-top:0; }
 .experiment-panel + .experiment-panel { margin-top:36px; }
 .experiment-tabs[role="tablist"] ~ .experiment-panel { margin-top:0; }
-.experiment-comparisons { margin-top:32px; padding-top:26px; border-top:1px solid var(--rule); }
+.experiment-panel .evidence-heading { margin-bottom:22px; }
+.experiment-panel .evidence-heading h5 { font-size:24px; }
+.experiment-panel .evidence-grid { gap:22px; }
+.experiment-panel .method-eyebrow { font-size:11px; letter-spacing:.025em; }
+.experiment-comparisons { grid-template-columns:1.2fr 1fr; margin-top:24px; }
+
+/* Consistent surfaces hold a conclusion, its chart, then the measurement scope. */
+.experiment-panel .result-card { min-width:0; padding:25px; border:1px solid var(--rule); border-radius:18px; background:var(--paper); box-shadow:0 2px 10px rgb(0 0 0 / 2%); }
+.experiment-panel .result-card h5, .experiment-panel .result-card h6 { font-size:19px; line-height:1.45; }
+.experiment-panel .inline-gain { display:block; margin-bottom:7px; font-size:40px; line-height:1.15; letter-spacing:-1.2px; }
+.experiment-panel .evidence-intro { font-size:13px; line-height:1.8; }
+.experiment-panel .result-card figcaption { margin-top:20px; padding-top:15px; border-top:1px solid var(--rule); }
+.experiment-panel .caption-notes { padding:15px 16px; border:0; border-radius:12px; background:var(--surface); }
+.experiment-panel .caption-notes > p + p { margin-top:12px; }
+.experiment-panel .caption-label { font-size:12px; }
 .serving-summary { min-width:0; }
 .serving-summary .batch-evidence { display:block; margin:0; padding:0; border:0; }
-.serving-summary .batch-metrics { margin-top:24px; }
-.reuse-evidence { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 48px; margin-top:32px; padding-top:26px; border-top:1px solid var(--rule); }
+.serving-summary .batch-metrics { display:block; margin:24px 0 20px; }
+.serving-summary .batch-metrics > div { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 0; border-bottom:1px solid var(--rule); }
+.serving-summary .batch-metrics > div:first-child { padding-top:0; }
+.serving-summary .batch-metrics dt { margin:0; font-size:13px; }
+.serving-summary .batch-metrics dd { font-size:30px; }
+.serving-summary .research-source { font-size:12px; line-height:1.8; }
+.reuse-evidence { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 36px; margin-top:24px; }
+.experiment-panel .reuse-evidence { border-color:color-mix(in srgb,var(--research-teal) 22%,var(--rule)); background:color-mix(in srgb,var(--research-teal-soft) 30%,var(--paper)); }
 .reuse-evidence > div { min-width:0; }
+.reuse-evidence .reuse-overview { margin-top:0; }
 .reuse-overview > .method-eyebrow { margin-bottom:10px; }
-.reuse-evidence > figcaption { grid-column:1 / -1; }
+.reuse-evidence > figcaption { grid-column:1 / -1; display:flex; flex-wrap:wrap; gap:4px 24px; }
+.reuse-evidence > figcaption > p + p { margin-top:0; }
+.reuse-evidence .workload-sequence { margin-top:20px; padding:14px; border:1px solid var(--rule); border-radius:12px; background:var(--paper); }
 
 /* Model comparisons remain genuine tables with usable mobile widths. */
 .results-block { margin-top:38px; padding-top:27px; border-top:1px solid var(--rule); }
 .results-grid { margin-top:34px; }
-.model-tables { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:26px; }
+.model-tables { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.model-table-card { min-width:0; padding:19px 17px 8px; border:1px solid var(--rule); border-radius:16px; background:color-mix(in srgb,var(--surface) 45%,var(--paper)); }
+.model-table-card .model-table { border-collapse:separate; border-spacing:0; }
+.model-table-card .model-table caption { margin-bottom:16px; }
+.model-table-card .model-table tr > :last-child { padding-right:9px; padding-left:9px; background:color-mix(in srgb,var(--accent-soft) 60%,var(--paper)); }
+.model-table-card .model-table thead th:last-child { border-radius:8px 8px 0 0; color:var(--accent); font-weight:600; }
+.model-table-card .model-table tbody tr:last-child > * { border-bottom:0; }
+.model-table-card .model-table tbody tr:last-child td:last-child { border-radius:0 0 8px 8px; }
 .model-table, .compact-evidence-table { width:100%; border-collapse:collapse; color:var(--ink); font-size:12px; line-height:1.6; font-variant-numeric:tabular-nums; }
 .model-table caption { text-align:left; margin-bottom:13px; color:var(--ink); font-size:15px; font-weight:550; }
 .model-table th, .model-table td, .compact-evidence-table th, .compact-evidence-table td { padding:10px 5px; border-bottom:1px solid var(--rule); text-align:right; white-space:nowrap; }
@@ -190,11 +237,12 @@
 .workload-sequence { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px; margin-top:13px; padding-top:15px; border-top:1px solid var(--rule); }
 .workload-sequence span { color:var(--muted); font-size:11px; } .workload-sequence > div:last-child span { color:var(--research-teal); }
 .workload-sequence p { margin-top:5px; color:var(--ink); font-size:11px; line-height:1.7; }
-.chart-view-controls { display:flex; flex-wrap:wrap; gap:4px 18px; align-items:center; margin:12px 0 0; border-bottom:1px solid var(--rule); }
+.chart-view-controls { display:flex; flex-wrap:wrap; width:fit-content; max-width:100%; gap:3px; align-items:center; margin:15px 0 0; padding:3px; border:1px solid var(--rule); border-radius:999px; background:var(--surface); }
 .chart-view-controls[hidden], [data-chart-view][hidden] { display:none; }
-.chart-view-controls button { appearance:none; background:none; border:0; border-bottom:2px solid transparent; border-radius:0; padding:10px 0; min-height:44px; color:var(--muted); font:inherit; font-size:12px; line-height:1.6; cursor:pointer; }
-.chart-view-controls button[aria-pressed="true"] { color:var(--accent); border-bottom-color:var(--accent); }
-.chart-view-controls button:hover { color:var(--ink); } .chart-view-controls button:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.chart-view-controls button { appearance:none; background:none; border:0; border-radius:999px; padding:8px 13px; min-height:44px; color:var(--muted); font:inherit; font-size:12px; line-height:1.6; cursor:pointer; transition:background 160ms ease,color 160ms ease,box-shadow 160ms ease; }
+.chart-view-controls button[aria-pressed="true"] { color:var(--accent); background:var(--paper); box-shadow:0 1px 4px rgb(0 0 0 / 7%); }
+.chart-view-controls button:hover { color:var(--ink); }
+.chart-view-controls button:focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:999px; }
 .chart-views .research-source { margin-top:0; }
 .batch-evidence { display:grid; grid-template-columns:1fr 1fr; gap:42px; align-items:center; margin-top:32px; padding-top:25px; border-top:1px solid var(--rule); }
 .batch-evidence h5 { font-size:20px; } .batch-evidence > div > p:last-child { max-width:55ch; margin-top:10px; font-size:12px; line-height:1.8; }
@@ -208,8 +256,13 @@
   .model-tables { gap:20px; } .model-table { font-size:11px; } .model-table thead th { font-size:10px; }
 }
 @media (max-width:850px) {
-  .serving-summary { padding-top:26px; border-top:1px solid var(--rule); }
-  .reuse-evidence { grid-template-columns:minmax(0,1fr); gap:0; }
+  .experiment-overview { grid-template-columns:minmax(0,1fr); gap:24px; }
+  .experiment-overview .experiment-metrics { max-width:480px; }
+  .experiment-tabs a { padding:14px 12px; gap:10px; }
+  .experiment-tab-hint { font-size:10px; }
+  .experiment-comparisons { grid-template-columns:minmax(0,1fr); }
+  .experiment-panel .evidence-figure, .experiment-panel .model-tables { max-width:none; }
+  .reuse-evidence { grid-template-columns:minmax(0,1fr); gap:18px; }
   .evidence-grid { grid-template-columns:minmax(0,1fr); gap:36px; } .evidence-figure { max-width:580px; width:100%; }
   .mechanism-band { grid-template-columns:1fr 1fr; }
   .mechanism-objective { grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:13px; }
@@ -220,8 +273,25 @@
   .batch-evidence { grid-template-columns:minmax(0,1fr); gap:24px; }
 }
 @media (max-width:600px) {
-  .experiment-tabs { margin:24px 0 28px; }
-  .experiment-tabs a { padding:9px 8px; }
+  .experiment-overview { margin-bottom:24px; gap:22px; }
+  .experiment-intro .research-section-header h4 { font-size:25px; }
+  .experiment-overview .experiment-metrics > div { padding:16px 18px; }
+  .experiment-overview .experiment-metrics strong { font-size:43px; }
+  .experiment-tabs { gap:7px; margin-bottom:25px; }
+  .experiment-tabs a { flex-direction:column; justify-content:center; gap:7px; min-height:88px; padding:12px 5px; border-radius:12px; text-align:center; }
+  .experiment-tab-icon { flex-basis:18px; width:18px; height:18px; }
+  .experiment-tab-label { display:flex; align-items:center; justify-content:center; min-height:34px; max-width:94px; font-size:12px; line-height:1.4; text-wrap:balance; }
+  .experiment-tab-hint { display:none; }
+  .experiment-panel .evidence-heading h5 { font-size:21px; }
+  .experiment-panel .evidence-grid { gap:18px; }
+  .experiment-panel .result-card { padding:18px 16px; border-radius:15px; }
+  .experiment-panel .inline-gain { font-size:35px; }
+  .experiment-panel .caption-notes { padding:12px; }
+  .experiment-panel .research-chart { width:calc(100% + 12px); max-width:none; margin-left:-6px; }
+  .experiment-panel .research-chart text { font-size:18px; }
+  .experiment-panel .research-chart .plot-value { font-size:20px; }
+  .model-table-card { padding:18px 16px 8px; }
+  .serving-summary .research-source { font-size:13px; }
   .evidence-figure figcaption, .native-research .research-source { font-size:13px; line-height:1.8; }
   .evidence-heading h5, .batch-evidence h5 { font-size:21px; } .evidence-figure h5, .evidence-figure h6 { font-size:19px; }
   .evidence-figure .evidence-intro { font-size:13px; } .inline-gain { font-size:26px; }
@@ -241,13 +311,28 @@
   .workload-sequence { gap:12px; } .workload-sequence p { font-size:10px; }
 }
 @media (max-width:360px) {
-  .experiment-tabs a { font-size:12px; }
+  .experiment-tabs { gap:6px; }
+  .experiment-tab-label { font-size:11px; max-width:78px; }
+  .experiment-overview .experiment-metrics { gap:10px; }
+  .experiment-overview .experiment-metrics > div { padding:14px; }
+  .experiment-overview .experiment-metrics strong { font-size:39px; }
+  .experiment-intro .research-section-header h4 { font-size:23px; }
+  .experiment-panel .inline-gain { font-size:32px; }
+  .experiment-panel .research-chart text { font-size:21px; }
+  .experiment-panel .research-chart .plot-value { font-size:23px; }
+  .model-table-card { padding-right:12px; padding-left:12px; }
   .research-chart text { font-size:19px; } .research-chart .plot-value { font-size:21px; } .research-chart .schematic-note { font-size:16px; }
   .native-equation { font-size:23px; } .proposal-pair { grid-template-columns:minmax(0,1fr); } .proposal-pair .layer-strip { max-width:270px; gap:4px; }
   .model-table { font-size:12px; } .model-table thead th { font-size:11px; } .batch-metrics dd { font-size:26px; }
   .workload-sequence { grid-template-columns:minmax(0,1fr); gap:10px; } .workload-sequence p { font-size:12px; }
 }
+@media (prefers-reduced-motion: reduce) {
+  .research-tabs a, .experiment-tabs a, .chart-view-controls button { transition:none; }
+}
 @media print {
+  .experiment-overview { display:block; }
+  .experiment-overview .experiment-metrics { max-width:480px; margin-top:20px; }
+  .experiment-panel .result-card, .model-table-card { background:none; box-shadow:none; break-inside:avoid; }
   .native-research { --research-teal:#087f73; --research-teal-soft:#e7f3f0; --research-warm:#a7683e; --plot-neutral:#77869b; --plot-third:#a0adbd; --plot-cloud:#93a2b7; --plot-draft:#d7e2ef; --plot-verify:#96abc6; --plot-other:#edf1f6; }
   .experiment-tabs, .chart-view-controls { display:none; }
   .experiment-panel[hidden], [data-chart-view][hidden] { display:block !important; }

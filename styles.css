@@ -501,16 +501,16 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 .figure-panel figcaption { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.75; }
 .figure-panel figcaption a { display: inline-block; min-height: 36px; padding: 6px 0; color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
-  .figure-toggle-icon::after { transition: none; }
+  .figure-toggle-icon::after, .research-tabs a { transition:none; }
 }
 
 /* Research details follow the typography and spacing of the surrounding article. */
-.research-tabs { position: sticky; top: 61px; z-index: 4; display: flex; align-items: stretch; gap: 38px; margin: 0 0 36px; padding: 0; border-bottom: 1px solid var(--rule); background: var(--paper); }
-.research-tabs a { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 52px; min-width: 44px; padding: 12px 0; color: var(--muted); font-size: 15px; font-weight: 500; line-height: 1.6; letter-spacing: -.1px; text-decoration: none; white-space: nowrap; transition: color 160ms ease; }
-.research-tabs a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform 160ms ease; }
-.research-tabs a:hover, .research-tabs a[aria-selected="true"] { color: var(--ink); }
-.research-tabs a[aria-selected="true"]::after { transform: scaleX(1); }
-.research-tabs a:focus-visible { outline-offset: 4px; }
+/* A compact pill selection stays visible as the research article scrolls. */
+.research-tabs { position:sticky; top:61px; z-index:4; display:flex; align-items:center; gap:6px; margin:0 0 32px; padding:8px 0 12px; border-bottom:1px solid var(--rule); background:var(--paper); }
+.research-tabs a { display:inline-flex; align-items:center; justify-content:center; min-height:44px; min-width:108px; padding:9px 22px; border:1px solid transparent; border-radius:999px; color:var(--muted); font-size:14px; font-weight:500; line-height:1.6; text-decoration:none; white-space:nowrap; transition:background 160ms ease,color 160ms ease,box-shadow 160ms ease; }
+.research-tabs a:hover { background:var(--surface); color:var(--ink); }
+.research-tabs a[aria-selected="true"] { background:var(--ink); color:var(--paper); box-shadow:0 2px 5px rgb(0 0 0 / 6%); }
+.research-tabs a:focus-visible { outline-offset:3px; border-radius:999px; }
 .research-panel, .research-panel [id] { scroll-margin-top: 70px; }
 .research-panel:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; border-radius: 3px; }
 .research-section-header { margin-bottom: 24px; }
@@ -574,8 +574,8 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
 @media (max-width: 600px) {
   .paper-summary { margin-top: 30px; }
   .paper-summary > summary { min-height: 56px; font-size: 13px; }
-  .research-tabs { top: 57px; gap: 28px; margin-bottom: 28px; }
-  .research-tabs a { min-height: 48px; font-size: 14px; }
+  .research-tabs { top:57px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; margin-bottom:28px; padding:6px 0 10px; }
+  .research-tabs a { min-width:0; min-height:44px; padding:9px 12px; font-size:13px; }
   .research-section-header h4 { font-size: 25px; line-height: 1.3; letter-spacing: -.65px; }
   .research-section-header, .motivation-evidence > .research-section-header { margin-bottom: 22px; }
   .research-panel .motivation-copy > p, .research-intro, .experiment-summary > p { font-size: 14px; line-height: 1.85; }
@@ -586,8 +586,8 @@ h4 { font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.2px;
   .experiment-metrics strong { font-size: 44px; letter-spacing: -1.8px; }
 }
 @media (max-width: 360px) {
-  .research-tabs { gap: 23px; }
-  .research-tabs a { font-size: 13px; }
+  .research-tabs { gap:4px; }
+  .research-tabs a { padding-right:8px; padding-left:8px; font-size:12.5px; }
   .research-section-header h4 { font-size: 23px; }
   .experiment-metrics strong { font-size: 40px; }
 }
