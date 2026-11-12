@@ -8,7 +8,7 @@ export const sources = {
   method: { href: '#spirit-method', en: 'How SPIRIT works', zh: 'SPIRIT 方法详解' },
   results: { href: '#spirit-experiments', en: 'Experimental results', zh: '实验结果' },
   poster: { href: '/assets/figures/spirit-poster-neurips2026.png', en: 'Research poster (PNG)', zh: '完整研究海报 PNG' },
-  slides: { href: '/assets/slides/SPIRIT-NeurIPS2026.pdf?v=6b283eff1c11', en: 'Slides (PDF)', zh: '幻灯片 PDF' },
+  slides: { href: '/assets/slides/SPIRIT-NeurIPS2026.pdf?v=930692eb2c1d', en: 'Slides (PDF)', zh: '幻灯片 PDF' },
   paper: { href: '/assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf', en: 'SPIRIT paper (PDF)', zh: 'SPIRIT 论文 PDF' },
   contact: { href: '#contact', en: 'Get in touch', zh: '联系方式' },
   measurement: {
