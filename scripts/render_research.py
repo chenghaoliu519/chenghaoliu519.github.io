@@ -150,11 +150,25 @@ def discovery():
                'Paper Figure 3a. Shared 20-request replay probes, LLaMA-2-13B, CNN/DM, FP16. Solid lines show the selected configuration, dashed lines the best replay speedup found so far. '+'; '.join(descriptions),body)
 
 def ablation_table():
-    result='<table class="compact-evidence-table"><caption>Objective ablation · mean speedup over three tasks / model</caption><thead><tr><th scope="col">Objective</th><th scope="col">13B</th><th scope="col">70B</th></tr></thead><tbody>'
-    for field,label in [('throughput','Throughput'),('acceptance','Acceptance only')]:
+    result='<table class="compact-evidence-table"><caption>Mean speedup / AR · three tasks per model</caption><thead><tr><th scope="col">Variant</th><th scope="col">13B</th><th scope="col">70B</th></tr></thead><tbody>'
+    for field,label in [('throughput','Full SPIRIT'),('acceptance','Acceptance only'),('fixed_ratio','Fixed <i>r</i> = 0.5')]:
         result+='<tr><th scope="row">'+label+'</th>'
         result+=''.join(f'<td>{"<strong>" if field=="throughput" else ""}{r[field]:.2f}×{"</strong>" if field=="throughput" else ""}</td>' for r in DATA['ablation'])
         result+='</tr>'
+    return result+'</tbody></table>'
+
+
+def architecture_table():
+    result='<table class="validation-table" aria-describedby="architecture-scope"><caption>Decode speedup / matched AR</caption><thead><tr><th scope="col">Model</th><th scope="col">BF16 draft</th><th scope="col">NF4 draft</th></tr></thead><tbody>'
+    for row in DATA['architecture']:
+        result+=f'<tr><th scope="row">{esc(row["model"])}<span class="validation-context">{esc(row["family"])}</span></th><td>{row["bf16"]:.3f}×</td><td><strong>{row["nf4"]:.3f}×</strong></td></tr>'
+    return result+'</tbody></table>'
+
+def code_table():
+    result='<table class="validation-table" aria-describedby="code-scope"><caption>Greedy decoding on HumanEval</caption><thead><tr><th scope="col">Model</th><th scope="col">Speedup / AR</th><th scope="col">Pass@1</th></tr></thead><tbody>'
+    for row in DATA['code_greedy']:
+        assert row['ar_pass_at_1']==row['spirit_pass_at_1']
+        result+=f'<tr><th scope="row">{esc(row["model"])}</th><td><strong>{row["speedup"]:.2f}×</strong></td><td>{row["spirit_pass_at_1"]:.1%}</td></tr>'
     return result+'</tbody></table>'
 
 def cost():
@@ -227,6 +241,7 @@ def build():
         'motivation_scatter':motivation_scatter(),'motivation_frontier':motivation_frontier(),
         'ratio_schematic':ratio_schematic(),'fp16_tables':fp16_tables(),'specbench':specbench(),
         'discovery':discovery(),'ablation_table':ablation_table(),'cost':cost(),'reuse':reuse(),
+        'architecture_table':architecture_table(),'code_table':code_table(),
         'sustained_full':sustained(),'sustained_early':sustained(True),'precision':precision(),'batch_strip':batch_strip()
     }
     panels=[]

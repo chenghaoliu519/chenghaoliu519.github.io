@@ -204,6 +204,22 @@ or time-zero measurement is introduced. Full-stream and post-adaptation
 SpecBench scopes, normalized timing and latency, and independent precision
 and long-stream studies stay distinct.
 
+The paper-aligned detail explains why prefix growth requires length calibration:
+within-request selection uses the calibrated, smoothed score Q, while profile
+matching uses raw request-head throughput and acceptance without task labels.
+Search details include a measure–calibrate–smooth sequence and remain closed
+initially. The Method introduction states that full-target verification preserves
+the target distribution; a shared experiment note explains online decode timing.
+
+The configuration-discovery figure explains the final-selection gap. A companion
+ablation table includes the fixed-ratio (r = 0.5) variant with pattern refinement
+retained, using arithmetic means of Table 4's three task values. A broader-validation
+block adds Table 6's three architecture comparisons (BF16 verifier, BF16/NF4 drafts)
+and Table 2's two greedy HumanEval results. These are point estimates with direct
+paper references; HumanEval pass@1 matches AR in the displayed greedy settings.
+The frozen data records the paper/PDF hashes, raw fixed-ratio task values, and
+architecture confidence intervals. Existing curves and headline scopes are retained.
+
 The native SVGs are deterministically rendered from
 `assets/data/spirit-research.json` by `scripts/render_research.py` and the three
 templates under `scripts/research/`. The data preserves the adopted poster's

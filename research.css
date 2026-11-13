@@ -698,3 +698,78 @@
   .experiment-section-heading, .experiment-evidence-label { break-after:avoid; }
   .experiment-panel .adaptation-support { background:none; }
 }
+
+/* Paper-aligned explanations stay close to the mechanism or measured evidence. */
+.problem-page .research-implication .problem-design-copy p + p { margin-top:12px; }
+.method-page .calibration-detail { padding:24px; border-bottom:1px solid var(--rule); }
+.calibration-detail > .method-eyebrow { margin:0; }
+.calibration-detail h6 { margin:7px 0 10px; color:var(--ink); font-size:19px; line-height:1.45; font-weight:550; letter-spacing:-.25px; }
+.calibration-detail > p:not(.method-eyebrow):not(.research-source) { max-width:86ch; margin:0; font-size:13px; line-height:1.85; }
+.calibration-flow { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; list-style:none; margin:19px 0 16px; padding:0; }
+.calibration-flow > li { min-width:0; padding:17px 18px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); }
+.calibration-label { color:var(--accent); font-size:11px; font-weight:550; }
+.calibration-equation { margin:9px 0; color:var(--ink); font-size:21px; line-height:1.6; white-space:nowrap; }
+.calibration-equation sub { font-size:65%; }
+.calibration-flow p { margin:0; color:var(--muted); font-size:12px; line-height:1.8; }
+.calibration-detail > .research-source { margin:0; }
+.experiment-measurement { display:flex; gap:10px 20px; align-items:baseline; padding:15px 18px; margin:0 0 24px; border:1px solid var(--rule); border-radius:13px; background:var(--surface); }
+.experiment-measurement > strong { flex-shrink:0; color:var(--ink); font-size:12px; line-height:1.8; font-weight:550; }
+.experiment-measurement > p { margin:0; color:var(--muted); font-size:12px; line-height:1.85; }
+.experiment-panel .selection-note { margin:18px 0 0; padding:13px 15px; border-left:2px solid color-mix(in srgb,var(--accent) 45%,var(--rule)); border-radius:0 10px 10px 0; background:color-mix(in srgb,var(--accent-soft) 35%,var(--paper)); color:var(--muted); font-size:12px; line-height:1.85; }
+.selection-note > strong { display:block; margin-bottom:4px; color:var(--ink); font-weight:550; }
+.experiment-panel .ablation-note { margin:10px 0 6px; color:var(--muted); font-size:11px; line-height:1.8; }
+.experiment-panel .broader-validation { margin-top:32px; }
+.validation-card .validation-title { margin:0; color:var(--ink); font-size:19px; line-height:1.45; font-weight:550; letter-spacing:-.3px; text-wrap:pretty; }
+.validation-table { width:100%; border-collapse:collapse; font-size:13px; line-height:1.6; font-variant-numeric:tabular-nums; }
+.validation-table caption { text-align:left; margin:0 0 11px; color:var(--muted); font-size:12px; }
+.validation-table th, .validation-table td { padding:13px 7px; border-bottom:1px solid var(--rule); text-align:right; }
+.validation-table th:first-child { text-align:left; padding-left:0; width:43%; overflow-wrap:anywhere; }
+.validation-table tr > :last-child { padding-right:0; }
+.validation-table thead th { color:var(--muted); font-size:11px; font-weight:400; vertical-align:bottom; }
+.validation-table tbody th { color:var(--ink); font-size:13px; font-weight:500; }
+.validation-table tbody tr:last-child > * { border-bottom:0; }
+.validation-table td { white-space:nowrap; }
+.validation-table strong { color:var(--accent); font-weight:600; }
+.validation-context { display:block; margin-top:3px; color:var(--muted); font-size:11px; font-weight:400; }
+@media (max-width:1000px) {
+  .calibration-flow { gap:10px; }
+  .calibration-flow > li { padding:15px 14px; }
+  .calibration-equation { font-size:19px; }
+}
+@media (max-width:850px) {
+  .experiment-measurement { display:block; }
+  .experiment-measurement > p { margin-top:5px; }
+}
+@media (max-width:600px) {
+  .method-page .calibration-detail { padding:18px; }
+  .calibration-detail h6 { font-size:18px; }
+  .calibration-flow { grid-template-columns:minmax(0,1fr); gap:12px; }
+  .calibration-flow > li { padding:16px; }
+  .calibration-equation { font-size:22px; }
+  .calibration-flow p { font-size:13px; }
+  .experiment-measurement { padding:14px 16px; margin-bottom:22px; }
+  .experiment-measurement > p, .experiment-panel .selection-note { font-size:13px; }
+  .experiment-panel .ablation-note { font-size:12px; }
+  .experiment-panel .broader-validation { margin-top:28px; }
+  .validation-table th, .validation-table td { padding:13px 5px; }
+}
+@media (max-width:360px) {
+  .validation-table { font-size:12px; }
+  .validation-table tbody th { font-size:12px; }
+  .validation-table thead th { font-size:10px; }
+}
+@media print {
+  .calibration-flow > li, .experiment-measurement, .experiment-panel .selection-note { background:none; }
+  .calibration-flow > li, .validation-card { break-inside:avoid; }
+}
+
+/* Keep independent mechanism ablations distinct from replay-trace measurements. */
+.experiment-panel .adaptation-checks { display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); gap:26px 36px; align-items:center; margin-top:26px; background:color-mix(in srgb,var(--surface) 40%,var(--paper)); }
+.adaptation-checks > div { min-width:0; }
+.adaptation-checks h6 { margin:0; color:var(--ink); font-weight:550; letter-spacing:-.3px; }
+.adaptation-checks .evidence-intro { margin:12px 0; font-size:13px; line-height:1.8; }
+.adaptation-checks .research-source { margin:0; }
+.experiment-panel .adaptation-checks .adaptation-support { margin:0; padding:0; border:0; background:none; }
+@media (max-width:850px) {
+  .experiment-panel .adaptation-checks { grid-template-columns:minmax(0,1fr); gap:22px; }
+}

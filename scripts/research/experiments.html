@@ -7,6 +7,8 @@
   <dl class="experiment-metrics" aria-label="Maximum measured decoding speedup"><div><dt>FP16 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>1.74×</strong></dd></div><div><dt>NF4 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>2.48x</strong></dd></div></dl>
   </div>
 
+  <aside class="experiment-measurement" aria-label="Online measurement scope"><strong>Measured during serving</strong><p>Online decode timings include search and profile updates; prefill is excluded.</p></aside>
+
   <div id="results-figure-details">
     <nav class="experiment-tabs" aria-label="Experiment topics">
       <a id="experiment-models-tab" href="#experiment-models" aria-label="Models &amp; tasks">
@@ -44,9 +46,28 @@
       <div><div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">03</span><p class="method-eyebrow">Batched serving</p></div><h6 id="batch-heading">The gains persist with batching.</h6><p>13B · speedup over matching batched AR · full-model verification at every batch size.</p></div>
       <dl class="batch-metrics">{{batch_strip}}</dl>
     </section>
-<p class="research-source">Further evaluations in the paper cover Qwen and Mixtral architectures and HumanEval code generation.</p>
+<p class="research-source">Each batch size uses its own autoregressive baseline.</p>
         </div>
 </div>
+<section class="broader-validation" aria-labelledby="broader-validation-heading">
+  <header class="experiment-section-heading"><span class="experiment-section-number" aria-hidden="true">04</span><div><p class="method-eyebrow">Broader validation</p><h6 id="broader-validation-heading">Beyond the <span class="keep-together">LLaMA-2</span> family.</h6></div></header>
+  <div class="evidence-grid validation-grid">
+    <figure class="evidence-figure result-card validation-card" aria-labelledby="architecture-heading">
+      <p class="method-eyebrow">Dense GQA · sparse MoE</p>
+      <p class="validation-title" id="architecture-heading">Transfer across architectures.</p>
+      <p class="evidence-intro">The controller adapts to different draft paths while retaining full BF16 verification.</p>
+      {{architecture_table}}
+      <figcaption id="architecture-scope"><p>Aggregate over CNN/DM, GSM8K, and TinyStories. Point estimates shown; <a href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf#page=10" type="application/pdf" target="_blank" rel="noopener">paper Table 6</a> reports 95% intervals.</p><p>Mixtral uses top-1 routing for drafts and full top-2 routing for verification.</p></figcaption>
+    </figure>
+    <figure class="evidence-figure result-card validation-card" aria-labelledby="code-heading">
+      <p class="method-eyebrow">Code generation · HumanEval</p>
+      <p class="validation-title" id="code-heading">Faster decoding, with matching greedy accuracy.</p>
+      <p class="evidence-intro">CodeLLaMA gains speed while preserving the autoregressive pass@1 result in both evaluated settings.</p>
+      {{code_table}}
+      <figcaption id="code-scope"><p>Greedy decoding · all 164 HumanEval problems. Pass@1 matches AR for both models.</p><p><a href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf#page=7" type="application/pdf" target="_blank" rel="noopener">Paper Table 2</a> also reports the separate sampling evaluation.</p></figcaption>
+    </figure>
+  </div>
+</section>
 </div>
 <div class="experiment-panel" id="experiment-nf4">
 <header class="evidence-heading experiment-page-heading"><div><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist as optimization costs are amortized.</h5></div><p>Two complementary studies separate sustained serving performance from the effect of draft precision.</p></header>
@@ -82,14 +103,14 @@
 <figure class="evidence-figure result-card" aria-labelledby="discovery-heading">
           <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">01</span><p class="method-eyebrow">Configuration discovery</p></div>
 <h6 id="discovery-heading">Choose configurations for speed.</h6>
-          <p class="evidence-intro">The published search trace ends at <strong>1.61× for SPIRIT</strong>, compared with 1.41× for SWIFT and 1.22× for D&amp;V.</p>
+          <p class="evidence-intro">SPIRIT’s final and best-found speedups both reach <strong>1.61×</strong>. SWIFT finds 1.52× but finishes at 1.41×; D&amp;V finishes at 1.22×.</p>
           <div class="chart-legend"><span><i class="legend-line"></i>SPIRIT</span><span><i class="legend-line neutral"></i>SWIFT</span><span><i class="legend-line third"></i>D&amp;V</span></div>
           <p class="plot-unit">Replay speedup / AR</p>
           {{discovery}}
           <p class="plot-axis-caption">Online configuration-discovery time (s)</p>
           <div class="chart-legend line-style-key"><span><i class="legend-line ink"></i>Current choice</span><span><i class="legend-line ink dashed"></i>Best found so far</span></div>
-          <div class="adaptation-support">{{ablation_table}}</div>
-          <figcaption><p>Paper Fig. 3a · 13B · CNN/DM · FP16 · the same 20-request replay probe for all choices.</p><p>The ablation uses separate three-task means.</p></figcaption>
+          <p class="selection-note"><strong>Selection matters.</strong>Agreement-based scores can misrank configurations by decode throughput.</p>
+          <figcaption><p>Paper Fig. 3a · 13B · CNN/DM · FP16 · the same 20-request replay probe for all choices.</p></figcaption>
         </figure>
 <figure class="evidence-figure result-card" aria-labelledby="cost-heading">
           <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">02</span><p class="method-eyebrow">Controller update cost</p></div>
@@ -101,6 +122,10 @@
           <figcaption><p>Paper Fig. 3b · 13B · CNN/DM · FP16 · step-normalized window timing · 13 requests, one seed.</p><p>Stacks include the &lt;1% residual execution time.</p></figcaption>
         </figure>
 </div>
+<section class="result-card adaptation-checks" aria-labelledby="ablation-heading">
+  <div><p class="method-eyebrow">Mechanism checks</p><h6 id="ablation-heading">Both the objective and the ratio matter.</h6><p class="evidence-intro">Acceptance-only scoring and a fixed skip ratio each reduce mean speedup.</p><p class="research-source"><a href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf#page=8" type="application/pdf" target="_blank" rel="noopener">Paper Table 4</a> · stationary FP16 tasks.</p></div>
+  <div class="adaptation-support">{{ablation_table}}<p class="ablation-note">The fixed-ratio variant keeps layer-pattern refinement enabled.</p></div>
+</section>
 <figure class="evidence-figure result-card reuse-evidence" aria-labelledby="reuse-results-heading">
 <div class="reuse-overview"><div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">03</span><p class="method-eyebrow">Profile reuse</p></div><h6 id="reuse-results-heading"><span class="inline-gain teal-value">+9.8–10.3%</span> when workloads recur.</h6>
         <p class="evidence-intro">Returning tasks benefit from configurations found earlier, instead of starting each search again.</p>

@@ -33,7 +33,7 @@
     <script src="site.js?v=622ade7aa09c" defer></script>
     <link rel="stylesheet" href="chatbot/guide.css?v=bd0671b087d8">
     <script type="module" src="chatbot/guide.mjs?v=5378efb4f244"></script>
-    <link rel="stylesheet" href="research.css?v=cda0521f2f65">
+    <link rel="stylesheet" href="research.css?v=f053c467fda1">
     <script src="research.js?v=d45f4a188da7" defer></script>
   </head>
   <body>
@@ -212,7 +212,7 @@
   </div>
   <p class="research-source problem-source">Measured configuration sweep · LLaMA-2-13B · CNN/DM · FP16 · 21 skip ratios × 24 patterns · the same 24 prompts per configuration · decode-only.</p>
   </section>
-  <div class="research-implication"><div class="problem-implication-heading"><span class="problem-section-number" aria-hidden="true">03</span><span>Design implication</span></div><p>Use realized throughput to localize a promising skip ratio, then refine the layer pattern at that ratio. Evaluate within-request candidates through the same decoding that produces output tokens.</p></div>
+  <div class="research-implication"><div class="problem-implication-heading"><span class="problem-section-number" aria-hidden="true">03</span><span>Design implication</span></div><div class="problem-design-copy"><p>Use realized throughput to localize a promising skip ratio, then refine the layer pattern at that ratio. Evaluate within-request candidates through the same decoding that produces output tokens.</p><p>Effective configurations also depend on the workload. When request behavior changes, runtime feedback guides whether to keep, reuse, refine, or rebuild the serving configuration.</p></div></div>
 </section>
 <section class="research-panel native-research method-page" id="spirit-method" aria-labelledby="method-heading">
   <div class="method-overview-header">
@@ -221,7 +221,7 @@
     <p class="method-eyebrow">The method</p>
     <h4 id="method-heading">Search while decoding. Reuse when workloads recur.</h4>
   </header>
-  <p class="research-intro">SPIRIT adapts a self-draft configuration <i>c</i> = (<i>r</i>, <i>L</i>): how much computation to skip, and which sublayers to skip. It needs neither offline profiling nor a separately trained draft model.</p>
+  <p class="research-intro">SPIRIT adapts a self-draft configuration <i>c</i> = (<i>r</i>, <i>L</i>): how much computation to skip, and which sublayers to skip. It needs neither offline profiling nor a separately trained draft model. Full-target verification preserves the target model’s output distribution.</p>
 
     </div>
     <aside class="configuration-card" aria-label="Self-draft configuration">
@@ -255,7 +255,7 @@
       <section class="window-boundary" aria-label="Window-boundary controller update">
         <div class="window-step-heading"><span class="window-step-number" aria-hidden="true">2</span><div><p class="window-context">At the window boundary</p><h6>Update the configuration</h6></div></div>
         <div class="boundary-equation" role="math" aria-label="Q sub w equals EMA of S sub w times the prefix-length correction factor."><i>Q</i><sub>w</sub> = EMA[<i>S</i><sub>w</sub> · <i>f</i><sub>len</sub>(<i>x</i><sub>w</sub>)]</div>
-        <p>Correct for prefix growth.<br>Smooth window noise.</p>
+        <p>Prefix growth increases KV-cache work even with the same configuration. Calibrate for this cost, then smooth window noise.</p>
         <div class="boundary-selection"><strong>Choose the next (<i>r</i>, <i>L</i>)</strong><span>Ratio localization → pattern refinement</span></div>
         <p class="diagram-note">Boundary updates need no additional model forward pass.</p>
       </section>
@@ -269,7 +269,18 @@
     </div>
     <p class="feedback-return"><span aria-hidden="true">↺</span> Observe, update, and decode again until the request ends.</p>
     <details class="method-detail native-detail" id="within-request-details">
-      <summary><span class="detail-summary-copy"><span>Search details</span><small aria-hidden="true">Ratio localization · layer refinement</small></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+      <summary><span class="detail-summary-copy"><span>Search details</span><small aria-hidden="true">Calibration · ratio · pattern</small></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+      <section class="calibration-detail" aria-labelledby="calibration-heading">
+        <p class="method-eyebrow">Comparable window feedback</p>
+        <h6 id="calibration-heading">Separate configuration quality from prefix growth.</h6>
+        <p>An online latency model estimates the cost of a growing prefix. It rebases measured throughput to a common reference length; exponential smoothing then reduces short-window noise.</p>
+        <ol class="calibration-flow">
+          <li><span class="calibration-label">Measure</span><div class="calibration-equation" role="math" aria-label="S sub w equals G sub w divided by T sub w."><i>S</i><sub>w</sub> = <i>G</i><sub>w</sub> / <i>T</i><sub>w</sub></div><p>Committed tokens per decode second.</p></li>
+          <li><span class="calibration-label">Calibrate</span><div class="calibration-equation" role="math" aria-label="S tilde sub w equals S sub w times the prefix-length correction factor."><i>S̃</i><sub>w</sub> = <i>S</i><sub>w</sub> · <i>f</i><sub>len</sub>(<i>x</i><sub>w</sub>)</div><p>Correct for the estimated length effect.</p></li>
+          <li><span class="calibration-label">Smooth</span><div class="calibration-equation" role="math" aria-label="Q sub w equals EMA of S tilde sub w."><i>Q</i><sub>w</sub> = EMA[<i>S̃</i><sub>w</sub>]</div><p>Score configurations within the request.</p></li>
+        </ol>
+        <p class="research-source">The length model uses latency per committed token and speculative-step coverage. Request-head profile matching uses raw throughput <i>S</i> and acceptance <i>α</i>.</p>
+      </section>
       <div class="search-stages">
         <section aria-labelledby="ratio-search-heading">
           <p class="method-eyebrow">Stage I · Skip ratio</p>
@@ -298,7 +309,7 @@
 
   <section class="method-loop profile-loop" id="spirit-reuse" aria-labelledby="reuse-heading">
     <header class="evidence-heading method-phase-heading"><span class="method-section-number" aria-hidden="true">02</span><div><p class="method-eyebrow">Across requests</p><h5 id="reuse-heading">Recognize a returning workload.</h5></div></header>
-    <p class="research-intro compact-intro">A profile pairs a skip ratio and layer pattern with its request-head history: the mean and standard deviation of <strong>raw throughput <i>S</i></strong> and <strong>draft acceptance <i>α</i></strong>.</p>
+    <p class="research-intro compact-intro">A profile pairs a skip ratio and layer pattern with its request-head history: the mean and standard deviation of <strong>raw throughput <i>S</i></strong> and <strong>draft acceptance <i>α</i></strong>. Matching uses runtime evidence; no task labels are required.</p>
     <div class="profile-overview">
       <div class="profile-record"><p class="diagram-label">Stored configuration</p><div class="layer-strip" role="img" aria-label="Stored ratio and pattern; four of eight illustrative sublayers skipped."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div><p class="diagram-note">Ratio <i>r</i><sup>★</sup> + layer pattern <i>L</i><sup>★</sup></p></div>
       <div class="profile-signature" role="img" aria-label="Schematic signature comparison: the current request-head throughput and acceptance depart from the stored ranges.">
@@ -334,6 +345,8 @@
     </div>
   <dl class="experiment-metrics" aria-label="Maximum measured decoding speedup"><div><dt>FP16 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>1.74×</strong></dd></div><div><dt>NF4 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>2.48x</strong></dd></div></dl>
   </div>
+
+  <aside class="experiment-measurement" aria-label="Online measurement scope"><strong>Measured during serving</strong><p>Online decode timings include search and profile updates; prefill is excluded.</p></aside>
 
   <div id="results-figure-details">
     <nav class="experiment-tabs" aria-label="Experiment topics">
@@ -372,9 +385,28 @@
       <div><div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">03</span><p class="method-eyebrow">Batched serving</p></div><h6 id="batch-heading">The gains persist with batching.</h6><p>13B · speedup over matching batched AR · full-model verification at every batch size.</p></div>
       <dl class="batch-metrics"><div><dt>Batch 1</dt><dd>1.44×</dd></div><div><dt>Batch 2</dt><dd>1.42×</dd></div><div><dt>Batch 4</dt><dd>1.23×</dd></div></dl>
     </section>
-<p class="research-source">Further evaluations in the paper cover Qwen and Mixtral architectures and HumanEval code generation.</p>
+<p class="research-source">Each batch size uses its own autoregressive baseline.</p>
         </div>
 </div>
+<section class="broader-validation" aria-labelledby="broader-validation-heading">
+  <header class="experiment-section-heading"><span class="experiment-section-number" aria-hidden="true">04</span><div><p class="method-eyebrow">Broader validation</p><h6 id="broader-validation-heading">Beyond the <span class="keep-together">LLaMA-2</span> family.</h6></div></header>
+  <div class="evidence-grid validation-grid">
+    <figure class="evidence-figure result-card validation-card" aria-labelledby="architecture-heading">
+      <p class="method-eyebrow">Dense GQA · sparse MoE</p>
+      <p class="validation-title" id="architecture-heading">Transfer across architectures.</p>
+      <p class="evidence-intro">The controller adapts to different draft paths while retaining full BF16 verification.</p>
+      <table class="validation-table" aria-describedby="architecture-scope"><caption>Decode speedup / matched AR</caption><thead><tr><th scope="col">Model</th><th scope="col">BF16 draft</th><th scope="col">NF4 draft</th></tr></thead><tbody><tr><th scope="row">Qwen2.5-7B<span class="validation-context">Dense GQA</span></th><td>1.304×</td><td><strong>1.358×</strong></td></tr><tr><th scope="row">Qwen3-8B-Base<span class="validation-context">Dense GQA</span></th><td>1.273×</td><td><strong>1.343×</strong></td></tr><tr><th scope="row">Mixtral-8×7B<span class="validation-context">Sparse MoE</span></th><td>1.240×</td><td><strong>1.296×</strong></td></tr></tbody></table>
+      <figcaption id="architecture-scope"><p>Aggregate over CNN/DM, GSM8K, and TinyStories. Point estimates shown; <a href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf#page=10" type="application/pdf" target="_blank" rel="noopener">paper Table 6</a> reports 95% intervals.</p><p>Mixtral uses top-1 routing for drafts and full top-2 routing for verification.</p></figcaption>
+    </figure>
+    <figure class="evidence-figure result-card validation-card" aria-labelledby="code-heading">
+      <p class="method-eyebrow">Code generation · HumanEval</p>
+      <p class="validation-title" id="code-heading">Faster decoding, with matching greedy accuracy.</p>
+      <p class="evidence-intro">CodeLLaMA gains speed while preserving the autoregressive pass@1 result in both evaluated settings.</p>
+      <table class="validation-table" aria-describedby="code-scope"><caption>Greedy decoding on HumanEval</caption><thead><tr><th scope="col">Model</th><th scope="col">Speedup / AR</th><th scope="col">Pass@1</th></tr></thead><tbody><tr><th scope="row">CodeLLaMA-13B</th><td><strong>1.40×</strong></td><td>34.1%</td></tr><tr><th scope="row">CodeLLaMA-34B</th><td><strong>1.47×</strong></td><td>48.1%</td></tr></tbody></table>
+      <figcaption id="code-scope"><p>Greedy decoding · all 164 HumanEval problems. Pass@1 matches AR for both models.</p><p><a href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf#page=7" type="application/pdf" target="_blank" rel="noopener">Paper Table 2</a> also reports the separate sampling evaluation.</p></figcaption>
+    </figure>
+  </div>
+</section>
 </div>
 <div class="experiment-panel" id="experiment-nf4">
 <header class="evidence-heading experiment-page-heading"><div><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist as optimization costs are amortized.</h5></div><p>Two complementary studies separate sustained serving performance from the effect of draft precision.</p></header>
@@ -410,14 +442,14 @@
 <figure class="evidence-figure result-card" aria-labelledby="discovery-heading">
           <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">01</span><p class="method-eyebrow">Configuration discovery</p></div>
 <h6 id="discovery-heading">Choose configurations for speed.</h6>
-          <p class="evidence-intro">The published search trace ends at <strong>1.61× for SPIRIT</strong>, compared with 1.41× for SWIFT and 1.22× for D&amp;V.</p>
+          <p class="evidence-intro">SPIRIT’s final and best-found speedups both reach <strong>1.61×</strong>. SWIFT finds 1.52× but finishes at 1.41×; D&amp;V finishes at 1.22×.</p>
           <div class="chart-legend"><span><i class="legend-line"></i>SPIRIT</span><span><i class="legend-line neutral"></i>SWIFT</span><span><i class="legend-line third"></i>D&amp;V</span></div>
           <p class="plot-unit">Replay speedup / AR</p>
           <svg class="research-chart" viewBox="0 0 440 260" role="img" aria-labelledby="discovery-trace-title discovery-trace-desc"><title id="discovery-trace-title">Published configuration-discovery trace</title><desc id="discovery-trace-desc">Paper Figure 3a. Shared 20-request replay probes, LLaMA-2-13B, CNN/DM, FP16. Solid lines show the selected configuration, dashed lines the best replay speedup found so far. D&amp;V: final 1.217×, best 1.294×; SWIFT: final 1.409×, best 1.521×; SPIRIT: final 1.610×, best 1.610×</desc><line x1="45.00" y1="212.72" x2="421.00" y2="212.72" class="plot-grid"/><text x="35.00" y="216.72" class="axis-label" text-anchor="end">1.0</text><line x1="45.00" y1="159.92" x2="421.00" y2="159.92" class="plot-grid"/><text x="35.00" y="163.92" class="axis-label" text-anchor="end">1.2</text><line x1="45.00" y1="107.12" x2="421.00" y2="107.12" class="plot-grid"/><text x="35.00" y="111.12" class="axis-label" text-anchor="end">1.4</text><line x1="45.00" y1="54.32" x2="421.00" y2="54.32" class="plot-grid"/><text x="35.00" y="58.32" class="axis-label" text-anchor="end">1.6</text><text x="45.00" y="242.00" class="axis-label" text-anchor="middle">0</text><text x="166.29" y="242.00" class="axis-label" text-anchor="middle">100</text><text x="287.58" y="242.00" class="axis-label" text-anchor="middle">200</text><text x="408.87" y="242.00" class="axis-label" text-anchor="middle">300</text><line x1="45.00" y1="218.00" x2="421.00" y2="218.00" class="plot-axis"/><line x1="45.00" y1="212.72" x2="421.00" y2="212.72" class="ar-reference"/><path d="M184.77,135.22 L280.35,135.22 L412.53,135.22" class="plot-line best-line third-line"/><path d="M184.77,135.22 L280.35,137.01 L412.53,155.50" class="plot-line third-line"/><circle cx="184.77" cy="135.22" r="2.4" class="series-point third-line"><title>D&amp;V: 115.24 seconds, current 1.294×, best 1.294×</title></circle><circle cx="280.35" cy="137.01" r="2.4" class="series-point third-line"><title>D&amp;V: 194.04 seconds, current 1.287×, best 1.294×</title></circle><circle cx="412.53" cy="155.50" r="2.4" class="series-point third-line"><title>D&amp;V: 303.02 seconds, current 1.217×, best 1.294×</title></circle><path d="M47.67,128.15 L47.98,128.15 L48.92,119.21 L49.27,119.21 L50.06,119.21 L95.42,75.16 L159.48,75.16 L186.54,75.16 L211.82,75.16 L284.85,75.16 L355.63,75.16" class="plot-line best-line neutral-line"/><path d="M47.67,128.15 L47.98,130.45 L48.92,119.21 L49.27,138.95 L50.06,120.00 L95.42,75.16 L159.48,100.53 L186.54,107.17 L211.82,83.71 L284.85,77.52 L355.63,104.75" class="plot-line neutral-line"/><circle cx="47.67" cy="128.15" r="2.4" class="series-point neutral-line"><title>SWIFT: 2.20 seconds, current 1.320×, best 1.320×</title></circle><circle cx="47.98" cy="130.45" r="2.4" class="series-point neutral-line"><title>SWIFT: 2.46 seconds, current 1.312×, best 1.320×</title></circle><circle cx="48.92" cy="119.21" r="2.4" class="series-point neutral-line"><title>SWIFT: 3.23 seconds, current 1.354×, best 1.354×</title></circle><circle cx="49.27" cy="138.95" r="2.4" class="series-point neutral-line"><title>SWIFT: 3.52 seconds, current 1.279×, best 1.354×</title></circle><circle cx="50.06" cy="120.00" r="2.4" class="series-point neutral-line"><title>SWIFT: 4.17 seconds, current 1.351×, best 1.354×</title></circle><circle cx="95.42" cy="75.16" r="2.4" class="series-point neutral-line"><title>SWIFT: 41.57 seconds, current 1.521×, best 1.521×</title></circle><circle cx="159.48" cy="100.53" r="2.4" class="series-point neutral-line"><title>SWIFT: 94.38 seconds, current 1.425×, best 1.521×</title></circle><circle cx="186.54" cy="107.17" r="2.4" class="series-point neutral-line"><title>SWIFT: 116.70 seconds, current 1.400×, best 1.521×</title></circle><circle cx="211.82" cy="83.71" r="2.4" class="series-point neutral-line"><title>SWIFT: 137.54 seconds, current 1.489×, best 1.521×</title></circle><circle cx="284.85" cy="77.52" r="2.4" class="series-point neutral-line"><title>SWIFT: 197.75 seconds, current 1.512×, best 1.521×</title></circle><circle cx="355.63" cy="104.75" r="2.4" class="series-point neutral-line"><title>SWIFT: 256.11 seconds, current 1.409×, best 1.521×</title></circle><path d="M45.58,127.44 L46.29,127.44 L53.20,127.44 L56.66,127.44 L57.30,127.44 L85.06,127.44 L85.71,127.44 L118.37,115.92 L150.22,115.92 L152.66,115.92 L159.35,84.51 L295.31,60.04 L402.69,51.68" class="plot-line best-line "/><path d="M45.58,127.44 L46.29,133.28 L53.20,149.05 L56.66,137.66 L57.30,150.96 L85.06,134.72 L85.71,182.11 L118.37,115.92 L150.22,143.19 L152.66,145.88 L159.35,84.51 L295.31,60.04 L402.69,51.68" class="plot-line "/><circle cx="45.58" cy="127.44" r="2.4" class="series-point "><title>SPIRIT: 0.47 seconds, current 1.323×, best 1.323×</title></circle><circle cx="46.29" cy="133.28" r="2.4" class="series-point "><title>SPIRIT: 1.06 seconds, current 1.301×, best 1.323×</title></circle><circle cx="53.20" cy="149.05" r="2.4" class="series-point "><title>SPIRIT: 6.76 seconds, current 1.241×, best 1.323×</title></circle><circle cx="56.66" cy="137.66" r="2.4" class="series-point "><title>SPIRIT: 9.61 seconds, current 1.284×, best 1.323×</title></circle><circle cx="57.30" cy="150.96" r="2.4" class="series-point "><title>SPIRIT: 10.14 seconds, current 1.234×, best 1.323×</title></circle><circle cx="85.06" cy="134.72" r="2.4" class="series-point "><title>SPIRIT: 33.03 seconds, current 1.295×, best 1.323×</title></circle><circle cx="85.71" cy="182.11" r="2.4" class="series-point "><title>SPIRIT: 33.56 seconds, current 1.116×, best 1.323×</title></circle><circle cx="118.37" cy="115.92" r="2.4" class="series-point "><title>SPIRIT: 60.49 seconds, current 1.367×, best 1.367×</title></circle><circle cx="150.22" cy="143.19" r="2.4" class="series-point "><title>SPIRIT: 86.75 seconds, current 1.263×, best 1.367×</title></circle><circle cx="152.66" cy="145.88" r="2.4" class="series-point "><title>SPIRIT: 88.77 seconds, current 1.253×, best 1.367×</title></circle><circle cx="159.35" cy="84.51" r="2.4" class="series-point "><title>SPIRIT: 94.28 seconds, current 1.486×, best 1.486×</title></circle><circle cx="295.31" cy="60.04" r="2.4" class="series-point "><title>SPIRIT: 206.37 seconds, current 1.578×, best 1.578×</title></circle><circle cx="402.69" cy="51.68" r="2.4" class="series-point "><title>SPIRIT: 294.91 seconds, current 1.610×, best 1.610×</title></circle><text x="399.69" y="39.68" class="plot-value accent-value" text-anchor="end">1.61×</text></svg>
           <p class="plot-axis-caption">Online configuration-discovery time (s)</p>
           <div class="chart-legend line-style-key"><span><i class="legend-line ink"></i>Current choice</span><span><i class="legend-line ink dashed"></i>Best found so far</span></div>
-          <div class="adaptation-support"><table class="compact-evidence-table"><caption>Objective ablation · mean speedup over three tasks / model</caption><thead><tr><th scope="col">Objective</th><th scope="col">13B</th><th scope="col">70B</th></tr></thead><tbody><tr><th scope="row">Throughput</th><td><strong>1.61×</strong></td><td><strong>1.60×</strong></td></tr><tr><th scope="row">Acceptance only</th><td>1.32×</td><td>1.21×</td></tr></tbody></table></div>
-          <figcaption><p>Paper Fig. 3a · 13B · CNN/DM · FP16 · the same 20-request replay probe for all choices.</p><p>The ablation uses separate three-task means.</p></figcaption>
+          <p class="selection-note"><strong>Selection matters.</strong>Agreement-based scores can misrank configurations by decode throughput.</p>
+          <figcaption><p>Paper Fig. 3a · 13B · CNN/DM · FP16 · the same 20-request replay probe for all choices.</p></figcaption>
         </figure>
 <figure class="evidence-figure result-card" aria-labelledby="cost-heading">
           <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">02</span><p class="method-eyebrow">Controller update cost</p></div>
@@ -429,6 +461,10 @@
           <figcaption><p>Paper Fig. 3b · 13B · CNN/DM · FP16 · step-normalized window timing · 13 requests, one seed.</p><p>Stacks include the &lt;1% residual execution time.</p></figcaption>
         </figure>
 </div>
+<section class="result-card adaptation-checks" aria-labelledby="ablation-heading">
+  <div><p class="method-eyebrow">Mechanism checks</p><h6 id="ablation-heading">Both the objective and the ratio matter.</h6><p class="evidence-intro">Acceptance-only scoring and a fixed skip ratio each reduce mean speedup.</p><p class="research-source"><a href="assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf#page=8" type="application/pdf" target="_blank" rel="noopener">Paper Table 4</a> · stationary FP16 tasks.</p></div>
+  <div class="adaptation-support"><table class="compact-evidence-table"><caption>Mean speedup / AR · three tasks per model</caption><thead><tr><th scope="col">Variant</th><th scope="col">13B</th><th scope="col">70B</th></tr></thead><tbody><tr><th scope="row">Full SPIRIT</th><td><strong>1.61×</strong></td><td><strong>1.60×</strong></td></tr><tr><th scope="row">Acceptance only</th><td>1.32×</td><td>1.21×</td></tr><tr><th scope="row">Fixed <i>r</i> = 0.5</th><td>1.53×</td><td>1.46×</td></tr></tbody></table><p class="ablation-note">The fixed-ratio variant keeps layer-pattern refinement enabled.</p></div>
+</section>
 <figure class="evidence-figure result-card reuse-evidence" aria-labelledby="reuse-results-heading">
 <div class="reuse-overview"><div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">03</span><p class="method-eyebrow">Profile reuse</p></div><h6 id="reuse-results-heading"><span class="inline-gain teal-value">+9.8–10.3%</span> when workloads recur.</h6>
         <p class="evidence-intro">Returning tasks benefit from configurations found earlier, instead of starting each search again.</p>

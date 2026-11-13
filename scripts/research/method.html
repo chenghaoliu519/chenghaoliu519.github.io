@@ -5,7 +5,7 @@
     <p class="method-eyebrow">The method</p>
     <h4 id="method-heading">Search while decoding. Reuse when workloads recur.</h4>
   </header>
-  <p class="research-intro">SPIRIT adapts a self-draft configuration <i>c</i> = (<i>r</i>, <i>L</i>): how much computation to skip, and which sublayers to skip. It needs neither offline profiling nor a separately trained draft model.</p>
+  <p class="research-intro">SPIRIT adapts a self-draft configuration <i>c</i> = (<i>r</i>, <i>L</i>): how much computation to skip, and which sublayers to skip. It needs neither offline profiling nor a separately trained draft model. Full-target verification preserves the target model’s output distribution.</p>
 
     </div>
     <aside class="configuration-card" aria-label="Self-draft configuration">
@@ -39,7 +39,7 @@
       <section class="window-boundary" aria-label="Window-boundary controller update">
         <div class="window-step-heading"><span class="window-step-number" aria-hidden="true">2</span><div><p class="window-context">At the window boundary</p><h6>Update the configuration</h6></div></div>
         <div class="boundary-equation" role="math" aria-label="Q sub w equals EMA of S sub w times the prefix-length correction factor."><i>Q</i><sub>w</sub> = EMA[<i>S</i><sub>w</sub> · <i>f</i><sub>len</sub>(<i>x</i><sub>w</sub>)]</div>
-        <p>Correct for prefix growth.<br>Smooth window noise.</p>
+        <p>Prefix growth increases KV-cache work even with the same configuration. Calibrate for this cost, then smooth window noise.</p>
         <div class="boundary-selection"><strong>Choose the next (<i>r</i>, <i>L</i>)</strong><span>Ratio localization → pattern refinement</span></div>
         <p class="diagram-note">Boundary updates need no additional model forward pass.</p>
       </section>
@@ -53,7 +53,18 @@
     </div>
     <p class="feedback-return"><span aria-hidden="true">↺</span> Observe, update, and decode again until the request ends.</p>
     <details class="method-detail native-detail" id="within-request-details">
-      <summary><span class="detail-summary-copy"><span>Search details</span><small aria-hidden="true">Ratio localization · layer refinement</small></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+      <summary><span class="detail-summary-copy"><span>Search details</span><small aria-hidden="true">Calibration · ratio · pattern</small></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
+      <section class="calibration-detail" aria-labelledby="calibration-heading">
+        <p class="method-eyebrow">Comparable window feedback</p>
+        <h6 id="calibration-heading">Separate configuration quality from prefix growth.</h6>
+        <p>An online latency model estimates the cost of a growing prefix. It rebases measured throughput to a common reference length; exponential smoothing then reduces short-window noise.</p>
+        <ol class="calibration-flow">
+          <li><span class="calibration-label">Measure</span><div class="calibration-equation" role="math" aria-label="S sub w equals G sub w divided by T sub w."><i>S</i><sub>w</sub> = <i>G</i><sub>w</sub> / <i>T</i><sub>w</sub></div><p>Committed tokens per decode second.</p></li>
+          <li><span class="calibration-label">Calibrate</span><div class="calibration-equation" role="math" aria-label="S tilde sub w equals S sub w times the prefix-length correction factor."><i>S̃</i><sub>w</sub> = <i>S</i><sub>w</sub> · <i>f</i><sub>len</sub>(<i>x</i><sub>w</sub>)</div><p>Correct for the estimated length effect.</p></li>
+          <li><span class="calibration-label">Smooth</span><div class="calibration-equation" role="math" aria-label="Q sub w equals EMA of S tilde sub w."><i>Q</i><sub>w</sub> = EMA[<i>S̃</i><sub>w</sub>]</div><p>Score configurations within the request.</p></li>
+        </ol>
+        <p class="research-source">The length model uses latency per committed token and speculative-step coverage. Request-head profile matching uses raw throughput <i>S</i> and acceptance <i>α</i>.</p>
+      </section>
       <div class="search-stages">
         <section aria-labelledby="ratio-search-heading">
           <p class="method-eyebrow">Stage I · Skip ratio</p>
@@ -82,7 +93,7 @@
 
   <section class="method-loop profile-loop" id="spirit-reuse" aria-labelledby="reuse-heading">
     <header class="evidence-heading method-phase-heading"><span class="method-section-number" aria-hidden="true">02</span><div><p class="method-eyebrow">Across requests</p><h5 id="reuse-heading">Recognize a returning workload.</h5></div></header>
-    <p class="research-intro compact-intro">A profile pairs a skip ratio and layer pattern with its request-head history: the mean and standard deviation of <strong>raw throughput <i>S</i></strong> and <strong>draft acceptance <i>α</i></strong>.</p>
+    <p class="research-intro compact-intro">A profile pairs a skip ratio and layer pattern with its request-head history: the mean and standard deviation of <strong>raw throughput <i>S</i></strong> and <strong>draft acceptance <i>α</i></strong>. Matching uses runtime evidence; no task labels are required.</p>
     <div class="profile-overview">
       <div class="profile-record"><p class="diagram-label">Stored configuration</p><div class="layer-strip" role="img" aria-label="Stored ratio and pattern; four of eight illustrative sublayers skipped."><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot" aria-hidden="true">A</span><span class="layer-slot skipped" aria-hidden="true">M</span><span class="layer-slot skipped" aria-hidden="true">A</span><span class="layer-slot" aria-hidden="true">M</span></div><p class="diagram-note">Ratio <i>r</i><sup>★</sup> + layer pattern <i>L</i><sup>★</sup></p></div>
       <div class="profile-signature" role="img" aria-label="Schematic signature comparison: the current request-head throughput and acceptance depart from the stored ranges.">

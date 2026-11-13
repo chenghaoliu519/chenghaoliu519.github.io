@@ -56,5 +56,5 @@
   </div>
   <p class="research-source problem-source">Measured configuration sweep · LLaMA-2-13B · CNN/DM · FP16 · 21 skip ratios × 24 patterns · the same 24 prompts per configuration · decode-only.</p>
   </section>
-  <div class="research-implication"><div class="problem-implication-heading"><span class="problem-section-number" aria-hidden="true">03</span><span>Design implication</span></div><p>Use realized throughput to localize a promising skip ratio, then refine the layer pattern at that ratio. Evaluate within-request candidates through the same decoding that produces output tokens.</p></div>
+  <div class="research-implication"><div class="problem-implication-heading"><span class="problem-section-number" aria-hidden="true">03</span><span>Design implication</span></div><div class="problem-design-copy"><p>Use realized throughput to localize a promising skip ratio, then refine the layer pattern at that ratio. Evaluate within-request candidates through the same decoding that produces output tokens.</p><p>Effective configurations also depend on the workload. When request behavior changes, runtime feedback guides whether to keep, reuse, refine, or rebuild the serving configuration.</p></div></div>
 </section>
