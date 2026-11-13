@@ -1,10 +1,15 @@
-<section class="research-panel native-research" id="spirit-motivation" aria-labelledby="motivation-heading">
+<section class="research-panel native-research problem-page" id="spirit-motivation" aria-labelledby="motivation-heading">
+  <div class="problem-overview">
   <header class="research-section-header">
     <p class="method-eyebrow">The problem</p>
     <h4 id="motivation-heading">Agreement alone misses the execution cost.</h4>
   </header>
   <p class="research-intro">Skipping attention or MLP sublayers changes both <strong>draft–target consistency</strong> and <strong>the cost of each draft–verify round</strong>. Acceptance observes only consistency. Useful throughput also accounts for verifier-produced tokens and how quickly the chosen configuration executes.</p>
 
+  </div>
+
+  <section class="problem-mechanism" aria-labelledby="problem-mechanism-heading">
+    <header class="problem-section-heading"><span class="problem-section-number" aria-hidden="true">01</span><div><p class="method-eyebrow">The mechanism</p><h5 id="problem-mechanism-heading">Throughput combines yield and execution rate.</h5></div></header>
   <div class="mechanism-band" aria-label="How layer skipping changes throughput">
     <div class="mechanism-choice">
       <p class="diagram-label">Choose where to skip</p>
@@ -23,9 +28,13 @@
     </div>
   </div>
 
+  </section>
+
+  <section class="problem-evidence" aria-labelledby="problem-evidence-heading">
+    <header class="problem-section-heading"><span class="problem-section-number" aria-hidden="true">02</span><div><p class="method-eyebrow">Measured evidence</p><h5 id="problem-evidence-heading">Two views of the throughput landscape.</h5></div></header>
   <div class="evidence-grid motivation-charts" id="motivation-figure-details">
-    <figure class="evidence-figure" aria-labelledby="acceptance-heading">
-      <h5 id="acceptance-heading">The most agreeable draft is not the fastest.</h5>
+    <figure class="evidence-figure problem-evidence-card" aria-labelledby="acceptance-heading">
+      <p class="method-eyebrow">Acceptance vs. throughput</p><h6 id="acceptance-heading">The most agreeable draft is not the fastest.</h6>
       <p class="plot-unit">Decode throughput · tokens/s</p>
       {{motivation_scatter}}
       <p class="plot-axis-caption">Draft acceptance (%)</p>
@@ -34,17 +43,18 @@
         <div><dt>Highest acceptance</dt><dd>99.41% <span>·</span> 24.36 tok/s</dd></div>
         <div><dt>Highest throughput</dt><dd>98.02% <span>·</span> <strong>26.39 tok/s</strong></dd></div>
       </dl>
-      <figcaption>Even within the highlighted ≈96–98% acceptance band, throughput spans <strong>21.99–26.39 tokens/s</strong>. The plot shows 400 configurations with acceptance ≥70%.</figcaption>
+      <figcaption><p>Even within the highlighted ≈96–98% acceptance band, throughput spans <strong>21.99–26.39 tokens/s</strong>.</p><p>The plot shows 400 configurations with acceptance ≥70%.</p></figcaption>
     </figure>
-    <figure class="evidence-figure" aria-labelledby="frontier-heading">
-      <h5 id="frontier-heading">Ratio gives structure. Placement leaves room.</h5>
+    <figure class="evidence-figure problem-evidence-card" aria-labelledby="frontier-heading">
+      <p class="method-eyebrow">Skip ratio vs. layer pattern</p><h6 id="frontier-heading">Ratio gives structure. Placement leaves room.</h6>
       <p class="plot-unit">Decode throughput · tokens/s</p>
       {{motivation_frontier}}
       <p class="plot-axis-caption">Skip ratio, <i>r</i></p>
       <div class="chart-legend"><span><i class="legend-line"></i>Best per ratio</span><span><i class="legend-line neutral"></i>Median</span><span><i class="legend-area"></i>Middle 50%</span></div>
-      <figcaption>The skip ratio organizes the dominant consistency–speed trade-off. At each ratio, different attention/MLP patterns still produce different throughput. The shaded band shows the middle 50% of measured configurations at each ratio.</figcaption>
+      <figcaption class="problem-caption-notes"><p><span class="caption-label">Skip ratio</span>The skip ratio organizes the dominant consistency–speed trade-off.</p><p><span class="caption-label">Layer pattern</span>At each ratio, different attention/MLP patterns still produce different throughput.</p><p><span class="caption-label">Spread across configurations</span>The shaded band shows the middle 50% of measured configurations at each ratio.</p></figcaption>
     </figure>
   </div>
-  <p class="research-source">Measured configuration sweep · LLaMA-2-13B · CNN/DM · FP16 · 21 skip ratios × 24 patterns · the same 24 prompts per configuration · decode-only.</p>
-  <div class="research-implication"><span>Design implication</span><p>Use realized throughput to localize a promising skip ratio, then refine the layer pattern at that ratio. Evaluate within-request candidates through the same decoding that produces output tokens.</p></div>
+  <p class="research-source problem-source">Measured configuration sweep · LLaMA-2-13B · CNN/DM · FP16 · 21 skip ratios × 24 patterns · the same 24 prompts per configuration · decode-only.</p>
+  </section>
+  <div class="research-implication"><div class="problem-implication-heading"><span class="problem-section-number" aria-hidden="true">03</span><span>Design implication</span></div><p>Use realized throughput to localize a promising skip ratio, then refine the layer pattern at that ratio. Evaluate within-request candidates through the same decoding that produces output tokens.</p></div>
 </section>

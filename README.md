@@ -150,6 +150,11 @@ fragments, and back/forward restoration. Tab changes do not alter the URL.
 Profile reuse stays inside Method. The introduction, top-level publication
 preview, Paper / Poster / Slides PDF links, and the two 2.48x headlines remain.
 
+Problem uses three numbered sections: the mechanism connecting token yield
+and execution rate, two complementary views of measured throughput, and the
+resulting design implication. Concept cards, highlighted measurement pairs,
+and labeled caption notes clarify this progression.
+
 Problem combines a layer-skipping schematic with the 400-configuration
 acceptance plot and the complete 504-configuration ratio landscape. The latter
 shows the best observation, median, and interquartile range at each of 21 ratios.
