@@ -22,15 +22,16 @@
         <span class="experiment-tab-copy"><span class="experiment-tab-label">Online adaptation</span><span class="experiment-tab-hint" aria-hidden="true">Search · update cost · reuse</span></span>
       </a>
     </nav>
-    <div class="experiment-panel" id="experiment-models">
-<section class="results-block" aria-labelledby="models-heading">
-      <header class="evidence-heading"><p class="method-eyebrow">Models &amp; tasks</p><h5 id="models-heading">Leads in all nine FP16 model–task settings.</h5><p>Summarization, reasoning, and text generation across the LLaMA-2 family.</p></header>
-      <div class="model-tables">{{fp16_tables}}</div>
-      <p class="research-source">Speedup / AR · FP16 self-drafts · paper Table 1. Each table uses the matching autoregressive baseline.</p>
-    </section>
-      <div class="evidence-grid experiment-comparisons">
+<div class="experiment-panel" id="experiment-models">
+<header class="evidence-heading experiment-page-heading"><div><p class="method-eyebrow">Models &amp; tasks</p><h5 id="models-heading">Leads in all nine FP16 model–task settings.</h5></div><p>Summarization, reasoning, and text generation across the LLaMA-2 family.</p></header>
+<section class="experiment-evidence-section model-evidence" aria-labelledby="model-comparison-heading">
+  <header class="experiment-section-heading"><span class="experiment-section-number" aria-hidden="true">01</span><div><p class="method-eyebrow">Matched comparisons</p><h6 id="model-comparison-heading">Three models. Three tasks.</h6></div></header>
+  <div class="model-tables">{{fp16_tables}}</div>
+  <p class="research-source">Speedup / AR · FP16 self-drafts · paper Table 1. Each table uses the matching autoregressive baseline.</p>
+</section>
+<div class="evidence-grid experiment-comparisons">
 <figure class="evidence-figure result-card" aria-labelledby="specbench-heading">
-        <p class="method-eyebrow">SpecBench</p><h5 id="specbench-heading"><span class="inline-gain">+17.2%</span> full-stream throughput over SWIFT.</h5>
+        <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">02</span><p class="method-eyebrow">Broader tasks · SpecBench</p></div><h6 id="specbench-heading"><span class="inline-gain">+17.2%</span> full-stream throughput over SWIFT.</h6>
         <p class="evidence-intro">1.462× versus 1.247× over AR on the same backend, including exploration and profile updates.</p>
         <div class="plot-subheading">After adaptation · six task comparisons</div>
         <div class="chart-legend"><span><i class="legend-hollow"></i>SWIFT</span><span><i class="legend-dot"></i>SPIRIT</span></div>
@@ -38,72 +39,70 @@
         <p class="plot-axis-caption">Speedup / AR</p>
         <figcaption>LLaMA-2-13B · post-adaptation performance · three-seed mean ± SD.</figcaption>
       </figure>
-        <div class="serving-summary result-card">
+<div class="serving-summary result-card">
 <section class="batch-evidence" aria-labelledby="batch-heading">
-      <div><p class="method-eyebrow">Batched serving</p><h5 id="batch-heading">The gains persist with batching.</h5><p>13B · speedup over matching batched AR · full-model verification at every batch size.</p></div>
+      <div><div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">03</span><p class="method-eyebrow">Batched serving</p></div><h6 id="batch-heading">The gains persist with batching.</h6><p>13B · speedup over matching batched AR · full-model verification at every batch size.</p></div>
       <dl class="batch-metrics">{{batch_strip}}</dl>
     </section>
 <p class="research-source">Further evaluations in the paper cover Qwen and Mixtral architectures and HumanEval code generation.</p>
         </div>
-      </div>
-    </div>
-    <div class="experiment-panel" id="experiment-nf4">
-<section class="results-block" aria-labelledby="sustained-heading">
-      <header class="evidence-heading"><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist as optimization costs are amortized.</h5></header>
-      <div class="evidence-grid">
-        <figure class="evidence-figure result-card stream-evidence" aria-labelledby="stream-heading">
-          <p class="method-eyebrow">1,000-request stream</p><h6 id="stream-heading"><span class="inline-gain">2.46×</span> pooled decode speedup.</h6>
-          <p class="evidence-intro">Cumulative throughput remains above AR throughout adaptation in all eight runs. Later requests amortize the initial optimization. The best full-stream run reaches 2.48x.</p>
-          <div class="chart-legend"><span><i class="legend-line"></i>Pooled throughput</span><span><i class="legend-line runs"></i>Eight runs</span></div>
+</div>
+</div>
+<div class="experiment-panel" id="experiment-nf4">
+<header class="evidence-heading experiment-page-heading"><div><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist as optimization costs are amortized.</h5></div><p>Two complementary studies separate sustained serving performance from the effect of draft precision.</p></header>
+<figure class="evidence-figure result-card experiment-feature stream-evidence" aria-labelledby="stream-heading">
+<div class="experiment-feature-summary">
+          <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">01</span><p class="method-eyebrow">1,000-request stream</p></div><h6 id="stream-heading"><span class="inline-gain">2.46×</span> pooled decode speedup.</h6>
+<p class="evidence-intro">Cumulative throughput remains above AR throughout adaptation in all eight runs. Later requests amortize the initial optimization. The best full-stream run reaches 2.48x.</p></div>
+<div class="experiment-feature-chart"><div class="chart-legend"><span><i class="legend-line"></i>Pooled throughput</span><span><i class="legend-line runs"></i>Eight runs</span></div>
           <div class="chart-views" data-chart-views>
             <div class="chart-view-controls" role="group" aria-label="Request range" hidden><button type="button" data-chart-select="full" aria-controls="stream-full" aria-pressed="true">1–1,000 requests</button><button type="button" data-chart-select="early" aria-controls="stream-early" aria-pressed="false">First 50</button></div>
             <div id="stream-full" data-chart-view="full"><p class="plot-unit">Cumulative decode speedup / AR · full stream</p>{{sustained_full}}</div>
             <div id="stream-early" data-chart-view="early"><p class="plot-unit">Cumulative decode speedup / AR · first 50</p>{{sustained_early}}<p class="research-source">Search and reuse phases in the first 50 requests.</p></div>
           </div>
-          <p class="plot-axis-caption">Requests served</p>
-          <figcaption class="caption-notes">
+          <p class="plot-axis-caption">Requests served</p></div>
+<figcaption class="caption-notes">
             <p><span class="caption-label">Setup</span>LLaMA-2-13B · TinyStories · fused NF4 self-draft / full FP16 verifier · one RTX A6000 per run.</p>
             <p><span class="caption-label">Across runs</span>Eight distinct controller seeds, empty initial controllers, and the same ordered 1,000-request stream. The pooled curve uses each method’s token and time totals across runs.</p>
             <p><span class="caption-label">Decode timing</span>Includes online search and profile updates; excludes prefill, model loading, and one-time draft setup.</p>
           </figcaption>
         </figure>
-        <figure class="evidence-figure result-card" aria-labelledby="precision-heading">
-          <p class="method-eyebrow">Paired draft-precision study</p><h6 id="precision-heading"><span class="inline-gain">+23.6%</span> throughput with NF4 self-drafts.</h6>
-          <p class="evidence-intro">Relative to FP16 self-drafts, with a request-paired bootstrap 95% interval of <strong>+21.4–26.3%</strong>.</p>
-          <p class="plot-unit">Aggregate speedup / AR · 95% intervals</p>
-          {{precision}}
-          <figcaption><p>LLaMA-2-13B · CNN/DM, GSM8K, TinyStories · the same FP16 verifier.</p><p>Each draft precision is optimized separately.</p></figcaption>
+<figure class="evidence-figure result-card experiment-feature precision-evidence" aria-labelledby="precision-heading">
+<div class="experiment-feature-summary">
+          <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">02</span><p class="method-eyebrow">Paired draft-precision study</p></div><h6 id="precision-heading"><span class="inline-gain">+23.6%</span> throughput with NF4 self-drafts.</h6>
+<p class="evidence-intro">Relative to FP16 self-drafts, with a request-paired bootstrap 95% interval of <strong>+21.4–26.3%</strong>.</p></div>
+<div class="experiment-feature-chart"><p class="plot-unit">Aggregate speedup / AR · 95% intervals</p>
+          {{precision}}</div>
+<figcaption><p>LLaMA-2-13B · CNN/DM, GSM8K, TinyStories · the same FP16 verifier.</p><p>Each draft precision is optimized separately.</p></figcaption>
         </figure>
-      </div>
-    </section>
-    </div>
-    <div class="experiment-panel" id="experiment-adaptation">
-<section class="results-block" aria-labelledby="adaptation-heading">
-      <header class="evidence-heading"><p class="method-eyebrow">Why adaptation pays off</p><h5 id="adaptation-heading">Search quality and update cost both matter.</h5></header>
-      <div class="evidence-grid">
-        <figure class="evidence-figure result-card" aria-labelledby="discovery-heading">
-          <h6 id="discovery-heading">Choose configurations for speed.</h6>
+</div>
+<div class="experiment-panel" id="experiment-adaptation">
+<header class="evidence-heading experiment-page-heading"><div><p class="method-eyebrow">Why adaptation pays off</p><h5 id="adaptation-heading">Search quality and update cost both matter.</h5></div><p>The studies below separate configuration quality, controller overhead, and the benefit of profile reuse.</p></header>
+<div class="evidence-grid adaptation-comparisons">
+<figure class="evidence-figure result-card" aria-labelledby="discovery-heading">
+          <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">01</span><p class="method-eyebrow">Configuration discovery</p></div>
+<h6 id="discovery-heading">Choose configurations for speed.</h6>
           <p class="evidence-intro">The published search trace ends at <strong>1.61× for SPIRIT</strong>, compared with 1.41× for SWIFT and 1.22× for D&amp;V.</p>
           <div class="chart-legend"><span><i class="legend-line"></i>SPIRIT</span><span><i class="legend-line neutral"></i>SWIFT</span><span><i class="legend-line third"></i>D&amp;V</span></div>
           <p class="plot-unit">Replay speedup / AR</p>
           {{discovery}}
           <p class="plot-axis-caption">Online configuration-discovery time (s)</p>
           <div class="chart-legend line-style-key"><span><i class="legend-line ink"></i>Current choice</span><span><i class="legend-line ink dashed"></i>Best found so far</span></div>
-          {{ablation_table}}
+          <div class="adaptation-support">{{ablation_table}}</div>
           <figcaption><p>Paper Fig. 3a · 13B · CNN/DM · FP16 · the same 20-request replay probe for all choices.</p><p>The ablation uses separate three-task means.</p></figcaption>
         </figure>
-        <figure class="evidence-figure result-card" aria-labelledby="cost-heading">
-          <h6 id="cost-heading">Productive decoding doubles as evaluation.</h6>
+<figure class="evidence-figure result-card" aria-labelledby="cost-heading">
+          <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">02</span><p class="method-eyebrow">Controller update cost</p></div>
+<h6 id="cost-heading">Productive decoding doubles as evaluation.</h6>
           <p class="evidence-intro">Controller updates account for <strong>8.2%</strong> of measured adaptation time in SPIRIT, versus <strong>76.6%</strong> in SWIFT.</p>
           <div class="chart-legend"><span><i class="legend-block draft"></i>Draft</span><span><i class="legend-block verify"></i>Verify</span><span><i class="legend-block update"></i>Update</span></div>
           <p class="plot-unit">Mean total time · normalized ms</p>
           {{cost}}
           <figcaption><p>Paper Fig. 3b · 13B · CNN/DM · FP16 · step-normalized window timing · 13 requests, one seed.</p><p>Stacks include the &lt;1% residual execution time.</p></figcaption>
         </figure>
-      </div>
-    </section>
+</div>
 <figure class="evidence-figure result-card reuse-evidence" aria-labelledby="reuse-results-heading">
-<div class="reuse-overview"><p class="method-eyebrow">Profile reuse</p><h5 id="reuse-results-heading"><span class="inline-gain teal-value">+9.8–10.3%</span> when workloads recur.</h5>
+<div class="reuse-overview"><div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">03</span><p class="method-eyebrow">Profile reuse</p></div><h6 id="reuse-results-heading"><span class="inline-gain teal-value">+9.8–10.3%</span> when workloads recur.</h6>
         <p class="evidence-intro">Returning tasks benefit from configurations found earlier, instead of starting each search again.</p>
 <div class="workload-sequence"><div><span>First pass</span><p>Stories → CNN/DM → GSM8K</p></div><div><span>Workloads return</span><p>Stories → CNN/DM → GSM8K</p></div></div></div>
 <div class="reuse-chart"><div class="chart-legend"><span><i class="legend-block neutral"></i>Without reuse</span><span><i class="legend-block teal"></i>Full SPIRIT</span></div>
@@ -111,6 +110,6 @@
         {{reuse}}</div>
 <figcaption><p>600-request FP16 streams · task shifts every 100 requests.</p><p>The gain compares full SPIRIT with SPIRIT without profile reuse.</p></figcaption>
 </figure>
-    </div>
+</div>
   </div>
 </section>

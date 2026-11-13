@@ -621,3 +621,80 @@
   .experiment-tabs[role="tablist"] ~ .experiment-panel + .experiment-panel { margin-top:28px; }
   .evidence-figure, .model-table, .window-loop > section, .profile-outcomes > div { break-inside:avoid; }
 }
+
+/* Each experiment page moves from its headline to numbered evidence groups. */
+.experiment-panel .experiment-page-heading { display:grid; grid-template-columns:1.05fr 1fr; gap:36px; align-items:center; margin:0 0 30px; padding:4px 0 26px; border-bottom:1px solid var(--rule); }
+.experiment-page-heading > div { min-width:0; }
+.experiment-panel .experiment-page-heading h5 { margin-top:7px; font-size:25px; }
+.experiment-panel .experiment-page-heading > p { margin:0; max-width:none; font-size:14px; line-height:1.85; }
+.experiment-section-heading { display:flex; align-items:center; gap:14px; margin-bottom:21px; }
+.experiment-section-heading > div { min-width:0; }
+.experiment-section-number { display:flex; align-items:center; justify-content:center; flex:0 0 38px; width:38px; height:38px; border:1px solid color-mix(in srgb,var(--accent) 20%,var(--rule)); border-radius:12px; background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:550; font-variant-numeric:tabular-nums; }
+.experiment-section-heading .method-eyebrow { margin:0; }
+.experiment-section-heading h6 { margin:5px 0 0; color:var(--ink); font-size:21px; line-height:1.4; font-weight:550; letter-spacing:-.35px; text-wrap:pretty; }
+.experiment-evidence-label { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+.experiment-evidence-label .method-eyebrow { margin:0; color:var(--accent); line-height:1.65; }
+.experiment-panel .experiment-comparisons { margin-top:30px; }
+.experiment-panel .experiment-feature { display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.35fr); gap:22px 34px; padding:28px; }
+.experiment-feature + .experiment-feature { margin-top:26px; }
+.experiment-feature-summary, .experiment-feature-chart { min-width:0; }
+.experiment-feature-chart { align-self:start; }
+.experiment-feature-summary .evidence-intro { margin-bottom:0; }
+.experiment-panel .experiment-feature h6 { font-size:22px; line-height:1.45; }
+.experiment-panel .experiment-feature .inline-gain { font-size:48px; margin-bottom:10px; }
+.experiment-feature-chart > .chart-legend { margin-top:0; }
+.experiment-feature-chart > .plot-unit:first-child { margin-top:0; }
+.experiment-feature > figcaption { grid-column:1 / -1; }
+.experiment-panel .experiment-feature > .caption-notes { display:grid; grid-template-columns:1fr 1.25fr 1fr; gap:18px 24px; margin-top:0; padding:19px 20px; }
+.experiment-feature > .caption-notes > p + p { margin-top:0; }
+.experiment-panel .precision-evidence { align-items:center; }
+.precision-evidence .experiment-feature-chart { align-self:center; width:100%; max-width:440px; justify-self:center; }
+.experiment-panel .precision-evidence > figcaption { display:flex; flex-wrap:wrap; gap:4px 24px; margin-top:0; }
+.precision-evidence > figcaption > p + p { margin-top:0; }
+.experiment-panel .adaptation-comparisons { align-items:start; }
+.experiment-panel .adaptation-support { margin-top:22px; padding:15px 16px 8px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); }
+.adaptation-support .compact-evidence-table { margin-top:0; }
+.adaptation-support .compact-evidence-table caption { margin-bottom:10px; color:var(--ink); font-size:12px; }
+.adaptation-support .compact-evidence-table tbody tr:last-child > * { border-bottom:0; }
+.experiment-panel .reuse-evidence { margin-top:26px; }
+.reuse-evidence .experiment-evidence-label .method-eyebrow { color:var(--research-teal); }
+.reuse-evidence .experiment-section-number { color:var(--research-teal); border-color:color-mix(in srgb,var(--research-teal) 25%,var(--rule)); background:var(--research-teal-soft); }
+.experiment-panel .batch-evidence h6 { margin:0; color:var(--ink); font-size:19px; line-height:1.45; font-weight:550; letter-spacing:-.3px; }
+@media (max-width:1000px) {
+  .experiment-panel .experiment-feature { padding:24px; gap:20px 25px; }
+  .experiment-panel .experiment-feature > .caption-notes { gap:18px; padding:17px; }
+}
+@media (max-width:850px) {
+  .experiment-panel .experiment-page-heading { grid-template-columns:minmax(0,1fr); gap:14px; }
+  .experiment-panel .experiment-feature { grid-template-columns:minmax(0,1fr); gap:24px; }
+  .experiment-feature-summary { max-width:65ch; }
+  .experiment-panel .experiment-feature > .caption-notes { grid-template-columns:minmax(0,1fr); gap:13px; }
+  .precision-evidence .experiment-feature-chart { max-width:480px; }
+}
+@media (max-width:600px) {
+  .experiment-panel .experiment-page-heading { margin-bottom:24px; padding-bottom:22px; }
+  .experiment-panel .experiment-page-heading h5 { font-size:22px; }
+  .experiment-panel .experiment-page-heading > p { font-size:13px; }
+  .experiment-section-heading { align-items:flex-start; gap:12px; margin-bottom:18px; }
+  .experiment-section-number { flex-basis:32px; width:32px; height:32px; border-radius:10px; font-size:11px; }
+  .experiment-section-heading h6 { font-size:20px; }
+  .experiment-evidence-label { margin-bottom:16px; }
+  .experiment-panel .experiment-comparisons { margin-top:24px; }
+  .experiment-panel .experiment-feature { padding:18px 16px; gap:22px; }
+  .experiment-panel .experiment-feature h6 { font-size:20px; }
+  .experiment-panel .experiment-feature .inline-gain { font-size:40px; }
+  .experiment-panel .experiment-feature > .caption-notes { padding:14px; gap:14px; }
+  .experiment-panel .caption-label { font-size:13px; }
+  .experiment-panel .adaptation-support { padding:13px 12px 6px; }
+  .adaptation-support .compact-evidence-table caption { font-size:13px; }
+}
+@media (max-width:360px) {
+  .experiment-panel .experiment-page-heading h5 { font-size:21px; }
+  .experiment-section-heading h6 { font-size:19px; }
+  .experiment-panel .experiment-feature .inline-gain { font-size:36px; }
+}
+@media print {
+  .experiment-panel .experiment-page-heading { break-after:avoid; }
+  .experiment-section-heading, .experiment-evidence-label { break-after:avoid; }
+  .experiment-panel .adaptation-support { background:none; }
+}

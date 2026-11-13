@@ -183,6 +183,14 @@ Outlined topic choices introduce each subpage; model tables highlight the SPIRIT
 column and result surfaces group each chart with its measurement scope. The
 main research navigation and request-range controls share rounded pill styling.
 
+Each experiment subpage introduces its conclusion, then numbers its evidence
+groups. Models & tasks progresses from matched FP16 comparisons to SpecBench
+and batched serving. NF4 decoding gives the sustained stream a full-width
+feature and places the separate precision study below it. Online adaptation
+separates configuration discovery, update cost, and profile reuse; its objective
+ablation sits in a supporting panel. Measurement scopes remain beside the
+corresponding evidence.
+
 Models & tasks is selected initially. The secondary tabs support arrow keys,
 Home/End, and Space without changing the URL. The current selection is retained
 while switching main research topics and resets on a restored page. The sustained
