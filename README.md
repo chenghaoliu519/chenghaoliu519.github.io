@@ -244,3 +244,28 @@ The sharing image is not displayed in the page body. When updating it, render
 `assets/social-card.svg` at 1200 × 630 with the local DM Sans font loaded, and
 replace `assets/social-card.png`. Update the image alt text in `index.html` if
 the image content changes. Preview refresh timing depends on the sharing platform.
+
+## Standalone SPIRIT project page
+
+/spirit/ is the paper's standalone project page. The homepage's material links
+include an entry to it; the existing collapsed research details are retained.
+The project page adds the paper title, four authors, affiliation, abstract,
+material links, citation, and its own sharing image. Its main sections form a
+continuous article with a sticky section navigation. Experiment topics remain
+mutually exclusive when JavaScript is enabled. Search and profile-reuse details
+start closed. Direct fragment links reveal the relevant experiment or disclosure.
+
+The project wrapper lives in scripts/research/project.html; its abstract is
+in scripts/research/abstract.txt, and its page-specific styles and behavior are
+in spirit/project.css and spirit/project.js. The existing renderer builds
+both index.html and spirit/index.html from the same research templates and
+frozen data. It also reuses the homepage's overview diagram and versions page styles, scripts, and slides by content. After editing any of these sources, run:
+
+    python3 scripts/render_research.py
+    python3 scripts/render_research.py --check
+
+Commit both generated pages. spirit/spirit.bib supplies the downloadable and
+displayed citation. Do not add unverified DOI, proceedings pages, or code-release
+links. Render spirit/social-card.svg at 1200 × 630 with the bundled DM Sans and
+Instrument Serif fonts to update its corresponding PNG. Paper, slides, poster,
+and native evidence remain shared with the personal homepage.

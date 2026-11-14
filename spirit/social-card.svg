@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<rect width="1200" height="630" fill="#ffffff"/>
+<path d="M72 72h1056M72 551h1056" stroke="#e5e5e7"/>
+<g font-family="DM Sans, Arial, sans-serif">
+<text x="72" y="49" fill="#626267" font-size="17" letter-spacing="1.5">NEURIPS 2026</text>
+<text x="1128" y="49" text-anchor="end" fill="#626267" font-size="17">THE UNIVERSITY OF TEXAS AT ARLINGTON</text>
+<text x="72" y="208" font-family="Instrument Serif, Georgia, serif" font-size="124" fill="#1d1d1f">SPIRIT</text>
+<circle cx="382" cy="194" r="7" fill="#0066cc"/>
+<text x="72" y="281" font-size="38" font-weight="500" fill="#1d1d1f">Speed-Driven Online Adaptation</text>
+<text x="72" y="332" font-size="38" font-weight="500" fill="#1d1d1f">for Self-Speculative Decoding</text>
+<text x="72" y="390" font-size="20" fill="#626267">Training-free. Guided by realized throughput.</text>
+<text x="72" y="471" font-size="42" font-weight="500" fill="#0066cc">1.74×</text><text x="212" y="469" font-size="17" fill="#626267">FP16 self-drafts</text>
+<path d="M389 437v53" stroke="#e5e5e7"/>
+<text x="423" y="471" font-size="42" font-weight="500" fill="#0066cc">2.48×</text><text x="562" y="469" font-size="17" fill="#626267">NF4 self-drafts</text>
+<text x="72" y="516" font-size="15" fill="#626267">Up to · decode throughput over autoregressive decoding · separate settings</text>
+<text x="72" y="591" font-size="18" fill="#626267">Chenghao Liu · Chengbo Zhan · Hui Lu · Jia Rao</text>
+<text x="1128" y="591" text-anchor="end" font-size="16" fill="#626267">chenghaoliu519.github.io/spirit/</text>
+</g>
+<g fill="#e5f0ff" stroke="#0066cc" stroke-width="1.5">
+<path d="m862 362 111-43 111 43-111 43Z"/>
+<path d="m862 320 111-43 111 43-111 43Z" fill="#fff" stroke="#b8c0ca" stroke-dasharray="5 5"/>
+<path d="m862 278 111-43 111 43-111 43Z"/>
+<path d="m862 236 111-43 111 43-111 43Z" fill="#fff" stroke="#b8c0ca" stroke-dasharray="5 5"/>
+<path d="m862 194 111-43 111 43-111 43Z"/>
+</g>
+<path d="M860 429v18a12 12 0 0 0 12 12h202a12 12 0 0 0 12-12v-18m-6 6 6-6 6 6" fill="none" stroke="#087f73" stroke-width="1.5"/>
+<text x="973" y="494" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="16" fill="#087f73">Measure · adapt · reuse</text>
+</svg>

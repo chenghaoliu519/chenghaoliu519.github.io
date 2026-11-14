@@ -253,6 +253,40 @@ def build():
         panels.append(panel.strip())
     return '\n'.join(panels)
 
+
+def build_project(homepage):
+    """Reuse the same research panels in a standalone paper wrapper."""
+    panels=build()
+    for label, heading in [('The problem','Problem'),('The method','Method'),('The evidence','Experiments')]:
+        old=f'<p class="method-eyebrow">{label}</p>'
+        assert panels.count(old)==1,label
+        panels=panels.replace(old,f'<h3 class="method-eyebrow">{heading}</h3>',1)
+    panels=panels.replace('href="assets/','href="/assets/')
+    match=re.search(r'<figure class="method-preview".*?</figure>',homepage,re.S)
+    assert match,'Homepage overview figure is missing'
+    overview=match.group(0).replace('preview-heading','project-preview-heading').replace('preview-caption','project-preview-caption')
+    overview=overview.replace('<h4 ','<h3 ').replace('</h4>','</h3>')
+    replacements={
+        'research_panels':panels,
+        'overview_figure':overview,
+        'abstract':esc((ROOT/'scripts/research/abstract.txt').read_text().strip()),
+        'citation':esc((ROOT/'spirit/spirit.bib').read_text().strip()),
+    }
+    assets={
+        'theme_js_hash':'theme.js','styles_hash':'styles.css',
+        'theme_hash':'theme.css','research_hash':'research.css',
+        'research_js_hash':'research.js','project_css_hash':'spirit/project.css',
+        'project_js_hash':'spirit/project.js','slides_hash':'assets/slides/SPIRIT-NeurIPS2026.pdf'
+    }
+    for key,name in assets.items():
+        replacements[key]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()[:12]
+    rendered=(ROOT/'scripts/research/project.html').read_text()
+    for key,value in replacements.items():
+        rendered=rendered.replace('{{'+key+'}}',value)
+    assert not re.search(r'\{\{\w+\}\}',rendered),'Unresolved project template value'
+    return rendered
+
+
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--check',action='store_true')
@@ -274,12 +308,17 @@ def main():
             rendered=rendered.replace('  </head>',tag+'  </head>',1)
         else:
             rendered=re.sub(re.escape(name)+r'\?v=[0-9a-f]+',name+'?v='+digest,rendered)
+    project_target=ROOT/'spirit/index.html'
+    project=build_project(rendered)
     if args.check:
-        if rendered != original: raise SystemExit('Research figures need rebuilding: python3 scripts/render_research.py')
-        print('Native research figures match their frozen inputs.')
+        if rendered != original or not project_target.exists() or project_target.read_text() != project:
+            raise SystemExit('Research pages need rebuilding: python3 scripts/render_research.py')
+        print('Homepage and standalone project page match their shared research sources.')
     else:
         target.write_text(rendered)
-        print(f'Rendered three native research sections ({len(rendered.encode()):,} HTML bytes).')
+        project_target.parent.mkdir(exist_ok=True)
+        project_target.write_text(project)
+        print(f'Rendered homepage and standalone project page ({len(rendered.encode()):,} / {len(project.encode()):,} HTML bytes).')
 
 if __name__=='__main__':
     main()
