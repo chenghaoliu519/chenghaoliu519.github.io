@@ -272,3 +272,12 @@ displayed citation. Do not add unverified DOI, proceedings pages, or code-releas
 links. Render spirit/social-card.svg at 1200 × 630 with the bundled DM Sans and
 Instrument Serif fonts to update its corresponding PNG. Paper, slides, poster,
 and native evidence remain shared with the personal homepage.
+
+
+The standalone article has its own body layout in spirit/content.css. It gives
+Problem a narrative beside each plot, emphasizes Method's throughput objective,
+groups the two control loops, and distinguishes the main experimental findings
+from their measurement notes. The renderer rearranges the existing figure
+markup, formats the two measured configuration summaries, and reuses the
+reported discovery/update values as visual callouts. It adds no measurements
+and does not change the SVG plots or the personal homepage's research layout.

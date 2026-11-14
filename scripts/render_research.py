@@ -254,14 +254,79 @@ def build():
     return '\n'.join(panels)
 
 
+
+def layout_project_panels(panels):
+    """Give the standalone article a reading layout without changing chart data."""
+    def problem_feature(match):
+        heading,body=match.group(1),match.group(2)
+        plot_start=body.index('<p class="plot-unit">')
+        caption_start=body.index('<figcaption')
+        story=body[:plot_start].strip()
+        plot=body[plot_start:caption_start].strip()
+        caption=body[caption_start:].strip()
+        measurements=re.search(r'<dl class="measurement-pair">.*?</dl>',plot,re.S)
+        if measurements:
+            pair=measurements.group(0)
+            pattern=r'<div><dt>(Highest acceptance|Highest throughput)</dt><dd>([\d.]+)% <span>·</span> (?:<strong>)?([\d.]+) tok/s(?:</strong>)?</dd></div>'
+            def measurement(m):
+                return (f'<div><dt>{m.group(1)}</dt><dd><strong class="measure-value">{m.group(3)}'
+                        f'<span>tok/s</span></strong><span class="measure-context">{m.group(2)}% acceptance</span></dd></div>')
+            pair,count=re.subn(pattern,measurement,pair)
+            assert count==2,'Unexpected problem measurement structure'
+            story+='\n'+pair
+            plot=plot.replace(measurements.group(0),'').strip()
+        return (f'<figure class="evidence-figure problem-evidence-card project-problem-feature" aria-labelledby="{heading}">\n'
+                f'<div class="figure-story">{story}</div>\n'
+                f'<div class="figure-plot">{plot}</div>\n{caption}\n</figure>')
+    panels,count=re.subn(r'<figure class="evidence-figure problem-evidence-card" aria-labelledby="([^"]+)">(.*?)</figure>',problem_feature,panels,flags=re.S)
+    assert count==2,'Both problem figures should receive the standalone layout'
+
+    pattern=r'<figure class="evidence-figure result-card" aria-labelledby="specbench-heading">(.*?)</figure>'
+    match=re.search(pattern,panels,re.S)
+    assert match,'SpecBench evidence is missing'
+    body=match.group(1)
+    plot_start=body.index('<div class="plot-subheading">')
+    caption_start=body.index('<figcaption')
+    feature=('<figure class="evidence-figure result-card project-specbench-feature" aria-labelledby="specbench-heading">\n'
+             +'<div class="figure-story">'+body[:plot_start].strip()+'</div>\n'
+             +'<div class="figure-plot">'+body[plot_start:caption_start].strip()+'</div>\n'
+             +body[caption_start:].strip()+'\n</figure>')
+    panels=panels.replace(match.group(0),feature,1)
+    icons={
+        'Stay':'<path d="M5 7h10M5 13h10"/>',
+        'Switch':'<path d="M3 6h13m-3-3 3 3-3 3M17 14H4m3-3-3 3 3 3"/>',
+        'Switch + refine':'<path d="M3 5h14M3 10h14M3 15h14"/><path d="M7 3v4M13 8v4M8 13v4" stroke-width="2.5"/>',
+        'Restart':'<path d="M16 7a6 6 0 1 0 0 6M16 3v4h-4"/>',
+    }
+    for label,paths in icons.items():
+        old=f'<dt>{label}</dt>'
+        assert panels.count(old)==1,label
+        icon=f'<span class="outcome-icon" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false">{paths}</svg></span>'
+        panels=panels.replace(old,f'<dt>{icon}{label}</dt>',1)
+    for heading in ['discovery-heading','cost-heading']:
+        pattern=rf'<figure class="evidence-figure result-card" aria-labelledby="{heading}">.*?</figure>'
+        match=re.search(pattern,panels,re.S)
+        assert match,heading
+        figure=match.group(0)
+        metric=re.search(r'<p class="evidence-intro">.*?<strong>([^<]+)</strong>',figure,re.S)
+        assert metric,heading
+        old=f'<h6 id="{heading}">'
+        updated=figure.replace(old,old+f'<span class="result-keymetric" aria-hidden="true">{metric.group(1)}</span>',1)
+        panels=panels.replace(figure,updated,1)
+    phrase='Leads in all nine FP16 model–task settings.'
+    assert panels.count(phrase)==1
+    panels=panels.replace(phrase,'Leads in all nine FP16 <span class="keep-together">model–task</span> settings.',1)
+    return panels
+
+
 def build_project(homepage):
     """Reuse the same research panels in a standalone paper wrapper."""
     panels=build()
-    for label, heading in [('The problem','Problem'),('The method','Method'),('The evidence','Experiments')]:
+    for index,(label,heading) in enumerate([('The problem','Problem'),('The method','Method'),('The evidence','Experiments')],1):
         old=f'<p class="method-eyebrow">{label}</p>'
         assert panels.count(old)==1,label
-        panels=panels.replace(old,f'<h3 class="method-eyebrow">{heading}</h3>',1)
-    panels=panels.replace('href="assets/','href="/assets/')
+        panels=panels.replace(old,f'<h3 class="method-eyebrow"><span class="chapter-index" aria-hidden="true">{index:02}</span>{heading}</h3>',1)
+    panels=layout_project_panels(panels).replace('href="assets/','href="/assets/')
     match=re.search(r'<figure class="method-preview".*?</figure>',homepage,re.S)
     assert match,'Homepage overview figure is missing'
     overview=match.group(0).replace('preview-heading','project-preview-heading').replace('preview-caption','project-preview-caption')
@@ -276,6 +341,7 @@ def build_project(homepage):
         'theme_js_hash':'theme.js','styles_hash':'styles.css',
         'theme_hash':'theme.css','research_hash':'research.css',
         'research_js_hash':'research.js','project_css_hash':'spirit/project.css',
+        'content_css_hash':'spirit/content.css',
         'project_js_hash':'spirit/project.js','slides_hash':'assets/slides/SPIRIT-NeurIPS2026.pdf'
     }
     for key,name in assets.items():
