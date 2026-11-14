@@ -2,6 +2,7 @@
 
 // The article and its source links work without JavaScript. Reveal deep links
 // only after research.js has enhanced the experiment pages.
+const resultsStart = document.getElementById("results-figure-details");
 function revealProjectTarget() {
   let target;
   try { target = document.getElementById(decodeURIComponent(location.hash.slice(1))); }
@@ -15,7 +16,7 @@ function revealProjectTarget() {
   for (let detail = target.closest("details"); detail; detail = detail.parentElement?.closest("details")) {
     detail.open = true;
   }
-  const scrollTarget = target === experiment ? document.querySelector(".experiment-tabs") : target;
+  const scrollTarget = target === experiment ? resultsStart : target;
   requestAnimationFrame(() => scrollTarget.scrollIntoView({ block: "start", behavior: "instant" }));
 }
 window.addEventListener("hashchange", revealProjectTarget);
@@ -27,11 +28,15 @@ document.querySelector(".experiment-tabs")?.addEventListener("click", event => {
   const tab = event.target.closest("a[role='tab']");
   if (!tab || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   history.replaceState(history.state, "", tab.hash);
+  resultsStart.scrollIntoView({ block: "start", behavior: "instant" });
 });
 document.querySelector(".experiment-tabs")?.addEventListener("keydown", event => {
   if (!["ArrowRight", "ArrowLeft", "Home", "End", " "].includes(event.key)) return;
   const tab = event.currentTarget.querySelector('[aria-selected="true"]');
-  if (tab) history.replaceState(history.state, "", tab.hash);
+  if (tab) {
+    history.replaceState(history.state, "", tab.hash);
+    resultsStart.scrollIntoView({ block: "start", behavior: "instant" });
+  }
 });
 
 const projectNav = Array.from(document.querySelectorAll(".project-nav a"))

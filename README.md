@@ -251,8 +251,11 @@ the image content changes. Preview refresh timing depends on the sharing platfor
 include an entry to it; the existing collapsed research details are retained.
 The project page adds the paper title, four authors, affiliation, abstract,
 material links, citation, and its own sharing image. Its main sections form a
-continuous article with a sticky section navigation. Experiment topics remain
-mutually exclusive when JavaScript is enabled. Search and profile-reuse details
+continuous article with a sticky section navigation. Its compact experiment
+selector stays available while reading results, and switching topics returns
+to the beginning of the selected evidence. In short viewports it scrolls normally
+to leave room for content. Experiment topics remain mutually exclusive when
+JavaScript is enabled. Search and profile-reuse details
 start closed. Direct fragment links reveal the relevant experiment or disclosure.
 
 The project wrapper lives in scripts/research/project.html; its abstract is
