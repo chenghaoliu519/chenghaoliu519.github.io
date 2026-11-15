@@ -40,10 +40,10 @@
   <link rel="stylesheet" href="/styles.css?v=f1f653503638">
   <link rel="stylesheet" href="/theme.css?v=99513c42055d">
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
-  <link rel="stylesheet" href="/spirit/project.css?v=dded0e1f4628">
-  <link rel="stylesheet" href="/spirit/content.css?v=3da2f4c5cd81">
+  <link rel="stylesheet" href="/spirit/project.css?v=574cc81da437">
+  <link rel="stylesheet" href="/spirit/content.css?v=3ddbfddbd46c">
   <script src="/research.js?v=d45f4a188da7" defer></script>
-  <script src="/spirit/project.js?v=7d7cd618086d" defer></script>
+  <script src="/spirit/project.js?v=5f9eba903d20" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -52,9 +52,7 @@
       <a class="project-brand" href="#main" aria-label="SPIRIT, back to top">SPIRIT<span class="brand-dot" aria-hidden="true"></span></a>
       <nav class="project-nav" aria-label="Project navigation">
         <a href="#overview">Overview</a>
-        <a href="#spirit-motivation">Problem</a>
-        <a href="#spirit-method">Method</a>
-        <a href="#spirit-experiments">Results</a>
+        <a href="#research">Research</a>
         <a href="#citation">Cite</a>
       </nav>
       <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false" title="Switch to dark mode" hidden>
@@ -145,12 +143,17 @@
       </details>
     </section>
 
-    <section class="project-research summary-content" aria-labelledby="research-heading">
+    <section class="project-research summary-content" id="research" aria-labelledby="research-heading">
       <h2 id="research-heading" class="sr-only">Problem, method, and experiments</h2>
+      <nav class="project-topic-tabs" aria-label="Research topics">
+        <a id="project-problem-tab" href="#spirit-motivation">Problem</a>
+        <a id="project-method-tab" href="#spirit-method">Method</a>
+        <a id="project-results-tab" href="#spirit-experiments">Results</a>
+      </nav>
 <section class="research-panel native-research problem-page" id="spirit-motivation" aria-labelledby="motivation-heading">
   <div class="problem-overview">
   <header class="research-section-header">
-    <h3 class="method-eyebrow"><span class="chapter-index" aria-hidden="true">01</span>Problem</h3>
+    <h3 class="method-eyebrow">Problem</h3>
     <h4 id="motivation-heading">Agreement alone misses the execution cost.</h4>
   </header>
   <p class="research-intro">Skipping attention or MLP sublayers changes both <strong>draft–target consistency</strong> and <strong>the cost of each draft–verify round</strong>. Acceptance observes only consistency. Useful throughput also accounts for verifier-produced tokens and how quickly the chosen configuration executes.</p>
@@ -211,7 +214,7 @@
   <div class="method-overview-header">
     <div class="method-intro">
   <header class="research-section-header">
-    <h3 class="method-eyebrow"><span class="chapter-index" aria-hidden="true">02</span>Method</h3>
+    <h3 class="method-eyebrow">Method</h3>
     <h4 id="method-heading">Search while decoding. Reuse when workloads recur.</h4>
   </header>
   <p class="research-intro">SPIRIT adapts a self-draft configuration <i>c</i> = (<i>r</i>, <i>L</i>): how much computation to skip, and which sublayers to skip. It needs neither offline profiling nor a separately trained draft model. Full-target verification preserves the target model’s output distribution.</p>
@@ -315,10 +318,10 @@
     </div>
     <p class="profile-outcomes-label">Choose how to continue</p>
     <dl class="profile-outcomes">
-      <div><dt><span class="outcome-icon" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><path d="M5 7h10M5 13h10"/></svg></span>Stay</dt><dd>Keep the active profile when it fits or trials are inconclusive.</dd></div>
-      <div><dt><span class="outcome-icon" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><path d="M3 6h13m-3-3 3 3-3 3M17 14H4m3-3-3 3 3 3"/></svg></span>Switch</dt><dd>Reuse an eligible stored configuration.</dd></div>
-      <div><dt><span class="outcome-icon" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><path d="M3 5h14M3 10h14M3 15h14"/><path d="M7 3v4M13 8v4M8 13v4" stroke-width="2.5"/></svg></span>Switch + refine</dt><dd>Reuse its ratio; refine the layer pattern.</dd></div>
-      <div><dt><span class="outcome-icon" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><path d="M16 7a6 6 0 1 0 0 6M16 3v4h-4"/></svg></span>Restart</dt><dd>Search again when drift persists and no profile fits.</dd></div>
+      <div><dt>Stay</dt><dd>Keep the active profile when it fits or trials are inconclusive.</dd></div>
+      <div><dt>Switch</dt><dd>Reuse an eligible stored configuration.</dd></div>
+      <div><dt>Switch + refine</dt><dd>Reuse its ratio; refine the layer pattern.</dd></div>
+      <div><dt>Restart</dt><dd>Search again when drift persists and no profile fits.</dd></div>
     </dl>
     <details class="method-detail native-detail" id="profile-reuse-details">
       <summary><span class="detail-summary-copy"><span>Profile reuse details</span><small aria-hidden="true">History matching · switch eligibility</small></span><span class="figure-toggle-icon" aria-hidden="true"></span></summary>
@@ -333,10 +336,9 @@
 <section class="research-panel native-research experiment-summary" id="spirit-experiments" aria-labelledby="experiments-heading">
   <div class="experiment-overview">
     <div class="experiment-intro">
-  <header class="research-section-header"><h3 class="method-eyebrow"><span class="chapter-index" aria-hidden="true">03</span>Experiments</h3><h4 id="experiments-heading">Online adaptation delivers sustained speedups.</h4></header>
+  <header class="research-section-header"><h3 class="method-eyebrow">Experiments</h3><h4 id="experiments-heading">Online adaptation delivers sustained speedups.</h4></header>
   <p class="experiment-context">Decode throughput relative to autoregressive decoding (AR), with full-target verification. The headline values are maxima from their respective settings.</p>
     </div>
-  <dl class="experiment-metrics" aria-label="Maximum measured decoding speedup"><div><dt>FP16 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>1.74×</strong></dd></div><div><dt>NF4 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>2.48x</strong></dd></div></dl>
   </div>
 
   <aside class="experiment-measurement" aria-label="Online measurement scope"><strong>Measured during serving</strong><p>Online decode timings include search and profile updates; prefill is excluded.</p></aside>
@@ -434,7 +436,7 @@
 <div class="evidence-grid adaptation-comparisons">
 <figure class="evidence-figure result-card" aria-labelledby="discovery-heading">
           <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">01</span><p class="method-eyebrow">Configuration discovery</p></div>
-<h6 id="discovery-heading"><span class="result-keymetric" aria-hidden="true">1.61×</span>Choose configurations for speed.</h6>
+<h6 id="discovery-heading">Choose configurations for speed.</h6>
           <p class="evidence-intro">SPIRIT’s final and best-found speedups both reach <strong>1.61×</strong>. SWIFT finds 1.52× but finishes at 1.41×; D&amp;V finishes at 1.22×.</p>
           <div class="chart-legend"><span><i class="legend-line"></i>SPIRIT</span><span><i class="legend-line neutral"></i>SWIFT</span><span><i class="legend-line third"></i>D&amp;V</span></div>
           <p class="plot-unit">Replay speedup / AR</p>
@@ -446,7 +448,7 @@
         </figure>
 <figure class="evidence-figure result-card" aria-labelledby="cost-heading">
           <div class="experiment-evidence-label"><span class="experiment-section-number" aria-hidden="true">02</span><p class="method-eyebrow">Controller update cost</p></div>
-<h6 id="cost-heading"><span class="result-keymetric" aria-hidden="true">8.2%</span>Productive decoding doubles as evaluation.</h6>
+<h6 id="cost-heading">Productive decoding doubles as evaluation.</h6>
           <p class="evidence-intro">Controller updates account for <strong>8.2%</strong> of measured adaptation time in SPIRIT, versus <strong>76.6%</strong> in SWIFT.</p>
           <div class="chart-legend"><span><i class="legend-block draft"></i>Draft</span><span><i class="legend-block verify"></i>Verify</span><span><i class="legend-block update"></i>Update</span></div>
           <p class="plot-unit">Mean total time · normalized ms</p>

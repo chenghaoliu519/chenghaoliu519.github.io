@@ -1,343 +1,239 @@
-/* Standalone article: conclusions, mechanisms, and evidence have distinct roles. */
-.project-page {
-  --content-panel:color-mix(in srgb,var(--surface) 60%,var(--paper));
-  --content-blue:color-mix(in srgb,var(--accent-soft) 42%,var(--paper));
-  --content-teal:color-mix(in srgb,var(--research-teal-soft) 48%,var(--paper));
+/* Standalone reading layout. Shared scientific figures remain unchanged. */
+.project-page { --project-topic-offset:65px; }
+.project-research { scroll-margin-top:var(--project-header-offset); }
+.project-topic-tabs {
+  position:sticky; top:var(--project-header-offset); z-index:5;
+  display:flex; align-items:stretch; gap:34px; min-height:65px;
+  border-block:1px solid var(--rule); background:var(--paper);
 }
-.project-research > .research-panel { padding-block:68px; }
-.project-research .research-section-header > h3.method-eyebrow { display:flex; align-items:center; gap:12px; margin:0 0 18px; font-size:12px; font-weight:500; letter-spacing:.04em; }
-.chapter-index { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border:1px solid var(--rule-strong); border-radius:50%; color:var(--muted); font-size:10px; letter-spacing:0; font-variant-numeric:tabular-nums; }
-.project-research .research-section-header h4 { margin:0; max-width:720px; font-size:36px; font-weight:500; line-height:1.24; letter-spacing:-1px; text-wrap:balance; }
-.project-research .problem-overview { grid-template-columns:1fr 1fr; gap:56px; align-items:end; }
-.project-research .problem-overview > .research-intro,
-.project-research .method-intro .research-intro { font-size:15px; line-height:1.85; }
-.project-research .problem-section-heading,
-.project-research .method-phase-heading,
-.project-research .experiment-section-heading { gap:12px; margin-bottom:23px; }
-.project-research :is(.problem-section-number,.method-section-number,.experiment-section-number) { flex:0 0 24px; width:24px; height:24px; background:none; border:0; border-radius:0; font-size:11px; color:var(--muted); }
-.project-research :is(.problem-section-heading,.method-phase-heading) h5 { margin-top:6px; font-size:23px; font-weight:500; line-height:1.4; }
-.project-research .problem-mechanism { margin-top:38px; }
-.project-research .problem-evidence { margin-top:42px; }
+.project-topic-tabs a {
+  position:relative; display:flex; align-items:center; justify-content:center;
+  min-height:64px; padding:14px 4px; color:var(--muted); text-decoration:none;
+  font-size:15px; font-weight:500; transition:color 150ms ease;
+}
+.project-topic-tabs a:hover { color:var(--ink); }
+.project-topic-tabs a[aria-selected="true"] { color:var(--accent); }
+.project-topic-tabs a[aria-selected="true"]::after {
+  position:absolute; content:""; inset:auto 0 -1px; height:2px; background:var(--accent);
+}
+.project-topic-tabs a:focus-visible { outline:2px solid var(--accent); outline-offset:-4px; border-radius:5px; }
+.project-research > .research-panel { border:0; padding:42px 0 56px; }
+.project-research > .research-panel[hidden] { display:none; }
+.project-research .research-panel[id],
+.project-research .research-panel [id] { scroll-margin-top:calc(var(--project-header-offset) + var(--project-topic-offset) + 24px); }
+.project-research .research-section-header h4 { max-width:750px; margin:0; font-size:32px; line-height:1.28; font-weight:500; letter-spacing:-.8px; text-wrap:balance; }
+.project-research .research-section-header > h3.method-eyebrow { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.project-research :is(.problem-section-number,.method-section-number,.experiment-section-number) { display:none; }
+.project-research :is(.problem-section-heading,.method-phase-heading,.experiment-section-heading) { gap:0; margin-bottom:22px; }
+.project-research :is(.problem-section-heading,.method-phase-heading) h5 { font-size:22px; font-weight:500; line-height:1.4; }
+.project-research .method-eyebrow { color:var(--muted); font-weight:500; }
+.project-research :is(.research-intro,.experiment-context) { font-size:14px; line-height:1.85; }
+.project-research .problem-overview { grid-template-columns:1fr; gap:18px; max-width:760px; }
+.project-research .problem-overview > .research-intro { margin:0; }
+.project-research .problem-mechanism { margin-top:34px; }
+.project-research .problem-evidence { margin-top:38px; }
+.project-research .problem-evidence > .problem-section-heading,
+.project-research .model-evidence > .experiment-section-heading { display:none; }
 
-/* One choice, its two effects, and the objective form one causal diagram. */
-.project-research .problem-page .mechanism-band { gap:0; padding:25px 8px; border:1px solid var(--rule); border-radius:20px; background:var(--content-panel); }
+/* Mechanisms use a single surface; plots sit directly on the page. */
+.project-research .problem-page .mechanism-band { gap:0; padding:24px; border:0; border-radius:12px; background:var(--surface); }
 .project-research .problem-page .mechanism-band > div { padding:0 24px; border:0; border-radius:0; background:none; }
-.project-research .problem-page .mechanism-band > div + div { border-left:1px solid var(--rule-strong); }
-.project-research .problem-page .mechanism-band > .mechanism-objective { background:none; border-color:var(--rule-strong); }
-.project-research .problem-page .mechanism-objective .diagram-label { color:var(--accent); }
-.project-research .problem-page .mechanism-band .diagram-label { font-size:13px; margin-bottom:20px; }
-.project-research .problem-page .effect-pair strong { font-size:31px; font-weight:500; }
-.project-research .problem-page .mechanism-band .diagram-note { font-size:12px; }
-.project-research .problem-page .layer-slot:not(.skipped) { background:var(--accent); border-color:var(--accent); }
-.project-research .problem-page .plain-fraction { font-size:14px; color:var(--accent); }
-
-/* Each plot has a narrative beside it, with its measurement scope attached. */
-.project-research .problem-page .motivation-charts { display:grid; grid-template-columns:1fr; gap:24px; }
+.project-research .problem-page .mechanism-band > div:first-child { padding-left:0; }
+.project-research .problem-page .mechanism-band > div:last-child { padding-right:0; }
+.project-research .problem-page .mechanism-band > div + div { border-left:1px solid var(--rule); }
+.project-research .problem-page .mechanism-band .diagram-label { margin-bottom:17px; font-size:12px; color:var(--ink); }
+.project-research .problem-page .effect-pair strong { font-size:28px; font-weight:500; }
+.project-research .problem-page .plain-fraction { font-size:14px; }
+.project-research .problem-page .motivation-charts { grid-template-columns:1fr; gap:34px; }
 .project-page .problem-page .project-problem-feature {
-  display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.25fr);
+  display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.3fr);
   grid-template-areas:"story plot" "caption plot"; grid-template-rows:auto 1fr;
-  gap:0 34px; padding:30px; border:1px solid var(--rule); border-radius:22px;
-  background:var(--content-panel); box-shadow:none;
+  gap:0 44px; margin:0; padding:32px 0 0; border:0; border-top:1px solid var(--rule);
+  border-radius:0; background:none; box-shadow:none;
 }
 .figure-story { grid-area:story; min-width:0; }
-.figure-plot { grid-area:plot; min-width:0; align-self:center; padding:20px; border:1px solid var(--rule); border-radius:16px; background:var(--paper); }
-.project-problem-feature .figure-story > .method-eyebrow { margin:0 0 12px; font-size:11px; letter-spacing:.025em; }
-.project-page .project-problem-feature .figure-story h6 { margin:0; font-size:25px; font-weight:500; line-height:1.35; letter-spacing:-.6px; }
-.project-problem-feature .figure-plot > .plot-unit { margin:0 0 5px; }
-.project-problem-feature .figure-plot > .chart-legend { margin-bottom:0; }
-.project-page .project-problem-feature > figcaption { grid-area:caption; align-self:start; margin:20px 0 0; padding-top:17px; font-size:13px; line-height:1.8; border-color:var(--rule-strong); }
-.project-page .project-problem-feature .measurement-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:24px 0 0; }
-.project-page .project-problem-feature .measurement-pair > div { display:block; min-width:0; padding:12px; border:1px solid var(--rule); border-radius:12px; background:var(--paper); }
-.project-page .project-problem-feature .measurement-pair > div:last-child { background:var(--content-blue); border-color:color-mix(in srgb,var(--accent) 22%,var(--rule)); }
+.figure-plot { grid-area:plot; min-width:0; align-self:center; padding:0; border:0; background:none; }
+.project-problem-feature .figure-story > .method-eyebrow { margin:0 0 10px; font-size:11px; }
+.project-page .project-problem-feature .figure-story h6 { margin:0; font-size:23px; font-weight:500; line-height:1.4; letter-spacing:-.4px; }
+.project-page .project-problem-feature > figcaption { grid-area:caption; align-self:start; margin:18px 0 0; padding:0; border:0; font-size:12px; line-height:1.85; }
+.project-page .project-problem-feature .measurement-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:22px 0 0; }
+.project-page .project-problem-feature .measurement-pair > div { display:block; min-width:0; padding:0; border:0; border-radius:0; background:none; }
 .project-page .project-problem-feature .measurement-pair dt { font-size:11px; line-height:1.6; }
 .project-page .project-problem-feature .measurement-pair dd { margin:6px 0 0; white-space:normal; }
-.project-page .project-problem-feature .measure-value { display:block; font-size:26px; color:var(--ink); font-weight:500; line-height:1.3; letter-spacing:-.7px; white-space:nowrap; }
+.project-page .project-problem-feature .measure-value { display:block; font-size:25px; font-weight:500; line-height:1.3; letter-spacing:-.6px; color:var(--ink); white-space:nowrap; }
 .project-page .project-problem-feature .measurement-pair > div:last-child .measure-value { color:var(--accent); }
-.project-page .project-problem-feature .measure-value > span { display:block; margin:1px 0 0; font-size:11px; font-weight:400; letter-spacing:0; color:var(--muted); }
-.project-page .project-problem-feature .measure-context { display:block; margin:7px 0 0; color:var(--muted); font-size:11px; line-height:1.6; }
-.project-page .project-problem-feature .problem-caption-notes .caption-label { margin-bottom:2px; font-size:12px; }
-.project-research .problem-page .research-implication { grid-template-columns:180px minmax(0,1fr); gap:28px; padding:26px 28px; border:0; border-left:3px solid var(--accent); border-radius:0 18px 18px 0; background:var(--content-blue); }
-.project-research .problem-design-copy { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:25px; }
-.project-research .problem-page .research-implication .problem-design-copy p { margin:0; font-size:13px; line-height:1.85; }
-.project-research .problem-implication-heading { gap:8px; font-size:12px; }
+.project-page .project-problem-feature .measure-value > span { margin-left:4px; color:var(--muted); font-size:10px; font-weight:400; letter-spacing:0; }
+.project-page .project-problem-feature .measure-context { display:block; margin-top:6px; color:var(--muted); font-size:10px; line-height:1.5; }
+.project-research .problem-page .research-implication { grid-template-columns:160px 1fr; gap:26px; margin-top:34px; padding:24px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
+.project-research .problem-page .research-implication p { font-size:13px; line-height:1.85; }
+.project-research .problem-implication-heading { font-size:12px; }
 
-/* The objective is the visual center of Method; the two loops stay distinct. */
-.project-research .method-overview-header { grid-template-columns:1.6fr 1fr; gap:42px; align-items:end; }
-.project-research .configuration-card { padding:25px; border-radius:20px; background:var(--content-panel); }
-.project-research .configuration-equation { font-size:38px; letter-spacing:-1px; }
-.project-research .configuration-key { gap:15px; }
-.project-research .configuration-key dd { font-size:13px; }
-.project-research .configuration-key dd span { font-size:11px; }
-.project-research .method-page .objective-strip { margin-top:30px; padding:30px 34px; border:1px solid #203a54; border-radius:22px; background:#152b42; gap:40px; }
-.project-research .method-page .objective-strip .diagram-label { color:#a5c9ee; font-size:12px; font-weight:500; }
-.project-research .method-page .objective-strip .native-equation { color:#f6f9ff; font-size:34px; line-height:1.7; }
-.project-research .method-page .objective-strip .diagram-note { color:#bacbde; font-size:12px; }
-.project-research .method-page .objective-strip .native-symbols { gap:13px; border-color:#3e5369; }
-.project-research .method-page .objective-strip .native-symbols dt { color:#9bcbff; font-size:20px; }
-.project-research .method-page .objective-strip .native-symbols dd { color:#d0dbe8; font-size:12px; line-height:1.7; }
-:root[data-theme="dark"] .project-research .method-page .objective-strip { background:#182b40; border-color:#304861; }
-.project-research .method-page .method-loop { margin-top:42px; }
-.project-research .method-page .window-loop { padding:20px; gap:16px; border:1px solid var(--rule); border-radius:22px; background:var(--content-panel); }
-.project-research .method-page .window-loop > section { padding:21px; border-color:var(--rule); border-radius:14px; }
-.project-research .method-page .window-loop > .window-boundary { background:var(--content-blue); border-color:color-mix(in srgb,var(--accent) 25%,var(--rule)); }
+/* Method: the objective, followed by two readable control loops. */
+.project-research .method-overview-header { grid-template-columns:1.65fr 1fr; gap:48px; align-items:start; }
+.project-research .configuration-card { padding:4px 0 4px 28px; border:0; border-left:1px solid var(--rule); border-radius:0; background:none; }
+.project-research .configuration-equation { font-size:32px; }
+.project-research .configuration-key { gap:12px; }
+.project-research .method-page .objective-strip { gap:36px; margin-top:30px; padding:26px 28px; border:0; border-radius:12px; background:var(--surface); }
+.project-research .method-page .objective-strip .diagram-label { color:var(--muted); }
+.project-research .method-page .objective-strip .native-equation { color:var(--ink); font-size:31px; }
+.project-research .method-page .native-symbols dt { color:var(--ink); }
+.project-research .method-page .method-loop { margin-top:38px; }
+.project-research .method-page .window-loop { padding:0; gap:32px; border:0; background:none; }
+.project-research .method-page .window-loop > section { padding:20px 0 0; border:0; border-top:2px solid var(--rule); border-radius:0; background:none; }
+.project-research .method-page .window-loop > .window-boundary { border-color:var(--accent); background:none; }
 .project-research .method-page .window-loop > section + section::before { display:none; }
-.project-research .window-step-number { width:27px; height:27px; flex-basis:27px; background:var(--accent-soft); border:0; font-size:12px; }
-.project-research .window-step-heading { gap:10px; margin-bottom:23px; }
-.project-research .window-step-heading h6 { font-size:17px; font-weight:500; }
-.project-research .method-page .feedback-return { margin-top:0; padding:15px 4px 0; border:0; border-radius:0; background:none; font-size:12px; }
-.project-research .method-page .feedback-return > span { font-size:19px; }
-.project-research .method-page .native-detail { margin-top:22px; border-radius:14px; }
-.project-research .method-page .native-detail > summary { min-height:62px; padding:14px 20px; border-radius:14px; }
-.project-research .method-page .native-detail[open] > summary { border-radius:14px 14px 0 0; }
-.project-research .detail-summary-copy { display:flex; flex-wrap:wrap; align-items:center; gap:7px 16px; }
+.project-research .window-step-number { width:24px; height:24px; flex-basis:24px; border:0; background:var(--surface); color:var(--muted); font-size:11px; }
+.project-research .window-step-heading { gap:9px; margin-bottom:22px; }
+.project-research .window-step-heading h6 { font-size:16px; font-weight:500; }
+.project-research .method-page .feedback-return { margin-top:18px; padding:0; border:0; background:none; color:var(--muted); font-size:12px; }
+.project-research .method-page .native-detail { margin-top:24px; border-inline:0; border-radius:0; background:none; }
+.project-research .method-page .native-detail > summary { min-height:56px; padding:14px 0; border-radius:0; background:none; }
+.project-research .detail-summary-copy { display:flex; align-items:center; flex-wrap:wrap; gap:8px 20px; }
 .project-research .detail-summary-copy > span { font-size:13px; font-weight:500; }
 .project-research .detail-summary-copy > small { margin:0; font-size:11px; }
-.project-research .method-page .profile-loop { margin-top:45px; padding-top:34px; border-top:1px solid var(--rule); }
-.project-research .method-page .profile-loop .method-section-number { color:var(--research-teal); background:none; border:0; }
-.project-research .method-page .profile-overview { gap:0; margin-top:26px; padding:25px 6px; border:1px solid color-mix(in srgb,var(--research-teal) 20%,var(--rule)); border-radius:20px; background:var(--content-teal); }
-.project-research .method-page .profile-overview > div { padding:0 22px; border:0; border-radius:0; background:none; }
-.project-research .method-page .profile-overview > div + div { border-left:1px solid color-mix(in srgb,var(--research-teal) 22%,var(--rule)); }
-.project-research .method-page .profile-overview .diagram-label { color:var(--research-teal); font-size:13px; }
-.project-research .method-page .profile-outcomes-label { margin-top:24px; color:var(--muted); font-size:11px; }
-.project-research .method-page .profile-outcomes > div { padding:18px 16px; border-radius:14px; background:var(--paper); }
-.project-research .method-page .profile-outcomes dt { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:500; }
-.outcome-icon { display:inline-flex; flex:0 0 18px; }
-.outcome-icon svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
-.project-research .method-page .profile-outcomes dd { margin-top:12px; font-size:12px; }
-.project-research .method-page .method-source { padding:16px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
+.project-research .method-page .profile-loop { margin-top:40px; padding-top:30px; border-top:1px solid var(--rule); }
+.project-research .method-page .profile-overview { padding:0; gap:28px; }
+.project-research .method-page .profile-overview > div { padding:18px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
+.project-research .method-page .profile-overview .diagram-label { font-size:13px; font-weight:500; }
+.project-research .method-page .profile-outcomes-label { margin-top:28px; color:var(--muted); font-size:11px; }
+.project-research .method-page .profile-outcomes { gap:24px; margin-top:12px; }
+.project-research .method-page .profile-outcomes > div { padding:0; border:0; border-radius:0; background:none; }
+.project-research .method-page .profile-outcomes dt { color:var(--ink); font-size:13px; font-weight:500; }
+.project-research .method-page .profile-outcomes dd { font-size:12px; }
+.project-research .method-page .method-source { padding:18px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
 
-/* Results mix an open summary, comparison tables, and larger featured studies. */
-.project-research .experiment-overview { gap:52px; align-items:end; margin-bottom:30px; }
-.project-research .experiment-intro .experiment-context { font-size:14px; }
-.project-research .experiment-overview .experiment-metrics { gap:0; }
-.project-research .experiment-overview .experiment-metrics > div { padding:3px 0 3px 26px; border:0; border-left:1px solid var(--rule-strong); border-radius:0; background:none; }
-.project-research .experiment-overview .experiment-metrics > div:last-child { border-color:var(--rule-strong); background:none; }
-.project-research .experiment-overview .experiment-metrics strong { font-size:48px; font-weight:500; }
-.project-research .experiment-overview .experiment-metrics dt { font-size:11px; margin-top:12px; }
-.project-research .experiment-measurement { padding:14px 18px; border:0; border-radius:10px; background:var(--content-panel); }
-.project-research .experiment-panel .experiment-page-heading { gap:36px; padding:16px 0 28px; margin-bottom:30px; align-items:end; }
-.project-research .experiment-panel .experiment-page-heading h5 { font-size:29px; font-weight:500; line-height:1.3; letter-spacing:-.65px; }
-.project-research .experiment-panel .experiment-page-heading > p { font-size:14px; line-height:1.8; }
-.project-research .experiment-section-heading h6 { font-size:22px; font-weight:500; }
-.project-research .experiment-evidence-label { gap:8px; margin-bottom:17px; }
-.project-research .experiment-panel .result-card { padding:28px; border-radius:20px; box-shadow:none; }
-.project-research .experiment-panel .result-card h6 { font-size:21px; font-weight:500; line-height:1.4; letter-spacing:-.35px; }
-.project-research .experiment-panel .inline-gain,
-.project-research .experiment-panel .result-keymetric { display:block; margin:0 0 10px; color:var(--accent); font-size:48px; font-weight:500; line-height:1.1; letter-spacing:-1.6px; font-variant-numeric:tabular-nums; }
+/* Results: one quiet selector; no duplicate headline metrics or nested cards. */
+.project-research .experiment-overview { display:block; margin-bottom:18px; }
+.project-research .experiment-intro { max-width:760px; }
+.project-research .experiment-measurement { padding:0; border:0; border-radius:0; background:none; }
+.project-research .experiment-measurement strong { color:var(--muted); font-weight:500; }
+.project-research .experiment-tabs {
+  position:static; gap:5px; width:fit-content; max-width:100%; margin:28px 0;
+  padding:4px; border:1px solid var(--rule); border-radius:10px; background:var(--surface);
+}
+.project-research .experiment-tabs a { justify-content:center; min-height:42px; padding:9px 20px; border:0; border-radius:7px; background:none; box-shadow:none; }
+.project-research .experiment-tabs a:hover { background:var(--paper); color:var(--ink); }
+.project-research .experiment-tabs a[aria-selected="true"] { background:var(--paper); color:var(--accent); box-shadow:0 1px 3px rgb(0 0 0 / 6%); }
+.project-research .experiment-tab-icon, .project-research .experiment-tab-hint { display:none; }
+.project-research .experiment-tabs .experiment-tab-label { min-height:0; max-width:none; font-size:12px; font-weight:500; }
+.project-research .experiment-panel .experiment-page-heading { grid-template-columns:1fr; gap:10px; padding:0; margin-bottom:28px; border:0; }
+.project-research .experiment-panel .experiment-page-heading .method-eyebrow { display:none; }
+.project-research .experiment-panel .experiment-page-heading h5 { font-size:25px; line-height:1.4; font-weight:500; letter-spacing:-.4px; }
+.project-research .experiment-panel .experiment-page-heading > p { max-width:75ch; font-size:13px; }
+.project-research .experiment-section-heading h6 { font-size:20px; font-weight:500; }
+.project-research .experiment-evidence-label { gap:0; margin-bottom:12px; }
+.project-research .experiment-panel .result-card { padding:28px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; box-shadow:none; }
+.project-research .experiment-panel .result-card h6 { font-size:22px; line-height:1.4; font-weight:500; letter-spacing:-.35px; }
+.project-research .experiment-panel .inline-gain { display:inline; margin:0; font-size:inherit; font-weight:600; letter-spacing:inherit; color:var(--accent); }
 .project-research .experiment-panel .evidence-intro { font-size:13px; line-height:1.85; }
-.project-research .experiment-panel .evidence-grid { gap:22px; }
-.project-research .experiment-panel .model-tables { gap:0; border:1px solid var(--rule); border-radius:20px; background:var(--content-panel); overflow:hidden; }
-.project-research .model-table-card { padding:23px 20px 15px; border:0; border-radius:0; background:none; }
-.project-research .model-table-card + .model-table-card { border-left:1px solid var(--rule); }
-.project-research .model-table caption { margin-bottom:21px; font-size:16px; font-weight:500; }
-.project-research .model-table th, .project-research .model-table td { padding-block:13px; }
+.project-research .experiment-panel .evidence-grid { gap:36px; }
+.project-research .experiment-panel .model-tables { gap:30px; border:0; background:none; }
+.project-research .model-table-card { padding:0; border:0; border-radius:0; background:none; }
+.project-research .model-table caption { margin-bottom:16px; font-size:16px; font-weight:500; }
+.project-research .model-table th, .project-research .model-table td { padding-block:12px; }
 .project-research .model-table { font-size:13px; }
 .project-research .model-table thead th { font-size:10px; }
-.project-research .model-table-card .model-table tr > :last-child { background:color-mix(in srgb,var(--accent-soft) 66%,var(--paper)); }
-.project-research .experiment-panel .experiment-comparisons { grid-template-columns:1fr; align-items:start; gap:24px; margin-top:30px; }
-.project-research .experiment-panel .experiment-comparisons > .evidence-figure { background:var(--content-panel); }
-.project-research .experiment-panel .serving-summary { display:flex; flex-direction:column; background:var(--paper); }
-.project-research .serving-summary .batch-evidence { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; gap:48px; }
+.project-research .experiment-panel .experiment-comparisons { grid-template-columns:1fr; gap:32px; margin-top:34px; }
+.project-research .experiment-panel .project-specbench-feature { display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.3fr); grid-template-areas:"story plot" ". caption"; grid-template-rows:1fr auto; gap:16px 44px; }
+.project-research .project-specbench-feature .figure-story { align-self:center; }
+.project-research .project-specbench-feature .plot-subheading { margin:0 0 12px; padding:0; border:0; }
+.project-research .project-specbench-feature > figcaption { grid-area:caption; margin:0; }
+.project-research .serving-summary .batch-evidence { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
 .project-research .serving-summary .batch-metrics { display:block; margin:0; }
-.project-research .serving-summary .batch-metrics > div { padding:16px 0; }
+.project-research .serving-summary .batch-metrics > div { padding:12px 0; }
 .project-research .serving-summary .batch-metrics > div:first-child { padding-top:0; }
 .project-research .serving-summary .batch-metrics > div:last-child { border-bottom:0; }
-.project-research .serving-summary .batch-metrics dd { font-size:36px; font-weight:500; }
-.project-research .serving-summary > .research-source { padding-top:15px; border-top:1px solid var(--rule); margin-top:20px; }
-.project-research .broader-validation { padding-top:4px; }
-.project-research .experiment-panel .validation-card { padding:25px; }
-.project-research .validation-card .validation-title { font-size:21px; font-weight:500; line-height:1.4; letter-spacing:-.35px; }
-.project-research .validation-table th, .project-research .validation-table td { padding-block:15px; }
-.project-research .experiment-panel .experiment-feature { padding:30px; gap:25px 36px; border-color:color-mix(in srgb,var(--accent) 18%,var(--rule)); background:var(--content-blue); }
-.project-research .experiment-panel .experiment-feature .inline-gain { font-size:60px; margin-bottom:15px; }
-.project-research .experiment-panel .experiment-feature h6 { font-size:24px; line-height:1.4; }
-.project-research .experiment-feature-chart { padding:20px; border:1px solid var(--rule); border-radius:16px; background:var(--paper); }
-.project-research .experiment-panel .experiment-feature > .caption-notes { padding:20px 0 0; border:0; border-top:1px solid color-mix(in srgb,var(--accent) 15%,var(--rule)); border-radius:0; background:none; gap:24px; }
-.project-research .experiment-panel .precision-evidence { background:var(--content-panel); border-color:var(--rule); }
-.project-research .experiment-panel .precision-evidence .experiment-feature-chart { max-width:none; }
-.project-research .experiment-panel .adaptation-comparisons { align-items:stretch; }
-.project-research .adaptation-comparisons > .result-card { background:var(--content-panel); }
-.project-research .adaptation-comparisons .research-chart { margin-top:9px; }
-.project-research .experiment-panel .adaptation-checks { padding:28px; background:var(--paper); }
-.project-research .experiment-panel .selection-note { padding:13px 16px; background:var(--paper); }
-.project-research .experiment-panel .reuse-evidence { padding:30px; gap:22px 35px; background:var(--content-teal); }
-.project-research .reuse-evidence .inline-gain { color:var(--research-teal); font-size:47px; }
-.project-research .reuse-chart { padding:20px; border:1px solid var(--rule); border-radius:16px; background:var(--paper); }
+.project-research .serving-summary .batch-metrics dd { font-size:29px; font-weight:500; }
+.project-research .serving-summary > .research-source { margin-top:16px; }
+.project-research .broader-validation { margin-top:34px; }
+.project-research .validation-card .validation-title { font-size:20px; line-height:1.4; font-weight:500; }
+.project-research .validation-table th, .project-research .validation-table td { padding-block:13px; }
+.project-research .experiment-panel .experiment-feature { padding:28px 0 0; gap:24px 44px; background:none; border-color:var(--rule); }
+.project-research .experiment-panel .experiment-feature .inline-gain { font-size:inherit; margin:0; }
+.project-research .experiment-panel .experiment-feature h6 { font-size:25px; }
+.project-research .experiment-feature-chart, .project-research .reuse-chart { padding:0; border:0; border-radius:0; background:none; }
+.project-research .experiment-panel .experiment-feature > .caption-notes { padding:20px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; gap:24px; }
+.project-research .precision-evidence .experiment-feature-chart { max-width:none; }
+.project-research .experiment-panel .selection-note { padding:10px 0 0; border:0; background:none; }
+.project-research .experiment-panel .adaptation-checks { padding:26px 0 0; background:none; }
+.project-research .experiment-panel .reuse-evidence { padding:28px 0 0; gap:24px 44px; background:none; }
+.project-research .reuse-evidence .inline-gain { color:var(--research-teal); font-size:inherit; }
 .project-research .reuse-chart > .chart-legend { margin-top:0; }
-.project-research .reuse-evidence > figcaption { border-color:color-mix(in srgb,var(--research-teal) 20%,var(--rule)); }
-
-.project-research .experiment-panel .project-specbench-feature { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); grid-template-areas:"story plot" ". caption"; grid-template-rows:1fr auto; gap:18px 34px; }
-.project-research .project-specbench-feature .figure-story { align-self:center; }
-.project-research .project-specbench-feature .figure-story .evidence-intro { margin-bottom:0; font-size:14px; }
-.project-research .project-specbench-feature .plot-subheading { margin:0 0 12px; padding:0; border:0; }
-.project-research .project-specbench-feature > figcaption { grid-area:caption; align-self:start; margin:0; }
-.project-research .project-specbench-feature .figure-plot { align-self:center; }
 
 @media (max-width:1050px) {
-  .project-research .problem-overview { gap:34px; }
-  .project-research .research-section-header h4 { font-size:32px; }
-  .project-page .problem-page .project-problem-feature { padding:24px; gap:0 25px; }
-  .project-page .project-problem-feature .figure-story h6 { font-size:23px; }
-  .project-page .project-problem-feature .measurement-pair { gap:7px; }
-  .project-page .project-problem-feature .measurement-pair > div { padding:10px; }
-  .project-page .project-problem-feature .measure-value { font-size:24px; }
-  .project-research .model-table-card { padding:20px 15px 12px; }
   .project-research .model-table { font-size:12px; }
-  .project-research .model-table caption { font-size:14px; }
-  .project-research .experiment-panel .result-card { padding:24px; }
-  .project-research .experiment-panel .experiment-feature { gap:22px; }
-  .project-research .experiment-feature-chart { padding:16px; }
+  .project-research .experiment-panel .model-tables { gap:20px; }
+  .project-research .method-overview-header { gap:30px; }
+  .project-research .method-page .window-loop { gap:24px; }
 }
 @media (max-width:900px) {
-  .project-research .problem-overview { grid-template-columns:1fr; gap:20px; }
-  .project-research .problem-overview > .research-intro { max-width:75ch; }
-  .project-research .problem-page .mechanism-band { grid-template-columns:1fr 1fr; padding:24px; gap:24px; }
-  .project-research .problem-page .mechanism-band > div { padding:0; }
+  .project-page .problem-page .project-problem-feature { grid-template-columns:1fr; grid-template-areas:"story" "plot" "caption"; gap:22px; }
+  .project-page .project-problem-feature .figure-story { max-width:600px; }
+  .project-page .project-problem-feature .measurement-pair { max-width:400px; }
+  .project-page .project-problem-feature > figcaption { margin:0; }
+  .project-research .problem-page .mechanism-band { grid-template-columns:1fr 1fr; gap:24px; }
+  .project-research .problem-page .mechanism-band > div { padding:0; border:0; }
   .project-research .problem-page .mechanism-band > div + div { border-left:0; }
-  .project-research .problem-page .mechanism-band > .mechanism-objective { grid-column:1/-1; display:flex; gap:15px 30px; flex-wrap:wrap; align-items:center; justify-content:space-between; padding-top:22px; border-top:1px solid var(--rule-strong); }
-  .project-research .problem-page .mechanism-objective .diagram-label { margin:0; }
-  .project-research .problem-page .mechanism-objective .diagram-note { width:100%; margin:0; }
-  .project-page .problem-page .project-problem-feature { grid-template-columns:minmax(0,1fr) minmax(0,1.25fr); gap:0 24px; }
-  .project-page .project-problem-feature .measurement-pair { grid-template-columns:1fr; margin-top:18px; }
-  .project-page .project-problem-feature .measurement-pair > div { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:10px; padding:10px 12px; }
-  .project-page .project-problem-feature .measure-value { font-size:24px; }
-  .project-page .project-problem-feature .measure-context { font-size:10px; }
-  .project-page .project-problem-feature .figure-plot { padding:14px; }
-  .project-research .problem-page .research-implication { grid-template-columns:1fr; gap:15px; }
-  .project-research .method-overview-header { grid-template-columns:1fr; gap:25px; }
-  .project-research .configuration-card { display:grid; grid-template-columns:160px 1fr; }
+  .project-research .problem-page .mechanism-band > .mechanism-objective { grid-column:1/-1; padding-top:20px; border-top:1px solid var(--rule); }
+  .project-research .method-overview-header { grid-template-columns:1fr; gap:24px; }
+  .project-research .configuration-card { padding:20px 0 0; border:0; border-top:1px solid var(--rule); }
   .project-research .method-page .objective-strip { grid-template-columns:1fr; }
-  .project-research .method-page .window-loop { grid-template-columns:1fr; padding:18px; gap:16px; }
-  .project-research .method-page .window-loop > section { padding:24px; }
-  .project-research .method-page .profile-overview { grid-template-columns:1fr; padding:0 24px; }
-  .project-research .method-page .profile-overview > div { padding:22px 0; }
-  .project-research .method-page .profile-overview > div + div { border-left:0; border-top:1px solid color-mix(in srgb,var(--research-teal) 22%,var(--rule)); }
-  .project-research .experiment-overview { grid-template-columns:1fr; gap:24px; }
-  .project-research .experiment-overview .experiment-metrics { width:100%; max-width:460px; }
-  .project-research .experiment-overview .experiment-metrics > div { padding-left:20px; }
-  .project-research .experiment-panel .experiment-page-heading { grid-template-columns:1fr; gap:14px; }
-  .project-research .experiment-panel .experiment-comparisons { grid-template-columns:1fr; }
-  .project-research .experiment-panel .model-tables { grid-template-columns:1fr; }
-  .project-research .model-table-card + .model-table-card { border-left:0; border-top:1px solid var(--rule); }
-  .project-research .model-table-card { padding:24px; }
+  .project-research .method-page .window-loop, .project-research .method-page .profile-overview { grid-template-columns:1fr; gap:24px; }
+  .project-research .experiment-panel .model-tables { grid-template-columns:1fr; gap:28px; }
   .project-research .model-table { font-size:14px; }
-  .project-research .model-table caption { font-size:17px; }
   .project-research .model-table thead th { font-size:12px; }
+  .project-research .experiment-panel .project-specbench-feature { grid-template-columns:1fr; grid-template-areas:"story" "plot" "caption"; gap:22px; }
   .project-research .experiment-panel .experiment-feature { grid-template-columns:1fr; gap:24px; }
-  .project-research .experiment-panel .experiment-feature .inline-gain { font-size:53px; }
-}
-@media (max-width:900px) {
-  .project-research > .research-panel { padding-block:48px; }
-  .project-research .research-section-header h4 { font-size:30px; }
-  .project-research .research-section-header > h3.method-eyebrow { margin-bottom:17px; }
-  .project-page .problem-page .project-problem-feature { grid-template-columns:1fr; grid-template-areas:"story" "plot" "caption"; gap:22px; padding:22px; }
-  .project-page .project-problem-feature .figure-story h6 { font-size:24px; max-width:550px; }
-  .project-page .project-problem-feature .figure-plot { width:100%; padding:15px; }
-  .project-page .project-problem-feature .measurement-pair { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
-  .project-page .project-problem-feature .measurement-pair > div { display:block; padding:14px; }
-  .project-page .project-problem-feature .measure-value { font-size:29px; }
-  .project-page .project-problem-feature > figcaption { margin:0; padding-top:17px; }
-  .project-research .problem-design-copy { grid-template-columns:1fr; gap:14px; }
-  .project-research .experiment-feature-chart { padding:16px; }
-  .project-research .experiment-panel .experiment-feature > .caption-notes { grid-template-columns:1fr; gap:15px; }
+  .project-research .experiment-panel .experiment-feature > .caption-notes { grid-template-columns:1fr; gap:14px; }
   .project-research .experiment-panel .reuse-evidence { grid-template-columns:1fr; }
-  .project-research .reuse-chart { padding:16px; }
 }
-@media (max-width:900px) {
-  .project-research .experiment-panel .project-specbench-feature { grid-template-columns:1fr; grid-template-areas:"story" "plot" "caption"; gap:24px; }
-  .project-research .serving-summary .batch-evidence { grid-template-columns:1fr; gap:24px; }
-}
-@media (max-width:600px) {
-  .project-research .research-section-header h4 { font-size:29px; letter-spacing:-.7px; }
-  .project-research .project-specbench-feature .figure-plot { width:calc(100% + 12px); margin-inline:-6px; padding:0; border:0; border-radius:0; background:none; }
-  .project-research .project-specbench-feature .research-chart { width:100%; margin-left:0; }
-
-  .project-research .problem-overview > .research-intro,
-  .project-research .method-intro .research-intro { font-size:14px; }
-  .project-research .problem-section-heading,
-  .project-research .method-phase-heading,
-  .project-research .experiment-section-heading { gap:8px; }
+@media (max-width:620px) {
+  .project-page { --project-topic-offset:57px; }
+  .project-topic-tabs { min-height:57px; gap:0; justify-content:space-between; }
+  .project-topic-tabs a { flex:1; min-height:56px; padding:12px; font-size:14px; }
+  .project-research > .research-panel { padding-block:30px 40px; }
+  .project-research .research-section-header h4 { font-size:28px; letter-spacing:-.6px; }
   .project-research :is(.problem-section-heading,.method-phase-heading) h5 { font-size:21px; }
-  .project-research .problem-page .mechanism-band { grid-template-columns:1fr; padding:22px; gap:22px; }
-  .project-research .problem-page .mechanism-band > div + div { padding-top:21px; border-top:1px solid var(--rule-strong); }
-  .project-research .problem-page .mechanism-band > .mechanism-objective { display:block; }
-  .project-research .problem-page .mechanism-objective .diagram-label { margin-bottom:16px; }
-  .project-research .problem-page .mechanism-objective .diagram-note { margin-top:13px; }
-  .project-page .problem-page .project-problem-feature { padding:20px 18px; border-radius:18px; gap:22px; }
-  .project-page .project-problem-feature .figure-story h6 { font-size:23px; }
-  .project-page .project-problem-feature .figure-plot { width:calc(100% + 12px); margin-inline:-6px; padding:0; border:0; border-radius:0; background:none; }
-  .project-page .project-problem-feature .research-chart { width:100%; margin-left:0; }
-  .project-page .project-problem-feature .measurement-pair > div { padding:12px; }
-  .project-page .project-problem-feature .measure-value { font-size:27px; }
-  .project-page .project-problem-feature .measurement-pair dt { font-size:11px; }
-  .project-page .project-problem-feature .measure-context { font-size:10px; }
-  .project-research .problem-page .research-implication { padding:22px; }
-  .project-research .configuration-card { grid-template-columns:110px 1fr; gap:15px; padding:22px; }
-  .project-research .configuration-equation { font-size:32px; }
-  .project-research .method-page .objective-strip { padding:25px 22px; border-radius:18px; gap:22px; }
-  .project-research .method-page .objective-strip .native-equation { font-size:30px; }
-  .project-research .method-page .objective-strip .native-symbols { padding-top:19px; gap:15px; }
-  .project-research .method-page .objective-strip .native-symbols dd { font-size:12px; }
-  .project-research .method-page .window-loop { padding:12px; gap:12px; border-radius:18px; }
-  .project-research .method-page .window-loop > section { padding:20px; border-radius:12px; }
-  .project-research .method-page .window-boundary > .boundary-equation { font-size:19px; }
-  .project-research .method-page .native-detail > summary { padding:14px 17px; }
+  .project-research .problem-page .mechanism-band { grid-template-columns:1fr; padding:20px; }
+  .project-research .problem-page .mechanism-band > div + div { padding-top:20px; border-top:1px solid var(--rule); }
+  .project-page .project-problem-feature .figure-story h6 { font-size:22px; }
+  .project-page .project-problem-feature .research-chart, .project-research .project-specbench-feature .research-chart { width:100%; margin-left:0; }
+  .project-research .problem-page .research-implication { grid-template-columns:1fr; gap:12px; }
+  .project-research .configuration-card { grid-template-columns:130px minmax(0,1fr); gap:12px 16px; }
+  .project-research .method-page .objective-strip { padding:22px 18px; gap:20px; }
+  .project-research .method-page .objective-strip .native-equation { font-size:29px; }
+  .project-research .method-page .native-symbols { grid-template-columns:1fr; }
+  .project-research .method-page .window-loop > section, .project-research .method-page .profile-overview > div { padding:18px 0 0; }
   .project-research .detail-summary-copy { display:block; }
   .project-research .detail-summary-copy > small { margin-top:4px; }
-  .project-research .method-page .profile-overview { padding-inline:22px; border-radius:18px; }
-  .project-research .method-page .profile-outcomes { gap:10px; }
-  .project-research .method-page .profile-outcomes > div { padding:15px 13px; }
-  .project-research .method-page .profile-outcomes dt { gap:7px; font-size:12px; }
-  .project-research .method-page .profile-outcomes dd { font-size:12px; }
-  .project-research .experiment-overview .experiment-metrics strong { font-size:43px; }
-  .project-research .experiment-panel .experiment-page-heading { padding-top:8px; }
-  .project-research .experiment-panel .experiment-page-heading h5 { font-size:25px; }
-  .project-research .experiment-section-heading h6 { font-size:21px; }
-  .project-research .experiment-panel .result-card { padding:22px 18px; border-radius:18px; }
-  .project-research .experiment-panel .result-card h6 { font-size:21px; }
-  .project-research .experiment-panel .inline-gain,
-  .project-research .experiment-panel .result-keymetric { font-size:43px; }
-  .project-research .experiment-panel .experiment-feature .inline-gain { font-size:49px; }
-  .project-research .experiment-panel .experiment-feature h6 { font-size:23px; }
-  .project-research .experiment-panel .evidence-intro { font-size:14px; }
-  .project-research .model-table-card { padding:22px 18px 18px; }
-  .project-research .model-table { font-size:13px; }
-  .project-research .model-table thead th { font-size:11px; }
-  .project-research .experiment-panel .experiment-feature { padding:24px 18px; }
-  .project-research .experiment-feature-chart,
-  .project-research .reuse-chart { padding:0; border:0; border-radius:0; background:none; }
-  .project-research .experiment-panel .validation-card { padding:22px 18px; }
-  .project-research .experiment-panel .reuse-evidence { padding:24px 18px; }
-  .project-research .experiment-panel .reuse-evidence .inline-gain { font-size:39px; }
+  .project-research .method-page .profile-outcomes { gap:22px; }
+  .project-research .experiment-tabs { width:100%; gap:3px; }
+  .project-research .experiment-tabs a { min-height:48px; padding:7px 4px; }
+  .project-research .experiment-tabs .experiment-tab-label { max-width:100px; font-size:11px; }
+  .project-research .experiment-panel .experiment-page-heading h5 { font-size:23px; }
+  .project-research .experiment-panel .result-card h6 { font-size:22px; }
+  .project-research .serving-summary .batch-evidence { grid-template-columns:1fr; gap:22px; }
+  .project-research .experiment-panel .evidence-grid { gap:30px; }
+  .project-research .experiment-panel .experiment-feature h6 { font-size:24px; }
 }
 @media (max-width:360px) {
-  .project-research .research-section-header h4 { font-size:27px; }
-  .project-page .project-problem-feature .figure-story h6 { font-size:22px; }
-  .project-page .project-problem-feature .measurement-pair { gap:8px; }
-  .project-page .project-problem-feature .measurement-pair > div { padding:10px; }
-  .project-page .project-problem-feature .measure-value { font-size:24px; }
-  .project-research .method-page .objective-strip { padding:22px 18px; }
+  .project-research .research-section-header h4 { font-size:26px; }
   .project-research .method-page .objective-strip .native-equation { font-size:25px; }
-  .project-research .configuration-card { grid-template-columns:100px 1fr; padding:18px; }
-  .project-research .method-page .window-loop > section { padding:17px; }
-  .project-research .method-page .window-boundary > .boundary-equation { font-size:17px; }
-  .project-research .method-page .profile-outcomes dt { flex-wrap:wrap; }
   .project-research .model-table { font-size:12px; }
-  .project-research .model-table-card { padding-inline:15px; }
-  .project-research .experiment-panel .experiment-feature .inline-gain { font-size:45px; }
-  .project-research .experiment-panel .reuse-evidence .inline-gain { font-size:35px; }
+  .project-research .model-table thead th { font-size:11px; }
+}
+@media (max-height:550px) {
+  .project-topic-tabs { position:static; }
+  .project-research .research-panel[id], .project-research .research-panel [id] { scroll-margin-top:calc(var(--project-header-offset) + 24px); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .project-topic-tabs a { transition:none; }
 }
 @media print {
+  .project-topic-tabs { display:none; }
+  .project-research > .research-panel[hidden] { display:block !important; }
+  .project-research > .research-panel { padding-block:24px; border-top:1px solid var(--rule); }
   .project-research .research-section-header h4 { font-size:23px; }
-  .project-research > .research-panel { padding-block:24px; }
-  .project-page .problem-page .project-problem-feature { padding:18px; break-inside:avoid; }
-  .project-research .method-page .objective-strip { background:#fff; border:1px solid #b8c0ca; }
-  .project-research .method-page .objective-strip :is(.diagram-label,.native-equation,.diagram-note),
-  .project-research .method-page .objective-strip .native-symbols :is(dt,dd) { color:#1d1d1f; }
-  .project-research .method-page .objective-strip .native-symbols { border-color:#b8c0ca; }
-  .project-research .experiment-panel .result-card,
-  .project-research .experiment-feature-chart,
-  .project-research .reuse-chart { background:none; box-shadow:none; }
-  .project-research .experiment-panel .inline-gain,
-  .project-research .experiment-panel .result-keymetric { font-size:30px; }
+  .project-research .method-page .objective-strip { background:none; border-block:1px solid var(--rule); }
+  .project-page .problem-page .project-problem-feature { break-inside:avoid; }
 }

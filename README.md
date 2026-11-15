@@ -247,16 +247,19 @@ the image content changes. Preview refresh timing depends on the sharing platfor
 
 ## Standalone SPIRIT project page
 
-/spirit/ is the paper's standalone project page. The homepage's material links
-include an entry to it; the existing collapsed research details are retained.
-The project page adds the paper title, four authors, affiliation, abstract,
-material links, citation, and its own sharing image. Its main sections form a
-continuous article with a sticky section navigation. Its compact experiment
-selector stays available while reading results, and switching topics returns
-to the beginning of the selected evidence. In short viewports it scrolls normally
-to leave room for content. Experiment topics remain mutually exclusive when
-JavaScript is enabled. Search and profile-reuse details
-start closed. Direct fragment links reveal the relevant experiment or disclosure.
+https://chenghaoliu519.github.io/spirit/ is the paper's canonical standalone URL.
+The homepage links to this exact address; its existing collapsed research details
+are retained. The project page adds the paper title, authors, affiliation,
+abstract, material links, citation, and its own sharing image.
+
+Problem, Method, and Results share one reader with a compact sticky topic bar.
+Only one topic is visible when JavaScript is enabled. Results keeps its three
+experiment views in a separate, nonsticky selector. Main-topic changes create
+browser history; keyboard navigation replaces the current fragment. Direct
+fragment links reveal the required topic, experiment, disclosure, and chart range
+before scrolling. Search and profile-reuse details start closed. All topics and
+experiment views remain readable without JavaScript and in print. In short
+viewports, the topic bar scrolls normally to leave room for content.
 
 The project wrapper lives in scripts/research/project.html; its abstract is
 in scripts/research/abstract.txt, and its page-specific styles and behavior are
@@ -274,10 +277,9 @@ Instrument Serif fonts to update its corresponding PNG. Paper, slides, poster,
 and native evidence remain shared with the personal homepage.
 
 
-The standalone article has its own body layout in spirit/content.css. It gives
-Problem a narrative beside each plot, emphasizes Method's throughput objective,
-groups the two control loops, and distinguishes the main experimental findings
-from their measurement notes. The renderer rearranges the existing figure
-markup, formats the two measured configuration summaries, and reuses the
-reported discovery/update values as visual callouts. It adds no measurements
-and does not change the SVG plots or the personal homepage's research layout.
+The standalone reader has its own body layout in spirit/content.css. It uses
+open figure layouts, restrained dividers, and a single neutral surface for each
+mechanism. Repeated chapter numbers, outcome icons, and duplicate headline metric
+rows are omitted on this page. The renderer rearranges existing figure markup
+and formats the two measured configuration summaries; it adds no measurements
+and does not change the scientific SVG plots or the homepage research layout.
