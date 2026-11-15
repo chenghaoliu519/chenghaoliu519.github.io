@@ -283,3 +283,12 @@ mechanism. Repeated chapter numbers, outcome icons, and duplicate headline metri
 rows are omitted on this page. The renderer rearranges existing figure markup
 and formats the two measured configuration summaries; it adds no measurements
 and does not change the scientific SVG plots or the homepage research layout.
+
+
+The standalone typography distinguishes serif section leads from sans-serif
+study headings and figure labels. Topic hints appear on larger screens and
+collapse to labels on phones. Paired adaptation and architecture studies share
+intro, evidence, and caption rows so wrapping text does not misalign the plots.
+Their scientific SVGs, tables, captions, and narrative remain identical to the
+shared sources. BibTeX is collapsed initially, can still be copied or downloaded,
+and opens for printing before its prior state is restored.

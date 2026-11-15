@@ -296,6 +296,23 @@ def layout_project_panels(panels):
     # but avoid a second competing metric row inside Results.
     panels,count=re.subn(r'  <dl class="experiment-metrics"[^>]*>.*?</dl>\n','',panels,flags=re.S)
     assert count==1,'Expected one repeated headline metric row'
+    # Pair explanatory text, evidence, and measurement notes in shared rows.
+    # Each caption remains a direct figure child; the scientific markup is intact.
+    for heading in ['discovery-heading','cost-heading','architecture-heading','code-heading']:
+        pattern=rf'<figure class="(evidence-figure result-card[^"]*)" aria-labelledby="{heading}">(.*?)</figure>'
+        match=re.search(pattern,panels,re.S)
+        assert match,heading
+        classes,body=match.groups()
+        split=body.index('<table') if heading in ['architecture-heading','code-heading'] else body.index('<div class="chart-legend">')
+        caption_start=body.index('<figcaption')
+        updated=(f'<figure class="{classes} comparison-study" aria-labelledby="{heading}">\n'
+                 +'<div class="study-copy">'+body[:split].strip()+'</div>\n'
+                 +'<div class="study-display">'+body[split:caption_start].strip()+'</div>\n'
+                 +body[caption_start:].strip()+'\n</figure>')
+        panels=panels.replace(match.group(0),updated,1)
+    title='Search while decoding. Reuse when workloads recur.'
+    assert panels.count(title)==1
+    panels=panels.replace(title,'<span class="lead-sentence">Search while decoding.</span> <span class="lead-sentence">Reuse when workloads recur.</span>',1)
     phrase='Leads in all nine FP16 model–task settings.'
     assert panels.count(phrase)==1
     panels=panels.replace(phrase,'Leads in all nine FP16 <span class="keep-together">model–task</span> settings.',1)

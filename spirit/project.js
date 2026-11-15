@@ -108,7 +108,7 @@ let pendingFrame = null;
 function updateProjectNav() {
   pendingFrame = null;
   const activation = (header?.getBoundingClientRect().height || 0) + 90;
-  const atBottom = window.scrollY > 0 && window.scrollY + innerHeight >= document.documentElement.scrollHeight - 2;
+  const atBottom = window.scrollY > 0 && window.scrollY + innerHeight >= document.documentElement.scrollHeight - 64;
   let current = atBottom ? projectNav.at(-1) : undefined;
   if (!atBottom) for (const item of projectNav) {
     if (item.section.getBoundingClientRect().top <= activation) current = item;
@@ -140,3 +140,17 @@ if (copyCitation && navigator.clipboard && window.isSecureContext) {
     }
   });
 }
+
+
+// Print the citation in full, then restore the reader's disclosure preference.
+const citationDetails = document.getElementById("citation-bibtex");
+let citationOpenBeforePrint = null;
+window.addEventListener("beforeprint", () => {
+  if (!citationDetails || citationOpenBeforePrint !== null) return;
+  citationOpenBeforePrint = citationDetails.open;
+  citationDetails.open = true;
+});
+window.addEventListener("afterprint", () => {
+  if (citationDetails && citationOpenBeforePrint !== null) citationDetails.open = citationOpenBeforePrint;
+  citationOpenBeforePrint = null;
+});

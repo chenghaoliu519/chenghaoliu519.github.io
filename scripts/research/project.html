@@ -101,16 +101,19 @@
     <section class="project-research summary-content" id="research" aria-labelledby="research-heading">
       <h2 id="research-heading" class="sr-only">Problem, method, and experiments</h2>
       <nav class="project-topic-tabs" aria-label="Research topics">
-        <a id="project-problem-tab" href="#spirit-motivation">Problem</a>
-        <a id="project-method-tab" href="#spirit-method">Method</a>
-        <a id="project-results-tab" href="#spirit-experiments">Results</a>
+        <a id="project-problem-tab" href="#spirit-motivation"><span class="topic-title">Problem</span><span class="topic-hint" aria-hidden="true">Speed and acceptance</span></a>
+        <a id="project-method-tab" href="#spirit-method"><span class="topic-title">Method</span><span class="topic-hint" aria-hidden="true">Online search and reuse</span></a>
+        <a id="project-results-tab" href="#spirit-experiments"><span class="topic-title">Results</span><span class="topic-hint" aria-hidden="true">Speedups across settings</span></a>
       </nav>
 {{research_panels}}
     </section>
 
     <section class="project-citation" id="citation" aria-labelledby="citation-heading">
       <div class="citation-heading"><div><p class="project-kicker">Reference</p><h2 id="citation-heading">Cite SPIRIT</h2></div><div class="citation-actions"><a href="/spirit/spirit.bib" download>Download BibTeX <span aria-hidden="true">↓</span></a><button id="copy-citation" type="button" hidden>Copy BibTeX</button></div></div>
-      <pre><code id="citation-text">{{citation}}</code></pre>
+      <details class="citation-bibtex" id="citation-bibtex">
+        <summary>View BibTeX<span aria-hidden="true">+</span></summary>
+        <pre><code id="citation-text">{{citation}}</code></pre>
+      </details>
       <p id="citation-status" class="citation-status" role="status" aria-live="polite"></p>
     </section>
   </main>
