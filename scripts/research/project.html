@@ -50,10 +50,11 @@
   <header class="project-header">
     <div class="project-header-inner">
       <a class="project-brand" href="#main" aria-label="SPIRIT, back to top">SPIRIT<span class="brand-dot" aria-hidden="true"></span></a>
-      <nav class="project-nav" aria-label="Project navigation">
-        <a href="#overview">Overview</a>
-        <a href="#research">Research</a>
-        <a href="#citation">Cite</a>
+      <nav class="project-topic-tabs" aria-label="Paper sections">
+        <a id="project-overview-tab" href="#overview">Overview</a>
+        <a id="project-problem-tab" href="#spirit-motivation">Problem</a>
+        <a id="project-method-tab" href="#spirit-method">Method</a>
+        <a id="project-results-tab" href="#spirit-experiments">Results</a>
       </nav>
       <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false" title="Switch to dark mode" hidden>
         <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 14.2A8.5 8.5 0 0 1 9.8 3.8a8.5 8.5 0 1 0 10.4 10.4Z"/></svg>
@@ -83,10 +84,10 @@
       <div class="project-guarantee"><span class="guarantee-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></svg></span><strong>Full-target verification</strong><span>Preserves the target model’s<br class="guarantee-break"> output distribution.</span></div>
     </div>
 
-    <section class="project-overview" id="overview" aria-labelledby="overview-heading">
+    <section class="project-research summary-content" id="research" aria-label="Research">
+    <section class="project-overview research-panel" id="overview" aria-labelledby="overview-heading">
       <div class="overview-copy">
-        <p class="project-kicker">The idea</p>
-        <h2 id="overview-heading">Adapt the draft to<br> realized throughput.</h2>
+        <h2 id="overview-heading">Adapt the draft to realized throughput.</h2>
         <p>A self-draft skips parts of the target model to propose tokens cheaply. But high draft acceptance alone does not guarantee fast decoding: each configuration also changes the cost of drafting and verification.</p>
         <p>SPIRIT measures committed tokens per decode second, first finds an effective skip ratio, and then refines the layer pattern. It searches while producing output and carries useful profiles across recurring workloads.</p>
         <p class="overview-premise">No retraining. No offline profiling. No separately trained draft.</p>
@@ -98,23 +99,16 @@
       </details>
     </section>
 
-    <section class="project-research summary-content" id="research" aria-labelledby="research-heading">
-      <h2 id="research-heading" class="sr-only">Problem, method, and experiments</h2>
-      <nav class="project-topic-tabs" aria-label="Research topics">
-        <a id="project-problem-tab" href="#spirit-motivation"><span class="topic-title">Problem</span><span class="topic-hint" aria-hidden="true">Speed and acceptance</span></a>
-        <a id="project-method-tab" href="#spirit-method"><span class="topic-title">Method</span><span class="topic-hint" aria-hidden="true">Online search and reuse</span></a>
-        <a id="project-results-tab" href="#spirit-experiments"><span class="topic-title">Results</span><span class="topic-hint" aria-hidden="true">Speedups across settings</span></a>
-      </nav>
 {{research_panels}}
     </section>
 
     <section class="project-citation" id="citation" aria-labelledby="citation-heading">
-      <div class="citation-heading"><div><p class="project-kicker">Reference</p><h2 id="citation-heading">Cite SPIRIT</h2></div><div class="citation-actions"><a href="/spirit/spirit.bib" download>Download BibTeX <span aria-hidden="true">↓</span></a><button id="copy-citation" type="button" hidden>Copy BibTeX</button></div></div>
       <details class="citation-bibtex" id="citation-bibtex">
-        <summary>View BibTeX<span aria-hidden="true">+</span></summary>
+        <summary><h2 id="citation-heading">Cite SPIRIT</h2><span aria-hidden="true">+</span></summary>
+        <div class="citation-actions"><a href="/spirit/spirit.bib" download>Download BibTeX <span aria-hidden="true">↓</span></a><button id="copy-citation" type="button" hidden>Copy BibTeX</button></div>
         <pre><code id="citation-text">{{citation}}</code></pre>
+        <p id="citation-status" class="citation-status" role="status" aria-live="polite"></p>
       </details>
-      <p id="citation-status" class="citation-status" role="status" aria-live="polite"></p>
     </section>
   </main>
   <footer class="project-footer project-shell"><span>SPIRIT · NeurIPS 2026</span><a href="/">Chenghao Liu’s homepage <span aria-hidden="true">↗</span></a></footer>

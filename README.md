@@ -252,55 +252,40 @@ The homepage links to this exact address; its existing collapsed research detail
 are retained. The project page adds the paper title, authors, affiliation,
 abstract, material links, citation, and its own sharing image.
 
-Problem, Method, and Results share one reader with a compact sticky topic bar.
-Only one topic is visible when JavaScript is enabled. Results keeps its three
-experiment views in a separate, nonsticky selector. Main-topic changes create
-browser history; keyboard navigation replaces the current fragment. Direct
-fragment links reveal the required topic, experiment, disclosure, and chart range
-before scrolling. Search and profile-reuse details start closed. All topics and
-experiment views remain readable without JavaScript and in print. In short
-viewports, the topic bar scrolls normally to leave room for content.
+Overview, Problem, Method, and Results share one reading area and a single
+navigation in the page header. Overview is selected on entry. With JavaScript,
+one view is visible at a time; Results contains three experiment subpages in a
+compact, nonsticky selector. Main navigation and experiment clicks create
+browser history; arrow keys, Home/End, and Space replace the current fragment.
+Direct links reveal the required view, disclosure, and chart range before
+scrolling. Search and profile-reuse details start closed.
 
 The project wrapper lives in scripts/research/project.html; its abstract is
-in scripts/research/abstract.txt, and its page-specific styles and behavior are
-in spirit/project.css and spirit/project.js. The existing renderer builds
-both index.html and spirit/index.html from the same research templates and
-frozen data. It also reuses the homepage's overview diagram and versions page styles, scripts, and slides by content. After editing any of these sources, run:
+in scripts/research/abstract.txt. The standalone shell, research layout, and
+behavior live in spirit/project.css, spirit/content.css, and spirit/project.js.
+The renderer builds both index.html and spirit/index.html from shared research
+templates and frozen data. It reuses the homepage's overview diagram and versions
+page styles, scripts, and slides by content. After editing these sources, run:
 
     python3 scripts/render_research.py
     python3 scripts/render_research.py --check
 
-Commit both generated pages. spirit/spirit.bib supplies the downloadable and
-displayed citation. Do not add unverified DOI, proceedings pages, or code-release
-links. Render spirit/social-card.svg at 1200 × 630 with the bundled DM Sans and
-Instrument Serif fonts to update its corresponding PNG. Paper, slides, poster,
-and native evidence remain shared with the personal homepage.
+Commit the regenerated pages with their sources. spirit/spirit.bib supplies the
+downloadable and displayed citation. Do not add unverified DOI, proceedings
+pages, or code-release links. Render spirit/social-card.svg at 1200 × 630 with
+the bundled DM Sans and Instrument Serif fonts to update its PNG.
 
+The standalone reader uses one centered column, sans-serif section headings,
+and consistent finding–figure–caption order. The three FP16 model tables become
+one grouped table with the same nine settings and values. Method steps run
+vertically; configuration, equation, and profile diagrams retain their scientific
+meaning. Repeated metric rows, chapter numbers, navigation hints, and previous/
+next footers are omitted. Scientific SVGs and figure captions are unchanged.
 
-The standalone reader has its own body layout in spirit/content.css. It uses
-open figure layouts, restrained dividers, and a single neutral surface for each
-mechanism. Repeated chapter numbers, outcome icons, and duplicate headline metric
-rows are omitted on this page. The renderer rearranges existing figure markup
-and formats the two measured configuration summaries; it adds no measurements
-and does not change the scientific SVG plots or the homepage research layout.
-
-
-The standalone typography distinguishes serif section leads from sans-serif
-study headings and figure labels. Topic hints appear on larger screens and
-collapse to labels on phones. Paired adaptation and architecture studies share
-intro, evidence, and caption rows so wrapping text does not misalign the plots.
-Their scientific SVGs, tables, captions, and narrative remain identical to the
-shared sources. BibTeX is collapsed initially, can still be copied or downloaded,
-and opens for printing before its prior state is restored.
-
-
-Each standalone reading view ends with Previous and Next links. They connect
-Overview, Problem, Method, the three experiment views, and the citation without
-adding another fixed toolbar. The same fragment resolver keeps the selected
-topic, browser history, and keyboard focus in sync.
-
-Broader architecture and HumanEval evidence sits in a native supplementary
-disclosure. It starts collapsed after JavaScript enhancement; direct figure
-links open it automatically. Its source remains open for no-JavaScript readers.
-Printing exposes both the supplementary figures and BibTeX, then restores the
-reader's disclosure preferences. The homepage research panels are unchanged.
+The abstract, citation, search details, and profile-reuse details use native
+disclosures. Architecture and HumanEval evidence is a supplementary disclosure
+that starts closed after enhancement and opens when directly linked. Without
+JavaScript, all reading views and experiment subpages are visible, and the
+supplementary evidence stays open. Printing exposes all views, supplemental
+evidence, both chart ranges, and BibTeX, then restores disclosure preferences.
+The personal homepage retains its existing research layout and behavior.

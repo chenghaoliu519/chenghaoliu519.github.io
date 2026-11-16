@@ -1,326 +1,198 @@
-/* Standalone reading layout. Shared scientific figures remain unchanged. */
-.project-page { --project-topic-offset:82px; }
-.project-research { scroll-margin-top:var(--project-header-offset); }
-.project-topic-tabs {
-  position:sticky; top:var(--project-header-offset); z-index:5;
-  display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:stretch; gap:0; min-height:82px;
-  border-block:1px solid var(--rule); background:var(--paper);
-}
-.project-topic-tabs a {
-  position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
-  min-height:80px; padding:14px 16px; color:var(--muted); text-decoration:none;
-  font-size:15px; font-weight:500; transition:color 150ms ease;
-}
-.project-topic-tabs a:hover { color:var(--ink); background:color-mix(in srgb,var(--surface) 60%,var(--paper)); }
-.topic-title { font-size:15px; line-height:1.4; }
-.topic-hint { font-size:11px; line-height:1.5; font-weight:400; color:var(--muted); }
-.project-topic-tabs a[aria-selected="true"] { color:var(--accent); }
-.project-topic-tabs a[aria-selected="true"]::after {
-  position:absolute; content:""; inset:auto 0 -1px; height:2px; background:var(--accent);
-}
-.project-topic-tabs a:focus-visible { outline:2px solid var(--accent); outline-offset:-4px; border-radius:5px; }
-.project-research > .research-panel { border:0; padding:44px 0 60px; }
-.project-research > .research-panel[hidden] { display:none; }
-/* Keep keyboard focus near the heading instead of outlining an entire long view. */
-.project-research .experiment-panel:focus-visible { outline:none; }
-.project-research .experiment-panel:focus-visible > .experiment-page-heading { outline:2px solid var(--accent); outline-offset:6px; border-radius:4px; }
-
-.project-research .research-panel[id] { scroll-margin-top:calc(var(--project-header-offset) + var(--project-topic-offset)); }
-.project-research .research-panel [id] { scroll-margin-top:calc(var(--project-header-offset) + var(--project-topic-offset) + 32px); }
-.project-research .research-section-header h4 { max-width:780px; margin:0; font-family:"Instrument Serif",Georgia,serif; font-size:44px; line-height:1.12; font-weight:400; letter-spacing:-.5px; text-wrap:balance; }
-.project-research .research-section-header .lead-sentence { display:block; }
-.project-research .research-section-header > h3.method-eyebrow { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+/* One reading column and a consistent hierarchy for all research topics. */
+.project-research .native-research { color:var(--muted); }
+.project-research .research-section-header h2 { color:var(--ink); margin:0; max-width:750px; font-size:28px; line-height:1.3; font-weight:500; letter-spacing:-.6px; text-wrap:balance; }
+.project-research h3 { color:var(--ink); font-size:22px; line-height:1.4; font-weight:500; letter-spacing:-.3px; }
+.project-research h4 { color:var(--ink); margin:0; font-size:20px; line-height:1.45; font-weight:500; letter-spacing:-.25px; text-wrap:pretty; }
+.project-research .research-section-header > .method-eyebrow,
 .project-research :is(.problem-section-number,.method-section-number,.experiment-section-number) { display:none; }
-.project-research :is(.problem-section-heading,.method-phase-heading,.experiment-section-heading) { gap:0; margin-bottom:22px; }
-.project-research :is(.problem-section-heading,.method-phase-heading) h5 { font-size:23px; font-weight:500; line-height:1.4; }
-.project-research .method-eyebrow { color:var(--muted); font-weight:500; }
-.project-research :is(.research-intro,.experiment-context) { font-size:15px; line-height:1.85; }
-.project-research .problem-overview { grid-template-columns:1fr; gap:22px; max-width:780px; }
-.project-research .problem-overview > .research-intro { margin:0; }
-.project-research .problem-mechanism { margin-top:40px; }
-.project-research .problem-evidence { margin-top:40px; }
-.project-research .problem-evidence > .problem-section-heading,
-.project-research .model-evidence > .experiment-section-heading { display:none; }
+.project-research .method-eyebrow { color:var(--muted); font-size:12px; font-weight:500; letter-spacing:0; }
+.project-research :is(.research-intro,.experiment-context,.evidence-intro) { font-size:15px; line-height:1.85; }
+.project-research .research-intro { max-width:none; }
+.project-research .problem-overview { display:block; max-width:none; }
+.project-research .problem-overview > .research-intro { margin-top:18px; }
+.project-research :is(.problem-section-heading,.method-phase-heading,.experiment-section-heading) { gap:0; margin-bottom:20px; }
+.project-research :is(.problem-section-heading,.method-phase-heading) h3 { margin-top:6px; }
+.project-research :is(.problem-evidence > .problem-section-heading,.model-evidence > .experiment-section-heading) { display:none; }
+.project-research .research-chart { display:block; width:100%; max-width:640px; margin-inline:auto; }
+.project-research .evidence-figure { width:100%; max-width:none; }
+.project-research .evidence-figure h4 { margin:0; font-size:20px; }
+.project-research .evidence-figure figcaption { margin-top:20px; padding-top:14px; border-top:1px solid var(--rule); font-size:12px; line-height:1.85; }
+.project-research .plot-unit, .project-research .chart-legend { font-size:12px; }
+.project-research .plot-unit { margin-top:22px; }
+.project-research .research-source { font-size:12px; line-height:1.85; }
+.project-research .problem-mechanism { margin-top:36px; }
+.project-research .problem-page .mechanism-band { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; padding:24px; border:0; border-radius:8px; background:var(--surface); }
+.project-research .problem-page .mechanism-band > div { padding:0; border:0; border-radius:0; background:none; }
+.project-research .problem-page .mechanism-band .diagram-label { margin-bottom:16px; color:var(--ink); font-size:12px; }
+.project-research .problem-page .effect-pair strong { font-size:27px; font-weight:500; }
+.project-research .problem-page .plain-fraction { font-size:12px; }
+.project-research .problem-page .mechanism-band .diagram-note { font-size:11px; }
+.project-research .problem-evidence { margin-top:36px; }
+.project-research .problem-page .motivation-charts { display:block; }
+.project-research .problem-page .problem-evidence-card { margin:0; padding:30px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; box-shadow:none; }
+.project-research .problem-page .problem-evidence-card + .problem-evidence-card { margin-top:36px; }
+.project-research .problem-page .problem-evidence-card > .method-eyebrow { margin-bottom:7px; }
+.project-research .problem-page .measurement-pair { grid-template-columns:1fr 1fr; gap:24px; margin-top:20px; }
+.project-research .problem-page .measurement-pair > div { display:block; padding:0; border:0; background:none; }
+.project-research .measurement-pair dt { font-size:11px; }
+.project-research .measurement-pair dd { margin:6px 0 0; font-size:13px; }
+.project-research .problem-page .research-implication { display:block; margin-top:30px; padding:22px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
+.project-research .problem-implication-heading { margin-bottom:12px; font-size:13px; }
+.project-research .problem-page .research-implication p { font-size:14px; color:var(--muted); line-height:1.85; }
 
-/* Mechanisms use a single surface; plots sit directly on the page. */
-.project-research .problem-page .mechanism-band { gap:0; padding:24px; border:0; border-radius:12px; background:var(--surface); }
-.project-research .problem-page .mechanism-band > div { padding:0 24px; border:0; border-radius:0; background:none; }
-.project-research .problem-page .mechanism-band > div:first-child { padding-left:0; }
-.project-research .problem-page .mechanism-band > div:last-child { padding-right:0; }
-.project-research .problem-page .mechanism-band > div + div { border-left:1px solid var(--rule); }
-.project-research .problem-page .mechanism-band .diagram-label { margin-bottom:17px; font-size:12px; color:var(--ink); }
-.project-research .problem-page .effect-pair strong { font-size:28px; font-weight:500; }
-.project-research .problem-page .plain-fraction { font-size:14px; }
-.project-research .problem-page .motivation-charts { grid-template-columns:1fr; gap:34px; }
-.project-page .problem-page .project-problem-feature {
-  display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.3fr);
-  grid-template-areas:"story plot" "caption plot"; grid-template-rows:auto 1fr;
-  gap:0 44px; margin:0; padding:32px 0 0; border:0; border-top:1px solid var(--rule);
-  border-radius:0; background:none; box-shadow:none;
-}
-.figure-story { grid-area:story; min-width:0; }
-.figure-plot { grid-area:plot; min-width:0; align-self:start; padding:0; border:0; background:none; }
-.project-problem-feature .figure-story > .method-eyebrow { margin:0 0 10px; font-size:11px; }
-.project-page .project-problem-feature .figure-story h6 { margin:0; font-size:23px; font-weight:500; line-height:1.4; letter-spacing:-.4px; }
-.project-page .project-problem-feature > figcaption { grid-area:caption; align-self:start; margin:18px 0 0; padding:0; border:0; font-size:12px; line-height:1.85; }
-.project-page .project-problem-feature .measurement-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:22px 0 0; }
-.project-page .project-problem-feature .measurement-pair > div { display:block; min-width:0; padding:0; border:0; border-radius:0; background:none; }
-.project-page .project-problem-feature .measurement-pair dt { font-size:11px; line-height:1.6; }
-.project-page .project-problem-feature .measurement-pair dd { margin:6px 0 0; white-space:normal; }
-.project-page .project-problem-feature .measure-value { display:block; font-size:25px; font-weight:500; line-height:1.3; letter-spacing:-.6px; color:var(--ink); white-space:nowrap; }
-.project-page .project-problem-feature .measurement-pair > div:last-child .measure-value { color:var(--accent); }
-.project-page .project-problem-feature .measure-value > span { margin-left:4px; color:var(--muted); font-size:10px; font-weight:400; letter-spacing:0; }
-.project-page .project-problem-feature .measure-context { display:block; margin-top:6px; color:var(--muted); font-size:10px; line-height:1.5; }
-.project-research .problem-page .research-implication { grid-template-columns:160px 1fr; gap:26px; margin-top:34px; padding:24px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
-.project-research .problem-page .research-implication p { font-size:13px; line-height:1.85; }
-.project-research .problem-implication-heading { font-size:12px; }
-
-/* Method: the objective, followed by two readable control loops. */
-.project-research .method-overview-header { grid-template-columns:1.65fr 1fr; gap:48px; align-items:start; }
-.project-research .configuration-card { padding:4px 0 4px 28px; border:0; border-left:1px solid var(--rule); border-radius:0; background:none; }
-.project-research .configuration-equation { font-size:32px; }
-.project-research .configuration-key { gap:12px; }
-.project-research .method-page .objective-strip { gap:36px; margin-top:30px; padding:26px 28px; border:0; border-radius:12px; background:var(--surface); }
-.project-research .method-page .objective-strip .diagram-label { color:var(--muted); }
-.project-research .method-page .objective-strip .native-equation { color:var(--ink); font-size:31px; }
+/* Method uses one objective and two vertically ordered processes. */
+.project-research .method-overview-header { display:block; }
+.project-research .method-intro .research-intro { margin-top:18px; }
+.project-research .configuration-card { display:grid; grid-template-columns:150px minmax(0,1fr); gap:10px 24px; padding:22px 0 0; margin-top:22px; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
+.project-research .configuration-card > .method-eyebrow { grid-column:1/-1; }
+.project-research .configuration-equation { margin:0; font-size:29px; }
+.project-research .configuration-key { grid-template-columns:1fr 1fr; gap:20px; }
+.project-research .configuration-key dd { font-size:13px; }
+.project-research .configuration-key dd span { display:block; font-size:11px; }
+.project-research .method-page .objective-strip { display:block; margin-top:26px; padding:24px; border:0; border-radius:8px; background:var(--surface); }
+.project-research .method-page .objective-strip .diagram-label { color:var(--muted); font-size:12px; }
+.project-research .method-page .native-equation { color:var(--ink); font-size:31px; }
+.project-research .method-page .native-symbols { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; margin-top:20px; padding-top:18px; border-top:1px solid var(--rule); }
 .project-research .method-page .native-symbols dt { color:var(--ink); }
-.project-research .method-page .method-loop { margin-top:38px; }
-.project-research .method-page .window-loop { padding:0; gap:32px; border:0; background:none; }
-.project-research .method-page .window-loop > section { padding:20px 0 0; border:0; border-top:2px solid var(--rule); border-radius:0; background:none; }
-.project-research .method-page .window-loop > .window-boundary { border-color:var(--accent); background:none; }
+.project-research .method-page .native-symbols > div { grid-template-columns:24px minmax(0,1fr); gap:8px; }
+.project-research .method-page .method-loop { margin-top:36px; }
+.project-research .method-page .window-loop { display:block; padding:0; border:0; background:none; }
+.project-research .method-page .window-loop > section { display:grid; grid-template-columns:175px minmax(0,1fr); gap:24px; padding:23px 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
 .project-research .method-page .window-loop > section + section::before { display:none; }
-.project-research .window-step-number { width:24px; height:24px; flex-basis:24px; border:0; background:var(--surface); color:var(--muted); font-size:11px; }
-.project-research .window-step-heading { gap:9px; margin-bottom:22px; }
-.project-research .window-step-heading h6 { font-size:16px; font-weight:500; }
-.project-research .method-page .feedback-return { margin-top:18px; padding:0; border:0; background:none; color:var(--muted); font-size:12px; }
+.project-research .window-step-heading { align-items:flex-start; min-height:0; margin:0; gap:9px; }
+.project-research .window-step-number { margin-top:3px; width:22px; height:22px; flex-basis:22px; border:0; border-radius:0; background:none; color:var(--muted); font-size:12px; }
+.project-research .window-step-heading h4 { margin-top:5px; font-size:15px; letter-spacing:0; line-height:1.5; }
+.project-research .method-step-body { min-width:0; }
+.project-research .method-step-body .layer-strip { max-width:390px; }
+.project-research .method-step-body > p:not(.diagram-note) { font-size:14px; line-height:1.8; }
+.project-research .method-step-body > .boundary-equation { margin-top:0; font-size:20px; }
+.project-research .method-step-body .window-stat { max-width:390px; }
+.project-research .method-page .feedback-return { margin:0; padding:0; border:0; background:none; color:var(--muted); font-size:12px; }
 .project-research .method-page .native-detail { margin-top:24px; border-inline:0; border-radius:0; background:none; }
 .project-research .method-page .native-detail > summary { min-height:56px; padding:14px 0; border-radius:0; background:none; }
-.project-research .detail-summary-copy { display:flex; align-items:center; flex-wrap:wrap; gap:8px 20px; }
-.project-research .detail-summary-copy > span { font-size:13px; font-weight:500; }
-.project-research .detail-summary-copy > small { margin:0; font-size:11px; }
-.project-research .method-page .profile-loop { margin-top:40px; padding-top:30px; border-top:1px solid var(--rule); }
-.project-research .method-page .profile-overview { padding:0; gap:28px; }
-.project-research .method-page .profile-overview > div { padding:18px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
-.project-research .method-page .profile-overview .diagram-label { font-size:13px; font-weight:500; }
-.project-research .method-page .profile-outcomes-label { margin-top:28px; color:var(--muted); font-size:11px; }
-.project-research .method-page .profile-outcomes { gap:24px; margin-top:12px; }
-.project-research .method-page .profile-outcomes > div { padding:0; border:0; border-radius:0; background:none; }
+.project-research .method-page .native-detail[open] > summary { border-radius:0; background:none; }
+.project-research .detail-summary-copy > small { display:none; }
+.project-research .method-page .search-stages, .project-research .method-page .reuse-rules { display:block; padding:24px 0; }
+.project-research .method-page .search-stages > section + section,
+.project-research .method-page .reuse-rules > div + div { margin-top:26px; padding:24px 0 0; border:0; border-top:1px solid var(--rule); }
+.project-research .method-page .search-stages h4, .project-research .method-page .reuse-rules h4 { font-size:18px; margin:8px 0 14px; }
+.project-research .method-page .profile-loop { margin-top:36px; padding-top:30px; border-top:1px solid var(--rule); }
+.project-research .method-page .profile-overview { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:24px; }
+.project-research .method-page .profile-overview > div { padding:0; border:0; border-radius:0; background:none; }
+.project-research .method-page .profile-overview > .profile-next { grid-column:1/-1; padding-top:20px; border-top:1px solid var(--rule); }
+.project-research .method-page .profile-overview .diagram-label { margin-bottom:14px; font-size:13px; font-weight:500; }
+.project-research .method-page .profile-outcomes { display:block; margin-top:10px; }
+.project-research .method-page .profile-outcomes > div { display:grid; grid-template-columns:135px minmax(0,1fr); gap:18px; padding:12px 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
 .project-research .method-page .profile-outcomes dt { color:var(--ink); font-size:13px; font-weight:500; }
-.project-research .method-page .profile-outcomes dd { font-size:12px; }
-.project-research .method-page .method-source { padding:18px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
+.project-research .method-page .profile-outcomes dd { margin:0; font-size:13px; }
+.project-research .method-page .method-source { padding:20px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
 
-/* Results: one quiet selector; no duplicate headline metrics or nested cards. */
-.project-research .experiment-overview { display:block; margin-bottom:18px; }
-.project-research .experiment-intro { max-width:760px; }
-.project-research .experiment-measurement { padding:0; border:0; border-radius:0; background:none; }
-.project-research .experiment-measurement strong { color:var(--muted); font-weight:500; }
-.project-research .experiment-tabs {
-  position:static; gap:5px; width:fit-content; max-width:100%; margin:28px 0;
-  padding:4px; border:1px solid var(--rule); border-radius:10px; background:var(--surface);
-}
-.project-research .experiment-tabs a { justify-content:center; min-height:42px; padding:9px 20px; border:0; border-radius:7px; background:none; box-shadow:none; }
-.project-research .experiment-tabs a:hover { background:var(--paper); color:var(--ink); }
-.project-research .experiment-tabs a[aria-selected="true"] { background:var(--paper); color:var(--accent); box-shadow:0 1px 3px rgb(0 0 0 / 6%); }
+/* Results have one table and a sequence of self-contained evidence figures. */
+.project-research .experiment-overview { display:block; margin-bottom:16px; }
+.project-research .experiment-context { margin-top:18px; }
+.project-research .experiment-measurement { display:block; padding:0; border:0; background:none; font-size:12px; }
+.project-research .experiment-measurement strong { display:none; }
+.project-research .experiment-measurement p { font-size:12px; }
+.project-research .experiment-tabs { position:static; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; margin:26px 0 30px; padding:4px; border:1px solid var(--rule); border-radius:8px; background:var(--surface); }
+.project-research .experiment-tabs a { justify-content:center; min-height:42px; padding:10px; border:0; border-radius:5px; background:none; box-shadow:none; }
+.project-research .experiment-tabs a[aria-selected="true"] { color:var(--accent); background:var(--paper); box-shadow:none; }
 .project-research .experiment-tab-icon, .project-research .experiment-tab-hint { display:none; }
-.project-research .experiment-tabs .experiment-tab-label { min-height:0; max-width:none; font-size:12px; font-weight:500; }
-.project-research .experiment-panel .experiment-page-heading { grid-template-columns:1fr; gap:10px; padding:0; margin-bottom:28px; border:0; }
+.project-research .experiment-tabs .experiment-tab-label { min-height:0; max-width:none; font-size:12px; font-weight:500; text-align:center; }
+.project-research .experiment-panel:focus-visible { outline:none; }
+.project-research .experiment-panel:focus-visible > .experiment-page-heading { outline:2px solid var(--accent); outline-offset:6px; border-radius:3px; }
+.project-research .experiment-panel .experiment-page-heading { display:block; margin:0 0 24px; padding:0; border:0; }
 .project-research .experiment-panel .experiment-page-heading .method-eyebrow { display:none; }
-.project-research .experiment-panel .experiment-page-heading h5 { font-size:25px; line-height:1.4; font-weight:500; letter-spacing:-.4px; }
-.project-research .experiment-panel .experiment-page-heading > p { max-width:75ch; margin-top:4px; font-size:14px; }
-.project-research .experiment-section-heading h6 { font-size:20px; font-weight:500; }
-.project-research .experiment-evidence-label { gap:0; margin-bottom:12px; }
-.project-research .experiment-panel .result-card { padding:28px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; box-shadow:none; }
-.project-research .experiment-panel .result-card h6 { font-size:22px; line-height:1.4; font-weight:500; letter-spacing:-.35px; }
-.project-research .experiment-panel .inline-gain { display:inline; margin:0; font-size:inherit; font-weight:600; letter-spacing:inherit; color:var(--accent); }
-.project-research .experiment-panel .evidence-intro { font-size:14px; line-height:1.85; }
-.project-research .experiment-panel .evidence-grid { gap:36px 40px; }
-.project-research .experiment-panel .model-tables { gap:30px; border:0; background:none; }
-.project-research .model-table-card { padding:0; border:0; border-radius:0; background:none; }
-.project-research .model-table caption { margin-bottom:16px; font-size:16px; font-weight:500; }
-.project-research .model-table th, .project-research .model-table td { padding-block:12px; }
-.project-research .model-table { font-size:13px; }
-.project-research .model-table thead th { font-size:11px; }
-.project-research .experiment-panel .experiment-comparisons { grid-template-columns:1fr; gap:32px; margin-top:34px; }
-.project-research .experiment-panel .project-specbench-feature { display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.3fr); grid-template-areas:"story plot" ". caption"; grid-template-rows:1fr auto; gap:16px 44px; }
-.project-research .project-specbench-feature .figure-story { align-self:start; }
-.project-research .project-specbench-feature .plot-subheading { margin:0 0 12px; padding:0; border:0; }
-.project-research .project-specbench-feature > figcaption { grid-area:caption; margin:0; }
-.project-research .serving-summary .batch-evidence { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
-.project-research .serving-summary .batch-metrics { display:block; margin:0; }
+.project-research .experiment-panel .experiment-page-heading h3 { margin:0; font-size:22px; }
+.project-research .experiment-panel .experiment-page-heading > p { margin-top:12px; font-size:14px; }
+.project-research .experiment-panel .evidence-grid, .project-research .experiment-panel .model-tables { display:block; }
+.project-research .fp16-comparison { width:100%; border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-nums; line-height:1.6; }
+.project-research .fp16-comparison caption { margin-bottom:16px; text-align:left; color:var(--muted); font-size:12px; }
+.project-research .fp16-comparison th, .project-research .fp16-comparison td { padding:12px 10px; text-align:right; border-bottom:1px solid var(--rule); }
+.project-research .fp16-comparison thead th { color:var(--muted); font-size:12px; font-weight:400; }
+.project-research .fp16-comparison thead th:nth-child(2), .project-research .fp16-comparison th:is(:first-child,[scope="row"]) { text-align:left; }
+.project-research .fp16-comparison [scope="rowgroup"] { vertical-align:top; padding-left:0; width:22%; color:var(--ink); font-weight:500; }
+.project-research .fp16-comparison [scope="row"] { color:var(--muted); font-weight:400; }
+.project-research .fp16-comparison tr > :last-child { background:color-mix(in srgb,var(--accent-soft) 50%,var(--paper)); color:var(--accent); }
+.project-research .fp16-comparison td strong { color:var(--accent); font-weight:600; }
+.project-research .fp16-comparison tr.group-start > * { border-top:1px solid var(--rule-strong); }
+.project-research .fp16-comparison abbr { text-decoration:none; cursor:default; }
+.project-research .experiment-panel .result-card { margin:34px 0 0; padding:28px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; box-shadow:none; }
+.project-research .experiment-panel .experiment-comparisons { margin-top:0; }
+.project-research .experiment-evidence-label { gap:0; margin-bottom:8px; }
+.project-research .experiment-panel .inline-gain { display:inline; margin:0; color:var(--accent); font:inherit; font-weight:600; letter-spacing:inherit; }
+.project-research .experiment-panel .result-card h4 { font-size:20px; }
+.project-research .experiment-panel .result-card .evidence-intro { margin:12px 0 20px; font-size:14px; line-height:1.85; }
+.project-research .experiment-panel .experiment-feature,
+.project-research .experiment-panel .reuse-evidence,
+.project-research .experiment-panel .adaptation-checks { display:block; }
+.project-research .experiment-feature-chart, .project-research .reuse-chart { max-width:640px; margin:24px auto 0; padding:0; border:0; border-radius:0; background:none; }
+.project-research .precision-evidence .experiment-feature-chart { width:100%; max-width:640px; }
+.project-research .experiment-panel .experiment-feature > .caption-notes { display:block; margin-top:20px; padding:14px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; }
+.project-research .caption-notes .caption-label { display:inline; margin-right:7px; }
+.project-research .experiment-feature > .caption-notes > p + p { margin-top:8px; }
+.project-research .experiment-panel .serving-summary .batch-evidence { display:block; }
+.project-research .serving-summary .batch-metrics { display:block; margin:22px 0 0; }
 .project-research .serving-summary .batch-metrics > div { padding:12px 0; }
-.project-research .serving-summary .batch-metrics > div:first-child { padding-top:0; }
+.project-research .serving-summary .batch-metrics dd { font-size:25px; font-weight:500; }
 .project-research .serving-summary .batch-metrics > div:last-child { border-bottom:0; }
-.project-research .serving-summary .batch-metrics dd { font-size:29px; font-weight:500; }
-.project-research .serving-summary > .research-source { margin-top:16px; }
-.project-research .broader-validation { margin-top:34px; }
-.project-research .validation-card .validation-title { font-size:20px; line-height:1.4; font-weight:500; }
-.project-research .validation-table th, .project-research .validation-table td { padding-block:13px; }
-.project-research .experiment-panel .experiment-feature { padding:28px 0 0; gap:24px 44px; background:none; border-color:var(--rule); }
-.project-research .experiment-panel .experiment-feature .inline-gain { font-size:inherit; margin:0; }
-.project-research .experiment-panel .experiment-feature h6 { font-size:25px; }
-.project-research .experiment-feature-chart, .project-research .reuse-chart { padding:0; border:0; border-radius:0; background:none; }
-.project-research .experiment-panel .experiment-feature > .caption-notes { padding:20px 0 0; border:0; border-top:1px solid var(--rule); border-radius:0; background:none; gap:24px; }
-.project-research .precision-evidence .experiment-feature-chart { max-width:none; }
 .project-research .experiment-panel .selection-note { padding:10px 0 0; border:0; background:none; }
-.project-research .experiment-panel .adaptation-checks { padding:26px 0 0; background:none; }
-.project-research .experiment-panel .reuse-evidence { padding:28px 0 0; gap:24px 44px; background:none; }
-.project-research .reuse-evidence .inline-gain { color:var(--research-teal); font-size:inherit; }
-.project-research .reuse-chart > .chart-legend { margin-top:0; }
-
-/* Shared rows align paired studies even when their titles wrap differently. */
-.project-research .comparison-study .study-copy > .method-eyebrow { margin-bottom:10px; }
-.project-research .comparison-study .study-copy .evidence-intro { margin-bottom:0; }
-.project-research .comparison-study .study-display { margin-top:20px; }
-.project-research .comparison-study .study-display > .chart-legend:first-child { margin-top:0; }
-.project-research .comparison-study > figcaption { align-self:start; }
-@supports (grid-template-rows:subgrid) {
-  @media (min-width:901px) {
-    .project-research .experiment-panel :is(.adaptation-comparisons,.validation-grid) { align-items:stretch; row-gap:22px; }
-    .project-research .experiment-panel .comparison-study { display:grid; grid-row:span 3; grid-template-rows:subgrid; gap:22px; }
-    .project-research .comparison-study .study-display { margin-top:0; }
-    .project-research .experiment-panel .comparison-study > figcaption { margin-top:0; }
-  }
-}
-@media (max-width:900px) {
-  .project-research .experiment-panel :is(.adaptation-comparisons,.validation-grid) { grid-template-columns:minmax(0,1fr); }
-}
-
-/* A compact supplementary study, followed by the next reading destination. */
-.project-research .experiment-panel .supporting-evidence {
-  margin-top:36px; border:0; border-top:1px solid var(--rule);
-  border-radius:0; background:none;
-}
-.supporting-evidence > summary {
-  position:relative; min-height:100px; padding:20px 40px 20px 0;
-  color:var(--ink); list-style:none; cursor:pointer;
-}
+.project-research .adaptation-support { margin-top:24px; }
+.project-research .workload-sequence { display:flex; gap:28px; margin-top:20px; }
+.project-research .experiment-panel .supporting-evidence { margin-top:34px; border-top:1px solid var(--rule); }
+.supporting-evidence > summary { position:relative; padding:20px 32px 20px 0; list-style:none; cursor:pointer; }
 .supporting-evidence > summary::-webkit-details-marker { display:none; }
-.supporting-evidence > summary::before, .supporting-evidence > summary::after {
-  position:absolute; content:""; right:4px; top:calc(50% - .5px);
-  width:12px; height:1px; background:var(--muted);
-}
-.supporting-evidence > summary::after { transform:rotate(90deg); transition:transform 150ms ease; }
-.supporting-evidence[open] > summary::after { transform:rotate(0); }
-.supporting-evidence > summary:hover .supporting-title { color:var(--accent); }
-.project-research .supporting-evidence > summary h6 { margin:0; font-weight:400; }
-.supporting-kicker { display:block; margin-bottom:5px; color:var(--muted); font-size:11px; font-weight:500; }
-.supporting-title { display:block; font-size:21px; font-weight:500; line-height:1.4; letter-spacing:-.3px; }
-.supporting-context { display:block; margin-top:7px; color:var(--muted); font-size:12px; line-height:1.6; }
-.project-research .supporting-evidence > .validation-grid { margin-top:12px; padding-bottom:8px; }
-.project-research .supporting-evidence .comparison-study { padding-top:0; border-top:0; }
-
-.reader-footer {
-  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px;
-  margin-top:44px; padding-top:18px; border-top:1px solid var(--rule);
-}
-.reader-footer a {
-  display:grid; min-width:0; align-content:center; align-items:center; column-gap:16px;
-  min-height:68px; padding:8px 0; color:var(--ink); text-decoration:none;
-}
-.reader-previous { grid-template-columns:24px minmax(0,1fr); }
-.reader-next { grid-template-columns:minmax(0,1fr) 24px; text-align:right; }
-.reader-direction { color:var(--muted); font-size:11px; line-height:1.5; }
-.reader-destination { margin-top:4px; font-size:16px; font-weight:500; line-height:1.4; }
-.reader-previous .reader-arrow { grid-column:1; grid-row:1 / 3; }
-.reader-previous .reader-direction, .reader-previous .reader-destination { grid-column:2; }
-.reader-next .reader-arrow { grid-column:2; grid-row:1 / 3; }
-.reader-next .reader-destination { color:var(--accent); }
-.reader-arrow { font-size:22px; line-height:1; transition:transform 150ms ease; }
-.reader-footer a:hover .reader-destination { text-decoration:underline; text-underline-offset:4px; }
-.reader-previous:hover .reader-arrow { transform:translateX(-3px); }
-.reader-next:hover .reader-arrow { transform:translateX(3px); }
-.reader-footer a:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:4px; }
-@media (max-width:620px) {
-  .supporting-title { font-size:20px; }
-  .reader-footer { gap:20px; margin-top:32px; padding-top:14px; }
-  .reader-footer a { column-gap:9px; min-height:68px; }
-  .reader-destination { font-size:14px; }
-}
-@media (prefers-reduced-motion:reduce) {
-  .reader-arrow, .supporting-evidence > summary::after { transition:none; }
-}
-@media print {
-  .reader-footer { display:none; }
-  .supporting-evidence::details-content { display:block; content-visibility:visible; }
-  .supporting-evidence > summary::before, .supporting-evidence > summary::after { display:none; }
-}
-
-@media (max-width:1050px) {
-  .project-research .model-table { font-size:12px; }
-  .project-research .experiment-panel .model-tables { gap:20px; }
-  .project-research .method-overview-header { gap:30px; }
-  .project-research .method-page .window-loop { gap:24px; }
-}
-@media (max-width:900px) {
-  .project-page .problem-page .project-problem-feature { grid-template-columns:1fr; grid-template-areas:"story" "plot" "caption"; gap:22px; }
-  .project-page .project-problem-feature .figure-story { max-width:600px; }
-  .project-page .project-problem-feature .measurement-pair { max-width:400px; }
-  .project-page .project-problem-feature > figcaption { margin:0; }
-  .project-research .problem-page .mechanism-band { grid-template-columns:1fr 1fr; gap:24px; }
-  .project-research .problem-page .mechanism-band > div { padding:0; border:0; }
-  .project-research .problem-page .mechanism-band > div + div { border-left:0; }
-  .project-research .problem-page .mechanism-band > .mechanism-objective { grid-column:1/-1; padding-top:20px; border-top:1px solid var(--rule); }
-  .project-research .method-overview-header { grid-template-columns:1fr; gap:24px; }
-  .project-research .configuration-card { padding:20px 0 0; border:0; border-top:1px solid var(--rule); }
-  .project-research .method-page .objective-strip { grid-template-columns:1fr; }
-  .project-research .method-page .window-loop, .project-research .method-page .profile-overview { grid-template-columns:1fr; gap:24px; }
-  .project-research .experiment-panel .model-tables { grid-template-columns:1fr; gap:28px; }
-  .project-research .model-table { font-size:14px; }
-  .project-research .model-table thead th { font-size:12px; }
-  .project-research .experiment-panel .project-specbench-feature { grid-template-columns:1fr; grid-template-areas:"story" "plot" "caption"; gap:22px; }
-  .project-research .experiment-panel .experiment-feature { grid-template-columns:1fr; gap:24px; }
-  .project-research .experiment-panel .experiment-feature > .caption-notes { grid-template-columns:1fr; gap:14px; }
-  .project-research .experiment-panel .reuse-evidence { grid-template-columns:1fr; }
-}
-@media (max-width:620px) {
-  .project-page { --project-topic-offset:58px; }
-  .project-topic-tabs { min-height:58px; gap:0; justify-content:space-between; }
-  .project-topic-tabs a { min-height:56px; padding:12px; }
-  .topic-title { font-size:14px; }
-  .topic-hint { display:none; }
-  .project-research > .research-panel { padding-block:30px 40px; }
-  .project-research .research-section-header h4 { font-size:36px; letter-spacing:-.3px; }
-  .project-research :is(.problem-section-heading,.method-phase-heading) h5 { font-size:21px; }
-  .project-research .problem-page .mechanism-band { grid-template-columns:1fr; padding:20px; }
+.supporting-evidence > summary::after { content:"+"; position:absolute; right:0; top:25px; font-size:20px; color:var(--muted); }
+.supporting-evidence[open] > summary::after { content:"−"; }
+.project-research .supporting-evidence > summary h4 { font-size:18px; }
+.supporting-kicker, .supporting-context { display:none; }
+.supporting-title { font:inherit; }
+.project-research .supporting-evidence .validation-card:first-child { margin-top:0; }
+.project-research .validation-card .validation-title { font-size:20px; font-weight:500; line-height:1.45; }
+.project-research .validation-table { font-size:13px; }
+@media (max-width:700px) {
+  .project-research .problem-page .mechanism-band { grid-template-columns:1fr; gap:22px; padding:22px; }
   .project-research .problem-page .mechanism-band > div + div { padding-top:20px; border-top:1px solid var(--rule); }
-  .project-page .project-problem-feature .figure-story h6 { font-size:22px; }
-  .project-page .project-problem-feature .research-chart, .project-research .project-specbench-feature .research-chart { width:100%; margin-left:0; }
-  .project-research .problem-page .research-implication { grid-template-columns:1fr; gap:12px; }
-  .project-research .configuration-card { grid-template-columns:130px minmax(0,1fr); gap:12px 16px; }
-  .project-research .method-page .objective-strip { padding:22px 18px; gap:20px; }
-  .project-research .method-page .objective-strip .native-equation { font-size:29px; }
-  .project-research .method-page .native-symbols { grid-template-columns:1fr; }
-  .project-research .method-page .window-loop > section, .project-research .method-page .profile-overview > div { padding:18px 0 0; }
-  .project-research .detail-summary-copy { display:block; }
-  .project-research .detail-summary-copy > small { margin-top:4px; }
-  .project-research .method-page .profile-outcomes { gap:22px; }
-  .project-research .experiment-tabs { width:100%; gap:3px; }
-  .project-research .experiment-tabs a { min-height:48px; padding:7px 4px; }
-  .project-research .experiment-tabs .experiment-tab-label { max-width:100px; font-size:11px; }
-  .project-research .experiment-panel .experiment-page-heading h5 { font-size:23px; }
-  .project-research .experiment-panel .result-card h6 { font-size:22px; }
-  .project-research .serving-summary .batch-evidence { grid-template-columns:1fr; gap:22px; }
-  .project-research .experiment-panel .evidence-grid { gap:30px; }
-  .project-research .experiment-panel .experiment-feature h6 { font-size:24px; }
+  .project-research .problem-page .mechanism-objective { display:block; }
+  .project-research .problem-page .mechanism-objective .diagram-note { margin-top:12px; }
+  .project-research .method-page .window-loop > section { grid-template-columns:1fr; gap:18px; }
+  .project-research .window-step-heading h4 { font-size:16px; }
+  .project-research .method-page .native-symbols { grid-template-columns:1fr; gap:12px; }
+  .project-research .configuration-card { grid-template-columns:130px minmax(0,1fr); gap:12px 20px; }
+  .project-research .configuration-key { grid-template-columns:1fr; gap:12px; }
+  .project-research .method-page .profile-overview { grid-template-columns:1fr; }
+  .project-research .method-page .profile-overview > div + div { padding-top:20px; border-top:1px solid var(--rule); }
+  .project-research .experiment-panel .experiment-feature > .caption-notes { padding-inline:0; }
+}
+@media (max-width:620px) {
+  .project-research .research-section-header h2 { font-size:25px; letter-spacing:-.4px; }
+  .project-research h3, .project-research .experiment-panel .experiment-page-heading h3 { font-size:21px; }
+  .project-research h4, .project-research .evidence-figure h4, .project-research .experiment-panel .result-card h4 { font-size:19px; }
+  .project-research .research-chart { width:100%; max-width:640px; margin-inline:auto; }
+  .project-research .problem-page .measurement-pair { grid-template-columns:1fr; gap:12px; }
+  .project-research .method-page .objective-strip { padding:22px 18px; }
+  .project-research .method-page .native-equation { font-size:28px; }
+  .project-research .method-page .profile-outcomes > div { grid-template-columns:105px minmax(0,1fr); gap:14px; }
+  .project-research .experiment-tabs a { min-height:46px; padding:7px 3px; }
+  .project-research .experiment-tabs .experiment-tab-label { max-width:94px; font-size:11px; }
+  .project-research .fp16-comparison { font-size:12px; }
+  .project-research .fp16-comparison th, .project-research .fp16-comparison td { padding:10px 5px; }
+  .project-research .fp16-comparison thead th { font-size:10px; }
+  .project-research .fp16-comparison [scope="rowgroup"] { width:20%; font-size:11px; }
+  .project-research .workload-sequence { display:block; }
+  .project-research .workload-sequence > div + div { margin-top:12px; }
 }
 @media (max-width:360px) {
-  .project-research .research-section-header h4 { font-size:32px; }
-  .project-research .method-page .objective-strip .native-equation { font-size:25px; }
-  .project-research .model-table { font-size:12px; }
-  .project-research .model-table thead th { font-size:11px; }
-}
-@media (max-height:550px) {
-  .project-topic-tabs { position:static; }
-  .project-research .research-panel[id], .project-research .research-panel [id] { scroll-margin-top:calc(var(--project-header-offset) + 24px); }
-}
-@media (prefers-reduced-motion:reduce) {
-  .project-topic-tabs a { transition:none; }
+  .project-research .method-page .native-equation { font-size:24px; }
+  .project-research .configuration-card { grid-template-columns:115px minmax(0,1fr); gap:12px; }
+  .project-research .configuration-equation { font-size:26px; }
+  .project-research .fp16-comparison th, .project-research .fp16-comparison td { padding-inline:3px; }
+  .project-research .fp16-comparison [scope="rowgroup"] { font-size:10px; }
 }
 @media print {
-  .project-topic-tabs { display:none; }
-  .project-research > .research-panel[hidden] { display:block !important; }
-  .project-research > .research-panel { padding-block:24px; border-top:1px solid var(--rule); }
-  .project-research .research-section-header h4 { font-size:23px; }
-  .project-research .method-page .objective-strip { background:none; border-block:1px solid var(--rule); }
-  .project-page .problem-page .project-problem-feature { break-inside:avoid; }
+  .project-research .experiment-tabs { display:none; }
+  .project-research .research-section-header h2 { font-size:23px; }
+  .project-research .supporting-evidence::details-content { display:block; content-visibility:visible; }
+  .supporting-evidence > summary::after { display:none; }
+  .project-research .experiment-panel:focus-visible > .experiment-page-heading { outline:none; }
+  .project-research .evidence-figure { break-inside:avoid; }
 }

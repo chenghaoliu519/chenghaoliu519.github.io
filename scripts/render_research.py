@@ -255,121 +255,76 @@ def build():
 
 
 
+def project_fp16_table():
+    """One grouped comparison table for the standalone reading column."""
+    result = ('<table class="fp16-comparison"><caption>LLaMA-2 · decode speedup / AR</caption>'
+              '<thead><tr><th scope="col">Model</th><th scope="col">Task</th>'
+              '<th scope="col">SWIFT</th><th scope="col">D&amp;V</th>'
+              '<th scope="col">SPIRIT</th></tr></thead>')
+    for model in ['13B-Chat', '13B', '70B']:
+        result += '<tbody>'
+        for index, task in enumerate(['CNN/DM', 'GSM8K', 'TinyStories']):
+            values = {r['method']: r['speedup'] for r in DATA['fp16']
+                      if r['model'] == model and r['task'] == task}
+            result += '<tr class="group-start">' if index == 0 else '<tr>'
+            if index == 0:
+                result += (f'<th scope="rowgroup" rowspan="3"><abbr title="LLaMA-2-{model}">'
+                           f'{model}</abbr></th>')
+            result += (f'<th scope="row">{task}</th><td>{values["SWIFT"]:.2f}</td>'
+                       f'<td>{values["D&V"]:.2f}</td>'
+                       f'<td><strong>{values["SPIRIT"]:.2f}</strong></td></tr>')
+        result += '</tbody>'
+    return result + '</table>'
+
+
 def layout_project_panels(panels):
-    """Give the standalone article a reading layout without changing chart data."""
-    def problem_feature(match):
-        heading,body=match.group(1),match.group(2)
-        plot_start=body.index('<p class="plot-unit">')
-        caption_start=body.index('<figcaption')
-        story=body[:plot_start].strip()
-        plot=body[plot_start:caption_start].strip()
-        caption=body[caption_start:].strip()
-        measurements=re.search(r'<dl class="measurement-pair">.*?</dl>',plot,re.S)
-        if measurements:
-            pair=measurements.group(0)
-            pattern=r'<div><dt>(Highest acceptance|Highest throughput)</dt><dd>([\d.]+)% <span>·</span> (?:<strong>)?([\d.]+) tok/s(?:</strong>)?</dd></div>'
-            def measurement(m):
-                return (f'<div><dt>{m.group(1)}</dt><dd><strong class="measure-value">{m.group(3)}'
-                        f'<span>tok/s</span></strong><span class="measure-context">{m.group(2)}% acceptance</span></dd></div>')
-            pair,count=re.subn(pattern,measurement,pair)
-            assert count==2,'Unexpected problem measurement structure'
-            story+='\n'+pair
-            plot=plot.replace(measurements.group(0),'').strip()
-        return (f'<figure class="evidence-figure problem-evidence-card project-problem-feature" aria-labelledby="{heading}">\n'
-                f'<div class="figure-story">{story}</div>\n'
-                f'<div class="figure-plot">{plot}</div>\n{caption}\n</figure>')
-    panels,count=re.subn(r'<figure class="evidence-figure problem-evidence-card" aria-labelledby="([^"]+)">(.*?)</figure>',problem_feature,panels,flags=re.S)
-    assert count==2,'Both problem figures should receive the standalone layout'
+    """Keep the shared science in a single standalone reading column."""
+    panels, count = re.subn(r'  <dl class="experiment-metrics"[^>]*>.*?</dl>\n',
+                           '', panels, flags=re.S)
+    assert count == 1, 'Expected one repeated headline metric row'
+    original_tables = fp16_tables()
+    assert panels.count(original_tables) == 1
+    panels = panels.replace(original_tables, project_fp16_table(), 1)
+    panels = panels.replace('Each table uses the matching autoregressive baseline.',
+                            'Each setting uses the matching autoregressive baseline.', 1)
 
-    pattern=r'<figure class="evidence-figure result-card" aria-labelledby="specbench-heading">(.*?)</figure>'
-    match=re.search(pattern,panels,re.S)
-    assert match,'SpecBench evidence is missing'
-    body=match.group(1)
-    plot_start=body.index('<div class="plot-subheading">')
-    caption_start=body.index('<figcaption')
-    feature=('<figure class="evidence-figure result-card project-specbench-feature" aria-labelledby="specbench-heading">\n'
-             +'<div class="figure-story">'+body[:plot_start].strip()+'</div>\n'
-             +'<div class="figure-plot">'+body[plot_start:caption_start].strip()+'</div>\n'
-             +body[caption_start:].strip()+'\n</figure>')
-    panels=panels.replace(match.group(0),feature,1)
-    # Headline maxima already appear above the reader. Keep their scope text,
-    # but avoid a second competing metric row inside Results.
-    panels,count=re.subn(r'  <dl class="experiment-metrics"[^>]*>.*?</dl>\n','',panels,flags=re.S)
-    assert count==1,'Expected one repeated headline metric row'
-    # Pair explanatory text, evidence, and measurement notes in shared rows.
-    # Each caption remains a direct figure child; the scientific markup is intact.
-    for heading in ['discovery-heading','cost-heading','architecture-heading','code-heading']:
-        pattern=rf'<figure class="(evidence-figure result-card[^"]*)" aria-labelledby="{heading}">(.*?)</figure>'
-        match=re.search(pattern,panels,re.S)
-        assert match,heading
-        classes,body=match.groups()
-        split=body.index('<table') if heading in ['architecture-heading','code-heading'] else body.index('<div class="chart-legend">')
-        caption_start=body.index('<figcaption')
-        updated=(f'<figure class="{classes} comparison-study" aria-labelledby="{heading}">\n'
-                 +'<div class="study-copy">'+body[:split].strip()+'</div>\n'
-                 +'<div class="study-display">'+body[split:caption_start].strip()+'</div>\n'
-                 +body[caption_start:].strip()+'\n</figure>')
-        panels=panels.replace(match.group(0),updated,1)
-    title='Search while decoding. Reuse when workloads recur.'
-    assert panels.count(title)==1
-    panels=panels.replace(title,'<span class="lead-sentence">Search while decoding.</span> <span class="lead-sentence">Reuse when workloads recur.</span>',1)
-    phrase='Leads in all nine FP16 model–task settings.'
-    assert panels.count(phrase)==1
-    panels=panels.replace(phrase,'Leads in all nine FP16 <span class="keep-together">model–task</span> settings.',1)
-    return panels
+    def method_step(match):
+        opening, body, closing = match.groups()
+        header = re.search(r'<div class="window-step-heading">.*?</h6></div></div>',
+                           body, re.S)
+        assert header, 'Method step heading is missing'
+        return (opening + '\n' + header.group(0)
+                + '\n<div class="method-step-body">'
+                + body[header.end():].strip() + '</div>\n' + closing)
+    panels, count = re.subn(
+        r'(<section class="(?:decode-window(?: next-window)?|window-boundary)"[^>]*>)(.*?)(</section>)',
+        method_step, panels, flags=re.S)
+    assert count == 3, 'Expected three decoding steps'
 
-
-def add_project_reading_flow(panels):
-    """Keep supplementary evidence available and connect the reader views."""
-    pattern=r'<section class="broader-validation" aria-labelledby="broader-validation-heading">(.*?)</section>'
-    match=re.search(pattern,panels,re.S)
-    assert match,'Broader validation is missing'
-    body=match.group(1)
-    title=re.search(r'<h6 id="broader-validation-heading">(.*?)</h6>',body,re.S).group(1)
-    body=body[body.index('</header>')+len('</header>'):].strip()
-    disclosure=('<details class="broader-validation supporting-evidence" id="additional-validation" open>\n'
-                +'<summary><h6 id="broader-validation-heading"><span class="supporting-kicker">Broader validation</span>'
-                +f'<span class="supporting-title">{title}</span>'
-                +'<span class="supporting-context">Qwen · Mixtral · HumanEval</span></h6></summary>\n'
-                +body+'\n</details>')
-    panels=panels.replace(match.group(0),disclosure,1)
-
-    def footer(previous,target):
-        previous_id,previous_label=previous
-        next_id,next_label=target
-        return ('<nav class="reader-footer" aria-label="Continue reading">'
-                +f'<a class="reader-previous" href="#{previous_id}"><span class="reader-arrow" aria-hidden="true">←</span>'
-                +f'<span class="reader-direction">Previous</span><span class="reader-destination">{esc(previous_label)}</span></a>'
-                +f'<a class="reader-next" href="#{next_id}"><span class="reader-direction">Next</span>'
-                +f'<span class="reader-destination">{esc(next_label)}</span><span class="reader-arrow" aria-hidden="true">→</span></a>'
-                +'</nav>')
-
-    boundaries=[
-        ('\n</section>\n<section class="research-panel native-research method-page"',
-         ('overview','Overview'),('spirit-method','Method')),
-        ('\n</section>\n<section class="research-panel native-research experiment-summary"',
-         ('spirit-motivation','Problem'),('spirit-experiments','Results')),
-        ('\n</div>\n<div class="experiment-panel" id="experiment-nf4">',
-         ('spirit-method','Method'),('experiment-nf4','NF4 decoding')),
-        ('\n</div>\n<div class="experiment-panel" id="experiment-adaptation">',
-         ('experiment-models','Models & tasks'),('experiment-adaptation','Online adaptation')),
-        ('\n</div>\n  </div>\n</section>',
-         ('experiment-nf4','NF4 decoding'),('citation','Cite SPIRIT')),
-    ]
-    for boundary,previous,target in boundaries:
-        assert panels.count(boundary)==1,repr(boundary)
-        panels=panels.replace(boundary,'\n'+footer(previous,target)+boundary,1)
+    pattern = r'<section class="broader-validation" aria-labelledby="broader-validation-heading">(.*?)</section>'
+    match = re.search(pattern, panels, re.S)
+    assert match, 'Broader validation is missing'
+    body = match.group(1)
+    title = re.search(r'<h6 id="broader-validation-heading">(.*?)</h6>', body, re.S).group(1)
+    body = body[body.index('</header>') + len('</header>'):].strip()
+    disclosure = ('<details class="broader-validation supporting-evidence" id="additional-validation" open>\n'
+                  '<summary><h6 id="broader-validation-heading">'
+                  '<span class="supporting-kicker">Broader validation</span>'
+                  f'<span class="supporting-title">{title}</span>'
+                  '<span class="supporting-context">Qwen · Mixtral · HumanEval</span>'
+                  '</h6></summary>\n' + body + '\n</details>')
+    panels = panels.replace(match.group(0), disclosure, 1)
+    # The personal homepage nests these under a project heading; this article
+    # starts each reading panel at h2 and preserves the relative hierarchy.
+    panels = re.sub(r'<(/?)h([456])(?=[ >])',
+                    lambda match: f'<{match.group(1)}h{int(match.group(2)) - 2}', panels)
     return panels
 
 
 def build_project(homepage):
     """Reuse the same research panels in a standalone paper wrapper."""
     panels=build()
-    for label,heading in [('The problem','Problem'),('The method','Method'),('The evidence','Experiments')]:
-        old=f'<p class="method-eyebrow">{label}</p>'
-        assert panels.count(old)==1,label
-        panels=panels.replace(old,f'<h3 class="method-eyebrow">{heading}</h3>',1)
-    panels=add_project_reading_flow(layout_project_panels(panels)).replace('href="assets/','href="/assets/')
+    panels=layout_project_panels(panels).replace('href="assets/','href="/assets/')
     match=re.search(r'<figure class="method-preview".*?</figure>',homepage,re.S)
     assert match,'Homepage overview figure is missing'
     overview=match.group(0).replace('preview-heading','project-preview-heading').replace('preview-caption','project-preview-caption')

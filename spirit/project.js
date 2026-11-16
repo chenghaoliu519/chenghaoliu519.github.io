@@ -1,7 +1,7 @@
 "use strict";
 
-// Native anchors expose the whole article without JavaScript. Enhancement keeps
-// one research topic open and resolves deep links before scrolling.
+// Ordinary anchors expose every section without JavaScript. Enhancement keeps
+// one reading view open and reveals deep-link targets before scrolling.
 const reader = document.getElementById("research");
 const topicTabs = document.querySelector(".project-topic-tabs");
 const topics = Array.from(topicTabs?.querySelectorAll("a") || [])
@@ -9,21 +9,48 @@ const topics = Array.from(topicTabs?.querySelectorAll("a") || [])
   .filter(item => item.panel);
 const resultsStart = document.getElementById("results-figure-details");
 let resolvingHash = false;
-// Keep supplemental evidence open in the source for no-JavaScript readers.
 document.querySelectorAll(".supporting-evidence").forEach(detail => { detail.open = false; });
 
-
-function selectTopic(topic, { focus = false } = {}) {
+function selectTopic(topic) {
   for (const item of topics) {
     const selected = item === topic;
     item.panel.hidden = !selected;
     item.tab.setAttribute("aria-selected", String(selected));
     item.tab.tabIndex = selected ? 0 : -1;
   }
-  if (focus) topic.tab.focus({ preventScroll: true });
 }
 function setFragment(hash, replace = false) {
   if (location.hash !== hash) history[replace ? "replaceState" : "pushState"](history.state, "", hash);
+}
+function revealProjectTarget() {
+  let target;
+  try { target = document.getElementById(decodeURIComponent(location.hash.slice(1))); }
+  catch { return; }
+  if (!target) {
+    if (!location.hash && topics.length) selectTopic(topics[0]);
+    return;
+  }
+  const topic = topics.find(item => item.panel === target || item.panel.contains(target));
+  if (topic) selectTopic(topic);
+  if (target.id === "main" && topics.length) selectTopic(topics[0]);
+  const experiment = target.closest(".experiment-panel")
+    || (target.id === "spirit-experiments" ? document.getElementById("experiment-models") : null);
+  if (experiment) {
+    const tab = document.querySelector('.experiment-tabs a[href="#' + experiment.id + '"]');
+    resolvingHash = true;
+    if (tab?.getAttribute("aria-selected") !== "true") tab?.click();
+    resolvingHash = false;
+  }
+  if (target.id === "citation") document.getElementById("citation-bibtex").open = true;
+  for (let detail = target.closest("details"); detail; detail = detail.parentElement?.closest("details")) {
+    detail.open = true;
+  }
+  const chartView = target.closest("[data-chart-view]");
+  if (chartView?.hidden) {
+    chartView.closest("[data-chart-views]")?.querySelector('[data-chart-select="' + chartView.dataset.chartView + '"]')?.click();
+  }
+  const scrollTarget = target === topic?.panel ? topic.panel.querySelector("h2") || reader : target === experiment ? resultsStart : target;
+  requestAnimationFrame(() => scrollTarget.scrollIntoView({ block: "start", behavior: "instant" }));
 }
 if (topicTabs && topics.length) {
   topicTabs.setAttribute("role", "tablist");
@@ -54,52 +81,11 @@ if (topicTabs && topics.length) {
   }
   selectTopic(topics[0]);
 }
-function revealProjectTarget() {
-  let target;
-  try { target = document.getElementById(decodeURIComponent(location.hash.slice(1))); }
-  catch { return; }
-  if (!target) {
-    if (!location.hash && topics.length) selectTopic(topics[0]);
-    return;
-  }
-  const topic = topics.find(item => item.panel === target || item.panel.contains(target));
-  if (topic) selectTopic(topic);
-  const experiment = target.closest(".experiment-panel")
-    || (target.id === "spirit-experiments" ? document.getElementById("experiment-models") : null);
-  if (experiment) {
-    const tab = document.querySelector('.experiment-tabs a[href="#' + experiment.id + '"]');
-    resolvingHash = true;
-    if (tab?.getAttribute("aria-selected") !== "true") tab?.click();
-    resolvingHash = false;
-  }
-  for (let detail = target.closest("details"); detail; detail = detail.parentElement?.closest("details")) {
-    detail.open = true;
-  }
-  // A chart-range anchor must also reveal its matching chart.
-  const chartView = target.closest("[data-chart-view]");
-  if (chartView?.hidden) {
-    chartView.closest("[data-chart-views]")?.querySelector('[data-chart-select="' + chartView.dataset.chartView + '"]')?.click();
-  }
-  const scrollTarget = target === topic?.panel ? reader : target === experiment ? resultsStart : target;
-  requestAnimationFrame(() => scrollTarget.scrollIntoView({ block: "start", behavior: "instant" }));
-}
 window.addEventListener("hashchange", revealProjectTarget);
 window.addEventListener("pageshow", revealProjectTarget);
 if (location.hash) revealProjectTarget();
 
-// Footer links follow the same view selection and history as the topic tabs.
-reader?.addEventListener("click", event => {
-  const link = event.target.closest(".reader-footer a");
-  if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-  event.preventDefault();
-  setFragment(link.hash);
-  revealProjectTarget();
-  const selector = [".project-topic-tabs", ".experiment-tabs", ".project-nav"]
-    .map(scope => scope + ' a[href="' + link.hash + '"]').join(", ");
-  document.querySelector(selector)?.focus({ preventScroll: true });
-});
-
-// research.js owns the experiment controls; this page adds shareable history.
+// research.js owns the experiment controls; add shareable history here.
 document.querySelector(".experiment-tabs")?.addEventListener("click", event => {
   const tab = event.target.closest("a[role='tab']");
   if (!tab || resolvingHash || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -115,33 +101,6 @@ document.querySelector(".experiment-tabs")?.addEventListener("keydown", event =>
   }
 });
 
-const projectNav = Array.from(document.querySelectorAll(".project-nav a"))
-  .map(link => ({ link, section: document.getElementById(link.hash.slice(1)) }))
-  .filter(item => item.section);
-const header = document.querySelector(".project-header");
-let pendingFrame = null;
-function updateProjectNav() {
-  pendingFrame = null;
-  const activation = (header?.getBoundingClientRect().height || 0) + 90;
-  const atBottom = window.scrollY > 0 && window.scrollY + innerHeight >= document.documentElement.scrollHeight - 64;
-  let current = atBottom ? projectNav.at(-1) : undefined;
-  if (!atBottom) for (const item of projectNav) {
-    if (item.section.getBoundingClientRect().top <= activation) current = item;
-  }
-  for (const item of projectNav) {
-    if (item === current) item.link.setAttribute("aria-current", "location");
-    else item.link.removeAttribute("aria-current");
-  }
-}
-function scheduleProjectNav() {
-  if (pendingFrame === null) pendingFrame = requestAnimationFrame(updateProjectNav);
-}
-window.addEventListener("scroll", scheduleProjectNav, { passive: true });
-window.addEventListener("resize", scheduleProjectNav);
-window.addEventListener("load", scheduleProjectNav);
-if ("ResizeObserver" in window) new ResizeObserver(scheduleProjectNav).observe(document.body);
-scheduleProjectNav();
-
 const copyCitation = document.getElementById("copy-citation");
 const citationStatus = document.getElementById("citation-status");
 if (copyCitation && navigator.clipboard && window.isSecureContext) {
@@ -156,8 +115,7 @@ if (copyCitation && navigator.clipboard && window.isSecureContext) {
   });
 }
 
-
-// Print citation and supplemental evidence, then restore disclosure preferences.
+// Print the complete article, then restore disclosure preferences.
 const printDetails = Array.from(document.querySelectorAll(".citation-bibtex, .supporting-evidence"));
 let detailsBeforePrint = null;
 window.addEventListener("beforeprint", () => {
