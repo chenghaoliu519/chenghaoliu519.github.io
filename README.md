@@ -252,6 +252,11 @@ The homepage links to this exact address; its existing collapsed research detail
 are retained. The project page adds the paper title, authors, affiliation,
 abstract, material links, citation, and its own sharing image.
 
+The title uses a generous type size. The conference mark and year sit beside the
+header brand, and the UTA primary logo sits with the authors. This keeps
+conference and affiliation information out of separate rows above and below the
+title. Logo provenance is documented in assets/brand/README.md.
+
 Overview, Problem, Method, and Results share one reading area and a single
 navigation in the page header. Overview is selected on entry. With JavaScript,
 one view is visible at a time; Results contains three experiment subpages in a
