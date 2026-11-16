@@ -41,9 +41,9 @@
   <link rel="stylesheet" href="/theme.css?v=99513c42055d">
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
   <link rel="stylesheet" href="/spirit/project.css?v=8e03fdf999d2">
-  <link rel="stylesheet" href="/spirit/content.css?v=400765cf6c9d">
+  <link rel="stylesheet" href="/spirit/content.css?v=86f6e4d21ee9">
   <script src="/research.js?v=d45f4a188da7" defer></script>
-  <script src="/spirit/project.js?v=b2c8c6ed9747" defer></script>
+  <script src="/spirit/project.js?v=7f31f7051e08" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -209,6 +209,7 @@
   <p class="research-source problem-source">Measured configuration sweep · LLaMA-2-13B · CNN/DM · FP16 · 21 skip ratios × 24 patterns · the same 24 prompts per configuration · decode-only.</p>
   </section>
   <div class="research-implication"><div class="problem-implication-heading"><span class="problem-section-number" aria-hidden="true">03</span><span>Design implication</span></div><div class="problem-design-copy"><p>Use realized throughput to localize a promising skip ratio, then refine the layer pattern at that ratio. Evaluate within-request candidates through the same decoding that produces output tokens.</p><p>Effective configurations also depend on the workload. When request behavior changes, runtime feedback guides whether to keep, reuse, refine, or rebuild the serving configuration.</p></div></div>
+<nav class="reader-footer" aria-label="Continue reading"><a class="reader-previous" href="#overview"><span class="reader-arrow" aria-hidden="true">←</span><span class="reader-direction">Previous</span><span class="reader-destination">Overview</span></a><a class="reader-next" href="#spirit-method"><span class="reader-direction">Next</span><span class="reader-destination">Method</span><span class="reader-arrow" aria-hidden="true">→</span></a></nav>
 </section>
 <section class="research-panel native-research method-page" id="spirit-method" aria-labelledby="method-heading">
   <div class="method-overview-header">
@@ -332,6 +333,7 @@
     </details>
   </section>
   <p class="research-source method-source">Schematic control flow. Within-request evaluation commits tokens; cross-request trials compare profiles separately. The <a class="method-flow-link" href="/assets/papers/spirit_flow.pdf" type="application/pdf" target="_blank" rel="noopener">control-flow diagram (PDF) <span aria-hidden="true">↗</span></a> gives the complete decision sequence.</p>
+<nav class="reader-footer" aria-label="Continue reading"><a class="reader-previous" href="#spirit-motivation"><span class="reader-arrow" aria-hidden="true">←</span><span class="reader-direction">Previous</span><span class="reader-destination">Problem</span></a><a class="reader-next" href="#spirit-experiments"><span class="reader-direction">Next</span><span class="reader-destination">Results</span><span class="reader-arrow" aria-hidden="true">→</span></a></nav>
 </section>
 <section class="research-panel native-research experiment-summary" id="spirit-experiments" aria-labelledby="experiments-heading">
   <div class="experiment-overview">
@@ -383,9 +385,9 @@
 <p class="research-source">Each batch size uses its own autoregressive baseline.</p>
         </div>
 </div>
-<section class="broader-validation" aria-labelledby="broader-validation-heading">
-  <header class="experiment-section-heading"><span class="experiment-section-number" aria-hidden="true">04</span><div><p class="method-eyebrow">Broader validation</p><h6 id="broader-validation-heading">Beyond the <span class="keep-together">LLaMA-2</span> family.</h6></div></header>
-  <div class="evidence-grid validation-grid">
+<details class="broader-validation supporting-evidence" id="additional-validation" open>
+<summary><h6 id="broader-validation-heading"><span class="supporting-kicker">Broader validation</span><span class="supporting-title">Beyond the <span class="keep-together">LLaMA-2</span> family.</span><span class="supporting-context">Qwen · Mixtral · HumanEval</span></h6></summary>
+<div class="evidence-grid validation-grid">
     <figure class="evidence-figure result-card validation-card comparison-study" aria-labelledby="architecture-heading">
 <div class="study-copy"><p class="method-eyebrow">Dense GQA · sparse MoE</p>
       <p class="validation-title" id="architecture-heading">Transfer across architectures.</p>
@@ -401,7 +403,8 @@
 <figcaption id="code-scope"><p>Greedy decoding · all 164 HumanEval problems. Pass@1 matches AR for both models.</p><p><a href="/assets/papers/NeurIPS2026_SPIRIT_CameraReady.pdf#page=7" type="application/pdf" target="_blank" rel="noopener">Paper Table 2</a> also reports the separate sampling evaluation.</p></figcaption>
 </figure>
   </div>
-</section>
+</details>
+<nav class="reader-footer" aria-label="Continue reading"><a class="reader-previous" href="#spirit-method"><span class="reader-arrow" aria-hidden="true">←</span><span class="reader-direction">Previous</span><span class="reader-destination">Method</span></a><a class="reader-next" href="#experiment-nf4"><span class="reader-direction">Next</span><span class="reader-destination">NF4 decoding</span><span class="reader-arrow" aria-hidden="true">→</span></a></nav>
 </div>
 <div class="experiment-panel" id="experiment-nf4">
 <header class="evidence-heading experiment-page-heading"><div><p class="method-eyebrow">Sustained NF4 acceleration</p><h5 id="sustained-heading">Gains persist as optimization costs are amortized.</h5></div><p>Two complementary studies separate sustained serving performance from the effect of draft precision.</p></header>
@@ -430,6 +433,7 @@
           <svg class="research-chart" viewBox="0 0 440 260" role="img" aria-labelledby="precision-results-title precision-results-desc"><title id="precision-results-title">Separate three-task draft-precision comparison</title><desc id="precision-results-desc">LLaMA-2-13B, same full FP16 verifier, independently optimized draft configurations. Aggregate speedup over AR: FP16 1.603×, 95% interval 1.584–1.628; NF4 1.981×, interval 1.964–2.017. NF4 versus FP16 throughput ratio 1.236, request-paired bootstrap 95% interval 1.214–1.263. These are separate from the 1,000-request runs.</desc><line x1="45.00" y1="218.00" x2="421.00" y2="218.00" class="plot-grid"/><text x="35.00" y="222.00" class="axis-label" text-anchor="end">0.0</text><line x1="45.00" y1="131.91" x2="421.00" y2="131.91" class="plot-grid"/><text x="35.00" y="135.91" class="axis-label" text-anchor="end">1.0</text><line x1="45.00" y1="45.83" x2="421.00" y2="45.83" class="plot-grid"/><text x="35.00" y="49.83" class="axis-label" text-anchor="end">2.0</text><line x1="45.00" y1="218.00" x2="421.00" y2="218.00" class="plot-axis"/><line x1="45.00" y1="131.91" x2="421.00" y2="131.91" class="ar-reference"/><rect x="108" y="80.00" width="68" height="138.00" class="bar-baseline"/><line x1="142.00" y1="81.64" x2="142.00" y2="77.85" class="precision-interval"/><line x1="135.00" y1="81.64" x2="149.00" y2="81.64" class="precision-interval"/><line x1="135.00" y1="77.85" x2="149.00" y2="77.85" class="precision-interval"/><text x="142.00" y="65.85" class="plot-value " text-anchor="middle">1.603×</text><text x="142.00" y="243.00" class="axis-label" text-anchor="middle">FP16</text><rect x="288" y="47.46" width="68" height="170.54" class="bar-spirit"/><line x1="322.00" y1="48.93" x2="322.00" y2="44.36" class="precision-interval"/><line x1="315.00" y1="48.93" x2="329.00" y2="48.93" class="precision-interval"/><line x1="315.00" y1="44.36" x2="329.00" y2="44.36" class="precision-interval"/><text x="322.00" y="32.36" class="plot-value accent-value" text-anchor="middle">1.981×</text><text x="322.00" y="243.00" class="axis-label" text-anchor="middle">NF4</text></svg></div>
 <figcaption><p>LLaMA-2-13B · CNN/DM, GSM8K, TinyStories · the same FP16 verifier.</p><p>Each draft precision is optimized separately.</p></figcaption>
         </figure>
+<nav class="reader-footer" aria-label="Continue reading"><a class="reader-previous" href="#experiment-models"><span class="reader-arrow" aria-hidden="true">←</span><span class="reader-direction">Previous</span><span class="reader-destination">Models &amp; tasks</span></a><a class="reader-next" href="#experiment-adaptation"><span class="reader-direction">Next</span><span class="reader-destination">Online adaptation</span><span class="reader-arrow" aria-hidden="true">→</span></a></nav>
 </div>
 <div class="experiment-panel" id="experiment-adaptation">
 <header class="evidence-heading experiment-page-heading"><div><p class="method-eyebrow">Why adaptation pays off</p><h5 id="adaptation-heading">Search quality and update cost both matter.</h5></div><p>The studies below separate configuration quality, controller overhead, and the benefit of profile reuse.</p></header>
@@ -469,6 +473,7 @@
         <svg class="research-chart" viewBox="0 0 440 260" role="img" aria-labelledby="reuse-results-title reuse-results-desc"><title id="reuse-results-title">Profile reuse under recurring workload shifts</title><desc id="reuse-results-desc">600-request FP16 streams with a task change every 100 requests. Speedup over AR. 13B: without reuse 1.43×, with reuse 1.57×; 70B: without reuse 1.45×, with reuse 1.60×</desc><line x1="45.00" y1="218.00" x2="421.00" y2="218.00" class="plot-grid"/><text x="35.00" y="222.00" class="axis-label" text-anchor="end">0.0</text><line x1="45.00" y1="113.79" x2="421.00" y2="113.79" class="plot-grid"/><text x="35.00" y="117.79" class="axis-label" text-anchor="end">1.0</text><line x1="45.00" y1="61.68" x2="421.00" y2="61.68" class="plot-grid"/><text x="35.00" y="65.68" class="axis-label" text-anchor="end">1.5</text><line x1="45.00" y1="218.00" x2="421.00" y2="218.00" class="plot-axis"/><line x1="45.00" y1="113.79" x2="421.00" y2="113.79" class="ar-reference"/><rect x="94" y="68.98" width="40" height="149.02" class="bar-baseline"/><text x="114.00" y="58.98" class="plot-value " text-anchor="middle">1.43×</text><rect x="146" y="54.39" width="40" height="163.61" class="bar-reuse"/><text x="166.00" y="44.39" class="plot-value teal-value" text-anchor="middle">1.57×</text><text x="140.00" y="243.00" class="axis-label" text-anchor="middle">13B</text><rect x="281" y="66.89" width="40" height="151.11" class="bar-baseline"/><text x="301.00" y="56.89" class="plot-value " text-anchor="middle">1.45×</text><rect x="333" y="51.26" width="40" height="166.74" class="bar-reuse"/><text x="353.00" y="41.26" class="plot-value teal-value" text-anchor="middle">1.60×</text><text x="327.00" y="243.00" class="axis-label" text-anchor="middle">70B</text></svg></div>
 <figcaption><p>600-request FP16 streams · task shifts every 100 requests.</p><p>The gain compares full SPIRIT with SPIRIT without profile reuse.</p></figcaption>
 </figure>
+<nav class="reader-footer" aria-label="Continue reading"><a class="reader-previous" href="#experiment-nf4"><span class="reader-arrow" aria-hidden="true">←</span><span class="reader-direction">Previous</span><span class="reader-destination">NF4 decoding</span></a><a class="reader-next" href="#citation"><span class="reader-direction">Next</span><span class="reader-destination">Cite SPIRIT</span><span class="reader-arrow" aria-hidden="true">→</span></a></nav>
 </div>
   </div>
 </section>

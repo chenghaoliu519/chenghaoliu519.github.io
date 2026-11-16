@@ -9,6 +9,9 @@ const topics = Array.from(topicTabs?.querySelectorAll("a") || [])
   .filter(item => item.panel);
 const resultsStart = document.getElementById("results-figure-details");
 let resolvingHash = false;
+// Keep supplemental evidence open in the source for no-JavaScript readers.
+document.querySelectorAll(".supporting-evidence").forEach(detail => { detail.open = false; });
+
 
 function selectTopic(topic, { focus = false } = {}) {
   for (const item of topics) {
@@ -84,6 +87,18 @@ window.addEventListener("hashchange", revealProjectTarget);
 window.addEventListener("pageshow", revealProjectTarget);
 if (location.hash) revealProjectTarget();
 
+// Footer links follow the same view selection and history as the topic tabs.
+reader?.addEventListener("click", event => {
+  const link = event.target.closest(".reader-footer a");
+  if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  setFragment(link.hash);
+  revealProjectTarget();
+  const selector = [".project-topic-tabs", ".experiment-tabs", ".project-nav"]
+    .map(scope => scope + ' a[href="' + link.hash + '"]').join(", ");
+  document.querySelector(selector)?.focus({ preventScroll: true });
+});
+
 // research.js owns the experiment controls; this page adds shareable history.
 document.querySelector(".experiment-tabs")?.addEventListener("click", event => {
   const tab = event.target.closest("a[role='tab']");
@@ -142,15 +157,15 @@ if (copyCitation && navigator.clipboard && window.isSecureContext) {
 }
 
 
-// Print the citation in full, then restore the reader's disclosure preference.
-const citationDetails = document.getElementById("citation-bibtex");
-let citationOpenBeforePrint = null;
+// Print citation and supplemental evidence, then restore disclosure preferences.
+const printDetails = Array.from(document.querySelectorAll(".citation-bibtex, .supporting-evidence"));
+let detailsBeforePrint = null;
 window.addEventListener("beforeprint", () => {
-  if (!citationDetails || citationOpenBeforePrint !== null) return;
-  citationOpenBeforePrint = citationDetails.open;
-  citationDetails.open = true;
+  if (detailsBeforePrint !== null) return;
+  detailsBeforePrint = printDetails.map(detail => [detail, detail.open]);
+  printDetails.forEach(detail => { detail.open = true; });
 });
 window.addEventListener("afterprint", () => {
-  if (citationDetails && citationOpenBeforePrint !== null) citationDetails.open = citationOpenBeforePrint;
-  citationOpenBeforePrint = null;
+  detailsBeforePrint?.forEach(([detail, open]) => { detail.open = open; });
+  detailsBeforePrint = null;
 });

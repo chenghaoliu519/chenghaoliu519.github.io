@@ -319,6 +319,49 @@ def layout_project_panels(panels):
     return panels
 
 
+def add_project_reading_flow(panels):
+    """Keep supplementary evidence available and connect the reader views."""
+    pattern=r'<section class="broader-validation" aria-labelledby="broader-validation-heading">(.*?)</section>'
+    match=re.search(pattern,panels,re.S)
+    assert match,'Broader validation is missing'
+    body=match.group(1)
+    title=re.search(r'<h6 id="broader-validation-heading">(.*?)</h6>',body,re.S).group(1)
+    body=body[body.index('</header>')+len('</header>'):].strip()
+    disclosure=('<details class="broader-validation supporting-evidence" id="additional-validation" open>\n'
+                +'<summary><h6 id="broader-validation-heading"><span class="supporting-kicker">Broader validation</span>'
+                +f'<span class="supporting-title">{title}</span>'
+                +'<span class="supporting-context">Qwen · Mixtral · HumanEval</span></h6></summary>\n'
+                +body+'\n</details>')
+    panels=panels.replace(match.group(0),disclosure,1)
+
+    def footer(previous,target):
+        previous_id,previous_label=previous
+        next_id,next_label=target
+        return ('<nav class="reader-footer" aria-label="Continue reading">'
+                +f'<a class="reader-previous" href="#{previous_id}"><span class="reader-arrow" aria-hidden="true">←</span>'
+                +f'<span class="reader-direction">Previous</span><span class="reader-destination">{esc(previous_label)}</span></a>'
+                +f'<a class="reader-next" href="#{next_id}"><span class="reader-direction">Next</span>'
+                +f'<span class="reader-destination">{esc(next_label)}</span><span class="reader-arrow" aria-hidden="true">→</span></a>'
+                +'</nav>')
+
+    boundaries=[
+        ('\n</section>\n<section class="research-panel native-research method-page"',
+         ('overview','Overview'),('spirit-method','Method')),
+        ('\n</section>\n<section class="research-panel native-research experiment-summary"',
+         ('spirit-motivation','Problem'),('spirit-experiments','Results')),
+        ('\n</div>\n<div class="experiment-panel" id="experiment-nf4">',
+         ('spirit-method','Method'),('experiment-nf4','NF4 decoding')),
+        ('\n</div>\n<div class="experiment-panel" id="experiment-adaptation">',
+         ('experiment-models','Models & tasks'),('experiment-adaptation','Online adaptation')),
+        ('\n</div>\n  </div>\n</section>',
+         ('experiment-nf4','NF4 decoding'),('citation','Cite SPIRIT')),
+    ]
+    for boundary,previous,target in boundaries:
+        assert panels.count(boundary)==1,repr(boundary)
+        panels=panels.replace(boundary,'\n'+footer(previous,target)+boundary,1)
+    return panels
+
+
 def build_project(homepage):
     """Reuse the same research panels in a standalone paper wrapper."""
     panels=build()
@@ -326,7 +369,7 @@ def build_project(homepage):
         old=f'<p class="method-eyebrow">{label}</p>'
         assert panels.count(old)==1,label
         panels=panels.replace(old,f'<h3 class="method-eyebrow">{heading}</h3>',1)
-    panels=layout_project_panels(panels).replace('href="assets/','href="/assets/')
+    panels=add_project_reading_flow(layout_project_panels(panels)).replace('href="assets/','href="/assets/')
     match=re.search(r'<figure class="method-preview".*?</figure>',homepage,re.S)
     assert match,'Homepage overview figure is missing'
     overview=match.group(0).replace('preview-heading','project-preview-heading').replace('preview-caption','project-preview-caption')

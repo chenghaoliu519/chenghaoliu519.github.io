@@ -292,3 +292,15 @@ intro, evidence, and caption rows so wrapping text does not misalign the plots.
 Their scientific SVGs, tables, captions, and narrative remain identical to the
 shared sources. BibTeX is collapsed initially, can still be copied or downloaded,
 and opens for printing before its prior state is restored.
+
+
+Each standalone reading view ends with Previous and Next links. They connect
+Overview, Problem, Method, the three experiment views, and the citation without
+adding another fixed toolbar. The same fragment resolver keeps the selected
+topic, browser history, and keyboard focus in sync.
+
+Broader architecture and HumanEval evidence sits in a native supplementary
+disclosure. It starts collapsed after JavaScript enhancement; direct figure
+links open it automatically. Its source remains open for no-JavaScript readers.
+Printing exposes both the supplementary figures and BibTeX, then restores the
+reader's disclosure preferences. The homepage research panels are unchanged.
