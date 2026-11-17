@@ -20,9 +20,7 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
 
 .project-hero { padding:24px 0; text-align:center; }
 .project-hero h1 { max-width:900px; margin:0 auto 18px; font-size:38px; font-weight:500; line-height:1.28; letter-spacing:-.8px; text-wrap:balance; }
-.project-wordmark { color:inherit; font-weight:650; text-decoration:none; }
-.project-wordmark:hover { color:var(--accent); }
-.project-wordmark:focus-visible { outline:2px solid var(--accent); outline-offset:5px; border-radius:3px; }
+.project-wordmark { font-weight:650; }
 .project-byline { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px 28px; }
 .project-authors { display:flex; flex-wrap:wrap; justify-content:center; gap:6px 22px; margin:0; padding:0; list-style:none; font-size:15px; }
 .project-authors a { color:var(--accent); text-decoration:none; }

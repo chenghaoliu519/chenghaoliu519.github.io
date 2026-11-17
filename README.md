@@ -255,7 +255,7 @@ abstract, material links, citation, and its own sharing image.
 The title uses a generous type size. A compact masthead places the unlinked
 NeurIPS mark and year at the upper left and the linked UTA primary logo at the
 upper right, aligned with the reading column. The bold SPIRIT in the centered
-paper title links to the personal homepage. Authors and a consistent row of
+paper title is plain text. Authors and a consistent row of
 Paper, Slides, and Poster buttons complete the title area.
 
 Headline findings lead into the section navigation at the entrance to the
