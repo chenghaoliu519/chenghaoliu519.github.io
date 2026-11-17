@@ -55,31 +55,30 @@
 
         <div class="film-frames" id="worked-example">
           <section class="film-scene" id="film-decode" aria-labelledby="film-title-decode">
-            <h3 id="film-title-decode">When does the Harbor train leave?</h3>
-            <div class="film-board decode-sheet" role="img" aria-label="The timetable lists Summit at ten and Harbor at noon. The self-draft proposes seven tokens: The train leaves at ten this morning. The target accepts The train leaves at, rejects ten and discards the remaining this morning. The target fixes the rejected token with noon, committing five tokens in total.">
-              <div class="decode-timetable">
-                <span class="decode-label">Timetable</span>
-                <span class="departure">Summit <time datetime="10:00">10:00</time></span>
-                <span class="departure">Harbor <time datetime="12:00">12:00</time></span>
-              </div>
-              <div class="decode-row">
-                <span class="decode-label">Self-draft</span>
-                <div class="proposal-groups">
-                  <div class="proposal-group accepted-prefix">
-                    <div class="proposal-words">
-                      <span class="draft-token">The</span> <span class="draft-token">train</span>
-                      <span class="draft-token">leaves</span> <span class="draft-token">at</span>
-                    </div>
-                    <span class="proposal-verdict">4 accepted</span>
-                  </div>
-                  <div class="proposal-group discarded-suffix">
-                    <div class="proposal-words">
-                      <span class="rejection-site"><span class="draft-token first-rejection">ten</span><span class="draft-fix"><small>Fix</small><span aria-hidden="true">→</span><strong>noon</strong></span></span> <span class="draft-token">this</span>
-                      <span class="draft-token">morning</span>
-                    </div>
-                    <span class="proposal-verdict">3 discarded</span>
-                  </div>
-                </div>
+            <h3 id="film-title-decode">How does the full target verify a draft?</h3>
+            <div class="film-board decode-sheet" role="img" aria-label="The Harbor train is scheduled for noon. The self-draft proposes seven tokens: The train leaves at ten this morning. The full target scores all seven positions in parallel. It accepts the first four tokens, rejects ten and supplies noon, and discards this morning. The output is The train leaves at noon.">
+              <div class="verify-grid">
+                <span class="decode-label draft-heading">Self-draft</span>
+                <span class="draft-token">The</span>
+                <span class="draft-token">train</span>
+                <span class="draft-token">leaves</span>
+                <span class="draft-token">at</span>
+                <span class="rejection-site"><span class="draft-token first-rejection">ten</span><span class="draft-fix"><small>Fix</small><span aria-hidden="true">→</span><strong>noon</strong></span></span>
+                <span class="draft-token discarded-token">this</span>
+                <span class="draft-token discarded-token">morning</span>
+
+                <div class="verify-surface" aria-hidden="true"></div>
+                <div class="verify-heading"><strong>Target verify</strong><span>1 full-model pass</span></div>
+                <div class="verify-decision accept" aria-hidden="true"><span>✓</span></div>
+                <div class="verify-decision accept" aria-hidden="true"><span>✓</span></div>
+                <div class="verify-decision accept" aria-hidden="true"><span>✓</span></div>
+                <div class="verify-decision accept" aria-hidden="true"><span>✓</span></div>
+                <div class="verify-decision reject" aria-hidden="true"><span>×</span></div>
+                <div class="verify-decision discard" aria-hidden="true"><span>–</span></div>
+                <div class="verify-decision discard" aria-hidden="true"><span>–</span></div>
+                <span class="verdict-label accept">4 accepted</span>
+                <span class="verdict-label reject">Rejected</span>
+                <span class="verdict-label discard">2 discarded</span>
               </div>
               <div class="decode-row commit-row">
                 <span class="decode-label">Committed</span>
@@ -89,7 +88,7 @@
                 </span>
               </div>
             </div>
-            <p class="film-caption">The full target replaces <em>ten</em> with <em>noon</em> and discards the words drafted after <em>ten</em>. This pass commits five tokens, four from the draft and one from the target.</p>
+            <p class="film-caption">The full target scores all seven positions in parallel. Here it replaces <em>ten</em> with <em>noon</em>, the Harbor train’s departure time. Four accepted draft tokens and one correction give five committed tokens.</p>
           </section>
 
           <section class="film-scene" id="film-adapt" aria-labelledby="film-title-adapt">

@@ -113,17 +113,19 @@
   function decode(view) {
     // Draft each token in place, then mark the prefix boundary in one target pass.
     const proposed = {color:"#315775", backgroundColor:"#f1f5f9", borderColor:"#cad7e1", textDecorationColor:"transparent"};
-    const verified = {color:"var(--token-ink)", backgroundColor:"var(--token-paper)", borderColor:"var(--token-rule)", textDecorationColor:"var(--token-ink)"};
+    const verified = {color:"var(--token-ink,#304f62)", backgroundColor:"var(--token-paper,#f4f7fa)", borderColor:"var(--token-rule,#c7d5df)", textDecorationColor:"currentColor"};
     view.querySelectorAll(".draft-token").forEach((token, i) => {
-      const start = i * .041;
+      const start = i * .033;
       segment(token, start, start + .045, {opacity:0}, {opacity:1});
-      segment(token, .43, .47, proposed, verified);
+      segment(token, .37, .42, proposed, verified);
     });
-    view.querySelectorAll(".proposal-verdict").forEach(label =>
-      segment(label, .43, .47, {opacity:0}, {opacity:1}));
-    segment(view.querySelector(".draft-fix"), .50, .55, {opacity:0}, {opacity:1});
-    segment(view.querySelector(".commit-pending"), .66, .68, {opacity:1}, {opacity:0});
-    segment(view.querySelector(".commit-sentence"), .68, .73, {opacity:0}, {opacity:1});
+    view.querySelectorAll(".verify-decision").forEach(cell =>
+      segment(cell, .37, .42, {backgroundColor:"#e3ede9"}, {backgroundColor:"var(--decision-fill)"}));
+    view.querySelectorAll(".verify-decision span, .verdict-label").forEach(verdict =>
+      segment(verdict, .37, .42, {opacity:0}, {opacity:1}));
+    segment(view.querySelector(".draft-fix"), .46, .50, {opacity:0}, {opacity:1});
+    segment(view.querySelector(".commit-pending"), .76, .78, {opacity:1}, {opacity:0});
+    segment(view.querySelector(".commit-sentence"), .78, .83, {opacity:0}, {opacity:1});
   }
 
   const raised = {opacity:1, transform:"translateY(-2px)"};
