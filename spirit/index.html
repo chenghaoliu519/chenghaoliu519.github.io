@@ -42,10 +42,10 @@
   <link rel="stylesheet" href="/spirit/project.css?v=a123fbb2bfcd">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
   <link rel="stylesheet" href="/spirit/model-flow.css?v=52bce2cc7c36">
-  <link rel="stylesheet" href="/spirit/overview.css?v=4dca4717e5a5">
+  <link rel="stylesheet" href="/spirit/overview.css?v=41b9c6cd9bcb">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=75a5beea6941" defer></script>
+  <script src="/spirit/overview.js?v=fb5f54a21546" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -163,7 +163,7 @@
                   </div>
                   <div class="proposal-group discarded-suffix">
                     <div class="proposal-words">
-                      <span class="draft-token first-rejection">ten</span> <span class="draft-token">this</span>
+                      <span class="rejection-site"><span class="draft-token first-rejection">ten</span><span class="draft-fix"><small>Fix</small><span aria-hidden="true">→</span><strong>noon</strong></span></span> <span class="draft-token">this</span>
                       <span class="draft-token">morning</span>
                     </div>
                     <span class="proposal-verdict">3 discarded</span>
@@ -174,38 +174,33 @@
                 <span class="decode-label">Committed</span>
                 <span class="commit-value">
                   <span class="commit-pending" aria-hidden="true">—</span>
-                  <span class="commit-sentence">The train leaves at <span class="target-fix"><strong>noon</strong><small>Fix</small></span></span>
+                  <span class="commit-sentence">The train leaves at <strong>noon</strong></span>
                 </span>
               </div>
             </div>
-            <p class="film-caption">The full target rejects <em>ten</em> and discards <em>this morning</em> with it. The four accepted tokens plus the target’s <em>noon</em> yield five committed tokens in one verification pass.</p>
+            <p class="film-caption">The full target replaces <em>ten</em> with <em>noon</em> and discards the words drafted after <em>ten</em>. This pass commits five tokens, four from the draft and one from the target.</p>
           </section>
 
           <section class="film-scene" id="film-adapt" aria-labelledby="film-title-adapt">
             <h3 id="film-title-adapt">Which sublayers should the next draft run?</h3>
-            <div class="film-board study-board" role="img" aria-label="A six-sublayer draft starts by running 1, 3 and 6. The ratio trial bypasses 3, leaving 1 and 6. The pattern trial still skips four sublayers but runs 4 instead of 6. Each arch passes over the skipped sublayers.">
-              <div class="study-heading"><strong>Self-draft path</strong><div class="study-key layer-symbols"><span>Executed</span><span>Skipped</span></div></div>
-              <div class="route-diagram">
-                <div class="route-pose">
-                  <svg viewBox="0 0 360 80" preserveAspectRatio="none" aria-hidden="true"><path d="M1 54 H30 C51 54 55 17 79 17 H103 C127 17 129 54 150 54 C171 54 175 17 200 17 H280 C306 17 309 54 330 54 H359"/></svg>
-                  <div class="route-nodes"><span class="executed">1</span><span>2</span><span class="executed">3</span><span>4</span><span>5</span><span class="executed">6</span></div>
+            <div class="film-board study-board" role="img" aria-label="A six-sublayer draft starts by running 1, 3 and 6. The ratio trial bypasses 3, leaving 1 and 6. The pattern trial still skips four sublayers but runs 4 instead of 6. Raised tiles are executed. Each column is the same sublayer across the three trials.">
+              <div class="study-heading"><strong>Draft sublayers</strong><div class="study-key layer-symbols"><span>Executed</span><span>Skipped</span></div></div>
+              <div class="mask-trials">
+                <div class="mask-trial">
+                  <div class="trial-name"><strong>Current draft</strong><small>3 skipped</small></div>
+                  <div class="trial-mask"><span class="executed" data-layer="1"><b>1</b></span><span data-layer="2"><b>2</b></span><span class="executed" data-layer="3"><b>3</b></span><span data-layer="4"><b>4</b></span><span data-layer="5"><b>5</b></span><span class="executed" data-layer="6"><b>6</b></span></div>
                 </div>
-                <div class="route-pose">
-                  <svg viewBox="0 0 360 80" preserveAspectRatio="none" aria-hidden="true"><path d="M1 54 H30 C51 54 55 17 80 17 H280 C306 17 309 54 330 54 H359"/></svg>
-                  <div class="route-nodes"><span class="executed">1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="executed">6</span></div>
+                <div class="mask-trial">
+                  <div class="trial-name"><strong>Ratio trial</strong><small>4 skipped</small></div>
+                  <div class="trial-mask"><span class="executed" data-layer="1"><b>1</b></span><span data-layer="2"><b>2</b></span><span data-layer="3"><b>3</b><i class="layer-change" aria-hidden="true">−</i></span><span data-layer="4"><b>4</b></span><span data-layer="5"><b>5</b></span><span class="executed" data-layer="6"><b>6</b></span></div>
                 </div>
-                <div class="route-pose">
-                  <svg viewBox="0 0 360 80" preserveAspectRatio="none" aria-hidden="true"><path id="worked-pattern-path" d="M1 54 H30 C51 54 55 17 80 17 H160 C186 17 189 54 210 54 C231 54 235 17 260 17 H327 C348 17 347 54 359 54"/></svg>
-                  <div class="route-nodes"><span class="executed">1</span><span>2</span><span>3</span><span class="executed">4</span><span>5</span><span>6</span></div>
+                <div class="mask-trial">
+                  <div class="trial-name"><strong>Pattern trial</strong><small>4 skipped</small></div>
+                  <div class="trial-mask"><span class="executed" data-layer="1"><b>1</b></span><span data-layer="2"><b>2</b></span><span data-layer="3"><b>3</b></span><span class="executed" data-layer="4"><b>4</b><i class="layer-change" aria-hidden="true">+</i></span><span data-layer="5"><b>5</b></span><span data-layer="6"><b>6</b><i class="layer-change" aria-hidden="true">−</i></span></div>
                 </div>
-              </div>
-              <div class="route-trials">
-                <div class="route-trial"><i aria-hidden="true"></i><strong>Current draft</strong><span>Run 1, 3, 6</span></div>
-                <div class="route-trial"><i aria-hidden="true"></i><strong>Ratio trial</strong><span>Run 1, 6</span></div>
-                <div class="route-trial"><i aria-hidden="true"></i><strong>Pattern trial</strong><span>Run 1, 4</span></div>
               </div>
             </div>
-            <p class="film-caption">SPIRIT compares committed tokens per second after adjusting for prefix length. The ratio trial skips one more sublayer. The pattern trial keeps four skips and moves execution from sublayer 6 to 4.</p>
+            <p class="film-caption">SPIRIT compares committed tokens per second after adjusting for prefix length. The ratio trial drops sublayer 3. The pattern trial keeps four skips and moves execution from sublayer 6 to 4.</p>
           </section>
 
           <section class="film-scene" id="film-reuse" aria-labelledby="film-title-reuse">
@@ -215,19 +210,19 @@
               <div class="probe-table">
                 <div class="probe-row probe-head"><span>Profile</span><span>Raw throughput</span><span>Acceptance</span></div>
                 <div class="probe-row active-profile">
-                  <span class="probe-name"><strong>Active A</strong><small>Runs 1, 3, 6</small></span>
+                  <span class="probe-name"><strong>Active A</strong><span class="profile-mask" aria-hidden="true"><i class="executed"></i><i></i><i class="executed"></i><i></i><i></i><i class="executed"></i></span></span>
                   <div class="probe-scale"><i></i></div>
                   <div class="probe-scale"><i></i></div>
                 </div>
                 <div class="probe-row stored-profile">
-                  <span class="probe-name"><strong>Stored B</strong><small>Runs 1, 4</small></span>
+                  <span class="probe-name"><strong>Stored B</strong><span class="profile-mask" aria-hidden="true"><i class="executed"></i><i></i><i></i><i class="executed"></i><i></i><i></i></span></span>
                   <div class="probe-scale"><i></i></div>
                   <div class="probe-scale"><i></i></div>
                 </div>
               </div>
-              <div class="recall-result"><strong>Resume with B</strong><div class="recalled-route">
-                <svg class="recalled-path" viewBox="0 0 360 80" preserveAspectRatio="none" aria-hidden="true"><use href="#worked-pattern-path"/></svg>
-                <span class="executed">1</span><span>2</span><span>3</span><span class="executed">4</span><span>5</span><span>6</span></div></div>
+              <div class="recall-result"><strong>Restore B</strong>
+                <div class="trial-mask"><span class="executed" data-layer="1"><b>1</b></span><span data-layer="2"><b>2</b></span><span data-layer="3"><b>3</b></span><span class="executed" data-layer="4"><b>4</b></span><span data-layer="5"><b>5</b></span><span data-layer="6"><b>6</b></span></div>
+              </div>
             </div>
             <p class="film-caption">A’s throughput and acceptance fall below their usual ranges. B fits its own history more closely, earns a higher probe score and clears the throughput check. SPIRIT restores B’s saved pattern.</p>
           </section>

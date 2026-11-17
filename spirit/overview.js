@@ -121,28 +121,29 @@
     });
     view.querySelectorAll(".proposal-verdict").forEach(label =>
       segment(label, .43, .47, {opacity:0}, {opacity:1}));
-    segment(view.querySelector(".commit-pending"), .62, .64, {opacity:1}, {opacity:0});
-    segment(view.querySelector(".commit-sentence"), .64, .70, {opacity:0}, {opacity:1});
+    segment(view.querySelector(".draft-fix"), .50, .55, {opacity:0}, {opacity:1});
+    segment(view.querySelector(".commit-pending"), .66, .68, {opacity:1}, {opacity:0});
+    segment(view.querySelector(".commit-sentence"), .68, .73, {opacity:0}, {opacity:1});
   }
 
-  function traceRoute(svg, start, end) {
-    segment(svg, start, end, {clipPath:"inset(0 100% 0 0)"}, {clipPath:"inset(0 0% 0 0)"});
-  }
+  const raised = {opacity:1, transform:"translateY(-2px)"};
+  const lowered = {opacity:0, transform:"translateY(0)"};
 
   function adapt(view) {
-    const poses = view.querySelectorAll(".route-pose");
-    const markers = view.querySelectorAll(".route-trial i");
-    const starts = [0, .32, .64, 1];
-    poses.forEach((pose, i) => {
-      const start = starts[i];
-      const end = starts[i + 1];
-      const frames = [{offset:0, opacity:i === 0 ? 1 : 0}];
-      if (start > 0) frames.push({offset:start, opacity:0}, {offset:start + .035, opacity:1});
-      if (end < 1) frames.push({offset:end, opacity:1}, {offset:end + .035, opacity:0});
-      frames.push({offset:1, opacity:end === 1 ? 1 : 0});
-      track(pose, frames);
-      track(markers[i], frames);
-      traceRoute(pose.querySelector("svg"), start + .035, start + .18);
+    const rows = Array.from(view.querySelectorAll(".mask-trial"));
+    rows.slice(1).forEach((row, index) => {
+      const start = index === 0 ? .22 : .58;
+      const mask = row.querySelector(".trial-mask");
+      const previous = rows[index].querySelector(".trial-mask").children;
+      segment(mask, start, start + .06, {opacity:.18}, {opacity:1});
+      Array.from(mask.children).forEach((key, position) => {
+        const runs = key.classList.contains("executed");
+        if (runs === previous[position].classList.contains("executed")) return;
+        segment(key.firstElementChild, start + .08, start + .17,
+          runs ? lowered : raised, runs ? raised : lowered);
+      });
+      row.querySelectorAll("small, .layer-change").forEach(label =>
+        segment(label, start + .14, start + .18, {opacity:0}, {opacity:1}));
     });
   }
 
@@ -155,7 +156,8 @@
     segment(view.querySelector(".stored-profile"), .50, .57,
       {backgroundColor:"transparent"}, {backgroundColor:"#edf6f2"});
     segment(view.querySelector(".recall-result"), .62, .67, {opacity:0}, {opacity:1});
-    traceRoute(view.querySelector(".recalled-path"), .68, .82);
+    view.querySelectorAll(".recall-result .executed b").forEach(key =>
+      segment(key, .69, .77, lowered, raised));
   }
 
   const draw = {decode, adapt, reuse};
