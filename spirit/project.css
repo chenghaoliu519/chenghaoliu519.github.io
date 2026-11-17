@@ -29,11 +29,12 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
 .project-affiliation img { display:block; width:180px; height:auto; }
 .project-print-affiliation { display:none; }
 .project-resources { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px; margin-top:16px; }
-.resource-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:42px; padding:9px 16px; border:1px solid var(--rule-strong); border-radius:8px; background:var(--paper); color:var(--ink); font-size:13px; font-weight:500; text-decoration:none; transition:background 150ms ease,border-color 150ms ease; }
-.resource-button svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linejoin:round; stroke-linecap:round; }
-.resource-button:hover { border-color:var(--connector); background:var(--surface); }
-.resource-primary { background:var(--ink); color:var(--paper); border-color:var(--ink); }
-.resource-primary:hover { background:var(--accent); border-color:var(--accent); color:var(--paper); }
+.resource-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:11px 16px; border:1px solid transparent; border-radius:10px; background:var(--surface); color:var(--ink); font-size:14px; font-weight:500; line-height:20px; white-space:nowrap; text-decoration:none; transition:background 150ms ease,color 150ms ease; }
+.resource-button svg { flex:none; width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; }
+.resource-button:hover { background:var(--accent-soft); color:var(--accent); }
+.resource-button:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+.resource-primary { padding-inline:18px; background:var(--ink); color:var(--paper); }
+.resource-primary:hover { background:var(--accent); color:var(--paper); }
 .project-highlights { display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:0; max-width:var(--reader-width); margin-inline:auto; padding:18px 0 14px; border-top:1px solid var(--rule); }
 .project-highlight { display:flex; flex-direction:column; min-width:0; padding:0 25px; text-decoration:none; }
 .project-highlight:first-child { padding-left:0; }
@@ -107,8 +108,9 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
   .project-authors { gap:6px 16px; font-size:14px; }
   .project-affiliation img { width:140px; }
   .project-resources { gap:8px; margin-top:16px; }
-  .resource-button { padding:9px 12px; font-size:12px; gap:7px; }
-  .resource-button svg { width:14px; height:14px; }
+  .resource-button { padding-inline:12px; font-size:13px; gap:8px; }
+  .resource-primary { padding-inline:14px; }
+  .resource-button svg { width:16px; height:16px; }
   .project-highlights { grid-template-columns:1fr 1fr; padding:20px 0 0; }
   .project-highlight { padding:0 0 0 20px; }
   .highlight-value { font-size:32px; }
@@ -131,8 +133,6 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
   .project-shell, .project-header { padding-inline:18px; }
   .project-hero h1 { font-size:25px; }
   .project-authors { display:grid; grid-template-columns:repeat(2,max-content); gap:5px 22px; }
-  .project-resources { gap:8px; }
-  .resource-button { padding-inline:8px; gap:5px; }
   .highlight-value { font-size:29px; }
   .project-overview .preview-flow li > span { font-size:10px; }
 }
