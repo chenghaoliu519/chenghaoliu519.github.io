@@ -14,7 +14,7 @@
   let example = figure.querySelector("#show-example").checked;
   function chapterDuration(index) {
     if (!example) return 5200;
-    return buttons[index].dataset.chapter === "decode" ? 10000 : 6800;
+    return {decode:10000, adapt:9600, reuse:9000}[buttons[index].dataset.chapter];
   }
   let duration = chapterDuration(0);
   let exampleOpened = example;
@@ -97,24 +97,17 @@
 
   // All tracks share a chapter clock. The holds give readers time to inspect
   // both ends of a movement, and pausing freezes every object together.
-  function segment(node, start, end, from, to) {
-    const frames = [
-      { ...from, offset:0 }, { ...from, offset:start, easing:"cubic-bezier(.22,.75,.24,1)" },
-      { ...to, offset:end }, { ...to, offset:1 }
-    ];
+  function track(node, frames) {
     const animation = node.animate(frames, {duration, fill:"both"});
     animation.pause();
     tracks.push(animation);
-    return animation;
   }
 
-  // Measure both resting positions before any track moves these elements.
-  function travelFrom(source, destination) {
-    const a = source.getBoundingClientRect();
-    const b = destination.getBoundingClientRect();
-    const x = a.left + a.width / 2 - b.left - b.width / 2;
-    const y = a.top + a.height / 2 - b.top - b.height / 2;
-    return "translate(" + x + "px," + y + "px)";
+  function segment(node, start, end, from, to) {
+    track(node, [
+      { ...from, offset:0 }, { ...from, offset:start, easing:"cubic-bezier(.22,.75,.24,1)" },
+      { ...to, offset:end }, { ...to, offset:1 }
+    ]);
   }
 
   function decode(view) {
@@ -132,34 +125,37 @@
     segment(view.querySelector(".commit-sentence"), .64, .70, {opacity:0}, {opacity:1});
   }
 
+  function traceRoute(svg, start, end) {
+    segment(svg, start, end, {clipPath:"inset(0 100% 0 0)"}, {clipPath:"inset(0 0% 0 0)"});
+  }
+
   function adapt(view) {
-    const coarse = view.querySelector(".film-coarse");
-    const refined = view.querySelector(".film-refined");
-    segment(coarse, .12, .23, {opacity:.16, transform:"translateY(-6px)"}, {opacity:1, transform:"none"});
-    segment(coarse.querySelector(".film-layer-overlay"), .29, .43,
-      {opacity:1, transform:"translateX(200%)"}, {opacity:0, transform:"translate(200%,5px) scale(.78)"});
-    segment(coarse.previousElementSibling.querySelector("small"), .37, .47, {opacity:0}, {opacity:1});
-    segment(refined, .49, .61, {opacity:.16, transform:"translateY(-6px)"}, {opacity:1, transform:"none"});
-    segment(refined.querySelector(".film-layer-overlay"), .64, .83,
-      {transform:"translateX(500%)"}, {transform:"translateX(300%)"});
+    const poses = view.querySelectorAll(".route-pose");
+    const markers = view.querySelectorAll(".route-trial i");
+    const starts = [0, .32, .64, 1];
+    poses.forEach((pose, i) => {
+      const start = starts[i];
+      const end = starts[i + 1];
+      const frames = [{offset:0, opacity:i === 0 ? 1 : 0}];
+      if (start > 0) frames.push({offset:start, opacity:0}, {offset:start + .035, opacity:1});
+      if (end < 1) frames.push({offset:end, opacity:1}, {offset:end + .035, opacity:0});
+      frames.push({offset:1, opacity:end === 1 ? 1 : 0});
+      track(pose, frames);
+      track(markers[i], frames);
+      traceRoute(pose.querySelector("svg"), start + .035, start + .18);
+    });
   }
 
   function reuse(view) {
-    const match = view.querySelector(".film-match");
-    const restored = view.querySelector(".film-restored");
-    const mask = match.querySelector(".film-mask");
-    const handoff = travelFrom(mask, restored) + " scale(" +
-      mask.getBoundingClientRect().width / restored.getBoundingClientRect().width + ")";
-    view.querySelectorAll(".signature").forEach((signal, i) => {
-      segment(signal.querySelector("b"), .02, .16, {opacity:.2}, {opacity:1});
-      segment(signal.querySelector("em"), .12 + i * .06, .24 + i * .06,
-        {opacity:0, transform:"scale(.55)"}, {opacity:1, transform:"scale(1)"});
-    });
-    view.querySelectorAll(".film-candidate").forEach(card =>
-      segment(card, .36, .51, {opacity:1}, {opacity:.55}));
-    segment(match, .32, .50, {filter:"saturate(0)", opacity:.75}, {filter:"none", opacity:1});
-    segment(view.querySelector(".recall-path"), .48, .68, {transform:"scaleY(0)"}, {transform:"scaleY(1)"});
-    segment(restored, .53, .79, {transform:handoff, opacity:0}, {transform:"none", opacity:1});
+    // Each dot is a probe of its own profile on the same request head.
+    view.querySelectorAll(".active-profile .probe-scale i").forEach(dot =>
+      segment(dot, .10, .16, {opacity:0}, {opacity:1}));
+    view.querySelectorAll(".stored-profile .probe-scale i").forEach(dot =>
+      segment(dot, .36, .42, {opacity:0}, {opacity:1}));
+    segment(view.querySelector(".stored-profile"), .50, .57,
+      {backgroundColor:"transparent"}, {backgroundColor:"#edf6f2"});
+    segment(view.querySelector(".recall-result"), .62, .67, {opacity:0}, {opacity:1});
+    traceRoute(view.querySelector(".recalled-path"), .68, .82);
   }
 
   const draw = {decode, adapt, reuse};
@@ -267,16 +263,6 @@
     requested = supported && !motion.matches;
     choose(selected);
   });
-  if ("ResizeObserver" in window) {
-    let width = figure.clientWidth;
-    new ResizeObserver(() => {
-      if (!figure.clientWidth || width === figure.clientWidth || printing) return;
-      width = figure.clientWidth;
-      if (!example) return;
-      present(selected, (clock?.currentTime || 0) / duration);
-    }).observe(figure);
-  }
-
   let savedPosition = 0;
   window.addEventListener("beforeprint", () => {
     if (printing) return;
