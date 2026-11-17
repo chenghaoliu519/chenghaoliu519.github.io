@@ -42,10 +42,10 @@
   <link rel="stylesheet" href="/spirit/project.css?v=a123fbb2bfcd">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
   <link rel="stylesheet" href="/spirit/model-flow.css?v=52bce2cc7c36">
-  <link rel="stylesheet" href="/spirit/overview.css?v=6f6d011a0209">
+  <link rel="stylesheet" href="/spirit/overview.css?v=f19baf07ad80">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=b906361fafc7" defer></script>
+  <script src="/spirit/overview.js?v=a721d76f426d" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -143,51 +143,77 @@
         </div>
 
         <div class="film-frames" id="worked-example">
-        <section class="film-scene" id="film-decode" aria-labelledby="film-title-decode">
-          <h3 id="film-title-decode">From a draft to verified output</h3>
-          <div class="film-board film-decode-board" role="img" aria-label="After the prompt The sky, the self-draft proposes was, pale, green. In this example the full target accepts was and pale, rejects green, and supplies blue as the correction.">
-            <div class="film-lane"><strong>Self-draft</strong><div class="film-token-line" data-proposals>
-              <span class="film-slot"><span class="film-word">was</span></span>
-                  <span class="film-slot"><span class="film-word">pale</span></span>
-                  <span class="film-slot"><span class="film-word">green</span></span>
-            </div></div>
-            <div class="film-lane"><strong>Full target</strong><div class="film-token-line" data-verification>
-              <span class="film-slot"><span class="film-word">was</span></span>
-                  <span class="film-slot"><span class="film-word">pale</span></span>
-                  <span class="film-slot film-revision"><span class="film-word film-discard" aria-hidden="true">green</span><span class="film-word film-correction">blue</span></span>
-              <span class="film-check" aria-hidden="true">✓</span>
-            </div></div>
-            <div class="film-lane film-last"><strong>Output</strong><div class="film-output"><span>The sky</span>
-              <span class="film-phrase">was pale <span class="film-corrected">blue</span></span>
-            </div></div>
-          </div>
-          <p class="film-caption">The full target accepts “was pale” and replaces “green” with “blue” in this example. Those three committed tokens count toward the window’s measured throughput.</p>
-        </section>
+          <section class="film-scene" id="film-decode" aria-labelledby="film-title-decode">
+            <h3 id="film-title-decode">When does the Harbor train leave?</h3>
+            <div class="film-board" role="img" aria-label="The prompt lists Summit at ten and Harbor at noon. The draft proposes leaves, at, ten. The full target accepts the first two tokens and supplies noon. The output reads It leaves at noon.">
+              <div class="case-source timetable">
+                <span class="case-label">Prompt timetable</span>
+                <div class="train"><span>Summit</span><time>10:00</time></div>
+                <div class="train harbor"><span>Harbor</span><time>12:00</time></div>
+              </div>
+              <div class="case-work token-work">
+                <div class="word-row"><strong>Draft</strong><div class="film-token-line" data-proposals>
+                    <span class="film-slot"><span class="film-word">leaves</span></span>
+                    <span class="film-slot"><span class="film-word">at</span></span>
+                    <span class="film-slot"><span class="film-word">ten</span></span>
+                </div></div>
+                <div class="word-row"><strong>Verify</strong><div class="film-token-line" data-verification>
+                    <span class="film-slot"><span class="film-word">leaves</span></span>
+                    <span class="film-slot"><span class="film-word">at</span></span>
+                    <span class="film-slot film-revision"><span class="film-word film-discard">ten</span><span class="film-word film-correction">noon</span></span>
+                </div></div>
+                <div class="word-row answer-row"><strong>Output</strong><div class="film-output">It <span>leaves</span> <span>at</span> <span class="film-corrected">noon</span></div></div>
+              </div>
+            </div>
+            <p class="film-caption">The full target accepts two draft tokens and supplies a third. All three count toward the throughput SPIRIT measures in this decoding window.</p>
+          </section>
 
-        <section class="film-scene" id="film-adapt" aria-labelledby="film-title-adapt">
-          <h3 id="film-title-adapt">Choose how much to skip, then where</h3>
-          <div class="film-board film-adapt-board" role="img" aria-label="Of six illustrative sublayers, the current draft runs 1, 3 and 6. Ratio search tries running 1 and 6. Pattern refinement tries 1 and 4, keeping the same skip count.">
-            <div class="film-axis"><span>Sublayer</span><span class="film-indices"><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b></span></div>
-            <div class="film-lane"><strong>Current draft</strong><span class="film-layers "><i class="kept"></i><i></i><i class="kept"></i><i></i><i></i><i class="kept"></i></span></div>
-            <div class="film-lane"><strong>Skip ratio</strong><span class="film-layers film-coarse"><i class="kept"></i><i></i><i></i><i></i><i></i><i class="kept"></i><span class="film-layer-overlay" aria-hidden="true"></span></span></div>
-            <div class="film-lane film-last"><strong>Layer pattern</strong><span class="film-layers film-refined"><i class="kept"></i><i></i><i></i><i class="kept"></i><i></i><i></i><span class="film-layer-overlay" aria-hidden="true"></span></span></div>
-            <div class="film-key"><span><i></i>Executed</span><span><i></i>Skipped</span></div>
-          </div>
-          <p class="film-caption">SPIRIT compares throughput after adjusting for prefix length. Here it goes from three skipped sublayers to four, then tries a different pattern with four still skipped.</p>
-        </section>
+          <section class="film-scene" id="film-adapt" aria-labelledby="film-title-adapt">
+            <h3 id="film-title-adapt">Which sublayers should the next draft run?</h3>
+            <div class="film-board" role="img" aria-label="Each window supplies committed tokens and elapsed decode time. Of six illustrated sublayers, the first draft runs 1, 3 and 6. Ratio search tests 1 and 6. At that same ratio, pattern search tests 1 and 4.">
+              <div class="case-source window-source">
+                <span class="case-label">Window feedback</span>
+                <div class="speed-fraction"><span>Committed tokens</span><span>Decode time</span></div>
+              </div>
+              <div class="case-work layer-work">
+                <div class="layer-row layer-axis"><span>Sublayer</span><div class="layer-numbers"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div></div>
+                <div class="layer-row"><strong>Current draft<small>3 skipped</small></strong>
+                  <span class="film-layers "><i class="kept"></i><i></i><i class="kept"></i><i></i><i></i><i class="kept"></i></span>
+                </div>
+                <div class="layer-row"><strong>Ratio trial<small>4 skipped</small></strong>
+                  <span class="film-layers film-coarse"><i class="kept"></i><i></i><i></i><i></i><i></i><i class="kept"></i><span class="film-layer-overlay" aria-hidden="true"></span></span>
+                </div>
+                <div class="layer-row"><strong>Pattern trial<small>4 skipped</small></strong>
+                  <span class="film-layers film-refined"><i class="kept"></i><i></i><i></i><i class="kept"></i><i></i><i></i><span class="film-layer-overlay" aria-hidden="true"></span></span>
+                </div>
+                <div class="layer-key"><span>Executed</span><span>Skipped</span></div>
+              </div>
+            </div>
+            <p class="film-caption">SPIRIT compares throughput after adjusting for prefix length. First it tries skipping one more sublayer. Then it holds the count at four and changes which positions execute.</p>
+          </section>
 
-        <section class="film-scene" id="film-reuse" aria-labelledby="film-title-reuse">
-          <h3 id="film-title-reuse">Recall a draft for a returning workload</h3>
-          <div class="film-board film-reuse-board" role="img" aria-label="Throughput and acceptance at the start of a request help identify a compatible stored profile. Its mask is restored in the next draft.">
-            <div class="film-lane"><strong>Request head</strong><div class="film-signals"><span>Throughput</span><span>Acceptance</span></div></div>
-            <div class="film-lane"><strong>Stored profiles</strong><div class="film-bank">
-              <span class="film-mask film-candidate"><i class="kept"></i><i></i><i></i><i></i><i class="kept"></i><i></i></span><span class="film-mask film-match"><i class="kept"></i><i></i><i class="kept"></i><i></i><i></i><i class="kept"></i></span><span class="film-mask film-candidate"><i></i><i class="kept"></i><i></i><i class="kept"></i><i></i><i></i></span>
-            </div></div>
-            <div class="film-lane film-last"><strong>Next draft</strong><div class="film-recalled"><span class="film-mask film-restored"><i class="kept"></i><i></i><i class="kept"></i><i></i><i></i><i class="kept"></i></span></div></div>
-          </div>
-          <p class="film-caption">SPIRIT compares the new request’s initial throughput and acceptance with stored histories. A compatible profile supplies a skip ratio and layer pattern for generation.</p>
-        </section>
-
+          <section class="film-scene" id="film-reuse" aria-labelledby="film-title-reuse">
+            <h3 id="film-title-reuse">Can the next request reuse a saved draft?</h3>
+            <div class="film-board" role="img" aria-label="For the next timetable question, SPIRIT compares raw throughput and acceptance at the request head with profile histories. In this example profile B passes the probe checks and its layer pattern, running 1 and 4, is restored.">
+              <div class="case-source head-source">
+                <span class="case-label">Request head</span>
+                <div class="signature"><span>Throughput</span><i><b></b><em></em></i></div>
+                <div class="signature"><span>Acceptance</span><i><b></b><em></em></i></div>
+                <div class="signature-key"><span>Profile B range</span><span>New head</span></div>
+              </div>
+              <div class="case-work profile-work">
+                <strong>Stored drafts</strong>
+                <div class="film-bank">
+                  <div class="profile-option film-candidate"><small>A</small><span class="film-mask"><i class="kept"></i><i></i><i class="kept"></i><i></i><i></i><i class="kept"></i></span></div>
+                  <div class="profile-option film-match"><small>B</small><span class="film-mask"><i class="kept"></i><i></i><i></i><i class="kept"></i><i></i><i></i></span></div>
+                  <div class="profile-option film-candidate"><small>C</small><span class="film-mask"><i></i><i class="kept"></i><i></i><i></i><i class="kept"></i><i class="kept"></i></span></div>
+                </div>
+                <div class="recall-path" aria-hidden="true"></div>
+                <div class="applied-profile"><strong>Next draft</strong><span class="film-mask film-restored"><i class="kept"></i><i></i><i></i><i class="kept"></i><i></i><i></i></span></div>
+              </div>
+            </div>
+            <p class="film-caption">A new timetable question yields fresh throughput and acceptance measurements. Here profile B fits its history and passes the probe checks, so SPIRIT restores its layer pattern.</p>
+          </section>
         </div>
           <div class="film-chapters" hidden role="group" aria-label="Animation chapters">
             <button type="button" data-chapter="decode" aria-controls="overview-animation film-decode" aria-pressed="true">Decode<i class="film-progress" aria-hidden="true"></i></button>

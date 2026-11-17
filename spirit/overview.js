@@ -103,59 +103,67 @@
     return animation;
   }
 
+  // Measure both resting positions before any track moves these elements.
+  function travelFrom(source, destination) {
+    const a = source.getBoundingClientRect();
+    const b = destination.getBoundingClientRect();
+    const x = a.left + a.width / 2 - b.left - b.width / 2;
+    const y = a.top + a.height / 2 - b.top - b.height / 2;
+    return "translate(" + x + "px," + y + "px)";
+  }
+
   function decode(view) {
-    const proposals = Array.from(view.querySelectorAll("[data-proposals] .film-word"));
-    const verified = Array.from(view.querySelectorAll("[data-verification] .film-word:not(.film-correction)"));
-    const travel = proposals[0].getBoundingClientRect().top - verified[0].getBoundingClientRect().top;
-    proposals.forEach((word, i) => {
-      segment(word, .02 + i * .065, .15 + i * .065,
-        {opacity:0, transform:"translate(-9px, 3px)"}, {opacity:1, transform:"none"});
-    });
-    verified.forEach(word => {
-      segment(word, .34, .51,
-        {opacity:0, transform:"translateY(" + travel + "px)"}, {opacity:1, transform:"none"});
-    });
-    const discard = view.querySelector(".film-discard");
-    // Fade the rejected proposal separately from its arrival on the verifier.
-    segment(discard.parentElement.querySelector(".film-correction"), .57, .68,
-      {opacity:0, transform:"translateY(9px)"}, {opacity:1, transform:"none"});
-    segment(discard, .54, .63, {clipPath:"inset(0 0 0 0)"}, {clipPath:"inset(0 0 100% 0)"});
-    segment(view.querySelector(".film-check"), .67, .74,
-      {opacity:0, transform:"scale(.65)"}, {opacity:1, transform:"scale(1)"});
-    segment(view.querySelector(".film-phrase"), .74, .85,
-      {opacity:0, transform:"translateY(-12px)"}, {opacity:1, transform:"none"});
-    segment(view.querySelector(".film-corrected"), .82, .90, {opacity:0}, {opacity:1});
+    const draft = Array.from(view.querySelectorAll("[data-proposals] .film-word"));
+    const checked = Array.from(view.querySelectorAll("[data-verification] .film-word:not(.film-correction)"));
+    const correction = view.querySelector(".film-correction");
+    const output = Array.from(view.querySelectorAll(".film-output span"));
+    const fromDraft = checked.map((chip, i) => travelFrom(draft[i], chip));
+    const sources = [checked[0], checked[1], correction];
+    const fromVerifier = output.map((word, i) => travelFrom(sources[i], word));
+
+    draft.forEach((chip, i) => segment(chip, .02 + i * .06, .14 + i * .06,
+      {opacity:0, transform:"translateY(7px)"}, {opacity:1, transform:"none"}));
+    checked.forEach((chip, i) => segment(chip, .30, .45,
+      {opacity:0, transform:fromDraft[i]}, {opacity:1, transform:"none"}));
+    segment(checked[2], .45, .54,
+      {backgroundColor:"#eef5fc", color:"#175f9c", textDecorationColor:"transparent"},
+      {backgroundColor:"#fff7f3", color:"#8d4635", textDecorationColor:"#8d4635"});
+    segment(view.querySelector(".harbor time"), .43, .54,
+      {boxShadow:"inset 0 0 0 #9ad4bf"}, {boxShadow:"inset 0 -2px 0 #9ad4bf"});
+    segment(correction, .54, .66, {opacity:0, transform:"translateX(-7px)"},
+      {opacity:1, transform:"none"});
+    output.forEach((word, i) => segment(word, .70 + i * .025, .85 + i * .025,
+      {opacity:0, transform:fromVerifier[i]}, {opacity:1, transform:"none"}));
   }
 
   function adapt(view) {
     const coarse = view.querySelector(".film-coarse");
     const refined = view.querySelector(".film-refined");
-    segment(coarse, .13, .24, {opacity:.15}, {opacity:1});
-    segment(coarse.querySelector(".film-layer-overlay"), .30, .43,
-      {opacity:1, transform:"translateX(200%)"}, {opacity:0, transform:"translateX(200%)"});
-    segment(refined, .48, .59, {opacity:.10}, {opacity:1});
-    segment(refined.querySelector(".film-layer-overlay"), .64, .81,
+    segment(coarse, .12, .23, {opacity:.16, transform:"translateY(-6px)"}, {opacity:1, transform:"none"});
+    segment(coarse.querySelector(".film-layer-overlay"), .29, .43,
+      {opacity:1, transform:"translateX(200%)"}, {opacity:0, transform:"translate(200%,5px) scale(.78)"});
+    segment(coarse.previousElementSibling.querySelector("small"), .37, .47, {opacity:0}, {opacity:1});
+    segment(refined, .49, .61, {opacity:.16, transform:"translateY(-6px)"}, {opacity:1, transform:"none"});
+    segment(refined.querySelector(".film-layer-overlay"), .64, .83,
       {transform:"translateX(500%)"}, {transform:"translateX(300%)"});
   }
 
   function reuse(view) {
     const match = view.querySelector(".film-match");
     const restored = view.querySelector(".film-restored");
-    const source = match.getBoundingClientRect();
-    const destination = restored.getBoundingClientRect();
-    const shiftX = source.x + source.width / 2 - destination.x - destination.width / 2;
-    const shiftY = source.y + source.height / 2 - destination.y - destination.height / 2;
-    const handoff = "translate(" + shiftX + "px," + shiftY + "px) scale(" +
-      source.width / destination.width + "," + source.height / destination.height + ")";
-    view.querySelectorAll(".film-signals span").forEach((signal, i) => {
-      segment(signal, .02 + i * .07, .17 + i * .07,
-        {opacity:.35, transform:"translateY(6px)"}, {opacity:1, transform:"none"});
+    const mask = match.querySelector(".film-mask");
+    const handoff = travelFrom(mask, restored) + " scale(" +
+      mask.getBoundingClientRect().width / restored.getBoundingClientRect().width + ")";
+    view.querySelectorAll(".signature").forEach((signal, i) => {
+      segment(signal.querySelector("b"), .02, .16, {opacity:.2}, {opacity:1});
+      segment(signal.querySelector("em"), .12 + i * .06, .24 + i * .06,
+        {opacity:0, transform:"scale(.55)"}, {opacity:1, transform:"scale(1)"});
     });
     view.querySelectorAll(".film-candidate").forEach(card =>
-      segment(card, .37, .48, {opacity:1}, {opacity:.38}));
-    segment(match, .30, .47, {filter:"saturate(0)", opacity:.72}, {filter:"none", opacity:1});
-    segment(restored, .52, .77,
-      {transform:handoff, opacity:0}, {transform:"none", opacity:1});
+      segment(card, .36, .51, {opacity:1}, {opacity:.55}));
+    segment(match, .32, .50, {filter:"saturate(0)", opacity:.75}, {filter:"none", opacity:1});
+    segment(view.querySelector(".recall-path"), .48, .68, {transform:"scaleY(0)"}, {transform:"scaleY(1)"});
+    segment(restored, .53, .79, {transform:handoff, opacity:0}, {transform:"none", opacity:1});
   }
 
   const draw = {decode, adapt, reuse};
