@@ -12,7 +12,12 @@
   const model = figure.querySelector("#model-flow");
   const renderModel = createModelRenderer(model);
   let example = figure.querySelector("#show-example").checked;
-  let duration = example ? 6800 : 5200;
+  function chapterDuration(index) {
+    if (!example) return 5200;
+    return buttons[index].dataset.chapter === "decode" ? 10000 : 6800;
+  }
+  let duration = chapterDuration(0);
+  let exampleOpened = example;
   let modelFrame = null;
   const supported = typeof Element.prototype.animate === "function";
   let requested = supported && !motion.matches;
@@ -113,27 +118,18 @@
   }
 
   function decode(view) {
-    const draft = Array.from(view.querySelectorAll("[data-proposals] .film-word"));
-    const checked = Array.from(view.querySelectorAll("[data-verification] .film-word:not(.film-correction)"));
-    const correction = view.querySelector(".film-correction");
-    const output = Array.from(view.querySelectorAll(".film-output span"));
-    const fromDraft = checked.map((chip, i) => travelFrom(draft[i], chip));
-    const sources = [checked[0], checked[1], correction];
-    const fromVerifier = output.map((word, i) => travelFrom(sources[i], word));
-
-    draft.forEach((chip, i) => segment(chip, .02 + i * .06, .14 + i * .06,
-      {opacity:0, transform:"translateY(7px)"}, {opacity:1, transform:"none"}));
-    checked.forEach((chip, i) => segment(chip, .30, .45,
-      {opacity:0, transform:fromDraft[i]}, {opacity:1, transform:"none"}));
-    segment(checked[2], .45, .54,
-      {backgroundColor:"#eef5fc", color:"#175f9c", textDecorationColor:"transparent"},
-      {backgroundColor:"#fff7f3", color:"#8d4635", textDecorationColor:"#8d4635"});
-    segment(view.querySelector(".harbor time"), .43, .54,
-      {boxShadow:"inset 0 0 0 #9ad4bf"}, {boxShadow:"inset 0 -2px 0 #9ad4bf"});
-    segment(correction, .54, .66, {opacity:0, transform:"translateX(-7px)"},
-      {opacity:1, transform:"none"});
-    output.forEach((word, i) => segment(word, .70 + i * .025, .85 + i * .025,
-      {opacity:0, transform:fromVerifier[i]}, {opacity:1, transform:"none"}));
+    // Draft each token in place, then mark the prefix boundary in one target pass.
+    const proposed = {color:"#315775", backgroundColor:"#f1f5f9", borderColor:"#cad7e1", textDecorationColor:"transparent"};
+    const verified = {color:"var(--token-ink)", backgroundColor:"var(--token-paper)", borderColor:"var(--token-rule)", textDecorationColor:"var(--token-ink)"};
+    view.querySelectorAll(".draft-token").forEach((token, i) => {
+      const start = i * .041;
+      segment(token, start, start + .045, {opacity:0}, {opacity:1});
+      segment(token, .43, .47, proposed, verified);
+    });
+    view.querySelectorAll(".proposal-verdict").forEach(label =>
+      segment(label, .43, .47, {opacity:0}, {opacity:1}));
+    segment(view.querySelector(".commit-pending"), .62, .64, {opacity:1}, {opacity:0});
+    segment(view.querySelector(".commit-sentence"), .64, .70, {opacity:0}, {opacity:1});
   }
 
   function adapt(view) {
@@ -187,10 +183,12 @@
     clock = null;
   }
 
-  function present(index, position) {
+  function present(index, fraction) {
     dispose();
     selected = index;
-    if (!example) renderModel(buttons[selected].dataset.chapter, position / duration);
+    duration = chapterDuration(index);
+    const position = fraction * duration;
+    if (!example) renderModel(buttons[selected].dataset.chapter, fraction);
     views.forEach((view, i) => view.setAttribute("aria-hidden", String(i !== selected)));
     buttons.forEach((button, i) => button.setAttribute("aria-pressed", String(i === selected)));
     if (supported && !printing) {
@@ -223,7 +221,7 @@
 
   function choose(index) {
     snapshot = !requested;
-    present(index, snapshot ? duration : 0);
+    present(index, snapshot ? 1 : 0);
   }
 
   play.addEventListener("click", () => {
@@ -247,14 +245,16 @@
   modeInputs.forEach(input => input.addEventListener("change", () => {
     const fraction = clock ? clock.currentTime / duration : 1;
     example = input.value === "example";
-    duration = example ? 6800 : 5200;
-    present(selected, Math.min(1, fraction) * duration);
+    if (example && !exampleOpened) {
+      exampleOpened = true;
+      choose(0);
+    } else present(selected, Math.min(1, fraction));
   }));
   figure.querySelector(".film-chapters").hidden = false;
   play.hidden = !supported;
   figure.dataset.enhanced = "";
   if (supported) figure.dataset.choreography = "";
-  present(0, snapshot ? duration : 0);
+  present(0, snapshot ? 1 : 0);
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(([entry]) => {
       inView = entry.intersectionRatio >= .15;
@@ -273,7 +273,7 @@
       if (!figure.clientWidth || width === figure.clientWidth || printing) return;
       width = figure.clientWidth;
       if (!example) return;
-      present(selected, clock?.currentTime || 0);
+      present(selected, (clock?.currentTime || 0) / duration);
     }).observe(figure);
   }
 
@@ -290,6 +290,6 @@
   window.addEventListener("afterprint", () => {
     printing = false;
     if (supported) figure.dataset.choreography = "";
-    present(selected, savedPosition);
+    present(selected, savedPosition / duration);
   });
 })();

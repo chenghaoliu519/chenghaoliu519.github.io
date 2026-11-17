@@ -42,10 +42,10 @@
   <link rel="stylesheet" href="/spirit/project.css?v=a123fbb2bfcd">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
   <link rel="stylesheet" href="/spirit/model-flow.css?v=52bce2cc7c36">
-  <link rel="stylesheet" href="/spirit/overview.css?v=f19baf07ad80">
+  <link rel="stylesheet" href="/spirit/overview.css?v=363fa1981dfb">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=a721d76f426d" defer></script>
+  <script src="/spirit/overview.js?v=5ff48f0998f1" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -145,27 +145,40 @@
         <div class="film-frames" id="worked-example">
           <section class="film-scene" id="film-decode" aria-labelledby="film-title-decode">
             <h3 id="film-title-decode">When does the Harbor train leave?</h3>
-            <div class="film-board" role="img" aria-label="The prompt lists Summit at ten and Harbor at noon. The draft proposes leaves, at, ten. The full target accepts the first two tokens and supplies noon. The output reads It leaves at noon.">
-              <div class="case-source timetable">
-                <span class="case-label">Prompt timetable</span>
-                <div class="train"><span>Summit</span><time>10:00</time></div>
-                <div class="train harbor"><span>Harbor</span><time>12:00</time></div>
+            <div class="film-board decode-sheet" role="img" aria-label="The timetable lists Summit at ten and Harbor at noon. The self-draft proposes seven tokens: The train leaves at ten this morning. The target accepts The train leaves at, rejects ten and discards the remaining this morning. It supplies noon, committing five tokens in total.">
+              <div class="decode-timetable">
+                <span class="decode-label">Timetable</span>
+                <span class="departure">Summit <time datetime="10:00">10:00</time></span>
+                <span class="departure">Harbor <time datetime="12:00">12:00</time></span>
               </div>
-              <div class="case-work token-work">
-                <div class="word-row"><strong>Draft</strong><div class="film-token-line" data-proposals>
-                    <span class="film-slot"><span class="film-word">leaves</span></span>
-                    <span class="film-slot"><span class="film-word">at</span></span>
-                    <span class="film-slot"><span class="film-word">ten</span></span>
-                </div></div>
-                <div class="word-row"><strong>Verify</strong><div class="film-token-line" data-verification>
-                    <span class="film-slot"><span class="film-word">leaves</span></span>
-                    <span class="film-slot"><span class="film-word">at</span></span>
-                    <span class="film-slot film-revision"><span class="film-word film-discard">ten</span><span class="film-word film-correction">noon</span></span>
-                </div></div>
-                <div class="word-row answer-row"><strong>Output</strong><div class="film-output">It <span>leaves</span> <span>at</span> <span class="film-corrected">noon</span></div></div>
+              <div class="decode-row">
+                <span class="decode-label">Self-draft</span>
+                <div class="proposal-groups">
+                  <div class="proposal-group accepted-prefix">
+                    <div class="proposal-words">
+                      <span class="draft-token">The</span> <span class="draft-token">train</span>
+                      <span class="draft-token">leaves</span> <span class="draft-token">at</span>
+                    </div>
+                    <span class="proposal-verdict">4 accepted</span>
+                  </div>
+                  <div class="proposal-group discarded-suffix">
+                    <div class="proposal-words">
+                      <span class="draft-token first-rejection">ten</span> <span class="draft-token">this</span>
+                      <span class="draft-token">morning</span>
+                    </div>
+                    <span class="proposal-verdict">3 discarded</span>
+                  </div>
+                </div>
+              </div>
+              <div class="decode-row commit-row">
+                <span class="decode-label">Committed</span>
+                <span class="commit-value">
+                  <span class="commit-pending" aria-hidden="true">—</span>
+                  <span class="commit-sentence">The train leaves at <strong>noon</strong></span>
+                </span>
               </div>
             </div>
-            <p class="film-caption">The full target accepts two draft tokens and supplies a third. All three count toward the throughput SPIRIT measures in this decoding window.</p>
+            <p class="film-caption">The full target rejects <em>ten</em> and discards <em>this morning</em> with it. The four accepted tokens plus the target’s <em>noon</em> yield five committed tokens in one verification pass.</p>
           </section>
 
           <section class="film-scene" id="film-adapt" aria-labelledby="film-title-adapt">
