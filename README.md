@@ -271,19 +271,19 @@ order and button hierarchy without shrinking the title or author text. Print
 output keeps the written affiliation with the authors. Logo provenance is
 documented in assets/brand/README.md.
 
-Overview pairs the throughput-driven idea with an illustrative, three-step
-animation: productive decoding, calibrated adaptation, and cross-request
-profile reuse. Play/pause and step controls are keyboard accessible. Motion
-pauses outside the viewport, in another reading panel, in a background tab,
-and while printing; reduced-motion users start with a static view. Without
-JavaScript the diagram and its explanatory caption remain visible.
+Overview introduces the throughput-driven idea with one coordinated animation:
+proposal, full-target verification, committed output, calibrated adaptation,
+and cross-request profile recall. A single animation clock connects the motion
+and feedback; illustrative timing is not an experimental speed comparison.
+Play/pause and phase controls support keyboard interaction. Motion pauses
+offscreen, in another section or background tab, and while printing. Reduced
+motion and no-JavaScript views retain a readable static explanation.
 
-Its evidence section renders the complete 1,000-point pooled throughput curve
-from the frozen research JSON. The 2.46× pooled result and 2.48× best full-stream
-run remain explicitly distinct. FP16's 1.74× maximum, nine leading model–task
-settings, and the +17.2% SpecBench throughput gain are derived from the same
-published inputs. The measured plot is static; animation is confined to the
-schematic. Diagram layers, tokens, and profiles are illustrative.
+The impact section leads with the 2.48x NF4 and 1.74× FP16 maxima, derived
+from the frozen research JSON, with each result's setting and timing context.
+Three concise statements connect these outcomes to productive search, profile
+reuse, and preservation of the target distribution. Detailed plots, pooled
+results, and baseline comparisons remain in Results.
 
 Overview, Problem, Method, and Results share one reading area and a single
 navigation below the title area. Overview is selected on entry. With JavaScript,

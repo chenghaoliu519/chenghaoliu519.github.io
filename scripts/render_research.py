@@ -319,37 +319,6 @@ def layout_project_panels(panels):
 
 
 
-def overview_stream_plot():
-    values = DATA['sustained']
-    xs, ys = values['requests'], values['pooled']
-    assert len(xs) == len(ys) == 1000
-    X = lambda x: 42 + (x - xs[0]) / (xs[-1] - xs[0]) * 382
-    Y = lambda y: 182 - (y - .9) / (2.7 - .9) * 168
-    body = ''
-    for value in [1, 1.5, 2, 2.5]:
-        if value != 1:
-            body += line(42, Y(value), 424, Y(value), 'ov-stream-gridline')
-        body += text(32, Y(value) + 5, f'{value:g}×', 'ov-stream-tick', 'end')
-    points = [(X(x), Y(y)) for x, y in zip(xs, ys)]
-    body += path([(X(xs[0]), Y(1))] + points + [(X(xs[-1]), Y(1))], 'ov-stream-area', True)
-    body += line(42, Y(1), 424, Y(1), 'ov-stream-baseline')
-    body += text(420, Y(1) - 8, 'AR', 'ov-stream-tick', 'end')
-    body += path(points, 'ov-stream-line')
-    body += circle(X(xs[-1]), Y(ys[-1]), 4.5, 'ov-stream-end')
-    for x, label, anchor in [(1, '1', 'start'), (500, '500', 'middle'), (1000, '1,000', 'end')]:
-        body += text(X(x), 210, label, 'ov-stream-tick', anchor)
-    description = (
-        f'Cumulative decode speedup over matched autoregressive decoding, pooled across eight runs. '
-        f'All 1,000 measured request positions are shown; the endpoint is {ys[-1]:.5f}×. '
-        'LLaMA-2-13B on TinyStories, NF4 self-drafts and full FP16 verification. '
-        'Decode timing includes online search and profile updates, excluding prefill, loading, and one-time draft setup.'
-    )
-    return ('<svg class="ov-stream-chart" viewBox="0 0 440 220" role="img" '
-            'aria-labelledby="overview-stream-title overview-stream-desc" data-samples="1000">'
-            '<title id="overview-stream-title">Sustained speedup over 1,000 requests</title>'
-            f'<desc id="overview-stream-desc">{esc(description)}</desc>{body}</svg>')
-
-
 def build_overview():
     values = DATA['sustained']
     spirit = [row for row in DATA['fp16'] if row['method'] == 'SPIRIT']
@@ -358,16 +327,10 @@ def build_overview():
         if other['model'] == row['model'] and other['task'] == row['task']
         and other['method'] != 'SPIRIT'
     ) for row in spirit)
-    full = DATA['specbench']['full']
     replacements = {
-        'overview_stream': overview_stream_plot(),
-        'overview_pooled': f"{values['pooled'][-1]:.2f}",
         'overview_peak': f"{max(run[-1] for run in values['runs'].values()):.2f}",
         'overview_fp16': f"{max(row['speedup'] for row in spirit):.2f}",
         'overview_wins': str(wins),
-        'overview_specbench': f"{(full['SPIRIT'] / full['SWIFT'] - 1) * 100:.1f}",
-        'overview_requests': f"{values['requests'][-1]:,}",
-        'overview_runs': str(len(values['runs'])),
         'abstract': esc((ROOT/'scripts/research/abstract.txt').read_text().strip()),
     }
     rendered = (ROOT/'scripts/research/overview.html').read_text()
