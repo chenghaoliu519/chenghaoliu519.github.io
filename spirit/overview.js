@@ -14,7 +14,7 @@
   let example = figure.querySelector("#show-example").checked;
   function chapterDuration(index) {
     if (!example) return 5200;
-    return {decode:10000, adapt:11000, reuse:10500}[buttons[index].dataset.chapter];
+    return {decode:10000, adapt:11000, reuse:9000}[buttons[index].dataset.chapter];
   }
   let duration = chapterDuration(0);
   let exampleOpened = example;
@@ -175,10 +175,12 @@
       {offset:1, opacity:0, transform:atSlot}
     ]);
     segment(socket.querySelector(".card-b"), .685, .69, {opacity:0}, {opacity:1});
-    view.querySelectorAll(".reuse-token").forEach((token, i) => {
-      const start = .73 + i * .07;
-      segment(token, start, start + .045, {opacity:0}, {opacity:1});
-    });
+    const module = view.querySelector(".reuse-module");
+    segment(module, .69, .74, {color:"#758898"}, {color:"#39775f"});
+    track(module.querySelector(".module-light"), [
+      {offset:0, opacity:1}, {offset:.55, opacity:1}, {offset:.60, opacity:.15},
+      {offset:.69, opacity:.15}, {offset:.74, opacity:1}, {offset:1, opacity:1}
+    ]);
   }
 
   const draw = {decode, adapt, reuse};

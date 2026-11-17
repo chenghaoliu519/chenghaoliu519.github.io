@@ -163,7 +163,7 @@
 .trial-mask .executed b { opacity:1; transform:translateY(-2px); }
 .probe-symbols span::before { content:""; width:15px; height:6px; border-radius:2px; background:#b8d9ce; }
 .probe-symbols span + span::before { width:7px; height:7px; border-radius:50%; background:#234a61; }
-.probe-table { --card-size:27px; --probe-pad:6px; --probe-inset:11px; --slot-pad:18px; padding:6px 0 2px; }
+.probe-table { --card-size:27px; --face-pad:4px; --probe-pad:6px; --probe-inset:11px; --slot-pad:18px; padding:6px 0 2px; }
 .probe-row { display:grid; grid-template-columns:1fr 1.35fr 1.35fr; align-items:center; gap:clamp(10px,3.6vw,44px); padding:var(--probe-pad) var(--probe-inset); }
 .probe-head { color:var(--soft); font-size:11px; line-height:1.4; }
 .probe-row.stored-profile { position:relative; border-radius:6px; background:#edf6f2; }
@@ -176,7 +176,7 @@
 .probe-scale::before { content:""; position:absolute; top:50%; transform:translateY(-50%); left:var(--low); width:calc(var(--high) - var(--low)); height:8px; border-radius:2px; background:#b8d9ce; }
 .probe-scale i { position:absolute; top:50%; left:var(--point); transform:translate(-50%,-50%); width:9px; height:9px; border-radius:50%; background:#234a61; box-shadow:0 0 0 1.5px white; }
 /* The stored card and active slot share an inset. A copy drops into the slot,
-   leaving the saved profile in the bank and the request prefix in place. */
+   leaving the saved profile available for later requests. */
 .reuse-identity { display:flex; align-items:center; gap:7px; color:#40586a; font-size:12px; }
 .reuse-card {
   display:inline-grid; place-items:center; flex:none; width:var(--card-size); height:var(--card-size);
@@ -186,12 +186,29 @@
 .card-a { --card-ink:#4d657c; --card-fold:#a4b3bf; }
 .card-b { --card-ink:#236953; --card-fold:#91bdac; }
 .reuse-flight {
-  position:absolute; z-index:1; display:flex; align-items:flex-start; top:var(--probe-pad); left:var(--probe-inset); width:var(--card-size);
+  position:absolute; z-index:2; display:flex; align-items:flex-start; top:var(--probe-pad); left:var(--probe-inset); width:var(--card-size);
   height:100%; pointer-events:none; opacity:0;
 }
 .recall-result {
-  display:grid; grid-template-columns:var(--card-size) minmax(0,1fr); gap:9px; align-items:start;
-  padding:var(--slot-pad) var(--probe-inset) 0; background:linear-gradient(var(--line),var(--line)) 0 5px / 100% 1px no-repeat;
+  padding:calc(var(--slot-pad) - var(--face-pad)) var(--probe-inset) 0 calc(var(--probe-inset) - var(--face-pad));
+  background:linear-gradient(var(--line),var(--line)) 0 4px / 100% 1px no-repeat;
+}
+.module-face strong { color:#233f49; font-size:15px; font-weight:550; line-height:1.3; letter-spacing:-.02em; }
+.reuse-module {
+  --face-height:calc(var(--card-size) + 2 * var(--face-pad));
+  position:relative; width:max-content; max-width:100%; padding-bottom:8px; color:#39775f;
+}
+.reuse-module::before,.reuse-module::after,.module-face {
+  height:var(--face-height); border-radius:6px; box-shadow:inset 0 0 0 1px currentColor;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,currentColor 60%,white);
+}
+.reuse-module::before,.reuse-module::after { position:absolute; content:""; background:#f0f5f3; }
+.reuse-module::before { inset:8px 8px auto; background:#e3ede8; }
+.reuse-module::after { inset:4px 4px auto; }
+.module-face {
+  position:relative; z-index:1; display:grid; grid-template-columns:var(--card-size) max-content 6px;
+  align-items:center; column-gap:clamp(8px,1.4vw,15px); padding-inline:var(--face-pad) 12px;
+  background:linear-gradient(100deg,#fff 32%,#f7faf9);
 }
 .reuse-socket {
   display:grid; width:var(--card-size); height:var(--card-size); border-radius:5px;
@@ -199,11 +216,7 @@
 }
 .reuse-socket .reuse-card { grid-area:1/1; }
 .reuse-socket .card-a { opacity:0; }
-.reuse-continuation { min-width:0; }
-.reuse-continuation strong { color:#213f48; font-size:13px; line-height:1.4; font-weight:550; }
-.reuse-continuation p { display:flex; align-items:baseline; flex-wrap:wrap; gap:3px 4px; margin:5px 0 0; }
-.reuse-prefix { color:#536573; font-size:14px; line-height:1.4; margin-right:2px; }
-.reuse-token { padding:2px 6px; border:1px solid #bfd8cd; border-radius:4px; color:#1b604b; background:#edf6f0; font-size:14px; line-height:1.4; }
+.module-light { width:6px; height:6px; border-radius:50%; background:currentColor; }
 .film-scene .film-caption { color:var(--muted); font-size:13px; line-height:1.7; margin:14px 0 0; }
 .film-footer { padding-top:10px; color:var(--muted); font-size:10px; line-height:1.5; }
 .film-footer a { display:inline-flex; align-items:center; min-height:34px; gap:6px; color:var(--accent); text-decoration:none; white-space:nowrap; }
@@ -239,25 +252,18 @@
   .adapt-choice { grid-area:1/2; margin:0; font-size:10px; gap:3px; }
   .study-board { padding-block:12px; }
   .study-heading { padding-bottom:9px; }
-  .study-heading strong,.reuse-continuation strong { font-size:12px; }
+  .study-heading strong { font-size:12px; }
   .study-key { gap:4px 8px; }
   .study-key span,.probe-head { font-size:10px; }
   .probe-table { --card-size:23px; --probe-inset:4px; --slot-pad:14px; }
   .probe-row { gap:9px; }
   .reuse-identity { gap:4px; font-size:11px; }
   .reuse-card { font-size:12px; }
-  .reuse-prefix,.reuse-token { font-size:12px; }
-  .recall-result { gap:7px; }
+  .module-face strong { font-size:13px; }
   .trial-mask { gap:4px; }
   .trial-mask > span { height:24px; font-size:11px; }
   .film-scene .film-caption { font-size:12px; }
   .film-footer { font-size:9px; }
-}
-@media (max-width:360px) {
-  .recall-result { row-gap:4px; }
-  .reuse-continuation { display:contents; }
-  .reuse-continuation strong { align-self:center; }
-  .reuse-continuation p { grid-column:1/-1; margin:0; }
 }
 @media print {
   .ov-film { box-shadow:none; border:0; }
