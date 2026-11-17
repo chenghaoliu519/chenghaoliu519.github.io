@@ -1,164 +1,191 @@
 "use strict";
 
-// A single clock coordinates draft, verification, feedback and profile recall.
-// All motion is schematic; no measured throughput is animated.
 (() => {
-  const demo = document.querySelector("[data-overview-demo]");
-  if (!demo) return;
-  const overview = demo.closest(".research-panel");
-  const play = demo.querySelector("[data-overview-play]");
-  const controls = demo.querySelector("[data-overview-controls]");
-  const buttons = Array.from(controls.querySelectorAll("[data-overview-step]"));
-  const stories = demo.querySelector("[data-overview-stories]");
-  const copies = Array.from(stories.querySelectorAll("[data-overview-copy]"));
-  const tokens = Array.from(demo.querySelectorAll("[data-token]"));
-  const steps = buttons.map(button => button.dataset.overviewStep);
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const duration = 5200;
-  const draftLayers = Array.from(demo.querySelectorAll("[data-layer]"));
-  const skipCount = demo.querySelector("[data-skip-count]");
-  const routeLabel = demo.querySelector(".ov-feedback-label");
-  // The recalled mask is the highlighted profile shown in the bank.
-  const recalled = Array.from(demo.querySelectorAll(".ov-profile-1 i"))
-    .flatMap((cell, i) => cell.classList.contains("filled") ? [i] : []);
-  const coarse = [0, 5];
-  const refined = [0, 3];
-  const scenes = {
-    decode: [
-      { at: 0, beat: "draft", layers: recalled, label: "Committed tokens per decode second" },
-      { at: .32, beat: "verify", layers: recalled, label: "Committed tokens per decode second" },
-      { at: .62, beat: "commit", layers: recalled, label: "Committed tokens per decode second" }
-    ],
-    adapt: [
-      { at: 0, beat: "feedback", layers: recalled, label: "Calibrate for prefix length" },
-      { at: .32, beat: "ratio", layers: coarse, label: "Change how many sublayers to skip" },
-      { at: .65, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" }
-    ],
-    reuse: [
-      { at: 0, beat: "compare", layers: refined, label: "Compare throughput and acceptance" },
-      { at: .48, beat: "match", layers: refined, label: "Select a compatible profile" },
-      { at: .78, beat: "recall", layers: recalled, label: "Restore its layer pattern" }
-    ]
-  };
-  let scene = null;
-  let requested = !reduced.matches;
-  let selectedManually = !requested;
-  let visible = false;
-  let printing = false;
-  let index = 0;
-  let elapsed = requested ? 0 : duration * .94;
-  let lastTime = null;
-  let frame = null;
-  const clamp = value => Math.max(0, Math.min(1, value));
+  const figure = document.querySelector("[data-overview-demo]");
+  if (!figure) return;
 
-  function data(name, value) {
-    if (demo.dataset[name] !== value) demo.dataset[name] = value;
+  const views = Array.from(figure.querySelectorAll(".film-scene"));
+  const buttons = Array.from(figure.querySelectorAll("[data-chapter]"));
+  const play = figure.querySelector(".film-play");
+  const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const duration = 6800;
+  const supported = typeof Element.prototype.animate === "function";
+  let requested = supported && !motion.matches;
+  let inView = false;
+  let printing = false;
+  let selected = 0;
+  let tracks = [];
+  let clock;
+  let snapshot = !requested;
+
+  // All tracks share a chapter clock. The holds give readers time to inspect
+  // both ends of a movement, and pausing freezes every object together.
+  function segment(node, start, end, from, to) {
+    const frames = [
+      { ...from, offset:0 }, { ...from, offset:start, easing:"cubic-bezier(.22,.75,.24,1)" },
+      { ...to, offset:end }, { ...to, offset:1 }
+    ];
+    const animation = node.animate(frames, {duration, fill:"both"});
+    animation.pause();
+    tracks.push(animation);
+    return animation;
   }
-  function render() {
-    const progress = clamp(elapsed / duration);
-    const step = steps[index];
-    let next = scenes[step][0];
-    for (const candidate of scenes[step]) {
-      if (candidate.at > progress) break;
-      next = candidate;
-    }
-    if (next !== scene) {
-      scene = next;
-      data("step", step);
-      data("beat", scene.beat);
-      draftLayers.forEach(layer => {
-        layer.toggleAttribute("data-kept", scene.layers.includes(Number(layer.dataset.layer)));
-      });
-      skipCount.textContent = (draftLayers.length - scene.layers.length) + " of " + draftLayers.length + " sublayers skipped";
-      routeLabel.textContent = scene.label;
-      buttons.forEach((button, i) => button.setAttribute("aria-pressed", String(i === index)));
-      copies.forEach(copy => { copy.hidden = copy.dataset.overviewCopy !== step; });
-    }
-    demo.style.setProperty("--ov-progress", progress.toFixed(4));
-    demo.style.setProperty("--ov-draft-flight", clamp(progress / .32).toFixed(4));
-    demo.style.setProperty("--ov-verify-flight", clamp((progress - .32) / .3).toFixed(4));
-    let feedback = 0;
-    if (step === "adapt") feedback = clamp(progress / .32);
-    if (step === "reuse") feedback = clamp((progress - .48) / .30);
-    demo.style.setProperty("--ov-feedback", feedback.toFixed(4));
-    const committed = index === 0 ? Math.floor(clamp((progress - .62) / .3) * tokens.length) : tokens.length;
-    tokens.forEach((token, i) => {
-      if (token.hasAttribute("data-committed") !== (i < committed)) token.toggleAttribute("data-committed", i < committed);
+
+  function decode(view) {
+    const proposals = Array.from(view.querySelectorAll("[data-proposals] .film-word"));
+    const verified = Array.from(view.querySelectorAll("[data-verification] .film-word:not(.film-correction)"));
+    const travel = proposals[0].getBoundingClientRect().top - verified[0].getBoundingClientRect().top;
+    proposals.forEach((word, i) => {
+      segment(word, .02 + i * .065, .15 + i * .065,
+        {opacity:0, transform:"translate(-9px, 3px)"}, {opacity:1, transform:"none"});
     });
+    verified.forEach(word => {
+      segment(word, .34, .51,
+        {opacity:0, transform:"translateY(" + travel + "px)"}, {opacity:1, transform:"none"});
+    });
+    const discard = view.querySelector(".film-discard");
+    // Fade the rejected proposal separately from its arrival on the verifier.
+    segment(discard.parentElement.querySelector(".film-correction"), .57, .68,
+      {opacity:0, transform:"translateY(9px)"}, {opacity:1, transform:"none"});
+    segment(discard, .54, .63, {clipPath:"inset(0 0 0 0)"}, {clipPath:"inset(0 0 100% 0)"});
+    segment(view.querySelector(".film-check"), .67, .74,
+      {opacity:0, transform:"scale(.65)"}, {opacity:1, transform:"scale(1)"});
+    segment(view.querySelector(".film-phrase"), .74, .85,
+      {opacity:0, transform:"translateY(-12px)"}, {opacity:1, transform:"none"});
+    segment(view.querySelector(".film-corrected"), .82, .90, {opacity:0}, {opacity:1});
   }
-  function running() {
-    return requested && visible && !overview.hidden && !document.hidden && !printing;
+
+  function adapt(view) {
+    const coarse = view.querySelector(".film-coarse");
+    const refined = view.querySelector(".film-refined");
+    segment(coarse, .13, .24, {opacity:.15}, {opacity:1});
+    segment(coarse.querySelector(".film-layer-overlay"), .30, .43,
+      {opacity:1, transform:"translateX(200%)"}, {opacity:0, transform:"translateX(200%)"});
+    segment(refined, .48, .59, {opacity:.10}, {opacity:1});
+    segment(refined.querySelector(".film-layer-overlay"), .64, .81,
+      {transform:"translateX(500%)"}, {transform:"translateX(300%)"});
   }
-  function tick(time) {
-    frame = null;
-    if (!running()) return;
-    if (lastTime !== null) elapsed += Math.min(time - lastTime, 100);
-    lastTime = time;
-    if (elapsed >= duration) {
-      elapsed %= duration;
-      index = (index + 1) % steps.length;
+
+  function reuse(view) {
+    const match = view.querySelector(".film-match");
+    const restored = view.querySelector(".film-restored");
+    const source = match.getBoundingClientRect();
+    const destination = restored.getBoundingClientRect();
+    const shiftX = source.x + source.width / 2 - destination.x - destination.width / 2;
+    const shiftY = source.y + source.height / 2 - destination.y - destination.height / 2;
+    const handoff = "translate(" + shiftX + "px," + shiftY + "px) scale(" +
+      source.width / destination.width + "," + source.height / destination.height + ")";
+    view.querySelectorAll(".film-signals span").forEach((signal, i) => {
+      segment(signal, .02 + i * .07, .17 + i * .07,
+        {opacity:.35, transform:"translateY(6px)"}, {opacity:1, transform:"none"});
+    });
+    view.querySelectorAll(".film-candidate").forEach(card =>
+      segment(card, .37, .48, {opacity:1}, {opacity:.38}));
+    segment(match, .30, .47, {filter:"saturate(0)", opacity:.72}, {filter:"none", opacity:1});
+    segment(restored, .52, .77,
+      {transform:handoff, opacity:0}, {transform:"none", opacity:1});
+  }
+
+  const draw = {decode, adapt, reuse};
+  function dispose() {
+    if (clock) clock.onfinish = null;
+    tracks.forEach(track => track.cancel());
+    tracks = [];
+    clock = null;
+  }
+
+  function present(index, position) {
+    dispose();
+    selected = index;
+    views.forEach((view, i) => view.setAttribute("aria-hidden", String(i !== selected)));
+    buttons.forEach((button, i) => button.setAttribute("aria-pressed", String(i === selected)));
+    if (supported && !printing) {
+      const view = views[selected];
+      draw[buttons[selected].dataset.chapter](view);
+      clock = buttons[selected].querySelector(".film-progress").animate(
+        [{transform:"scaleX(0)"}, {transform:"scaleX(1)"}], {duration, fill:"both"});
+      clock.pause();
+      tracks.push(clock);
+      tracks.forEach(track => { track.currentTime = position; });
+      clock.onfinish = () => {
+        if (requested && !printing && !snapshot) present((selected + 1) % views.length, 0);
+      };
     }
-    render();
-    frame = window.requestAnimationFrame(tick);
+    sync();
   }
+
   function sync() {
-    if (frame !== null) window.cancelAnimationFrame(frame);
-    frame = null;
-    lastTime = null;
-    data("running", String(running()));
-    data("snapshot", String(selectedManually));
-    play.dataset.paused = String(!requested);
-    play.querySelector("span").textContent = requested ? "Pause" : "Play";
+    const running = requested && inView && !printing && !document.hidden && !figure.closest(".research-panel").hidden;
+    tracks.forEach(track => {
+      if (running && track.playState === "paused") track.play();
+      if (!running && track.playState === "running") track.pause();
+    });
+    play.dataset.playing = String(requested);
     play.setAttribute("aria-label", requested ? "Pause animation" : "Play animation");
-    if (running()) frame = window.requestAnimationFrame(tick);
+    play.querySelector("[data-play-label]").textContent = requested ? "Pause" : "Play";
   }
-  function select(next) {
-    requested = false;
-    index = next;
-    selectedManually = true;
-    elapsed = duration * (index === 1 ? .82 : .96);
-    render();
-    sync();
+
+  function choose(index) {
+    snapshot = !requested;
+    present(index, snapshot ? duration : 0);
   }
+
   play.addEventListener("click", () => {
-    if (!requested && selectedManually) {
-      elapsed = 0;
-      selectedManually = false;
-      render();
-    }
     requested = !requested;
-    sync();
+    if (requested && snapshot) {
+      snapshot = false;
+      present(selected, 0);
+    } else sync();
   });
-  buttons.forEach((button, i) => {
-    button.addEventListener("click", () => select(i));
+  buttons.forEach((button, index) => {
+    button.addEventListener("click", () => choose(index));
     button.addEventListener("keydown", event => {
-      let next;
-      if (event.key === "ArrowRight") next = (i + 1) % steps.length;
-      else if (event.key === "ArrowLeft") next = (i + steps.length - 1) % steps.length;
-      else if (event.key === "Home") next = 0;
-      else if (event.key === "End") next = steps.length - 1;
-      else return;
+      const n = buttons.length;
+      const targets = {ArrowLeft:(index+n-1)%n, ArrowRight:(index+1)%n, Home:0, End:n-1};
+      if (!(event.key in targets)) return;
       event.preventDefault();
-      select(next);
-      buttons[next].focus();
+      choose(targets[event.key]);
+      buttons[selected].focus();
     });
   });
-  document.addEventListener("visibilitychange", sync);
-  new MutationObserver(sync).observe(overview, { attributes:true, attributeFilter:["hidden"] });
+  figure.querySelector(".film-toolbar").hidden = false;
+  figure.dataset.enhanced = "";
+  if (supported) figure.dataset.choreography = "";
+  else play.hidden = true;
+  present(0, snapshot ? duration : 0);
   if ("IntersectionObserver" in window) {
-    new IntersectionObserver(entries => {
-      visible = entries[0].intersectionRatio >= .15;
+    new IntersectionObserver(([entry]) => {
+      inView = entry.intersectionRatio >= .15;
       sync();
-    }, { threshold:[0,.15] }).observe(demo);
-  } else visible = true;
-  reduced.addEventListener("change", () => { requested = !reduced.matches; sync(); });
-  window.addEventListener("beforeprint", () => { printing = true; sync(); });
-  window.addEventListener("afterprint", () => { printing = false; sync(); });
-  demo.dataset.enhanced = "";
-  demo.querySelector("[data-overview-static]").hidden = true;
-  stories.hidden = false;
-  controls.hidden = false;
-  play.hidden = false;
-  render();
-  sync();
+    }, {threshold:[0,.15]}).observe(figure);
+  } else { inView = true; sync(); }
+  new MutationObserver(sync).observe(figure.closest(".research-panel"), {attributes:true, attributeFilter:["hidden"]});
+  document.addEventListener("visibilitychange", sync);
+  motion.addEventListener("change", () => {
+    requested = supported && !motion.matches;
+    choose(selected);
+  });
+  if ("ResizeObserver" in window) {
+    let width = figure.clientWidth;
+    new ResizeObserver(() => {
+      if (!figure.clientWidth || width === figure.clientWidth || printing) return;
+      width = figure.clientWidth;
+      present(selected, clock?.currentTime || 0);
+    }).observe(figure);
+  }
+
+  let savedPosition = 0;
+  window.addEventListener("beforeprint", () => {
+    if (printing) return;
+    printing = true;
+    savedPosition = clock?.currentTime || 0;
+    dispose();
+    delete figure.dataset.choreography;
+    views.forEach(view => view.removeAttribute("aria-hidden"));
+  });
+  window.addEventListener("afterprint", () => {
+    printing = false;
+    if (supported) figure.dataset.choreography = "";
+    present(selected, savedPosition);
+  });
 })();
