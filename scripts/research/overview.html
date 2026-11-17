@@ -5,16 +5,55 @@
       </div>
 
       <figure class="ov-film" data-overview-demo aria-label="How SPIRIT adapts a self-draft">
-        <div class="film-toolbar" hidden>
-          <div class="film-chapters" role="group" aria-label="Animation chapters">
-            <button type="button" data-chapter="decode" aria-controls="film-decode" aria-pressed="true">Decode<i class="film-progress" aria-hidden="true"></i></button>
-            <button type="button" data-chapter="adapt" aria-controls="film-adapt" aria-pressed="false">Adapt<i class="film-progress" aria-hidden="true"></i></button>
-            <button type="button" data-chapter="reuse" aria-controls="film-reuse" aria-pressed="false">Reuse<i class="film-progress" aria-hidden="true"></i></button>
-          </div>
-          <button class="film-play" type="button" aria-label="Play animation" data-playing="false"><span class="film-control-icon" aria-hidden="true"></span><span data-play-label>Play</span></button>
+        <div class="film-toolbar">
+          <fieldset class="animation-views">
+            <legend>Animation view</legend>
+            <input type="radio" name="overview-view" id="show-model" value="model" aria-controls="model-flow" autocomplete="off" checked><label for="show-model">Model flow</label>
+            <input type="radio" name="overview-view" id="show-example" value="example" aria-controls="worked-example" autocomplete="off"><label for="show-example">Worked example</label>
+          </fieldset>
+          <button class="film-play" type="button" hidden aria-label="Play animation" data-playing="false"><span class="film-control-icon" aria-hidden="true"></span><span data-play-label>Play</span></button>
         </div>
 
-        <div class="film-frames">
+        <div class="ov-demo" id="model-flow" data-step="decode" data-beat="commit">
+        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. Across requests, head evidence helps reuse, refine, or restart a profile.">
+          <div class="ov-runtime">
+            <div class="ov-node ov-draft"><div class="ov-node-art"><svg class="ov-stack ov-stack-draft" viewBox="0 0 160 112" aria-hidden="true"><ellipse class="ov-stack-shadow" cx="80" cy="100" rx="48" ry="8"/><path class="ov-layer" data-layer="5" data-kept d="M24 85 80 68 136 85 80 102Z"/><path class="ov-layer" data-layer="4" d="M24 72 80 55 136 72 80 89Z"/><path class="ov-layer" data-layer="3" d="M24 59 80 42 136 59 80 76Z"/><path class="ov-layer" data-layer="2" data-kept d="M24 46 80 29 136 46 80 63Z"/><path class="ov-layer" data-layer="1" d="M24 33 80 16 136 33 80 50Z"/><path class="ov-layer" data-layer="0" data-kept d="M24 20 80 3 136 20 80 37Z"/><path class="ov-stack-spine" d="M80 4v96"/></svg></div><strong>Self-draft</strong><span data-skip-count>3 of 6 sublayers skipped</span></div>
+            <div class="ov-wire ov-wire-draft" aria-hidden="true"><span>propose</span><i></i></div>
+            <div class="ov-node ov-verifier"><div class="ov-node-art"><svg class="ov-stack ov-stack-verifier" viewBox="0 0 160 112" aria-hidden="true"><ellipse class="ov-stack-shadow" cx="80" cy="100" rx="48" ry="8"/><path class="ov-layer ov-layer-5" d="M24 85 80 68 136 85 80 102Z"/><path class="ov-layer ov-layer-4" d="M24 72 80 55 136 72 80 89Z"/><path class="ov-layer ov-layer-3" d="M24 59 80 42 136 59 80 76Z"/><path class="ov-layer ov-layer-2" d="M24 46 80 29 136 46 80 63Z"/><path class="ov-layer ov-layer-1" d="M24 33 80 16 136 33 80 50Z"/><path class="ov-layer ov-layer-0" d="M24 20 80 3 136 20 80 37Z"/><path class="ov-stack-spine" d="M80 4v96"/></svg><span class="ov-verify-scan"></span></div><strong>Full target</strong><span>Verify the draft</span></div>
+            <div class="ov-wire ov-wire-verify" aria-hidden="true"><span>commit</span><i></i></div>
+            <div class="ov-node ov-output"><div class="ov-node-art"><div class="ov-token-sheet" aria-hidden="true"><div class="ov-context-tokens"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="ov-output-tokens"><i class="ov-token" data-token="0"></i><i class="ov-token" data-token="1"></i><i class="ov-token" data-token="2"></i><i class="ov-token" data-token="3"></i><i class="ov-token" data-token="4"></i><i class="ov-token" data-token="5"></i><i class="ov-token" data-token="6"></i><i class="ov-token ov-verifier-token" data-token="7"></i></div><span class="ov-output-rule"></span></div></div><strong>Useful output</strong><span>Accepted + verifier tokens</span></div>
+          </div>
+          <div class="ov-feedback-loop">
+            <svg viewBox="0 0 720 44" preserveAspectRatio="none" aria-hidden="true">
+              <g class="ov-window-route">
+                <path class="ov-feedback-route" d="M600 1v20q0 12-12 12H132q-12 0-12-12V1"/>
+                <path class="ov-feedback-trace" pathLength="1" d="M600 1v20q0 12-12 12H132q-12 0-12-12V1"/>
+              </g>
+              <g class="ov-profile-route">
+                <path class="ov-feedback-route" d="M568 44q0-11-12-11H132q-12 0-12-12V1"/>
+                <path class="ov-feedback-trace" pathLength="1" d="M568 44q0-11-12-11H132q-12 0-12-12V1"/>
+              </g>
+              <path class="ov-feedback-arrow" d="m116 7 4-5 4 5"/>
+            </svg>
+            <span class="ov-feedback-label">Committed tokens per decode second</span>
+          </div>
+          <div class="ov-controller">
+            <div class="ov-search"><span class="ov-controller-label">Calibrate throughput</span><div><span class="ov-ratio">Skip ratio</span><b aria-hidden="true">→</b><span class="ov-pattern">Layer pattern</span></div></div>
+            <span class="ov-controller-divider" aria-hidden="true"></span>
+            <div class="ov-memory"><div><span class="ov-controller-label">Across requests</span><strong>Recall useful profiles</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true"><i class="filled"></i><i class="filled"></i><i></i><i></i><i class="filled"></i><i></i></span><span class="ov-profile ov-profile-1" aria-hidden="true"><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i><i class="filled"></i></span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i class="filled"></i></span></div></div>
+          </div>
+        </div>
+          <div class="model-caption">
+          <p data-overview-static>Productive decoding windows generate output and throughput feedback. SPIRIT calibrates this feedback to adapt the draft, then recalls useful profiles when workloads return. Full-target verification preserves the target distribution.</p>
+          <div class="ov-step-stories" data-overview-stories hidden>
+            <p data-overview-copy="decode">The self-draft proposes tokens, and the full target verifies them. SPIRIT measures how many tokens the window commits per second.</p>
+            <p data-overview-copy="adapt" aria-hidden="true">SPIRIT adjusts for prefix length, then uses throughput to choose how much to skip. At the selected ratio, it tests which sublayers to skip.</p>
+            <p data-overview-copy="reuse" aria-hidden="true">Throughput and acceptance at the start of a request help identify a compatible profile. Here SPIRIT restores its stored layer pattern.</p>
+          </div>
+          </div>
+        </div>
+
+        <div class="film-frames" id="worked-example">
         <section class="film-scene" id="film-decode" aria-labelledby="film-title-decode">
           <h3 id="film-title-decode">From a draft to verified output</h3>
           <div class="film-board film-decode-board" role="img" aria-label="After the prompt The sky, the self-draft proposes was, pale, green. In this example the full target accepts was and pale, rejects green, and supplies blue as the correction.">
@@ -61,6 +100,11 @@
         </section>
 
         </div>
+          <div class="film-chapters" hidden role="group" aria-label="Animation chapters">
+            <button type="button" data-chapter="decode" aria-controls="overview-animation film-decode" aria-pressed="true">Decode<i class="film-progress" aria-hidden="true"></i></button>
+            <button type="button" data-chapter="adapt" aria-controls="overview-animation film-adapt" aria-pressed="false">Adapt<i class="film-progress" aria-hidden="true"></i></button>
+            <button type="button" data-chapter="reuse" aria-controls="overview-animation film-reuse" aria-pressed="false">Reuse<i class="film-progress" aria-hidden="true"></i></button>
+          </div>
         <figcaption class="film-footer"><span>Illustrative tokens, layers and timing</span><a href="#spirit-method">Explore the method <span aria-hidden="true">→</span></a></figcaption>
       </figure>
 

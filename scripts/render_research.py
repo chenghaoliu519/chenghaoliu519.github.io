@@ -355,7 +355,7 @@ def build_project():
         'theme_hash':'theme.css','research_hash':'research.css',
         'research_js_hash':'research.js','project_css_hash':'spirit/project.css',
         'content_css_hash':'spirit/content.css',
-        'overview_css_hash':'spirit/overview.css','overview_js_hash':'spirit/overview.js',
+        'model_css_hash':'spirit/model-flow.css','overview_css_hash':'spirit/overview.css','overview_js_hash':'spirit/overview.js',
         'project_js_hash':'spirit/project.js','slides_hash':'assets/slides/SPIRIT-NeurIPS2026.pdf'
     }
     for key,name in assets.items():
