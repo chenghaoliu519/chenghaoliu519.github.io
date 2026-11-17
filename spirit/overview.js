@@ -14,7 +14,7 @@
   let example = figure.querySelector("#show-example").checked;
   function chapterDuration(index) {
     if (!example) return 5200;
-    return {decode:10000, adapt:9600, reuse:9000}[buttons[index].dataset.chapter];
+    return {decode:10000, adapt:11000, reuse:9000}[buttons[index].dataset.chapter];
   }
   let duration = chapterDuration(0);
   let exampleOpened = example;
@@ -132,21 +132,25 @@
   const lowered = {opacity:0, transform:"translateY(0)"};
 
   function adapt(view) {
-    const rows = Array.from(view.querySelectorAll(".mask-trial"));
-    rows.slice(1).forEach((row, index) => {
-      const start = index === 0 ? .22 : .58;
-      const mask = row.querySelector(".trial-mask");
-      const previous = rows[index].querySelector(".trial-mask").children;
-      segment(mask, start, start + .06, {opacity:.18}, {opacity:1});
-      Array.from(mask.children).forEach((key, position) => {
-        const runs = key.classList.contains("executed");
-        if (runs === previous[position].classList.contains("executed")) return;
-        segment(key.firstElementChild, start + .08, start + .17,
-          runs ? lowered : raised, runs ? raised : lowered);
-      });
-      row.querySelectorAll("small, .layer-change").forEach(label =>
-        segment(label, start + .14, start + .18, {opacity:0}, {opacity:1}));
-    });
+    const clear = {backgroundColor:"transparent"};
+    const chosen = {backgroundColor:"#eaf4ef"};
+    // As productive windows accumulate, the ratio estimates separate.
+    view.querySelectorAll(".score-range").forEach(bounds =>
+      segment(bounds, .10, .30, {transform:"scaleX(2.6)"}, {transform:"scaleX(1)"}));
+    segment(view.querySelector(".ratio-four"), .33, .39, clear, chosen);
+    segment(view.querySelector(".ratio-choice"), .33, .39, {opacity:0}, {opacity:1});
+
+    const pattern = view.querySelector(".refined-pattern");
+    const first = view.querySelector(".initial-pattern");
+    segment(first, .40, .48, {opacity:.24}, {opacity:1});
+    segment(first.querySelector(".score-dot"), .45, .50, {opacity:0}, {opacity:1});
+    segment(pattern, .52, .58, {opacity:.24}, {opacity:1});
+    // Keep four skips while exchanging the executed sublayer at 6 for 4.
+    segment(pattern.querySelector('[data-layer="6"] b'), .59, .67, raised, lowered);
+    segment(pattern.querySelector('[data-layer="4"] b'), .59, .67, lowered, raised);
+    segment(pattern.querySelector(".score-dot"), .68, .73, {opacity:0}, {opacity:1});
+    segment(pattern, .76, .81, clear, chosen);
+    segment(view.querySelector(".pattern-choice"), .76, .81, {opacity:0}, {opacity:1});
   }
 
   function reuse(view) {

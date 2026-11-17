@@ -42,10 +42,10 @@
   <link rel="stylesheet" href="/spirit/project.css?v=a123fbb2bfcd">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
   <link rel="stylesheet" href="/spirit/model-flow.css?v=52bce2cc7c36">
-  <link rel="stylesheet" href="/spirit/overview.css?v=c0138d009bce">
+  <link rel="stylesheet" href="/spirit/overview.css?v=4a9381fa8813">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=48e9564e77f3" defer></script>
+  <script src="/spirit/overview.js?v=30268d496d6c" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -181,25 +181,34 @@
           </section>
 
           <section class="film-scene" id="film-adapt" aria-labelledby="film-title-adapt">
-            <h3 id="film-title-adapt">Which sublayers should the next draft run?</h3>
-            <div class="film-board study-board" role="img" aria-label="A six-sublayer draft starts by running 1, 3 and 6. The ratio trial bypasses 3, leaving 1 and 6. The pattern trial still skips four sublayers but runs 4 instead of 6. Raised tiles are executed. Each column is the same sublayer across the three trials.">
-              <div class="study-heading"><strong>Draft sublayers</strong><div class="study-key layer-symbols"><span>Executed</span><span>Skipped</span></div></div>
-              <div class="mask-trials">
-                <div class="mask-trial">
-                  <div class="trial-name"><strong>Current draft</strong><small>3 skipped</small></div>
-                  <div class="trial-mask"><span class="executed" data-layer="1"><b>1</b></span><span data-layer="2"><b>2</b></span><span class="executed" data-layer="3"><b>3</b></span><span data-layer="4"><b>4</b></span><span data-layer="5"><b>5</b></span><span class="executed" data-layer="6"><b>6</b></span></div>
+            <h3 id="film-title-adapt">How does throughput guide the next draft?</h3>
+            <div class="film-board adapt-board" role="img" aria-label="Illustrative search across productive decoding windows. The dots show throughput-based scores, with higher scores to the right. In the ratio search, confidence bounds narrow and skipping four of six sublayers leads both three and five. With four skips fixed, running sublayers 1 and 4 scores higher than running 1 and 6. SPIRIT retains the better pattern.">
+              <div class="adapt-input"><strong>Window throughput</strong><span>Committed tokens <i>÷</i> decode time</span></div>
+              <div class="adapt-stage ratio-stage">
+                <h4>Find the skip ratio</h4>
+                <div class="ratio-columns adapt-axis"><span>Skipped</span><span>Mean score →</span></div>
+                <div class="ratio-columns ratio-option ratio-three"><span>3 of 6</span><div class="score-axis"><i class="score-range"></i><b class="score-dot"></b></div></div>
+                <div class="ratio-columns ratio-option ratio-four"><span>4 of 6</span><div class="score-axis"><i class="score-range"></i><b class="score-dot"></b></div></div>
+                <div class="ratio-columns ratio-option ratio-five"><span>5 of 6</span><div class="score-axis"><i class="score-range"></i><b class="score-dot"></b></div></div>
+                <p class="adapt-choice ratio-choice">Skip 4 of 6</p>
+              </div>
+              <div class="adapt-stage pattern-stage">
+                <h4>Refine the pattern</h4>
+                <div class="pattern-columns adapt-axis"><span><i class="running-key" aria-hidden="true"></i> Executed sublayers</span><span>Score →</span></div>
+                <div class="pattern-options">
+                  <div class="pattern-columns pattern-option initial-pattern">
+                    <div class="trial-mask"><span class="executed" data-layer="1"><b>1</b></span><span data-layer="2"><b>2</b></span><span data-layer="3"><b>3</b></span><span data-layer="4"><b>4</b></span><span data-layer="5"><b>5</b></span><span class="executed" data-layer="6"><b>6</b></span></div>
+                    <div class="score-axis"><b class="score-dot"></b></div>
+                  </div>
+                  <div class="pattern-columns pattern-option refined-pattern">
+                    <div class="trial-mask"><span class="executed" data-layer="1"><b>1</b></span><span data-layer="2"><b>2</b></span><span data-layer="3"><b>3</b></span><span class="executed" data-layer="4"><b>4</b></span><span data-layer="5"><b>5</b></span><span data-layer="6"><b>6</b></span></div>
+                    <div class="score-axis"><b class="score-dot"></b></div>
+                  </div>
                 </div>
-                <div class="mask-trial">
-                  <div class="trial-name"><strong>Ratio trial</strong><small>4 skipped</small></div>
-                  <div class="trial-mask"><span class="executed" data-layer="1"><b>1</b></span><span data-layer="2"><b>2</b></span><span data-layer="3"><b>3</b><i class="layer-change" aria-hidden="true">−</i></span><span data-layer="4"><b>4</b></span><span data-layer="5"><b>5</b></span><span class="executed" data-layer="6"><b>6</b></span></div>
-                </div>
-                <div class="mask-trial">
-                  <div class="trial-name"><strong>Pattern trial</strong><small>4 skipped</small></div>
-                  <div class="trial-mask"><span class="executed" data-layer="1"><b>1</b></span><span data-layer="2"><b>2</b></span><span data-layer="3"><b>3</b></span><span class="executed" data-layer="4"><b>4</b><i class="layer-change" aria-hidden="true">+</i></span><span data-layer="5"><b>5</b></span><span data-layer="6"><b>6</b><i class="layer-change" aria-hidden="true">−</i></span></div>
-                </div>
+                <p class="adapt-choice pattern-choice">Run 1 and 4</p>
               </div>
             </div>
-            <p class="film-caption">SPIRIT compares committed tokens per second after adjusting for prefix length. The ratio trial drops sublayer 3. The pattern trial keeps four skips and moves execution from sublayer 6 to 4.</p>
+            <p class="film-caption">Dots show illustrative throughput scores after prefix-length correction and smoothing. Whiskers mark confidence bounds on each ratio’s mean. With four skips fixed, the higher-scoring pattern runs sublayers 1 and 4.</p>
           </section>
 
           <section class="film-scene" id="film-reuse" aria-labelledby="film-title-reuse">
