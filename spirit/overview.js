@@ -14,7 +14,7 @@
   let example = figure.querySelector("#show-example").checked;
   function chapterDuration(index) {
     if (!example) return 5200;
-    return {decode:10000, adapt:11000, reuse:9000}[buttons[index].dataset.chapter];
+    return {decode:10000, adapt:11000, reuse:10500}[buttons[index].dataset.chapter];
   }
   let duration = chapterDuration(0);
   let exampleOpened = example;
@@ -161,9 +161,24 @@
       segment(dot, .36, .42, {opacity:0}, {opacity:1}));
     segment(view.querySelector(".stored-profile"), .50, .57,
       {backgroundColor:"transparent"}, {backgroundColor:"#edf6f2"});
-    segment(view.querySelector(".recall-result"), .62, .67, {opacity:0}, {opacity:1});
-    view.querySelectorAll(".recall-result .executed b").forEach(key =>
-      segment(key, .69, .77, lowered, raised));
+    const socket = view.querySelector(".reuse-socket");
+    segment(socket.querySelector(".card-a"), .55, .60, {opacity:1}, {opacity:0});
+
+    // The travel distance is the stored row's height plus the difference in
+    // padding. Percentage transforms keep both endpoints aligned on resize.
+    const atSource = "translateY(0)";
+    const atSlot = "translateY(calc(100% + var(--slot-pad) - var(--probe-pad)))";
+    track(view.querySelector(".reuse-flight"), [
+      {offset:0, opacity:0, transform:atSource}, {offset:.56, opacity:0, transform:atSource},
+      {offset:.57, opacity:1, transform:atSource, easing:"cubic-bezier(.4,0,.2,1)"},
+      {offset:.69, opacity:1, transform:atSlot}, {offset:.70, opacity:0, transform:atSlot},
+      {offset:1, opacity:0, transform:atSlot}
+    ]);
+    segment(socket.querySelector(".card-b"), .685, .69, {opacity:0}, {opacity:1});
+    view.querySelectorAll(".reuse-token").forEach((token, i) => {
+      const start = .73 + i * .07;
+      segment(token, start, start + .045, {opacity:0}, {opacity:1});
+    });
   }
 
   const draw = {decode, adapt, reuse};

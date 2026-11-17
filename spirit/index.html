@@ -42,10 +42,10 @@
   <link rel="stylesheet" href="/spirit/project.css?v=a123fbb2bfcd">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
   <link rel="stylesheet" href="/spirit/model-flow.css?v=52bce2cc7c36">
-  <link rel="stylesheet" href="/spirit/overview.css?v=4a9381fa8813">
+  <link rel="stylesheet" href="/spirit/overview.css?v=b014ad8b2ef3">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=30268d496d6c" defer></script>
+  <script src="/spirit/overview.js?v=a3f2a1f16ff7" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -213,26 +213,31 @@
 
           <section class="film-scene" id="film-reuse" aria-labelledby="film-title-reuse">
             <h3 id="film-title-reuse">Can a later request reuse a saved draft?</h3>
-            <div class="film-board study-board" role="img" aria-label="On the same request head, active profile A’s raw throughput and acceptance fall below their historical ranges. Stored profile B’s probes fall inside its own ranges. B improves probe merit and clears the throughput check. SPIRIT restores B and runs sublayers 1 and 4.">
+            <div class="film-board study-board" role="img" aria-label="On the same request head, active profile A’s raw throughput and acceptance fall below their historical ranges. Stored profile B’s probes fall inside its own ranges. B improves probe merit and clears the throughput check. B’s saved skip ratio and layer pattern become the active self-draft in place of A. The prefix “The next stop is” stays in place as B proposes “Harbor Station”.">
               <div class="study-heading"><strong>Same request head</strong><div class="study-key probe-symbols"><span>Stored range</span><span>Probe</span></div></div>
               <div class="probe-table">
                 <div class="probe-row probe-head"><span>Profile</span><span>Raw throughput</span><span>Acceptance</span></div>
                 <div class="probe-row active-profile">
-                  <span class="probe-name"><strong>Active A</strong><span class="profile-mask" aria-hidden="true"><i class="executed"></i><i></i><i class="executed"></i><i></i><i></i><i class="executed"></i></span></span>
+                  <span class="reuse-identity"><span class="reuse-card card-a">A</span>Initial</span>
                   <div class="probe-scale"><i></i></div>
                   <div class="probe-scale"><i></i></div>
                 </div>
                 <div class="probe-row stored-profile">
-                  <span class="probe-name"><strong>Stored B</strong><span class="profile-mask" aria-hidden="true"><i class="executed"></i><i></i><i></i><i class="executed"></i><i></i><i></i></span></span>
+                  <span class="reuse-identity"><span class="reuse-card card-b">B</span>Saved</span>
                   <div class="probe-scale"><i></i></div>
                   <div class="probe-scale"><i></i></div>
+                  <span class="reuse-flight" aria-hidden="true"><span class="reuse-card card-b">B</span></span>
+                </div>
+                <div class="recall-result">
+                  <span class="reuse-socket" aria-hidden="true"><span class="reuse-card card-a">A</span><span class="reuse-card card-b">B</span></span>
+                  <div class="reuse-continuation">
+                    <strong>Active self-draft</strong>
+                    <p><span class="reuse-prefix">The next stop is</span> <span class="reuse-token">Harbor</span> <span class="reuse-token">Station</span></p>
+                  </div>
                 </div>
               </div>
-              <div class="recall-result"><strong>Restore B</strong>
-                <div class="trial-mask"><span class="executed" data-layer="1"><b>1</b></span><span data-layer="2"><b>2</b></span><span data-layer="3"><b>3</b></span><span class="executed" data-layer="4"><b>4</b></span><span data-layer="5"><b>5</b></span><span data-layer="6"><b>6</b></span></div>
-              </div>
             </div>
-            <p class="film-caption">A’s throughput and acceptance fall below their usual ranges. B fits its own history more closely, earns a higher probe score and clears the throughput check. SPIRIT restores B’s saved pattern.</p>
+            <p class="film-caption">B fits its own history more closely, earns a higher probe score and clears the throughput check. SPIRIT loads B’s saved skip ratio and layer pattern, then continues drafting from the same prefix.</p>
           </section>
         </div>
           <div class="film-chapters" hidden role="group" aria-label="Animation chapters">

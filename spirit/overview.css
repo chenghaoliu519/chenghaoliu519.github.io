@@ -109,7 +109,7 @@
 .study-board { padding-block:15px; }
 .study-heading,.study-key,.study-key span { display:flex; align-items:center; }
 .study-heading { justify-content:space-between; flex-wrap:wrap; gap:5px 12px; padding-bottom:12px; border-bottom:1px solid var(--line); }
-.study-heading strong,.recall-result > strong { font-size:13px; line-height:1.4; font-weight:550; color:#263e53; }
+.study-heading strong { font-size:13px; line-height:1.4; font-weight:550; color:#263e53; }
 .study-key { flex-wrap:wrap; gap:4px 13px; }
 .study-key span { gap:5px; color:var(--soft); font-size:11px; line-height:1.4; }
 /* The two comparisons share a score direction. Each ratio has a mean and bounds;
@@ -146,9 +146,6 @@
 .adapt-choice { display:flex; align-items:center; gap:6px; margin:10px 0 0; color:#155c4c; font-size:12px; line-height:1.45; font-weight:550; }
 .adapt-choice::before { content:"✓"; font:600 12px/1 system-ui,sans-serif; }
 
-.recall-result { display:grid; grid-template-columns:clamp(94px,20%,135px) minmax(0,1fr); align-items:center; gap:clamp(10px,2vw,24px); }
-.probe-name { display:grid; gap:1px; }
-.probe-name strong { color:#253e52; font-size:13px; font-weight:550; line-height:1.45; }
 .trial-mask {
   display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); align-items:center;
   gap:clamp(4px,1.3vw,11px); width:100%; max-width:460px;
@@ -166,22 +163,47 @@
 .trial-mask .executed b { opacity:1; transform:translateY(-2px); }
 .probe-symbols span::before { content:""; width:15px; height:6px; border-radius:2px; background:#b8d9ce; }
 .probe-symbols span + span::before { width:7px; height:7px; border-radius:50%; background:#234a61; }
-.probe-table { padding:6px 0 10px; }
-.probe-row { display:grid; grid-template-columns:1fr 1.35fr 1.35fr; align-items:center; gap:clamp(10px,3.6vw,44px); padding:6px 11px; }
+.probe-table { --card-size:27px; --probe-pad:6px; --probe-inset:11px; --slot-pad:18px; padding:6px 0 2px; }
+.probe-row { display:grid; grid-template-columns:1fr 1.35fr 1.35fr; align-items:center; gap:clamp(10px,3.6vw,44px); padding:var(--probe-pad) var(--probe-inset); }
 .probe-head { color:var(--soft); font-size:11px; line-height:1.4; }
-.profile-mask { display:inline-grid; grid-template-columns:repeat(6,7px); gap:3px; padding:4px 0 3px; }
-.profile-mask i { border-radius:2px; width:7px; height:5px; background:#d7e0e4; box-shadow:none; }
-.profile-mask .executed { background:#2f667c; box-shadow:0 1px 0 #204c61; }
-.probe-row.stored-profile { border-radius:6px; background:#edf6f2; }
+.probe-row.stored-profile { position:relative; border-radius:6px; background:#edf6f2; }
 .probe-scale { position:relative; height:5px; background:#e6edef; border-radius:5px; margin-inline:2px; }
 /* Each column uses the same scale for the active and stored profiles. */
 .active-profile .probe-scale { --low:52%; --high:80%; --point:27%; }
-.active-profile .probe-scale:last-child { --low:55%; --high:75%; --point:36%; }
+.active-profile .probe-scale + .probe-scale { --low:55%; --high:75%; --point:36%; }
 .stored-profile .probe-scale { --low:53%; --high:82%; --point:66%; }
-.stored-profile .probe-scale:last-child { --low:42%; --high:68%; --point:61%; }
+.stored-profile .probe-scale + .probe-scale { --low:42%; --high:68%; --point:61%; }
 .probe-scale::before { content:""; position:absolute; top:50%; transform:translateY(-50%); left:var(--low); width:calc(var(--high) - var(--low)); height:8px; border-radius:2px; background:#b8d9ce; }
 .probe-scale i { position:absolute; top:50%; left:var(--point); transform:translate(-50%,-50%); width:9px; height:9px; border-radius:50%; background:#234a61; box-shadow:0 0 0 1.5px white; }
-.recall-result { padding:16px 0 3px; border-top:1px solid var(--line); }
+/* The stored card and active slot share an inset. A copy drops into the slot,
+   leaving the saved profile in the bank and the request prefix in place. */
+.reuse-identity { display:flex; align-items:center; gap:7px; color:#40586a; font-size:12px; }
+.reuse-card {
+  display:inline-grid; place-items:center; flex:none; width:var(--card-size); height:var(--card-size);
+  border-radius:5px; color:#fff; font-size:14px; font-weight:600; line-height:1;
+  background:linear-gradient(225deg, transparent 4px, var(--card-fold) 4.5px 7px, var(--card-ink) 7.5px);
+}
+.card-a { --card-ink:#4d657c; --card-fold:#a4b3bf; }
+.card-b { --card-ink:#236953; --card-fold:#91bdac; }
+.reuse-flight {
+  position:absolute; z-index:1; display:flex; align-items:flex-start; top:var(--probe-pad); left:var(--probe-inset); width:var(--card-size);
+  height:100%; pointer-events:none; opacity:0;
+}
+.recall-result {
+  display:grid; grid-template-columns:var(--card-size) minmax(0,1fr); gap:9px; align-items:start;
+  padding:var(--slot-pad) var(--probe-inset) 0; background:linear-gradient(var(--line),var(--line)) 0 5px / 100% 1px no-repeat;
+}
+.reuse-socket {
+  display:grid; width:var(--card-size); height:var(--card-size); border-radius:5px;
+  box-shadow:inset 0 0 0 1px #cbdbd6; background:#f2f6f5;
+}
+.reuse-socket .reuse-card { grid-area:1/1; }
+.reuse-socket .card-a { opacity:0; }
+.reuse-continuation { min-width:0; }
+.reuse-continuation strong { color:#213f48; font-size:13px; line-height:1.4; font-weight:550; }
+.reuse-continuation p { display:flex; align-items:baseline; flex-wrap:wrap; gap:3px 4px; margin:5px 0 0; }
+.reuse-prefix { color:#536573; font-size:14px; line-height:1.4; margin-right:2px; }
+.reuse-token { padding:2px 6px; border:1px solid #bfd8cd; border-radius:4px; color:#1b604b; background:#edf6f0; font-size:14px; line-height:1.4; }
 .film-scene .film-caption { color:var(--muted); font-size:13px; line-height:1.7; margin:14px 0 0; }
 .film-footer { padding-top:10px; color:var(--muted); font-size:10px; line-height:1.5; }
 .film-footer a { display:inline-flex; align-items:center; min-height:34px; gap:6px; color:var(--accent); text-decoration:none; white-space:nowrap; }
@@ -217,16 +239,25 @@
   .adapt-choice { grid-area:1/2; margin:0; font-size:10px; gap:3px; }
   .study-board { padding-block:12px; }
   .study-heading { padding-bottom:9px; }
-  .study-heading strong,.recall-result > strong,.probe-name strong { font-size:12px; }
+  .study-heading strong,.reuse-continuation strong { font-size:12px; }
   .study-key { gap:4px 8px; }
   .study-key span,.probe-head { font-size:10px; }
-  .probe-row { padding:6px 5px; gap:9px; }
-  .recall-result { grid-template-columns:76px minmax(0,1fr); gap:7px; }
+  .probe-table { --card-size:23px; --probe-inset:4px; --slot-pad:14px; }
+  .probe-row { gap:9px; }
+  .reuse-identity { gap:4px; font-size:11px; }
+  .reuse-card { font-size:12px; }
+  .reuse-prefix,.reuse-token { font-size:12px; }
+  .recall-result { gap:7px; }
   .trial-mask { gap:4px; }
   .trial-mask > span { height:24px; font-size:11px; }
-  .recall-result { padding:13px 0 2px; }
   .film-scene .film-caption { font-size:12px; }
   .film-footer { font-size:9px; }
+}
+@media (max-width:360px) {
+  .recall-result { row-gap:4px; }
+  .reuse-continuation { display:contents; }
+  .reuse-continuation strong { align-self:center; }
+  .reuse-continuation p { grid-column:1/-1; margin:0; }
 }
 @media print {
   .ov-film { box-shadow:none; border:0; }
