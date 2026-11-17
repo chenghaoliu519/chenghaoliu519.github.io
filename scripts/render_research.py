@@ -318,17 +318,72 @@ def layout_project_panels(panels):
     return panels
 
 
-def build_project(homepage):
+
+def overview_stream_plot():
+    values = DATA['sustained']
+    xs, ys = values['requests'], values['pooled']
+    assert len(xs) == len(ys) == 1000
+    X = lambda x: 42 + (x - xs[0]) / (xs[-1] - xs[0]) * 382
+    Y = lambda y: 182 - (y - .9) / (2.7 - .9) * 168
+    body = ''
+    for value in [1, 1.5, 2, 2.5]:
+        if value != 1:
+            body += line(42, Y(value), 424, Y(value), 'ov-stream-gridline')
+        body += text(32, Y(value) + 5, f'{value:g}×', 'ov-stream-tick', 'end')
+    points = [(X(x), Y(y)) for x, y in zip(xs, ys)]
+    body += path([(X(xs[0]), Y(1))] + points + [(X(xs[-1]), Y(1))], 'ov-stream-area', True)
+    body += line(42, Y(1), 424, Y(1), 'ov-stream-baseline')
+    body += text(420, Y(1) - 8, 'AR', 'ov-stream-tick', 'end')
+    body += path(points, 'ov-stream-line')
+    body += circle(X(xs[-1]), Y(ys[-1]), 4.5, 'ov-stream-end')
+    for x, label, anchor in [(1, '1', 'start'), (500, '500', 'middle'), (1000, '1,000', 'end')]:
+        body += text(X(x), 210, label, 'ov-stream-tick', anchor)
+    description = (
+        f'Cumulative decode speedup over matched autoregressive decoding, pooled across eight runs. '
+        f'All 1,000 measured request positions are shown; the endpoint is {ys[-1]:.5f}×. '
+        'LLaMA-2-13B on TinyStories, NF4 self-drafts and full FP16 verification. '
+        'Decode timing includes online search and profile updates, excluding prefill, loading, and one-time draft setup.'
+    )
+    return ('<svg class="ov-stream-chart" viewBox="0 0 440 220" role="img" '
+            'aria-labelledby="overview-stream-title overview-stream-desc" data-samples="1000">'
+            '<title id="overview-stream-title">Sustained speedup over 1,000 requests</title>'
+            f'<desc id="overview-stream-desc">{esc(description)}</desc>{body}</svg>')
+
+
+def build_overview():
+    values = DATA['sustained']
+    spirit = [row for row in DATA['fp16'] if row['method'] == 'SPIRIT']
+    wins = sum(row['speedup'] > max(
+        other['speedup'] for other in DATA['fp16']
+        if other['model'] == row['model'] and other['task'] == row['task']
+        and other['method'] != 'SPIRIT'
+    ) for row in spirit)
+    full = DATA['specbench']['full']
+    replacements = {
+        'overview_stream': overview_stream_plot(),
+        'overview_pooled': f"{values['pooled'][-1]:.2f}",
+        'overview_peak': f"{max(run[-1] for run in values['runs'].values()):.2f}",
+        'overview_fp16': f"{max(row['speedup'] for row in spirit):.2f}",
+        'overview_wins': str(wins),
+        'overview_specbench': f"{(full['SPIRIT'] / full['SWIFT'] - 1) * 100:.1f}",
+        'overview_requests': f"{values['requests'][-1]:,}",
+        'overview_runs': str(len(values['runs'])),
+        'abstract': esc((ROOT/'scripts/research/abstract.txt').read_text().strip()),
+    }
+    rendered = (ROOT/'scripts/research/overview.html').read_text()
+    for key, value in replacements.items():
+        rendered = rendered.replace('{{' + key + '}}', value)
+    assert not re.search(r'\{\{\w+\}\}', rendered), 'Unresolved overview template value'
+    return rendered
+
+
+def build_project():
     """Reuse the same research panels in a standalone paper wrapper."""
     panels=build()
     panels=layout_project_panels(panels).replace('href="assets/','href="/assets/')
-    match=re.search(r'<figure class="method-preview".*?</figure>',homepage,re.S)
-    assert match,'Homepage overview figure is missing'
-    overview=match.group(0).replace('preview-heading','project-preview-heading').replace('preview-caption','project-preview-caption')
-    overview=overview.replace('<h4 ','<h3 ').replace('</h4>','</h3>')
     replacements={
         'research_panels':panels,
-        'overview_figure':overview,
+        'overview':build_overview(),
         'abstract':esc((ROOT/'scripts/research/abstract.txt').read_text().strip()),
         'citation':esc((ROOT/'spirit/spirit.bib').read_text().strip()),
     }
@@ -337,6 +392,7 @@ def build_project(homepage):
         'theme_hash':'theme.css','research_hash':'research.css',
         'research_js_hash':'research.js','project_css_hash':'spirit/project.css',
         'content_css_hash':'spirit/content.css',
+        'overview_css_hash':'spirit/overview.css','overview_js_hash':'spirit/overview.js',
         'project_js_hash':'spirit/project.js','slides_hash':'assets/slides/SPIRIT-NeurIPS2026.pdf'
     }
     for key,name in assets.items():
@@ -370,7 +426,7 @@ def main():
         else:
             rendered=re.sub(re.escape(name)+r'\?v=[0-9a-f]+',name+'?v='+digest,rendered)
     project_target=ROOT/'spirit/index.html'
-    project=build_project(rendered)
+    project=build_project()
     if args.check:
         if rendered != original or not project_target.exists() or project_target.read_text() != project:
             raise SystemExit('Research pages need rebuilding: python3 scripts/render_research.py')

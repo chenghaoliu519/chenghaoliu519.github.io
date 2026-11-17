@@ -1,0 +1,75 @@
+    <section class="project-overview research-panel" id="overview" aria-labelledby="overview-heading">
+      <div class="overview-story">
+        <div class="overview-intro">
+          <p class="ov-eyebrow">Speed-driven adaptation</p>
+          <h2 id="overview-heading">Turn runtime feedback into <span>faster decoding.</span></h2>
+          <p class="ov-lead">High draft acceptance alone can miss faster configurations. SPIRIT adapts its self-draft using measured tokens per second, while its decoding windows keep producing useful output.</p>
+          <ul class="ov-properties" aria-label="Deployment advantages">
+            <li>No retraining</li><li>No offline profiling</li><li>No separate draft model</li>
+          </ul>
+          <a class="ov-text-link" href="#spirit-method">Explore the method <span aria-hidden="true">→</span></a>
+        </div>
+
+        <figure class="ov-demo" data-overview-demo data-step="decode" data-running="false" aria-labelledby="ov-demo-title">
+          <div class="ov-demo-bar">
+            <h3 id="ov-demo-title">A productive feedback loop</h3>
+            <button class="ov-play" type="button" data-overview-play data-paused="false" aria-label="Pause animation" hidden>
+              <svg class="ov-pause-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10"/></svg>
+              <svg class="ov-play-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m7 5 8 5-8 5Z"/></svg><span>Pause</span>
+            </button>
+          </div>
+          <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A layer-skipping self-draft proposes tokens. The full target verifies and commits output. Measured throughput is calibrated to guide the next skip ratio and layer pattern. Across requests, compatible stored profiles can be reused.">
+            <div class="ov-runtime">
+              <div class="ov-node ov-draft"><svg class="ov-stack ov-stack-draft" viewBox="8 -9 104 99" aria-hidden="true" focusable="false"><path class="ov-layer ov-layer-5" d="M20 63 60 49 100 63 60 77Z"/><path class="ov-layer ov-layer-4" d="M20 52 60 38 100 52 60 66Z"/><path class="ov-layer ov-layer-3" d="M20 41 60 27 100 41 60 55Z"/><path class="ov-layer ov-layer-2" d="M20 30 60 16 100 30 60 44Z"/><path class="ov-layer ov-layer-1" d="M20 19 60 5 100 19 60 33Z"/><path class="ov-layer ov-layer-0" d="M20 8 60 -6 100 8 60 22Z"/></svg><strong>Self-draft</strong><span>Skip selected<br>sublayers</span></div>
+              <span class="ov-connector" aria-hidden="true"></span>
+              <div class="ov-node ov-verifier"><svg class="ov-stack ov-stack-verifier" viewBox="8 -9 104 99" aria-hidden="true" focusable="false"><path class="ov-layer ov-layer-5" d="M20 63 60 49 100 63 60 77Z"/><path class="ov-layer ov-layer-4" d="M20 52 60 38 100 52 60 66Z"/><path class="ov-layer ov-layer-3" d="M20 41 60 27 100 41 60 55Z"/><path class="ov-layer ov-layer-2" d="M20 30 60 16 100 30 60 44Z"/><path class="ov-layer ov-layer-1" d="M20 19 60 5 100 19 60 33Z"/><path class="ov-layer ov-layer-0" d="M20 8 60 -6 100 8 60 22Z"/></svg><strong>Full verifier</strong><span>Check with the<br>target model</span></div>
+              <span class="ov-connector ov-connector-second" aria-hidden="true"></span>
+              <div class="ov-node ov-output"><div class="ov-output-tokens" aria-hidden="true"><i class="ov-token ov-token-0"></i><i class="ov-token ov-token-1"></i><i class="ov-token ov-token-2"></i><i class="ov-token ov-token-3"></i><i class="ov-token ov-token-4"></i><i class="ov-token ov-token-5"></i><i class="ov-token ov-token-6"></i><i class="ov-token ov-token-7"></i></div><strong>Useful output</strong><span>Accepted +<br>verifier tokens</span></div>
+            </div>
+            <svg class="ov-return" viewBox="0 0 400 34" preserveAspectRatio="none" aria-hidden="true"><path class="ov-return-line" d="M354 2v12q0 12-12 12H58q-12 0-12-12V2"/><path d="m42 7 4-5 4 5"/></svg>
+            <div class="ov-feedback"><strong>Measure → calibrate → adapt</strong><span>Skip ratio first · layer pattern next</span></div>
+            <div class="ov-profile-lane"><div><span>Across requests</span><strong>Reuse what fits.</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true"><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i><i class="filled"></i></span><span class="ov-profile ov-profile-1" aria-hidden="true"><i class="filled"></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i></span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i class="filled"></i><i></i><i class="filled"></i><i></i></span></div></div>
+          </div>
+          <div class="ov-step-controls" role="group" aria-label="Explore the adaptation steps" data-overview-controls hidden>
+            <button type="button" data-overview-step="decode" aria-pressed="true" aria-controls="overview-animation"><span>01</span> Decode</button>
+            <button type="button" data-overview-step="adapt" aria-pressed="false" aria-controls="overview-animation"><span>02</span> Adapt</button>
+            <button type="button" data-overview-step="reuse" aria-pressed="false" aria-controls="overview-animation"><span>03</span> Reuse</button>
+          </div>
+          <figcaption class="ov-demo-caption">
+            <p data-overview-static>Decoding produces output and runtime feedback. SPIRIT uses that feedback to refine the draft, then recalls useful profiles when workloads return.</p>
+            <div class="ov-step-stories" data-overview-stories hidden>
+              <p data-overview-copy="decode"><strong>Search while serving.</strong> Productive windows generate output and measure the configuration. Full-target verification preserves the output distribution.</p>
+              <p data-overview-copy="adapt" hidden><strong>Optimize actual speed.</strong> Length-calibrated throughput guides ratio-first search, then layer-pattern refinement for the next window.</p>
+              <p data-overview-copy="reuse" hidden><strong>Remember returning workloads.</strong> Request-head evidence helps reuse, refine, or restart a configuration. Profile-trial outputs are not committed.</p>
+            </div>
+            <span class="ov-schematic-note">Schematic · illustrative layers and tokens</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <section class="ov-evidence" aria-labelledby="ov-evidence-heading">
+        <header class="ov-section-heading"><div><p class="ov-eyebrow">Measured performance</p><h3 id="ov-evidence-heading">Gains that persist beyond the search.</h3></div><a class="ov-text-link" href="#spirit-experiments">All results <span aria-hidden="true">→</span></a></header>
+        <figure class="ov-stream" aria-labelledby="ov-stream-heading">
+          <div class="ov-stream-grid">
+            <div class="ov-stream-summary">
+              <p class="ov-eyebrow" id="ov-stream-heading">Sustained NF4 decoding</p>
+              <p class="ov-big-number">{{overview_pooled}}<span>×</span></p>
+              <p class="ov-metric-label">pooled decode speedup over AR</p>
+              <p class="ov-stream-peak">Up to <strong>{{overview_peak}}x</strong> in a full-stream run.</p>
+              <p class="ov-stream-size">{{overview_requests}} requests · {{overview_runs}} runs</p>
+            </div>
+            <div class="ov-stream-plot"><p class="ov-plot-unit">Cumulative decode speedup / AR</p>{{overview_stream}}<span class="ov-axis-label">Requests served</span></div>
+          </div>
+          <figcaption><p><strong>LLaMA-2-13B · TinyStories.</strong> NF4 self-drafts with full FP16 verification on one RTX A6000 per run.</p><p>Includes online search and profile updates; excludes prefill, loading, and one-time draft setup. <a href="#experiment-nf4">Study details <span aria-hidden="true">→</span></a></p></figcaption>
+        </figure>
+        <div class="ov-proof-pair">
+          <article><p class="ov-proof-value"><small>Up to</small> {{overview_fp16}}<span>×</span></p><h4>FP16 self-drafting</h4><p>Ahead of SWIFT and D&amp;V in all <strong>{{overview_wins}} model–task settings</strong> across the LLaMA-2 family.</p><a class="ov-text-link" href="#experiment-models">Model &amp; task comparisons <span aria-hidden="true">→</span></a></article>
+          <article><p class="ov-proof-value">+{{overview_specbench}}<span>%</span></p><h4>Full-stream throughput on SpecBench</h4><p>Over SWIFT on the same backend, <strong>including online search and profile updates.</strong></p><a class="ov-text-link" href="#specbench-heading">Broader-task evaluation <span aria-hidden="true">→</span></a></article>
+        </div>
+        <p class="ov-evidence-note">Separate evaluations; each result uses its stated comparison and timing scope.</p>
+      </section>
+      <details class="project-abstract">
+        <summary>Read the abstract<span aria-hidden="true">+</span></summary>
+        <p>{{abstract}}</p>
+      </details>
+    </section>

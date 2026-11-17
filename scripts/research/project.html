@@ -41,8 +41,10 @@
   <link rel="stylesheet" href="/research.css?v={{research_hash}}">
   <link rel="stylesheet" href="/spirit/project.css?v={{project_css_hash}}">
   <link rel="stylesheet" href="/spirit/content.css?v={{content_css_hash}}">
+  <link rel="stylesheet" href="/spirit/overview.css?v={{overview_css_hash}}">
   <script src="/research.js?v={{research_js_hash}}" defer></script>
   <script src="/spirit/project.js?v={{project_js_hash}}" defer></script>
+  <script src="/spirit/overview.js?v={{overview_js_hash}}" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -84,19 +86,7 @@
     </div>
 
     <section class="project-research summary-content" id="research" aria-label="Research">
-    <section class="project-overview research-panel" id="overview" aria-labelledby="overview-heading">
-      <div class="overview-copy">
-        <h2 id="overview-heading">Adapt the draft to realized throughput.</h2>
-        <p>A self-draft skips parts of the target model to propose tokens cheaply. But high draft acceptance alone does not guarantee fast decoding: each configuration also changes the cost of drafting and verification.</p>
-        <p>SPIRIT measures committed tokens per decode second, first finds an effective skip ratio, and then refines the layer pattern. It searches while producing output and carries useful profiles across recurring workloads.</p>
-        <p class="overview-premise">No retraining. No offline profiling. No separately trained draft.</p>
-      </div>
-      {{overview_figure}}
-      <details class="project-abstract">
-        <summary>Read the abstract<span aria-hidden="true">+</span></summary>
-        <p>{{abstract}}</p>
-      </details>
-    </section>
+{{overview}}
 
 {{research_panels}}
     </section>

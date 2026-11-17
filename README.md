@@ -263,12 +263,27 @@ labels identify each file type and the new-tab behavior.
 
 The title area leads directly into the section navigation and article. Speedup
 values and their measurement scope appear in Results; the output-distribution
-guarantee is explained in Method. The masthead avoids repeating those findings.
+guarantee is explained in Method. The masthead avoids repeating those findings. Overview introduces selected
+evidence after explaining the core idea.
 Only the section navigation stays at the top while reading; the masthead scrolls
 away. The theme toggle sits beside the section tabs. Mobile retains the same
 order and button hierarchy without shrinking the title or author text. Print
 output keeps the written affiliation with the authors. Logo provenance is
 documented in assets/brand/README.md.
+
+Overview pairs the throughput-driven idea with an illustrative, three-step
+animation: productive decoding, calibrated adaptation, and cross-request
+profile reuse. Play/pause and step controls are keyboard accessible. Motion
+pauses outside the viewport, in another reading panel, in a background tab,
+and while printing; reduced-motion users start with a static view. Without
+JavaScript the diagram and its explanatory caption remain visible.
+
+Its evidence section renders the complete 1,000-point pooled throughput curve
+from the frozen research JSON. The 2.46× pooled result and 2.48× best full-stream
+run remain explicitly distinct. FP16's 1.74× maximum, nine leading model–task
+settings, and the +17.2% SpecBench throughput gain are derived from the same
+published inputs. The measured plot is static; animation is confined to the
+schematic. Diagram layers, tokens, and profiles are illustrative.
 
 Overview, Problem, Method, and Results share one reading area and a single
 navigation below the title area. Overview is selected on entry. With JavaScript,
