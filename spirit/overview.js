@@ -15,6 +15,32 @@
   const steps = buttons.map(button => button.dataset.overviewStep);
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
   const duration = 5200;
+  const draftLayers = Array.from(demo.querySelectorAll("[data-layer]"));
+  const skipCount = demo.querySelector("[data-skip-count]");
+  const routeLabel = demo.querySelector(".ov-feedback-label");
+  // The recalled mask is the highlighted profile shown in the bank.
+  const recalled = Array.from(demo.querySelectorAll(".ov-profile-1 i"))
+    .flatMap((cell, i) => cell.classList.contains("filled") ? [i] : []);
+  const coarse = [0, 5];
+  const refined = [0, 3];
+  const scenes = {
+    decode: [
+      { at: 0, beat: "draft", layers: recalled, label: "Committed tokens per decode second" },
+      { at: .32, beat: "verify", layers: recalled, label: "Committed tokens per decode second" },
+      { at: .62, beat: "commit", layers: recalled, label: "Committed tokens per decode second" }
+    ],
+    adapt: [
+      { at: 0, beat: "feedback", layers: recalled, label: "Calibrate for prefix length" },
+      { at: .32, beat: "ratio", layers: coarse, label: "Change how many sublayers to skip" },
+      { at: .65, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" }
+    ],
+    reuse: [
+      { at: 0, beat: "compare", layers: refined, label: "Compare throughput and acceptance" },
+      { at: .48, beat: "match", layers: refined, label: "Select a compatible profile" },
+      { at: .78, beat: "recall", layers: recalled, label: "Restore its layer pattern" }
+    ]
+  };
+  let scene = null;
   let requested = !reduced.matches;
   let selectedManually = !requested;
   let visible = false;
@@ -31,26 +57,33 @@
   function render() {
     const progress = clamp(elapsed / duration);
     const step = steps[index];
-    const beat = index === 0 ? progress < .32 ? "draft" : progress < .62 ? "verify" : "commit" : step;
-    data("step", step);
-    data("beat", beat);
-    data("search", progress < .35 ? "feedback" : progress < .65 ? "ratio" : "pattern");
-    data("pattern", index === 1 && progress >= .7 || index === 2 && progress < .88 ? "b" : "a");
+    let next = scenes[step][0];
+    for (const candidate of scenes[step]) {
+      if (candidate.at > progress) break;
+      next = candidate;
+    }
+    if (next !== scene) {
+      scene = next;
+      data("step", step);
+      data("beat", scene.beat);
+      draftLayers.forEach(layer => {
+        layer.toggleAttribute("data-kept", scene.layers.includes(Number(layer.dataset.layer)));
+      });
+      skipCount.textContent = (draftLayers.length - scene.layers.length) + " of " + draftLayers.length + " sublayers skipped";
+      routeLabel.textContent = scene.label;
+      buttons.forEach((button, i) => button.setAttribute("aria-pressed", String(i === index)));
+      copies.forEach(copy => { copy.hidden = copy.dataset.overviewCopy !== step; });
+    }
     demo.style.setProperty("--ov-progress", progress.toFixed(4));
     demo.style.setProperty("--ov-draft-flight", clamp(progress / .32).toFixed(4));
     demo.style.setProperty("--ov-verify-flight", clamp((progress - .32) / .3).toFixed(4));
-    demo.style.setProperty("--ov-feedback", (index === 1 ? clamp(progress / .35) : index === 2 ? clamp((progress - .4) / .45) : 0).toFixed(4));
+    let feedback = 0;
+    if (step === "adapt") feedback = clamp(progress / .32);
+    if (step === "reuse") feedback = clamp((progress - .48) / .30);
+    demo.style.setProperty("--ov-feedback", feedback.toFixed(4));
     const committed = index === 0 ? Math.floor(clamp((progress - .62) / .3) * tokens.length) : tokens.length;
     tokens.forEach((token, i) => {
       if (token.hasAttribute("data-committed") !== (i < committed)) token.toggleAttribute("data-committed", i < committed);
-    });
-    buttons.forEach((button, i) => {
-      const selected = String(i === index);
-      if (button.getAttribute("aria-pressed") !== selected) button.setAttribute("aria-pressed", selected);
-    });
-    copies.forEach(copy => {
-      const hidden = copy.dataset.overviewCopy !== step;
-      if (copy.hidden !== hidden) copy.hidden = hidden;
     });
   }
   function running() {
@@ -73,6 +106,7 @@
     frame = null;
     lastTime = null;
     data("running", String(running()));
+    data("snapshot", String(selectedManually));
     play.dataset.paused = String(!requested);
     play.querySelector("span").textContent = requested ? "Pause" : "Play";
     play.setAttribute("aria-label", requested ? "Pause animation" : "Play animation");
