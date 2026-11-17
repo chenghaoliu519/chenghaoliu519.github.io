@@ -253,11 +253,12 @@ are retained. The project page adds the paper title, authors, affiliation,
 abstract, material links, citation, and its own sharing image.
 
 The title uses a generous type size. The UTA primary logo anchors the upper-left
-header. Beside it, SPIRIT identifies the project with the conference mark and
-year directly below. SPIRIT returns to the top; UTA links to the university.
-The title area contains the paper title, authors, and materials. Print output
-keeps the written affiliation with the authors. Logo provenance is documented
-in assets/brand/README.md.
+header beside a single-line SPIRIT wordmark. SPIRIT returns to the top; UTA
+links to the university. The conference mark and year sit beside the paper
+materials below the authors. On narrow screens, Slides and Poster use compact
+text links beside the primary Paper button. Print output keeps the written
+affiliation with the authors. Logo provenance is documented in
+assets/brand/README.md.
 
 Overview, Problem, Method, and Results share one reading area and a single
 navigation in the page header. Overview is selected on entry. With JavaScript,
