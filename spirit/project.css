@@ -6,7 +6,8 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
 .project-page #main { scroll-margin-top:var(--project-header-offset); }
 .project-header { position:sticky; top:0; z-index:10; background:var(--paper); border-bottom:1px solid var(--rule); }
 .project-header-inner { max-width:var(--project-width); margin:auto; min-height:64px; padding:8px 40px; display:flex; align-items:center; gap:24px; }
-.project-brand { display:inline-flex; align-items:center; text-decoration:none; }
+.project-branding { display:flex; flex-direction:column; align-items:flex-start; gap:2px; padding-left:18px; border-left:1px solid var(--rule); }
+.project-brand { display:inline-flex; align-items:center; color:var(--ink); font-size:17px; font-weight:600; line-height:22px; letter-spacing:.5px; text-decoration:none; }
 .project-topic-tabs { display:flex; align-items:stretch; gap:26px; margin-left:auto; }
 .project-topic-tabs a { position:relative; display:flex; align-items:center; min-height:48px; padding:6px 0; color:var(--muted); text-decoration:none; font-size:13px; font-weight:500; }
 .project-topic-tabs a:hover, .project-topic-tabs a[aria-selected="true"] { color:var(--accent); }
@@ -14,8 +15,8 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
 .project-topic-tabs a:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:3px; }
 .project-header .theme-toggle { width:32px; height:36px; flex-basis:32px; }
 .project-identity { display:flex; align-items:center; gap:18px; min-width:0; }
-.project-conference { display:inline-flex; align-items:center; gap:8px; min-height:40px; padding-left:18px; border-left:1px solid var(--rule); color:var(--muted); font-size:12px; text-decoration:none; white-space:nowrap; }
-.project-conference img { display:block; width:36px; height:36px; padding:0; border-radius:4px; background:#fff; }
+.project-conference { display:inline-flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; line-height:20px; text-decoration:none; white-space:nowrap; }
+.project-conference img { display:block; width:20px; height:20px; padding:0; border-radius:4px; background:#fff; }
 .project-conference:hover { color:var(--ink); }
 
 .project-hero { padding:38px 0 28px; text-align:center; }
@@ -85,20 +86,20 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
   .project-topic-tabs { gap:20px; }
   .project-header-inner { gap:16px; }
   .project-identity { gap:12px; }
-  .project-conference { gap:6px; padding-left:12px; font-size:11px; }
+  .project-branding { padding-left:12px; }
   .project-hero h1 { font-size:34px; }
   .project-highlights { grid-template-columns:1fr 1fr 1.05fr; }
   .project-highlight { padding-inline:20px; }
   .project-guarantee { padding-left:20px; }
 }
 @media (max-width:740px) {
-  .project-page { --project-header-offset:85px; }
-  .project-header-inner { flex-wrap:wrap; padding:4px 28px 0; min-height:84px; gap:0; }
-  .project-brand { min-height:36px; }
+  .project-page { --project-header-offset:89px; }
+  .project-header-inner { flex-wrap:wrap; padding:4px 28px 0; min-height:88px; gap:0; }
+  .project-brand { font-size:16px; line-height:20px; }
   .project-affiliation { padding:2px 4px; }
   .project-affiliation img { width:160px; }
-  .project-conference { min-height:36px; }
-  .project-conference img { width:32px; height:32px; }
+  .project-conference { line-height:18px; }
+  .project-conference img { width:18px; height:18px; }
   .project-header .theme-toggle { margin-left:auto; order:1; }
   .project-topic-tabs { order:2; width:100%; margin:0; justify-content:space-between; gap:18px; }
   .project-topic-tabs a { min-height:44px; font-size:12px; }
@@ -107,7 +108,8 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
 @media (max-width:620px) {
   .project-shell, .project-header-inner { padding-inline:22px; }
   .project-identity { gap:8px; }
-  .project-conference { padding-left:8px; }
+  .project-branding { padding:0; border:0; }
+  .project-conference { gap:4px; font-size:10px; }
   .project-hero { padding:28px 0 24px; }
   .project-hero h1 { margin:0 auto 16px; font-size:28px; letter-spacing:-.5px; }
   .project-byline { gap:8px 20px; }
@@ -136,8 +138,6 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
 }
 @media (max-width:360px) {
   .project-shell, .project-header-inner { padding-inline:18px; }
-  .conference-year { display:block; }
-  .project-conference > span { line-height:1.3; }
   .project-hero h1 { font-size:25px; }
   .project-authors { display:grid; grid-template-columns:repeat(2,max-content); gap:5px 22px; }
   .project-resources { gap:6px; }
