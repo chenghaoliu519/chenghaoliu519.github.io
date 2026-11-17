@@ -39,8 +39,8 @@
   <link rel="stylesheet" href="/styles.css?v=f1f653503638">
   <link rel="stylesheet" href="/theme.css?v=99513c42055d">
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
-  <link rel="stylesheet" href="/spirit/project.css?v=963e9714ce59">
-  <link rel="stylesheet" href="/spirit/content.css?v=3901a6a052e0">
+  <link rel="stylesheet" href="/spirit/project.css?v=c1d3997250a4">
+  <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
 </head>
@@ -67,12 +67,6 @@
         <a class="resource-button" href="/assets/figures/spirit-poster-neurips2026.png" type="image/png" aria-label="Poster (PNG, opens in a new tab)" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h2m2 0h2M9 18h6"/></svg>Poster</a>
       </nav>
     </section>
-
-    <div class="project-highlights" aria-label="Headline findings">
-      <a href="#experiment-models" class="project-highlight"><span class="highlight-label">FP16 self-drafts</span><span class="highlight-value"><small>Up to</small> 1.74×</span><span class="highlight-note">Decode throughput over AR<span aria-hidden="true">↗</span></span></a>
-      <a href="#experiment-nf4" class="project-highlight"><span class="highlight-label">NF4 self-drafts</span><span class="highlight-value"><small>Up to</small> 2.48x</span><span class="highlight-note">1,000-request stream<span aria-hidden="true">↗</span></span></a>
-      <div class="project-guarantee"><span class="guarantee-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></svg></span><strong>Full-target verification</strong><span>Preserves the target model’s<br class="guarantee-break"> output distribution.</span></div>
-    </div>
 
     <div class="project-navigation">
       <div class="project-navigation-inner">
@@ -338,6 +332,7 @@
   <header class="research-section-header"><p class="method-eyebrow">The evidence</p><h2 id="experiments-heading">Online adaptation delivers sustained speedups.</h2></header>
   <p class="experiment-context">Decode throughput relative to autoregressive decoding (AR), with full-target verification. The headline values are maxima from their respective settings.</p>
     </div>
+  <dl class="experiment-metrics" aria-label="Maximum measured decoding speedup"><div><dt>FP16 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>1.74×</strong></dd></div><div><dt>NF4 self-draft</dt><dd><span class="metric-prefix">Up to</span><strong>2.48x</strong></dd></div></dl>
   </div>
 
   <aside class="experiment-measurement" aria-label="Online measurement scope"><strong>Measured during serving</strong><p>Online decode timings include search and profile updates; prefill is excluded.</p></aside>

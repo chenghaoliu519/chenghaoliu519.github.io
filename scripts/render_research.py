@@ -279,9 +279,6 @@ def project_fp16_table():
 
 def layout_project_panels(panels):
     """Keep the shared science in a single standalone reading column."""
-    panels, count = re.subn(r'  <dl class="experiment-metrics"[^>]*>.*?</dl>\n',
-                           '', panels, flags=re.S)
-    assert count == 1, 'Expected one repeated headline metric row'
     original_tables = fp16_tables()
     assert panels.count(original_tables) == 1
     panels = panels.replace(original_tables, project_fp16_table(), 1)

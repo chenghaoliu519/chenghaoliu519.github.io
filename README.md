@@ -261,15 +261,17 @@ surface fills. All three have 44-pixel targets, matching icons, and explicit
 keyboard focus outlines. Repeated external-link arrows are omitted; accessible
 labels identify each file type and the new-tab behavior.
 
-Headline findings lead into the section navigation at the entrance to the
-article. Only this navigation stays at the top while reading; the masthead
-scrolls away. The theme toggle sits beside the section tabs. Mobile retains
-the same order and button hierarchy without shrinking the title or author
-text. Print output keeps the written affiliation with the authors. Logo
-provenance is documented in assets/brand/README.md.
+The title area leads directly into the section navigation and article. Speedup
+values and their measurement scope appear in Results; the output-distribution
+guarantee is explained in Method. The masthead avoids repeating those findings.
+Only the section navigation stays at the top while reading; the masthead scrolls
+away. The theme toggle sits beside the section tabs. Mobile retains the same
+order and button hierarchy without shrinking the title or author text. Print
+output keeps the written affiliation with the authors. Logo provenance is
+documented in assets/brand/README.md.
 
 Overview, Problem, Method, and Results share one reading area and a single
-navigation below the headline findings. Overview is selected on entry. With JavaScript,
+navigation below the title area. Overview is selected on entry. With JavaScript,
 one view is visible at a time; Results contains three experiment subpages in a
 compact, nonsticky selector. Main navigation and experiment clicks create
 browser history; arrow keys, Home/End, and Space replace the current fragment.

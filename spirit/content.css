@@ -90,6 +90,12 @@
 /* Results have one table and a sequence of self-contained evidence figures. */
 .project-research .experiment-overview { display:block; margin-bottom:16px; }
 .project-research .experiment-context { margin-top:18px; }
+.project-research .experiment-overview .experiment-metrics { gap:24px; max-width:none; margin-top:24px; padding:16px 0; border-block:1px solid var(--rule); }
+.project-research .experiment-overview .experiment-metrics > div { padding:0; border:0; border-radius:0; background:none; }
+.project-research .experiment-overview .experiment-metrics dt { order:0; margin:0; font-size:12px; }
+.project-research .experiment-metrics dd { display:flex; align-items:baseline; gap:8px; }
+.project-research .experiment-overview .experiment-metrics strong { margin:4px 0 0; color:var(--accent); font-size:34px; letter-spacing:-.7px; }
+.project-research .experiment-metrics .metric-prefix { display:inline; font-size:11px; }
 .project-research .experiment-measurement { display:block; padding:0; border:0; background:none; font-size:12px; }
 .project-research .experiment-measurement strong { display:none; }
 .project-research .experiment-measurement p { font-size:12px; }
