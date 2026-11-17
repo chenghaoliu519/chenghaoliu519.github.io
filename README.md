@@ -252,13 +252,13 @@ The homepage links to this exact address; its existing collapsed research detail
 are retained. The project page adds the paper title, authors, affiliation,
 abstract, material links, citation, and its own sharing image.
 
-The title uses a generous type size. The UTA primary logo anchors the upper-left
-header beside a single-line SPIRIT wordmark. SPIRIT returns to the top; UTA
-links to the university. The conference mark and year sit beside the paper
-materials below the authors. On narrow screens, Slides and Poster use compact
-text links beside the primary Paper button. Print output keeps the written
-affiliation with the authors. Logo provenance is documented in
-assets/brand/README.md.
+The title uses a generous type size. The NeurIPS mark and year sit at the upper
+left without a link; the UTA primary logo sits at the upper right and links to
+the university. The bold SPIRIT in the paper title links to the personal
+homepage. On narrow screens, section navigation and the theme toggle occupy
+a second header row, and Slides and Poster use compact text links beside the
+primary Paper button. Print output keeps the written affiliation with the
+authors. Logo provenance is documented in assets/brand/README.md.
 
 Overview, Problem, Method, and Results share one reading area and a single
 navigation in the page header. Overview is selected on entry. With JavaScript,
