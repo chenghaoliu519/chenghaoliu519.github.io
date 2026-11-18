@@ -1,7 +1,7 @@
     <section class="project-overview research-panel" id="overview" aria-labelledby="overview-heading">
       <div class="overview-intro">
-        <h2 id="overview-heading"><span>Measured throughput</span> guides draft selection.</h2>
-        <div class="ov-intro-copy"><p class="ov-lead">SPIRIT measures <strong>committed tokens per second</strong> during generation to tune the draft’s skip ratio and layer pattern. When a familiar workload returns, it can reuse a configuration that worked before.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
+        <h2 id="overview-heading">Finding a faster draft <span>during generation</span></h2>
+        <div class="ov-intro-copy"><p class="ov-lead">To test a layer-skipping pattern, SPIRIT uses it to generate part of the response. At the end of each decoding window, the number of <strong>tokens committed per second</strong> guides the choice of the next configuration.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
       </div>
 
       <figure class="ov-film" data-overview-demo aria-label="How SPIRIT adapts a self-draft">
