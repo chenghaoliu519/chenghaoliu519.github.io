@@ -13,7 +13,7 @@
   const renderModel = createModelRenderer(model);
   let example = figure.querySelector("#show-example").checked;
   function chapterDuration(index) {
-    if (!example) return buttons[index].dataset.chapter === "reuse" ? 7600 : 5200;
+    if (!example) return buttons[index].dataset.chapter === "reuse" ? 10200 : 5200;
     return {decode:10000, adapt:11000, reuse:9000}[buttons[index].dataset.chapter];
   }
   let duration = chapterDuration(0);
@@ -44,7 +44,9 @@
     const profileB = demo.querySelector('[data-profile="B"]');
     const draft = demo.querySelector(".ov-stack-draft");
     const draftId = demo.querySelector(".ov-draft-id");
-    const headReading = demo.querySelector("[data-head-reading]");
+    const readings = demo.querySelector(".ov-head-reading");
+    const headTitle = readings.querySelector("[data-head-title]");
+    const historyLabel = readings.querySelector("[data-head-history]");
     // Use the model's own geometry and masks for the two saved configurations.
     for (const [card, mask] of [[profileA, refined], [profileB, recalled]]) {
       const stack = draft.cloneNode(true);
@@ -61,6 +63,7 @@
     const route = loop.querySelector(".ov-profile-route");
     const routePaths = route.querySelectorAll(".ov-feedback-route, .ov-feedback-trace");
     const arrow = route.querySelector(".ov-profile-arrow");
+    const measureRoute = loop.querySelector(".ov-measure-route");
     function alignRecallPath() {
       if (demo.dataset.step !== "reuse") return;
       const bounds = loop.getBoundingClientRect();
@@ -73,6 +76,7 @@
       const path = `M${from} 44q0-11-12-11H${to + 12}q-12 0-12-12V2`;
       routePaths.forEach(line => line.setAttribute("d", path));
       arrow.setAttribute("d", `M${to - 4} 7l4-5 4 5`);
+      measureRoute.setAttribute("d", `M${to} 2v36m-4-5 4 5 4-5`);
     }
     if ("ResizeObserver" in window) new ResizeObserver(alignRecallPath).observe(loop);
 
@@ -88,10 +92,11 @@
         { at: .65, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" }
       ],
       reuse: [
-        { at: 0, beat: "monitor", layers: refined, label: "Read throughput and acceptance" },
-        { at: .22, beat: "probe", layers: refined, label: "Probe both profiles on the same head" },
-        { at: .54, beat: "match", layers: refined, label: "B passes the switch checks" },
-        { at: .82, beat: "recall", layers: recalled, label: "Restore B’s skip ratio and layer pattern" }
+        { at: 0, beat: "monitor", layers: refined, profile: "A", label: "Decode the opening tokens with A" },
+        { at: .23, beat: "shift", layers: refined, profile: "A", label: "Both readings are unusually low for A" },
+        { at: .43, beat: "probe", layers: refined, profile: "B", label: "Probe A and B on the same prefix" },
+        { at: .65, beat: "match", layers: refined, profile: "B", label: "B scores higher and passes the throughput check" },
+        { at: .84, beat: "recall", layers: recalled, profile: "B", label: "Restore B’s skip ratio and layer pattern" }
       ]
     };
     let scene = null;
@@ -112,7 +117,9 @@
         if (step === "reuse") {
           const restored = scene.beat === "recall";
           draftId.textContent = restored ? "B" : "A";
-          headReading.textContent = scene.beat === "monitor" ? "Checking profile A" : "Outside A’s range";
+          readings.dataset.headProfile = scene.profile;
+          headTitle.textContent = scene.profile === "A" ? "Opening tokens with A" : "Same prefix with B";
+          historyLabel.textContent = scene.profile + "’s history";
           if (enteringReuse) alignRecallPath();
         }
         draftLayers.forEach(layer => {
@@ -127,8 +134,10 @@
       let feedback = 0;
       if (step === "adapt") feedback = clamp(progress / .32);
       if (step === "reuse") {
-        feedback = clamp((progress - .54) / .28);
-        demo.style.setProperty("--ov-head-drift", clamp((progress - .08) / .14).toFixed(4));
+        feedback = clamp((progress - .65) / .19);
+        // Reveal each measurement in place against the observed profile’s own history.
+        const measuredAt = scene.profile === "A" ? .11 : .50;
+        demo.style.setProperty("--ov-measured", clamp((progress - measuredAt) / .045).toFixed(4));
       }
       demo.style.setProperty("--ov-feedback", feedback.toFixed(4));
       const committed = step === "decode" ? Math.floor(clamp((progress - .62) / .3) * tokens.length) : tokens.length;
