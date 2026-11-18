@@ -1,7 +1,7 @@
     <section class="project-overview research-panel" id="overview" aria-labelledby="overview-heading">
       <div class="overview-intro">
         <div><p class="ov-eyebrow">Speed-driven adaptation</p><h2 id="overview-heading">Turn runtime feedback into <span>faster decoding.</span></h2></div>
-        <div class="ov-intro-copy"><p class="ov-lead">Proposing every token with the full target model earns a perfect score on draft–target agreement. SPIRIT measures <strong>committed tokens per second</strong> in the same decoding windows that generate the response, first choosing how much to skip and then which sublayers to skip. It can reuse the resulting configuration when a similar workload returns.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
+        <div class="ov-intro-copy"><p class="ov-lead">Draft–target agreement can reward the very layers that slow decoding. The draft runs them for every token it proposes, even those the target discards. SPIRIT tests a configuration by generating the next part of the response with it. It ranks skip ratios, then layer patterns, by <strong>committed tokens per second</strong>. When workloads shift, short probes show which configurations are worth reusing.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
       </div>
 
       <figure class="ov-film" data-overview-demo aria-label="How SPIRIT adapts a self-draft">
