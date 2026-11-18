@@ -42,10 +42,10 @@
   <link rel="stylesheet" href="/spirit/project.css?v=a123fbb2bfcd">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
   <link rel="stylesheet" href="/spirit/model-flow.css?v=52bce2cc7c36">
-  <link rel="stylesheet" href="/spirit/overview.css?v=35ef51e874cc">
+  <link rel="stylesheet" href="/spirit/overview.css?v=2dfd31875e8a">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=72e3b1f3feaf" defer></script>
+  <script src="/spirit/overview.js?v=e4d0469a58f6" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -98,7 +98,7 @@
           <fieldset class="animation-views">
             <legend>Animation view</legend>
             <input type="radio" name="overview-view" id="show-model" value="model" aria-controls="model-flow" autocomplete="off" checked><label for="show-model">Model flow</label>
-            <input type="radio" name="overview-view" id="show-example" value="example" aria-controls="worked-example" autocomplete="off"><label for="show-example">Worked example</label>
+            <input type="radio" name="overview-view" id="show-example" value="example" aria-controls="worked-example" autocomplete="off"><label for="show-example">Example</label>
           </fieldset>
           <button class="film-play" type="button" hidden aria-label="Play animation" data-playing="false"><span class="film-control-icon" aria-hidden="true"></span><span data-play-label>Play</span></button>
         </div>
@@ -229,17 +229,23 @@
                   <span class="reuse-flight" aria-hidden="true"><span class="reuse-card card-b">B</span></span>
                 </div>
                 <div class="recall-result">
-                  <div class="reuse-module">
+                  <div class="reuse-module" aria-hidden="true">
                     <div class="module-face">
-                      <span class="reuse-socket" aria-hidden="true"><span class="reuse-card card-a">A</span><span class="reuse-card card-b">B</span></span>
-                      <strong>Active self-draft</strong>
-                      <i class="module-light" aria-hidden="true"></i>
+                      <span class="reuse-socket"><span class="reuse-card card-a">A</span><span class="reuse-card card-b">B</span></span>
+                    </div>
+                  </div>
+                  <div class="draft-readout">
+                    <strong>Active self-draft</strong>
+                    <div class="draft-status">
+                      <span class="status-initial">Using profile A</span>
+                      <span class="status-loading">Restoring profile B…</span>
+                      <span class="status-restored">B’s saved skip ratio and layer pattern are active.</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <p class="film-caption">B fits its own history more closely, earns a higher probe score and clears the throughput check. B’s saved skip ratio and layer pattern now drive the self-draft for this request.</p>
+            <p class="film-caption">B fits its own history more closely, earns a higher probe score and clears the throughput check. SPIRIT can therefore switch to B on this request.</p>
           </section>
         </div>
           <div class="film-chapters" hidden role="group" aria-label="Animation chapters">

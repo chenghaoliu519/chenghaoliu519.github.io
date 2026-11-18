@@ -162,7 +162,8 @@
     segment(view.querySelector(".stored-profile"), .50, .57,
       {backgroundColor:"transparent"}, {backgroundColor:"#edf6f2"});
     const socket = view.querySelector(".reuse-socket");
-    segment(socket.querySelector(".card-a"), .55, .60, {opacity:1}, {opacity:0});
+    segment(socket.querySelector(".card-a"), .62, .68,
+      {opacity:1, transform:"none"}, {opacity:0, transform:"translateY(2px) scale(.9)"});
 
     // The travel distance is the stored row's height plus the difference in
     // padding. Percentage transforms keep both endpoints aligned on resize.
@@ -175,12 +176,14 @@
       {offset:1, opacity:0, transform:atSlot}
     ]);
     segment(socket.querySelector(".card-b"), .685, .69, {opacity:0}, {opacity:1});
-    const module = view.querySelector(".reuse-module");
-    segment(module, .69, .74, {color:"#758898"}, {color:"#39775f"});
-    track(module.querySelector(".module-light"), [
-      {offset:0, opacity:1}, {offset:.55, opacity:1}, {offset:.60, opacity:.15},
-      {offset:.69, opacity:.15}, {offset:.74, opacity:1}, {offset:1, opacity:1}
+    const full = {opacity:1}, hidden = {opacity:0};
+    segment(view.querySelector(".status-initial"), .54, .56, full, hidden);
+    track(view.querySelector(".status-loading"), [
+      {offset:0, opacity:0}, {offset:.56, opacity:0}, {offset:.59, opacity:1},
+      {offset:.69, opacity:1}, {offset:.72, opacity:0}, {offset:1, opacity:0}
     ]);
+    segment(view.querySelector(".status-restored"), .72, .75, hidden, full);
+    segment(view.querySelector(".reuse-module"), .69, .74, {color:"#8293a2"}, {color:"#39775f"});
   }
 
   const draw = {decode, adapt, reuse};
