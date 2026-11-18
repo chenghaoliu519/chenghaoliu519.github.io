@@ -39,7 +39,7 @@
   <link rel="stylesheet" href="/styles.css?v=f1f653503638">
   <link rel="stylesheet" href="/theme.css?v=99513c42055d">
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
-  <link rel="stylesheet" href="/spirit/project.css?v=a123fbb2bfcd">
+  <link rel="stylesheet" href="/spirit/project.css?v=48126fdbcdce">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
   <link rel="stylesheet" href="/spirit/model-flow.css?v=cdc7d652500b">
   <link rel="stylesheet" href="/spirit/overview.css?v=d03d2d135263">
@@ -90,7 +90,7 @@
     <section class="project-overview research-panel" id="overview" aria-labelledby="overview-heading">
       <div class="overview-intro">
         <div><p class="ov-eyebrow">Speed-driven adaptation</p><h2 id="overview-heading">Turn runtime feedback into <span>faster decoding.</span></h2></div>
-        <div class="ov-intro-copy"><p class="ov-lead">High acceptance alone does not guarantee fast decoding. SPIRIT learns from <strong>realized throughput</strong> to adapt its self-draft—while productive decoding windows keep generating useful output.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
+        <div class="ov-intro-copy"><p class="ov-lead">A draft with higher acceptance can still slow decoding if the extra time spent drafting outweighs the time saved in verification. SPIRIT tests drafts while generating the response, using <strong>committed tokens per second</strong> to choose a skip ratio and then refine the layer pattern. It can reuse an effective configuration when a similar workload returns.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
       </div>
 
       <figure class="ov-film" data-overview-demo aria-label="How SPIRIT adapts a self-draft">
@@ -306,7 +306,6 @@
           </div>
         </div>
       </section>
-      <details class="project-abstract"><summary>Read the abstract<span aria-hidden="true">+</span></summary><p>Self-speculative decoding offers a plug-and-play route to accelerating autoregressive large language model (LLM) inference, but its practical success hinges on identifying effective layer-skipping configurations online without retraining or offline profiling. Existing methods mainly optimize agreement-based proxies that capture draft–target consistency, yet overlook intrinsic runtime differences across draft configurations. Consequently, configurations with similar acceptance can still yield substantially different realized decode throughput. We present SPIRIT, a speed-driven online adaptation framework for self-speculative decoding that directly optimizes realized decode throughput—measured as generated tokens per second—using window-level runtime feedback. Our key insight is that speed is not determined by agreement alone: it is jointly shaped by draft–target consistency and the intrinsic speed advantage of the draft configuration. Empirically, the skip ratio serves as a first-order control variable, capturing the dominant consistency–speed trade-off while sharply shrinking the search space over layer-skipping patterns. SPIRIT therefore first identifies an effective skip ratio and then refines the layer-skipping pattern within it. Combined with length-aware normalization and shift-aware profile-based adaptation, this design enables rapid adaptation to task shifts in non-stationary request streams. Across diverse tasks, model scales, and serving regimes, SPIRIT consistently outperforms strong training-free baselines and achieves up to 1.74× speedup with FP16 self-drafts and 2.48× with NF4 self-drafts while preserving the target model’s output distribution, establishing a practical foundation for plug-and-play, high-throughput LLM inference.</p></details>
     </section>
 
 

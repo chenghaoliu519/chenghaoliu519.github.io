@@ -331,7 +331,6 @@ def build_overview():
         'overview_peak': f"{max(run[-1] for run in values['runs'].values()):.2f}",
         'overview_fp16': f"{max(row['speedup'] for row in spirit):.2f}",
         'overview_wins': str(wins),
-        'abstract': esc((ROOT/'scripts/research/abstract.txt').read_text().strip()),
     }
     rendered = (ROOT/'scripts/research/overview.html').read_text()
     for key, value in replacements.items():
@@ -347,7 +346,6 @@ def build_project():
     replacements={
         'research_panels':panels,
         'overview':build_overview(),
-        'abstract':esc((ROOT/'scripts/research/abstract.txt').read_text().strip()),
         'citation':esc((ROOT/'spirit/spirit.bib').read_text().strip()),
     }
     assets={

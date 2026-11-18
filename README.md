@@ -250,7 +250,7 @@ the image content changes. Preview refresh timing depends on the sharing platfor
 https://chenghaoliu519.github.io/spirit/ is the paper's canonical standalone URL.
 The homepage links to this exact address; its existing collapsed research details
 are retained. The project page adds the paper title, authors, affiliation,
-abstract, material links, citation, and its own sharing image.
+material links, citation, and its own sharing image.
 
 The title uses a generous type size. A compact masthead places the unlinked
 NeurIPS mark and year at the upper left and the linked UTA primary logo at the
@@ -293,8 +293,8 @@ browser history; arrow keys, Home/End, and Space replace the current fragment.
 Direct links reveal the required view, disclosure, and chart range before
 scrolling. Search and profile-reuse details start closed.
 
-The project wrapper lives in scripts/research/project.html; its abstract is
-in scripts/research/abstract.txt. The standalone shell, research layout, and
+The project wrapper lives in scripts/research/project.html. The Overview lead
+in scripts/research/overview.html summarizes the paper. The standalone shell, research layout, and
 behavior live in spirit/project.css, spirit/content.css, and spirit/project.js.
 The renderer builds both index.html and spirit/index.html from shared research
 templates and frozen data. It reuses the homepage's overview diagram and versions
@@ -315,7 +315,7 @@ vertically; configuration, equation, and profile diagrams retain their scientifi
 meaning. Repeated metric rows, chapter numbers, navigation hints, and previous/
 next footers are omitted. Scientific SVGs and figure captions are unchanged.
 
-The abstract, citation, search details, and profile-reuse details use native
+The citation, search details, and profile-reuse details use native
 disclosures. Architecture and HumanEval evidence is a supplementary disclosure
 that starts closed after enhancement and opens when directly linked. Without
 JavaScript, all reading views and experiment subpages are visible, and the
