@@ -52,14 +52,43 @@
 .ov-profile { display:grid; grid-template-columns:repeat(3,4px); gap:3px; padding:7px; border:1px solid var(--rule); border-radius:5px; background:var(--surface); transition:background .4s,border-color .4s,transform .4s; }
 .ov-profile i { width:4px; height:7px; border:1px solid var(--diagram-line); border-radius:1px; }
 .ov-profile i.filled { border-color:var(--connector); background:var(--connector); }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-profile-1 { transform:translateY(-3px); background:var(--ov-teal-soft); border-color:var(--ov-teal); }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-profile-1 i.filled { background:var(--ov-teal); border-color:var(--ov-teal); }
-.ov-demo[data-step="reuse"] .ov-memory strong { color:var(--ov-teal); }
 .ov-profile-route,.ov-demo[data-step="reuse"] .ov-window-route { display:none; }
 .ov-demo[data-step="reuse"] .ov-profile-route { display:inline; }
 .ov-demo[data-step="adapt"] .ov-feedback-label { color:var(--accent); }
 .ov-demo[data-step="reuse"] .ov-feedback-label { color:var(--ov-teal); }
 .ov-demo[data-step="reuse"] .ov-feedback-trace { stroke:var(--ov-teal); }
+/* Keep the model in place while the controller changes chapters. */
+.ov-controller-space { display:grid; }
+.ov-controller-space > * { grid-area:1/1; min-width:0; }
+.ov-reuse-controller { visibility:hidden; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; column-gap:12px; padding:8px 16px; border:1px solid var(--rule); border-radius:10px; background:var(--paper); }
+.ov-demo[data-step="reuse"] .ov-controller { visibility:hidden; }
+.ov-demo[data-step="reuse"] .ov-reuse-controller { visibility:visible; }
+.ov-head-reading { min-width:0; display:grid; grid-template-columns:auto minmax(34px,72px); align-items:center; justify-content:start; column-gap:12px; }
+.ov-head-reading .ov-controller-label { grid-column:1/-1; }
+.ov-head-reading strong { color:var(--ink); font-size:12px; font-weight:550; line-height:1.6; }
+.ov-mismatch-scale { position:relative; display:block; height:3px; border-radius:2px; background:var(--rule); }
+.ov-mismatch-scale::before { content:""; position:absolute; inset:-2px 45% -2px 0; border-radius:2px; background:var(--diagram-line); }
+.ov-mismatch-scale i { position:absolute; top:50%; left:calc(28% + 54% * var(--ov-head-drift, 0)); width:7px; height:7px; border:1px solid var(--paper); border-radius:50%; background:var(--accent); transform:translate(-50%,-50%); }
+.ov-probe-bank,.ov-bank-options,.ov-bank-profile { display:flex; align-items:center; }
+.ov-probe-bank { gap:12px; padding-left:16px; border-left:1px solid var(--rule); }
+.ov-bank-options { gap:5px; }
+.ov-bank-profile { gap:4px; min-height:34px; padding:2px 8px 2px 5px; border:1px solid var(--rule); border-radius:6px; color:var(--muted); background:var(--surface); }
+.ov-bank-profile b,.ov-draft-id { font-size:10px; font-weight:600; }
+.ov-bank-stack { width:34px; height:26px; }
+.ov-bank-stack .ov-stack-shadow,.ov-bank-stack .ov-stack-spine { display:none; }
+.ov-bank-stack .ov-layer { fill:none; stroke:var(--connector); stroke-dasharray:5 5; stroke-width:2; }
+.ov-bank-stack .ov-bank-kept { fill:var(--accent-soft); stroke:currentColor; stroke-dasharray:none; stroke-width:3; }
+.ov-demo[data-beat="monitor"] .ov-bank-profile[data-profile="A"],
+.ov-demo[data-beat="probe"] .ov-bank-profile { color:var(--accent); border-color:var(--connector); }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-bank-profile[data-profile="B"],
+.ov-demo[data-beat="recall"] .ov-draft-id { color:var(--ov-teal); border-color:var(--ov-teal); background:var(--ov-teal-soft); }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-bank-profile[data-profile="B"] .ov-bank-kept { fill:var(--ov-teal-soft); }
+.ov-draft-id { display:none; vertical-align:1px; min-width:16px; line-height:14px; border:1px solid var(--connector); border-radius:4px; color:var(--accent); background:var(--accent-soft); }
+.ov-demo[data-step="reuse"] .ov-draft-id { display:inline-block; }
+.ov-demo[data-step="reuse"] .ov-feedback-arrow { display:none; }
+.ov-profile-arrow { stroke:var(--connector); }
+.ov-demo[data-beat="recall"] .ov-profile-arrow { stroke:var(--ov-teal); }
+
 @media (max-width:740px) {
  .ov-controller { gap:14px; padding-inline:12px; }
  .ov-runtime { grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr); }
@@ -67,6 +96,14 @@
  .ov-profile { padding:5px; }
 }
 @media (max-width:520px) {
+ .ov-reuse-controller { padding:7px 10px; column-gap:8px; }
+ .ov-head-reading { grid-template-columns:auto; gap:0; }
+ .ov-head-reading strong { font-size:11px; line-height:1.6; }
+ .ov-mismatch-scale { width:51px; margin:4px 0 3px; }
+ .ov-probe-bank { gap:3px; padding-left:10px; flex-direction:column; align-items:flex-start; }
+ .ov-bank-profile { gap:3px; min-height:25px; padding:1px 6px 1px 3px; }
+ .ov-bank-stack { width:26px; height:21px; }
+ .ov-draft-id { min-width:14px; font-size:9px; line-height:12px; }
  .ov-demo-graph { padding-top:14px; }
  .ov-runtime { grid-template-columns:minmax(0,1fr) 16px minmax(0,1fr) 16px minmax(0,1fr); }
  .ov-node-art { width:98px; height:84px; margin-bottom:5px; }

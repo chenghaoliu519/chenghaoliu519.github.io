@@ -15,9 +15,9 @@
         </div>
 
         <div class="ov-demo" id="model-flow" data-step="decode" data-beat="commit">
-        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. Across requests, head evidence helps reuse, refine, or restart a profile.">
+        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. Across requests, compatible heads keep their active profile. In the reuse scene, a shift under A triggers probes on the same head. B passes the switch checks and its saved skip ratio and layer pattern are restored to the self-draft.">
           <div class="ov-runtime">
-            <div class="ov-node ov-draft"><div class="ov-node-art"><svg class="ov-stack ov-stack-draft" viewBox="0 0 160 112" aria-hidden="true"><ellipse class="ov-stack-shadow" cx="80" cy="100" rx="48" ry="8"/><path class="ov-layer" data-layer="5" data-kept d="M24 85 80 68 136 85 80 102Z"/><path class="ov-layer" data-layer="4" d="M24 72 80 55 136 72 80 89Z"/><path class="ov-layer" data-layer="3" d="M24 59 80 42 136 59 80 76Z"/><path class="ov-layer" data-layer="2" data-kept d="M24 46 80 29 136 46 80 63Z"/><path class="ov-layer" data-layer="1" d="M24 33 80 16 136 33 80 50Z"/><path class="ov-layer" data-layer="0" data-kept d="M24 20 80 3 136 20 80 37Z"/><path class="ov-stack-spine" d="M80 4v96"/></svg></div><strong>Self-draft</strong><span data-skip-count>3 of 6 sublayers skipped</span></div>
+            <div class="ov-node ov-draft"><div class="ov-node-art"><svg class="ov-stack ov-stack-draft" viewBox="0 0 160 112" aria-hidden="true"><ellipse class="ov-stack-shadow" cx="80" cy="100" rx="48" ry="8"/><path class="ov-layer" data-layer="5" data-kept d="M24 85 80 68 136 85 80 102Z"/><path class="ov-layer" data-layer="4" d="M24 72 80 55 136 72 80 89Z"/><path class="ov-layer" data-layer="3" d="M24 59 80 42 136 59 80 76Z"/><path class="ov-layer" data-layer="2" data-kept d="M24 46 80 29 136 46 80 63Z"/><path class="ov-layer" data-layer="1" d="M24 33 80 16 136 33 80 50Z"/><path class="ov-layer" data-layer="0" data-kept d="M24 20 80 3 136 20 80 37Z"/><path class="ov-stack-spine" d="M80 4v96"/></svg></div><strong>Self-draft <span class="ov-draft-id" aria-hidden="true">A</span></strong><span data-skip-count>3 of 6 sublayers skipped</span></div>
             <div class="ov-wire ov-wire-draft" aria-hidden="true"><span>propose</span><i></i></div>
             <div class="ov-node ov-verifier"><div class="ov-node-art"><svg class="ov-stack ov-stack-verifier" viewBox="0 0 160 112" aria-hidden="true"><ellipse class="ov-stack-shadow" cx="80" cy="100" rx="48" ry="8"/><path class="ov-layer ov-layer-5" d="M24 85 80 68 136 85 80 102Z"/><path class="ov-layer ov-layer-4" d="M24 72 80 55 136 72 80 89Z"/><path class="ov-layer ov-layer-3" d="M24 59 80 42 136 59 80 76Z"/><path class="ov-layer ov-layer-2" d="M24 46 80 29 136 46 80 63Z"/><path class="ov-layer ov-layer-1" d="M24 33 80 16 136 33 80 50Z"/><path class="ov-layer ov-layer-0" d="M24 20 80 3 136 20 80 37Z"/><path class="ov-stack-spine" d="M80 4v96"/></svg><span class="ov-verify-scan"></span></div><strong>Full target</strong><span>Verify the draft</span></div>
             <div class="ov-wire ov-wire-verify" aria-hidden="true"><span>commit</span><i></i></div>
@@ -32,15 +32,32 @@
               <g class="ov-profile-route">
                 <path class="ov-feedback-route" d="M568 44q0-11-12-11H132q-12 0-12-12V1"/>
                 <path class="ov-feedback-trace" pathLength="1" d="M568 44q0-11-12-11H132q-12 0-12-12V1"/>
+                <path class="ov-profile-arrow" d="m116 7 4-5 4 5"/>
               </g>
               <path class="ov-feedback-arrow" d="m116 7 4-5 4 5"/>
             </svg>
             <span class="ov-feedback-label">Committed tokens per decode second</span>
           </div>
+          <div class="ov-controller-space">
           <div class="ov-controller">
             <div class="ov-search"><span class="ov-controller-label">Calibrate throughput</span><div><span class="ov-ratio">Skip ratio</span><b aria-hidden="true">→</b><span class="ov-pattern">Layer pattern</span></div></div>
             <span class="ov-controller-divider" aria-hidden="true"></span>
             <div class="ov-memory"><div><span class="ov-controller-label">Across requests</span><strong>Recall useful profiles</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true"><i class="filled"></i><i class="filled"></i><i></i><i></i><i class="filled"></i><i></i></span><span class="ov-profile ov-profile-1" aria-hidden="true"><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i><i class="filled"></i></span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i class="filled"></i></span></div></div>
+          </div>
+          <div class="ov-reuse-controller">
+            <div class="ov-head-reading">
+              <span class="ov-controller-label">Request head</span>
+              <strong data-head-reading>Checking profile A</strong>
+              <span class="ov-mismatch-scale" aria-hidden="true"><i></i></span>
+            </div>
+            <div class="ov-probe-bank">
+              <span class="ov-controller-label">Profile bank</span>
+              <div class="ov-bank-options" aria-hidden="true">
+                <span class="ov-bank-profile" data-profile="A"><b>A</b></span>
+                <span class="ov-bank-profile" data-profile="B"><b>B</b></span>
+              </div>
+            </div>
+          </div>
           </div>
         </div>
           <div class="model-caption">
@@ -48,7 +65,7 @@
           <div class="ov-step-stories" data-overview-stories hidden>
             <p data-overview-copy="decode">The self-draft proposes tokens, and the full target verifies them. SPIRIT measures how many tokens the window commits per second.</p>
             <p data-overview-copy="adapt" aria-hidden="true">SPIRIT adjusts for prefix length, then uses throughput to choose how much to skip. At the selected ratio, it tests which sublayers to skip.</p>
-            <p data-overview-copy="reuse" aria-hidden="true">Throughput and acceptance at the start of a request help identify a compatible profile. Here SPIRIT restores its stored layer pattern.</p>
+            <p data-overview-copy="reuse" aria-hidden="true">If early throughput and acceptance fit A’s history, A stays active. Here they drift. B fits its own history better, scores higher on the same head and clears the throughput check.</p>
           </div>
           </div>
         </div>

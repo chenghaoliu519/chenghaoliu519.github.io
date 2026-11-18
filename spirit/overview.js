@@ -13,7 +13,7 @@
   const renderModel = createModelRenderer(model);
   let example = figure.querySelector("#show-example").checked;
   function chapterDuration(index) {
-    if (!example) return 5200;
+    if (!example) return buttons[index].dataset.chapter === "reuse" ? 7600 : 5200;
     return {decode:10000, adapt:11000, reuse:9000}[buttons[index].dataset.chapter];
   }
   let duration = chapterDuration(0);
@@ -40,6 +40,42 @@
       .flatMap((cell, i) => cell.classList.contains("filled") ? [i] : []);
     const coarse = [0, 5];
     const refined = [0, 3];
+    const profileA = demo.querySelector('[data-profile="A"]');
+    const profileB = demo.querySelector('[data-profile="B"]');
+    const draft = demo.querySelector(".ov-stack-draft");
+    const draftId = demo.querySelector(".ov-draft-id");
+    const headReading = demo.querySelector("[data-head-reading]");
+    // Use the model's own geometry and masks for the two saved configurations.
+    for (const [card, mask] of [[profileA, refined], [profileB, recalled]]) {
+      const stack = draft.cloneNode(true);
+      stack.setAttribute("class", "ov-bank-stack");
+      stack.querySelectorAll("[data-layer]").forEach(layer => {
+        layer.classList.toggle("ov-bank-kept", mask.includes(Number(layer.dataset.layer)));
+        layer.removeAttribute("data-layer");
+        layer.removeAttribute("data-kept");
+      });
+      card.prepend(stack);
+    }
+
+    const loop = demo.querySelector(".ov-feedback-loop svg");
+    const route = loop.querySelector(".ov-profile-route");
+    const routePaths = route.querySelectorAll(".ov-feedback-route, .ov-feedback-trace");
+    const arrow = route.querySelector(".ov-profile-arrow");
+    function alignRecallPath() {
+      if (demo.dataset.step !== "reuse") return;
+      const bounds = loop.getBoundingClientRect();
+      if (!bounds.width) return;
+      const center = element => {
+        const rect = element.getBoundingClientRect();
+        return Math.round((rect.left + rect.width / 2 - bounds.left) * 720 / bounds.width);
+      };
+      const from = center(profileB), to = center(draft);
+      const path = `M${from} 44q0-11-12-11H${to + 12}q-12 0-12-12V2`;
+      routePaths.forEach(line => line.setAttribute("d", path));
+      arrow.setAttribute("d", `M${to - 4} 7l4-5 4 5`);
+    }
+    if ("ResizeObserver" in window) new ResizeObserver(alignRecallPath).observe(loop);
+
     const scenes = {
       decode: [
         { at: 0, beat: "draft", layers: recalled, label: "Committed tokens per decode second" },
@@ -52,9 +88,10 @@
         { at: .65, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" }
       ],
       reuse: [
-        { at: 0, beat: "compare", layers: refined, label: "Compare throughput and acceptance" },
-        { at: .48, beat: "match", layers: refined, label: "Select a compatible profile" },
-        { at: .78, beat: "recall", layers: recalled, label: "Restore its layer pattern" }
+        { at: 0, beat: "monitor", layers: refined, label: "Read throughput and acceptance" },
+        { at: .22, beat: "probe", layers: refined, label: "Probe both profiles on the same head" },
+        { at: .54, beat: "match", layers: refined, label: "B passes the switch checks" },
+        { at: .82, beat: "recall", layers: recalled, label: "Restore B’s skip ratio and layer pattern" }
       ]
     };
     let scene = null;
@@ -69,8 +106,15 @@
       }
       if (next !== scene) {
         scene = next;
+        const enteringReuse = step === "reuse" && demo.dataset.step !== "reuse";
         data("step", step);
         data("beat", scene.beat);
+        if (step === "reuse") {
+          const restored = scene.beat === "recall";
+          draftId.textContent = restored ? "B" : "A";
+          headReading.textContent = scene.beat === "monitor" ? "Checking profile A" : "Outside A’s range";
+          if (enteringReuse) alignRecallPath();
+        }
         draftLayers.forEach(layer => {
           layer.toggleAttribute("data-kept", scene.layers.includes(Number(layer.dataset.layer)));
         });
@@ -82,7 +126,10 @@
       demo.style.setProperty("--ov-verify-flight", clamp((progress - .32) / .3).toFixed(4));
       let feedback = 0;
       if (step === "adapt") feedback = clamp(progress / .32);
-      if (step === "reuse") feedback = clamp((progress - .48) / .30);
+      if (step === "reuse") {
+        feedback = clamp((progress - .54) / .28);
+        demo.style.setProperty("--ov-head-drift", clamp((progress - .08) / .14).toFixed(4));
+      }
       demo.style.setProperty("--ov-feedback", feedback.toFixed(4));
       const committed = step === "decode" ? Math.floor(clamp((progress - .62) / .3) * tokens.length) : tokens.length;
       tokens.forEach((token, i) => {
