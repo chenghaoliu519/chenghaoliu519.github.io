@@ -1,7 +1,7 @@
     <section class="project-overview research-panel" id="overview" aria-labelledby="overview-heading">
       <div class="overview-intro">
-        <div><p class="ov-eyebrow">Speed-driven adaptation</p><h2 id="overview-heading"><span>Which layers</span> should the draft skip?</h2></div>
-        <div class="ov-intro-copy"><p class="ov-lead">Drafts with similar acceptance rates can take different amounts of time to run. SPIRIT measures <strong>output tokens per second</strong> during generation to choose a skip ratio, then refines which sublayers to skip.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
+        <h2 id="overview-heading"><span>Measured throughput</span> guides draft selection.</h2>
+        <div class="ov-intro-copy"><p class="ov-lead">SPIRIT measures <strong>committed tokens per second</strong> during generation to tune the draft’s skip ratio and layer pattern. When a familiar workload returns, it can reuse a configuration that worked before.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
       </div>
 
       <figure class="ov-film" data-overview-demo aria-label="How SPIRIT adapts a self-draft">

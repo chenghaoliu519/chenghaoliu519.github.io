@@ -3,7 +3,7 @@
 :root[data-theme="dark"] .project-overview { --ov-teal:#80d4c5; --ov-teal-soft:#14322f; --ov-blue-wash:#142233; }
 .ov-eyebrow { margin:0; color:var(--muted); font-size:10px; font-weight:500; line-height:1.6; letter-spacing:.1em; text-transform:uppercase; }
 .overview-intro { display:grid; grid-template-columns:1fr 1.13fr; align-items:center; gap:42px; margin-bottom:26px; }
-.overview-intro h2 { margin:10px 0 0; color:var(--ink); font-size:32px; font-weight:550; line-height:1.22; letter-spacing:-.8px; text-wrap:balance; }
+.overview-intro h2 { margin:0; color:var(--ink); font-size:32px; font-weight:550; line-height:1.22; letter-spacing:-.8px; text-wrap:balance; }
 .overview-intro h2 span { color:var(--accent); }
 .ov-lead { margin:0; color:var(--muted); font-size:14px; line-height:1.8; }
 .ov-lead strong { color:var(--ink); font-weight:500; }
@@ -313,10 +313,12 @@
 .ov-contributions h4 { margin:0 0 7px; color:var(--ink); font-size:13px; font-weight:550; line-height:1.5; }
 .ov-contributions p { margin:0; color:var(--muted); font-size:12px; line-height:1.75; }
 .ov-contributions a { color:var(--accent); text-underline-offset:3px; white-space:nowrap; }
-@media (max-width:740px) {
+@media (max-width:820px) {
  .overview-intro { grid-template-columns:1fr; gap:16px; margin-bottom:24px; }
  .overview-intro h2 { max-width:540px; }
  .ov-intro-copy { max-width:600px; }
+}
+@media (max-width:740px) {
  .ov-properties { font-size:11px; gap:7px 18px; }
  .ov-achievement { padding:24px; }
  .ov-performance strong { font-size:66px; }

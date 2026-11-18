@@ -42,7 +42,7 @@
   <link rel="stylesheet" href="/spirit/project.css?v=a123fbb2bfcd">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
   <link rel="stylesheet" href="/spirit/model-flow.css?v=cdc7d652500b">
-  <link rel="stylesheet" href="/spirit/overview.css?v=d03d2d135263">
+  <link rel="stylesheet" href="/spirit/overview.css?v=65ecb559f691">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
   <script src="/spirit/overview.js?v=464d439dd489" defer></script>
@@ -89,8 +89,8 @@
     <section class="project-research summary-content" id="research" aria-label="Research">
     <section class="project-overview research-panel" id="overview" aria-labelledby="overview-heading">
       <div class="overview-intro">
-        <div><p class="ov-eyebrow">Speed-driven adaptation</p><h2 id="overview-heading"><span>Which layers</span> should the draft skip?</h2></div>
-        <div class="ov-intro-copy"><p class="ov-lead">Drafts with similar acceptance rates can take different amounts of time to run. SPIRIT measures <strong>output tokens per second</strong> during generation to choose a skip ratio, then refines which sublayers to skip.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
+        <h2 id="overview-heading"><span>Measured throughput</span> guides draft selection.</h2>
+        <div class="ov-intro-copy"><p class="ov-lead">SPIRIT measures <strong>committed tokens per second</strong> during generation to tune the draft’s skip ratio and layer pattern. When a familiar workload returns, it can reuse a configuration that worked before.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
       </div>
 
       <figure class="ov-film" data-overview-demo aria-label="How SPIRIT adapts a self-draft">
