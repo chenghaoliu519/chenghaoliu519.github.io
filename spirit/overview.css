@@ -11,9 +11,7 @@
 .ov-properties li { display:flex; align-items:center; gap:6px; }
 .ov-properties li::before { content:""; width:4px; height:7px; margin:0 2px 3px; border:solid var(--ov-teal); border-width:0 1.4px 1.4px 0; transform:rotate(45deg); }
 .project-overview :is(a,button):focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:4px; }
-.ov-text-link { display:inline-flex; align-items:center; gap:10px; min-height:40px; color:var(--accent); text-decoration:none; font-size:12px; font-weight:500; white-space:nowrap; }
-.ov-text-link:hover, .film-footer a:hover { text-decoration:underline; text-underline-offset:4px; }
-.ov-text-link > span { font-size:16px; }
+.film-footer a:hover { text-decoration:underline; text-underline-offset:4px; }
 /* Three chapters share a canvas. Each example keeps its own spatial reference. */
 .ov-film {
   margin:0; padding:18px 24px 12px; border:1px solid var(--rule); border-radius:18px;
@@ -315,8 +313,6 @@
 .ov-contributions h4 { margin:0 0 7px; color:var(--ink); font-size:13px; font-weight:550; line-height:1.5; }
 .ov-contributions p { margin:0; color:var(--muted); font-size:12px; line-height:1.75; }
 .ov-contributions a { color:var(--accent); text-underline-offset:3px; white-space:nowrap; }
-.ov-impact-footer { display:flex; align-items:center; justify-content:space-between; gap:25px; margin-top:23px; }
-.ov-impact-footer > p { max-width:550px; margin:0; color:var(--muted); font-size:10px; line-height:1.8; }
 @media (max-width:740px) {
  .overview-intro { grid-template-columns:1fr; gap:16px; margin-bottom:24px; }
  .overview-intro h2 { max-width:540px; }
@@ -346,9 +342,6 @@
  .ov-contributions article + article { border-top:1px solid var(--rule); padding-top:12px; }
  .ov-contributions h4 { font-size:12px; margin:0 0 4px; }
  .ov-contributions p { font-size:11px; }
- .ov-impact-footer { display:block; margin-top:18px; }
- .ov-impact-footer > p { font-size:9px; }
- .ov-impact-footer .ov-text-link { margin-top:5px; font-size:11px; }
 }
 @media (max-width:360px) {
  .overview-intro h2 { font-size:27px; }
