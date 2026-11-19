@@ -16,7 +16,7 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
 .project-navigation .theme-toggle { grid-column:3; justify-self:end; width:36px; height:36px; padding:8px; }
 .project-conference { display:inline-flex; align-items:center; gap:8px; min-height:36px; color:var(--ink); font-size:12px; font-weight:500; line-height:20px; white-space:nowrap; }
 .conference-year { color:var(--muted); font-weight:400; }
-.project-conference img { display:block; width:36px; height:36px; border-radius:4px; background:#fff; }
+.project-conference img { display:block; width:48px; height:48px; border-radius:4px; background:#fff; }
 
 .project-hero { padding:24px 0; text-align:center; }
 .project-hero h1 { max-width:900px; margin:0 auto 18px; font-size:38px; font-weight:500; line-height:1.28; letter-spacing:-.8px; text-wrap:balance; }
@@ -69,7 +69,7 @@ html:has(.project-page) { scroll-padding-top:0; scroll-behavior:auto; }
   .project-page { --project-header-offset:53px; }
   .project-shell, .project-header { padding-inline:22px; }
   .project-conference { gap:6px; font-size:11px; }
-  .project-conference img { width:32px; height:32px; }
+  .project-conference img { width:40px; height:40px; }
   .project-navigation-inner { grid-template-columns:1fr auto; min-height:52px; gap:20px; }
   .project-topic-tabs { grid-column:1; width:100%; justify-content:space-between; gap:12px; }
   .project-topic-tabs a { min-height:52px; padding-inline:0; font-size:12px; }

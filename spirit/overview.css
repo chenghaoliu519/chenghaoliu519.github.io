@@ -11,14 +11,13 @@
 .ov-properties li { display:flex; align-items:center; gap:6px; }
 .ov-properties li::before { content:""; width:4px; height:7px; margin:0 2px 3px; border:solid var(--ov-teal); border-width:0 1.4px 1.4px 0; transform:rotate(45deg); }
 .project-overview :is(a,button):focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:4px; }
-.film-footer a:hover { text-decoration:underline; text-underline-offset:4px; }
 /* Three chapters share a canvas. Each example keeps its own spatial reference. */
 .ov-film {
   margin:0; padding:18px 24px 12px; border:1px solid var(--rule); border-radius:18px;
   background:var(--paper); box-shadow:0 8px 28px rgb(20 39 67 / 4%);
 }
 .ov-film [hidden] { display:none !important; }
-.film-toolbar,.film-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.film-toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; }
 .animation-views { position:relative; display:inline-grid; grid-template-columns:repeat(2,minmax(0,1fr)); min-width:0; gap:2px; padding:3px; margin:0; background:var(--surface); border:1px solid var(--rule); border-radius:10px; }
 .animation-views legend,.animation-views input { position:absolute; width:1px; height:1px; padding:0; margin:-1px; clip-path:inset(50%); overflow:hidden; white-space:nowrap; }
 .animation-views label { display:grid; place-items:center; min-height:36px; padding:4px 13px; border-radius:7px; color:var(--muted); font-size:12px; font-weight:500; cursor:pointer; }
@@ -227,8 +226,6 @@
 .status-restored { color:#2d6653; }
 .film-scene .film-caption { color:var(--muted); font-size:13px; line-height:1.7; margin:14px 0 0; }
 .film-footer { padding-top:10px; color:var(--muted); font-size:10px; line-height:1.5; }
-.film-footer a { display:inline-flex; align-items:center; min-height:34px; gap:6px; color:var(--accent); text-decoration:none; white-space:nowrap; }
-.film-footer a:hover { text-decoration:underline; }
 @media (max-width:560px) {
   .ov-film { padding:12px 12px 8px; border-radius:13px; }
   .animation-views label { padding:4px 8px; font-size:11px; }
