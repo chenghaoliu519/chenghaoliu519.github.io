@@ -90,7 +90,7 @@
     <section class="project-overview research-panel" id="overview" aria-labelledby="overview-heading">
       <div class="overview-intro">
         <div><p class="ov-eyebrow">Speed-driven adaptation</p><h2 id="overview-heading">Turn runtime feedback into <span>faster decoding.</span></h2></div>
-        <div class="ov-intro-copy"><p class="ov-lead">In speculative decoding, optimizing for draft–target agreement alone can reduce throughput when a closer match comes at the expense of intrinsic draft speed. SPIRIT finds faster self-drafts within the target model by measuring <strong>committed tokens per second</strong> as each candidate extends the response. It can reuse a draft when later requests show similar decoding behavior.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
+        <div class="ov-intro-copy"><p class="ov-lead">In speculative decoding, optimizing for draft–target agreement alone can reduce throughput when a closer match comes at the expense of intrinsic draft speed. SPIRIT optimizes the target model’s self-draft as it generates the response, using each decoding window’s <strong>committed tokens per second</strong> to guide the next refinement. Across requests, it adapts to workload shifts by probing earlier drafts, reusing or refining a match and restarting the search when none fits.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
       </div>
 
       <figure class="ov-film" data-overview-demo aria-label="How SPIRIT adapts a self-draft">
