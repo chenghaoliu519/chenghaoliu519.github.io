@@ -311,7 +311,7 @@
 .ov-contributions article { min-width:0; }
 .ov-contributions h4 { margin:0 0 7px; color:var(--ink); font-size:13px; font-weight:550; line-height:1.5; }
 .ov-contributions p { margin:0; color:var(--muted); font-size:12px; line-height:1.75; }
-.ov-contributions a { color:var(--accent); text-underline-offset:3px; white-space:nowrap; }
+.ov-contributions a { color:inherit; text-underline-offset:3px; white-space:nowrap; }
 @media (max-width:740px) {
  .overview-intro { grid-template-columns:1fr; gap:16px; margin-bottom:24px; }
  .overview-intro h2 { max-width:540px; }
