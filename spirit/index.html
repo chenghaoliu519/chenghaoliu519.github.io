@@ -90,7 +90,7 @@
     <section class="project-overview research-panel" id="overview" aria-labelledby="overview-heading">
       <div class="overview-intro">
         <div><p class="ov-eyebrow">Speed-driven adaptation</p><h2 id="overview-heading">Turn runtime feedback into <span>faster decoding.</span></h2></div>
-        <div class="ov-intro-copy"><p class="ov-lead">In speculative decoding, optimizing for draft–target agreement alone can reduce throughput when a closer match comes at the expense of intrinsic draft speed. SPIRIT optimizes as it decodes, using <strong>window-level realized throughput</strong> to steer the search for a faster self-draft. It adapts across requests by recognizing recurring workloads and restoring the drafts that accelerated them.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
+        <div class="ov-intro-copy"><p class="ov-lead">In speculative decoding, optimizing for draft–target agreement alone can reduce throughput when a closer match comes at the expense of intrinsic draft speed. SPIRIT optimizes as it decodes, using <strong>window-level realized throughput</strong> to steer the search for a faster self-draft. It adapts across requests by recognizing recurring workloads and reusing a saved draft configuration when a short probe confirms its speed advantage.</p><ul class="ov-properties" aria-label="Deployment advantages"><li>No retraining</li><li>No offline profiling</li><li>No auxiliary draft model</li></ul></div>
       </div>
 
       <figure class="ov-film" data-overview-demo aria-label="How SPIRIT adapts a self-draft">
