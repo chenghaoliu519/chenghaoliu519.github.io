@@ -67,7 +67,7 @@
           <div class="model-caption">
           <p data-overview-static>Productive decoding windows generate output and throughput feedback. SPIRIT calibrates this feedback to adapt the draft, then recalls useful profiles when workloads return. Full-target verification preserves the target distribution.</p>
           <div class="ov-step-stories" data-overview-stories hidden>
-            <p data-overview-copy="decode">The full target checks each draft block in parallel and commits the accepted prefix plus one token of its own. Across the window, SPIRIT measures committed tokens per second, counting both drafting and verification time.</p>
+            <p data-overview-copy="decode">The full target verifies a draft block in one pass, adding the accepted prefix and one token of its own to the answer. With the draft fixed for the window, throughput reflects both its speed and its agreement with the target.</p>
             <p data-overview-copy="adapt" aria-hidden="true">SPIRIT adjusts for prefix length, then uses throughput to choose how much to skip. At the selected ratio, it tests which sublayers to skip.</p>
             <p data-overview-copy="reuse" aria-hidden="true">With A, the opening tokens yield unusually low throughput and draft acceptance. SPIRIT probes the same prefix with both profiles. B fits its own history better, earns a higher probe score and passes the throughput check.</p>
           </div>
