@@ -288,7 +288,7 @@
 
 .ov-impact { margin-top:44px; }
 .ov-section-heading { margin-bottom:23px; }
-.ov-section-heading h3 { margin:9px 0 0; color:var(--ink); font-size:30px; font-weight:500; line-height:1.25; letter-spacing:-.65px; }
+.ov-section-heading h3 { margin:9px 0 0; color:var(--ink); font-size:30px; font-weight:500; line-height:1.25; letter-spacing:-.65px; text-wrap:balance; }
 .ov-impact-panel { overflow:hidden; border:1px solid var(--rule); border-radius:16px; background:var(--paper); }
 .ov-impact-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
 .ov-achievement { padding:27px 30px 25px; min-width:0; }
@@ -323,7 +323,6 @@
  .ov-lead { font-size:14px; }
  .ov-impact { margin-top:34px; }
  .ov-section-heading h3 { font-size:26px; }
- .ov-desktop-break { display:none; }
  .ov-impact-panel { border-radius:12px; }
  .ov-achievement { padding:19px 16px; }
  .ov-performance { display:block; margin-top:12px; }
