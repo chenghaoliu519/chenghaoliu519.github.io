@@ -204,7 +204,7 @@
           <div class="ov-contributions">
             <article>
               <h4>Optimize online</h4>
-              <p>SPIRIT tests each self-draft on the answer it helps generate. It compares committed tokens per second across decoding windows, accounting for the longer context later drafts face. The search needs no extra forward pass.</p>
+              <p>SPIRIT first tunes how much of the model to skip, then where to skip it. Each candidate helps generate the answer, so its length-adjusted throughput guides the next refinement without an extra forward pass.</p>
             </article>
             <article>
               <h4>Adapt to workloads</h4>
