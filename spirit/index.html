@@ -293,7 +293,7 @@
           <div class="ov-contributions">
             <article>
               <h4>Optimize online</h4>
-              <p>SPIRIT first tunes how much of the model to skip, then where to skip it. Each candidate helps generate the answer, so its length-adjusted throughput guides the next refinement without an extra forward pass.</p>
+              <p>SPIRIT scores each self-draft by the tokens committed per second of drafting and verification, using the same forward passes that generate the answer. Switching to acceptance-only scoring reduced speedup by 21.2% on average across six model–task settings.</p>
             </article>
             <article>
               <h4>Adapt to workloads</h4>
