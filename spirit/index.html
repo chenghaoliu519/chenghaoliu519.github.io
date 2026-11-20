@@ -156,7 +156,7 @@
           <div class="model-caption">
           <p data-overview-static>Productive decoding windows generate output and throughput feedback. SPIRIT calibrates this feedback to adapt the draft, then recalls useful profiles when workloads return. Full-target verification preserves the target distribution.</p>
           <div class="ov-step-stories" data-overview-stories hidden>
-            <p data-overview-copy="decode">Even a discarded proposal costs decoding time. In each window, SPIRIT measures the tokens the full target commits to the response against the time spent drafting and verifying every proposal. That realized throughput guides its next choice of self-draft.</p>
+            <p data-overview-copy="decode">Each decoding window extends the response with tokens verified by the full target. Its throughput captures the joint effect of draft speed and target agreement, turning the work of answering the request into feedback for SPIRIT’s next draft choice.</p>
             <p data-overview-copy="adapt" aria-hidden="true">SPIRIT normalizes throughput for prefix length so scores are comparable across decoding windows. Those scores guide the search across skip ratios to balance draft speed and agreement, then within the chosen ratio to optimize the sublayer pattern for higher decode throughput.</p>
             <p data-overview-copy="reuse" aria-hidden="true">With A, the opening tokens yield unusually low throughput and draft acceptance. SPIRIT probes the same prefix with both profiles. B fits its own history better, earns a higher probe score and passes the throughput check.</p>
           </div>
