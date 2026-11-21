@@ -45,7 +45,7 @@
   <link rel="stylesheet" href="/spirit/overview.css?v=e75186a59931">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=8ec43aec0a8d" defer></script>
+  <script src="/spirit/overview.js?v=81723519c1e5" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -162,7 +162,7 @@
           <div class="ov-step-stories" data-overview-stories hidden>
             <p data-overview-copy="decode">In each decoding window, the self-draft proposes how the response might continue, and the full target decides which tokens to commit. The window’s throughput captures the joint effect of draft speed and target agreement, guiding the next refinement of SPIRIT’s self-draft.</p>
             <p data-overview-copy="adapt" aria-hidden="true">SPIRIT normalizes throughput for prefix length so scores are comparable across decoding windows. Those scores guide the search across skip ratios to balance draft speed and agreement, then within the chosen ratio to optimize the sublayer pattern for higher decode throughput.</p>
-            <p data-overview-copy="reuse" aria-hidden="true">The first few decoding windows form the request head. Their throughput and draft acceptance define a two-dimensional feature space for matching requests to tuned drafts. When those features depart from the active profile’s historical signature, SPIRIT probes the active and saved drafts on the same request head. It restores a closer match when the probe score improves and throughput clears the threshold.</p>
+            <p data-overview-copy="reuse" aria-hidden="true">Opening throughput and draft acceptance define a two-dimensional feature space for matching requests to tuned drafts. When a request departs from the active profile’s historical signature, SPIRIT probes the active and saved drafts on the same prefix. It restores a closer match when the probe score improves and throughput clears the threshold.</p>
           </div>
           </div>
         </div>
