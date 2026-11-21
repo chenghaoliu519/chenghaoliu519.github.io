@@ -94,7 +94,7 @@
         { at: 0, beat: "monitor", layers: refined, label: "Measure A’s throughput and acceptance at the request head" },
         { at: .20, beat: "shift", layers: refined, label: "Throughput and acceptance fall below A’s historical ranges" },
         { at: .40, beat: "probe", layers: refined, label: "Compare A, B and C on the same request head" },
-        { at: .68, beat: "match", layers: refined, label: "Only B outscores A and clears the throughput floor." },
+        { at: .68, beat: "match", layers: refined, label: "Only B outscores A and meets the throughput requirement." },
         { at: .85, beat: "recall", layers: recalled, label: "Restore B’s skip ratio and layer pattern" }
       ]
     };
