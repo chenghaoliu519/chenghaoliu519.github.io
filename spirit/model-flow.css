@@ -85,7 +85,8 @@
 .ov-bank-stack .ov-layer { fill:none; stroke:var(--connector); stroke-dasharray:5 5; stroke-width:2; }
 .ov-bank-stack .ov-bank-kept { fill:var(--accent-soft); stroke:currentColor; stroke-dasharray:none; stroke-width:3; }
 .ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-bank-profile[data-profile="A"],
-.ov-demo[data-beat="probe"] .ov-bank-profile { color:var(--accent); border-color:var(--connector); }
+.ov-demo[data-beat="probe"]:has([data-head-profile="B"]) .ov-bank-profile[data-profile="B"],
+.ov-demo[data-beat="probe"]:has([data-head-profile="C"]) .ov-bank-profile[data-profile="C"] { color:var(--accent); border-color:var(--connector); }
 .ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-bank-profile[data-profile="B"],
 .ov-demo[data-beat="recall"] .ov-draft-id { color:var(--ov-teal); border-color:var(--ov-teal); background:var(--ov-teal-soft); }
 .ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-bank-profile[data-profile="B"] .ov-bank-kept { fill:var(--ov-teal-soft); }
@@ -96,6 +97,7 @@
 .ov-demo[data-beat="recall"] .ov-profile-arrow { stroke:var(--ov-teal); }
 
 @media (max-width:740px) {
+ .ov-probe-bank { flex-direction:column; gap:4px; align-items:flex-start; }
  .ov-controller { gap:14px; padding-inline:12px; }
  .ov-runtime { grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr); }
  .ov-memory { max-width:260px; }
@@ -138,9 +140,12 @@
  .ov-profile { grid-template-columns:repeat(3,3px); gap:2px; padding:4px; }
  .ov-profile i { width:3px; height:5px; }
 }
+@media (max-width:420px) {
+ .ov-reuse-controller { grid-template-columns:minmax(0,1fr); row-gap:6px; }
+ .ov-head-reading { max-width:none; grid-template-areas:"title key" "signals signals"; grid-template-columns:auto auto; }
+ .ov-probe-bank { flex-direction:row; align-items:center; justify-content:space-between; padding:5px 0 0; border-left:0; border-top:1px solid var(--rule); }
+}
 @media (max-width:360px) {
- .ov-bank-profile { flex-direction:column; gap:0; padding:2px 3px; }
- .ov-bank-profile b { line-height:1.1; }
  .ov-node > span { font-size:8px; }
  .ov-controller { padding-inline:8px; gap:7px; }
  .ov-search > div { font-size:9px; gap:3px; }

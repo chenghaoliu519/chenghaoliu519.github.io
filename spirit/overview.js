@@ -13,7 +13,7 @@
   const renderModel = createModelRenderer(model);
   let example = figure.querySelector("#show-example").checked;
   function chapterDuration(index) {
-    if (!example) return buttons[index].dataset.chapter === "reuse" ? 10200 : 5200;
+    if (!example) return buttons[index].dataset.chapter === "reuse" ? 12800 : 5200;
     return {decode:10000, adapt:11000, reuse:9000}[buttons[index].dataset.chapter];
   }
   let duration = chapterDuration(0);
@@ -36,19 +36,21 @@
     const skipCount = demo.querySelector("[data-skip-count]");
     const routeLabel = demo.querySelector(".ov-feedback-label");
     // The recalled mask is the highlighted profile shown in the bank.
-    const recalled = Array.from(demo.querySelectorAll(".ov-profile-1 i"))
+    const savedMask = selector => Array.from(demo.querySelectorAll(selector))
       .flatMap((cell, i) => cell.classList.contains("filled") ? [i] : []);
+    const recalled = savedMask(".ov-profile-1 i");
     const coarse = [0, 5];
     const refined = [0, 3];
     const profileA = demo.querySelector('[data-profile="A"]');
     const profileB = demo.querySelector('[data-profile="B"]');
+    const profileC = demo.querySelector('[data-profile="C"]');
     const draft = demo.querySelector(".ov-stack-draft");
     const draftId = demo.querySelector(".ov-draft-id");
     const readings = demo.querySelector(".ov-head-reading");
     const headTitle = readings.querySelector("[data-head-title]");
     const historyLabel = readings.querySelector("[data-head-history]");
-    // Use the model's own geometry and masks for the two saved configurations.
-    for (const [card, mask] of [[profileA, refined], [profileB, recalled]]) {
+    // Draw the profile bank with the same layer geometry as the active draft.
+    for (const [card, mask] of [[profileA, refined], [profileB, recalled], [profileC, savedMask(".ov-profile-2 i")]]) {
       const stack = draft.cloneNode(true);
       stack.setAttribute("class", "ov-bank-stack");
       stack.querySelectorAll("[data-layer]").forEach(layer => {
@@ -93,10 +95,11 @@
       ],
       reuse: [
         { at: 0, beat: "monitor", layers: refined, profile: "A", label: "Decode the opening tokens with A" },
-        { at: .23, beat: "shift", layers: refined, profile: "A", label: "Both readings are unusually low for A" },
-        { at: .43, beat: "probe", layers: refined, profile: "B", label: "Probe A and B on the same prefix" },
-        { at: .65, beat: "match", layers: refined, profile: "B", label: "B scores higher and passes the throughput check" },
-        { at: .84, beat: "recall", layers: recalled, profile: "B", label: "Restore B’s skip ratio and layer pattern" }
+        { at: .17, beat: "shift", layers: refined, profile: "A", label: "Both readings are unusually low for A" },
+        { at: .32, beat: "probe", layers: refined, profile: "C", label: "C fits its history but misses the throughput target" },
+        { at: .51, beat: "probe", layers: refined, profile: "B", label: "Probe B on the same prefix" },
+        { at: .68, beat: "match", layers: refined, profile: "B", label: "B scores higher and passes the throughput check" },
+        { at: .85, beat: "recall", layers: recalled, profile: "B", label: "Restore B’s skip ratio and layer pattern" }
       ]
     };
     let scene = null;
@@ -118,7 +121,7 @@
           const restored = scene.beat === "recall";
           draftId.textContent = restored ? "B" : "A";
           readings.dataset.headProfile = scene.profile;
-          headTitle.textContent = scene.profile === "A" ? "Opening tokens with A" : "Same prefix with B";
+          headTitle.textContent = scene.profile === "A" ? "Opening tokens with A" : "Same prefix with " + scene.profile;
           historyLabel.textContent = scene.profile + "’s history";
           if (enteringReuse) alignRecallPath();
         }
@@ -134,9 +137,9 @@
       let feedback = 0;
       if (step === "adapt") feedback = clamp(progress / .32);
       if (step === "reuse") {
-        feedback = clamp((progress - .65) / .19);
+        feedback = clamp((progress - .68) / .17);
         // Reveal each measurement in place against the observed profile’s own history.
-        const measuredAt = scene.profile === "A" ? .11 : .50;
+        const measuredAt = scene.beat === "probe" ? scene.at + .035 : .09;
         demo.style.setProperty("--ov-measured", clamp((progress - measuredAt) / .045).toFixed(4));
       }
       demo.style.setProperty("--ov-feedback", feedback.toFixed(4));
@@ -213,6 +216,8 @@
     // Each dot is a probe of its own profile on the same request head.
     view.querySelectorAll(".active-profile .probe-scale i").forEach(dot =>
       segment(dot, .10, .16, {opacity:0}, {opacity:1}));
+    view.querySelectorAll(".candidate-c .probe-scale i").forEach(dot =>
+      segment(dot, .23, .29, {opacity:0}, {opacity:1}));
     view.querySelectorAll(".stored-profile .probe-scale i").forEach(dot =>
       segment(dot, .36, .42, {opacity:0}, {opacity:1}));
     segment(view.querySelector(".stored-profile"), .50, .57,

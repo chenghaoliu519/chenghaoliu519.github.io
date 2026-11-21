@@ -15,7 +15,7 @@
         </div>
 
         <div class="ov-demo" id="model-flow" data-step="decode" data-beat="commit">
-        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. Across requests, compatible heads keep their active profile. In this example, throughput and draft acceptance on the opening tokens are both unusually low under A. On the same prefix, B’s readings fit its own history. B earns a higher probe score and passes the throughput check before its saved configuration becomes active.">
+        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. Across requests, compatible heads keep their active profile. In this example, throughput and draft acceptance on the opening tokens are both unusually low under A. SPIRIT probes A, C and B on the same prefix. C matches its history but delivers too little throughput. B matches its history, earns a higher probe score than A and clears the throughput check, so its saved draft becomes active.">
           <div class="ov-runtime">
             <div class="ov-node ov-draft"><div class="ov-node-art"><svg class="ov-stack ov-stack-draft" viewBox="0 0 160 112" aria-hidden="true"><ellipse class="ov-stack-shadow" cx="80" cy="100" rx="48" ry="8"/><path class="ov-layer" data-layer="5" data-kept d="M24 85 80 68 136 85 80 102Z"/><path class="ov-layer" data-layer="4" d="M24 72 80 55 136 72 80 89Z"/><path class="ov-layer" data-layer="3" d="M24 59 80 42 136 59 80 76Z"/><path class="ov-layer" data-layer="2" data-kept d="M24 46 80 29 136 46 80 63Z"/><path class="ov-layer" data-layer="1" d="M24 33 80 16 136 33 80 50Z"/><path class="ov-layer" data-layer="0" data-kept d="M24 20 80 3 136 20 80 37Z"/><path class="ov-stack-spine" d="M80 4v96"/></svg></div><strong>Self-draft <span class="ov-draft-id" aria-hidden="true">A</span></strong><span data-skip-count>3 of 6 sublayers skipped</span></div>
             <div class="ov-wire ov-wire-draft" aria-hidden="true"><span>propose</span><i></i></div>
@@ -59,6 +59,7 @@
               <div class="ov-bank-options" aria-hidden="true">
                 <span class="ov-bank-profile" data-profile="A"><b>A</b></span>
                 <span class="ov-bank-profile" data-profile="B"><b>B</b></span>
+                <span class="ov-bank-profile" data-profile="C"><b>C</b></span>
               </div>
             </div>
           </div>
@@ -69,7 +70,7 @@
           <div class="ov-step-stories" data-overview-stories hidden>
             <p data-overview-copy="decode">In each decoding window, the self-draft proposes how the response might continue, and the full target decides which tokens to commit. The window’s throughput captures the joint effect of draft speed and target agreement, guiding the next refinement of SPIRIT’s self-draft.</p>
             <p data-overview-copy="adapt" aria-hidden="true">SPIRIT normalizes throughput for prefix length so scores are comparable across decoding windows. Those scores guide the search across skip ratios to balance draft speed and agreement, then within the chosen ratio to optimize the sublayer pattern for higher decode throughput.</p>
-            <p data-overview-copy="reuse" aria-hidden="true">Each profile pairs a tuned draft with its history of opening throughput and draft acceptance. When A’s readings fall below their usual ranges, SPIRIT probes A and B on the same prefix. B matches its historical signature and outscores A. Once B clears the throughput threshold, SPIRIT restores its skip ratio and sublayer pattern.</p>
+            <p data-overview-copy="reuse" aria-hidden="true">Opening throughput and draft acceptance define a two-dimensional feature space for matching requests to tuned drafts. When a request departs from the active profile’s historical signature, SPIRIT probes the active and saved drafts on the same prefix. It restores a closer match when the probe score improves and throughput clears the threshold.</p>
           </div>
           </div>
         </div>
@@ -145,12 +146,17 @@
 
           <section class="film-scene" id="film-reuse" aria-labelledby="film-title-reuse">
             <h3 id="film-title-reuse">Can a later request reuse a saved draft?</h3>
-            <div class="film-board study-board" role="img" aria-label="On the same request head, active profile A’s raw throughput and acceptance fall below their historical ranges. Stored profile B’s probes fall inside its own ranges. B improves probe merit and clears the throughput check. B’s saved skip ratio and layer pattern become the active self-draft in place of A.">
+            <div class="film-board study-board" role="img" aria-label="On the same request head, active profile A’s raw throughput and acceptance fall below their historical ranges. Saved profiles C and B both match their own ranges. C falls short on throughput. B improves probe merit and clears the throughput check. B’s saved skip ratio and layer pattern become the active self-draft in place of A.">
               <div class="study-heading"><strong>Same request head</strong><div class="study-key probe-symbols"><span>Stored range</span><span>Probe</span></div></div>
               <div class="probe-table">
                 <div class="probe-row probe-head"><span>Profile</span><span>Raw throughput</span><span>Acceptance</span></div>
                 <div class="probe-row active-profile">
                   <span class="reuse-identity"><span class="reuse-card card-a">A</span>Initial</span>
+                  <div class="probe-scale"><i></i></div>
+                  <div class="probe-scale"><i></i></div>
+                </div>
+                <div class="probe-row candidate-c">
+                  <span class="reuse-identity"><span class="reuse-card card-c">C</span>Saved</span>
                   <div class="probe-scale"><i></i></div>
                   <div class="probe-scale"><i></i></div>
                 </div>
@@ -177,7 +183,7 @@
                 </div>
               </div>
             </div>
-            <p class="film-caption">B fits its own history more closely, earns a higher probe score and clears the throughput check. SPIRIT can therefore switch to B on this request.</p>
+            <p class="film-caption">A falls outside its historical ranges. On the same prefix, C matches its history but falls short on throughput. B matches its history, outscores A, and clears the throughput check. SPIRIT restores B’s tuned draft.</p>
           </section>
         </div>
           <div class="film-chapters" hidden role="group" aria-label="Animation chapters">
