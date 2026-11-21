@@ -131,9 +131,9 @@
       if (step === "adapt") feedback = clamp(progress / .32);
       if (step === "reuse") {
         feedback = clamp((progress - .68) / .17);
-        // Display the candidates together once the same-prefix comparison is available.
-        demo.style.setProperty("--ov-active-measured", clamp((progress - .08) / .045).toFixed(4));
-        demo.style.setProperty("--ov-candidates-measured", clamp((progress - .40) / .045).toFixed(4));
+        // The initial measurement and the subsequent comparison share the chapter clock.
+        demo.style.setProperty("--ov-head-progress", clamp(progress / .12).toFixed(4));
+        demo.style.setProperty("--ov-probe-progress", clamp((progress - .40) / .12).toFixed(4));
       }
       demo.style.setProperty("--ov-feedback", feedback.toFixed(4));
       const committed = step === "decode" ? Math.floor(clamp((progress - .62) / .3) * tokens.length) : tokens.length;
