@@ -158,7 +158,7 @@
           <div class="ov-step-stories" data-overview-stories hidden>
             <p data-overview-copy="decode">In each decoding window, the self-draft proposes how the response might continue, and the full target decides which tokens to commit. The window’s throughput captures the joint effect of draft speed and target agreement, guiding the next refinement of SPIRIT’s self-draft.</p>
             <p data-overview-copy="adapt" aria-hidden="true">SPIRIT normalizes throughput for prefix length so scores are comparable across decoding windows. Those scores guide the search across skip ratios to balance draft speed and agreement, then within the chosen ratio to optimize the sublayer pattern for higher decode throughput.</p>
-            <p data-overview-copy="reuse" aria-hidden="true">Profile A starts this request with lower throughput and draft acceptance than usual. SPIRIT probes A and B on the same prefix, where B performs as its history predicts. B outscores A and clears the throughput threshold, so SPIRIT restores B’s tuned draft.</p>
+            <p data-overview-copy="reuse" aria-hidden="true">Each profile pairs a tuned draft with its history of opening throughput and draft acceptance. When A’s readings fall below their usual ranges, SPIRIT probes A and B on the same prefix. B matches its historical signature and outscores A. Once B clears the throughput threshold, SPIRIT restores its skip ratio and sublayer pattern.</p>
           </div>
           </div>
         </div>
