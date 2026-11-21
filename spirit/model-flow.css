@@ -65,48 +65,66 @@
 .ov-reuse-controller { visibility:hidden; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; column-gap:12px; padding:8px 16px; border:1px solid var(--rule); border-radius:10px; background:var(--paper); }
 .ov-demo[data-step="reuse"] .ov-controller { visibility:hidden; }
 .ov-demo[data-step="reuse"] .ov-reuse-controller { visibility:visible; }
-.ov-head-reading { --history-band:color-mix(in srgb,var(--connector) 75%,var(--paper)); width:100%; max-width:340px; min-width:0; }
-.ov-head-signals { width:100%; table-layout:fixed; border-collapse:collapse; color:var(--muted); font-size:11px; line-height:1.45; }
-.ov-head-signals th,.ov-head-signals td { padding:2px 5px; text-align:left; }
-.ov-head-signals th:first-child { width:20%; padding-left:0; }
-.ov-head-signals thead th { font-weight:500; vertical-align:bottom; }
-.ov-head-signals tbody th { color:var(--ink); font-weight:600; }
-.ov-head-signals .probe-scale { --scan:var(--ov-probe-progress,0); --scan-color:var(--ov-teal); display:block; height:2px; background:var(--rule); }
-.ov-head-signals .probe-scale::before { height:6px; background:var(--history-band); }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) [data-head-profile="A"] { background:var(--ov-blue-wash); }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) [data-head-profile="A"] .probe-scale { --scan:var(--ov-head-progress,0); --scan-color:var(--accent); }
-.ov-head-signals .probe-scale::after {
-  content:""; position:absolute; inset:0 auto 0 0; width:var(--point); background:var(--scan-color); transform-origin:left;
-  transform:scaleX(var(--scan)); opacity:clamp(0,calc(3 - 3 * var(--scan)),.75);
+/* The map and example table share measurements. The illustrative y-axis
+   spans 16–96% of the table's scale to keep the observations legible. */
+.ov-feature-map { min-width:0; width:100%; max-width:460px; }
+.ov-axis-title,.ov-point-key,.ov-history-region > span { font-size:10px; line-height:1.4; }
+.ov-axis-title { display:block; font-size:11px; color:var(--ink); font-weight:550; }
+.ov-feature-plane {
+  position:relative; isolation:isolate; height:94px; margin:4px 4px 0;
+  border-left:1px solid var(--connector); border-bottom:1px solid var(--connector);
 }
-.ov-head-signals .ov-head-mark {
-  position:absolute; z-index:1; top:50%; left:var(--point); transform:translate(-50%,-50%);
-  width:12px; height:12px; box-sizing:border-box; border:2px solid var(--accent); border-radius:50%; background:var(--paper);
-  opacity:clamp(0,calc(5 * var(--ov-head-progress,0) - 4),1);
+.ov-feature-plane::before,.ov-feature-plane::after {
+  position:absolute; content:""; width:5px; height:5px;
+  border:solid var(--connector); border-width:1px 1px 0 0;
 }
-.ov-head-signals .probe-scale i {
-  z-index:2; width:6px; height:6px; background:var(--ov-teal); box-shadow:0 0 0 1px var(--paper);
-  opacity:clamp(0,calc(5 * var(--ov-probe-progress,0) - 4),1);
+.ov-feature-plane::before { top:0; left:-3px; transform:rotate(-45deg); }
+.ov-feature-plane::after { right:0; bottom:-3px; transform:rotate(45deg); }
+.ov-feature-profile { --profile-ink:var(--muted); --reveal:var(--ov-probe-progress,0); }
+.ov-feature-profile[data-head-profile="A"] { --profile-ink:var(--accent); --reveal:var(--ov-head-progress,0); }
+.ov-feature-profile[data-head-profile="B"] { --profile-ink:var(--ov-teal); }
+.ov-history-region {
+  position:absolute; left:var(--speed-low); bottom:calc(1.25 * var(--accept-low) - 20%);
+  width:calc(var(--speed-high) - var(--speed-low)); height:calc(1.25 * (var(--accept-high) - var(--accept-low)));
+  border:1px dashed color-mix(in srgb,var(--profile-ink) 76%,var(--paper)); border-radius:3px;
+  background:color-mix(in srgb,var(--profile-ink) 7%,transparent);
 }
-.ov-demo[data-beat="probe"] .ov-head-signals tbody th { color:var(--ov-teal); }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-head-signals [data-head-profile="B"] { background:var(--ov-teal-soft); }
-.ov-signal-key,.ov-phase-key,.ov-range-key,.ov-measure-key,.ov-probe-key { display:flex; align-items:center; }
-.ov-signal-key { flex-wrap:wrap; justify-content:space-between; gap:3px 8px; margin-top:6px; color:var(--muted); font-size:10px; line-height:1.4; }
-.ov-phase-key { gap:3px; }
-.ov-range-key,.ov-measure-key,.ov-probe-key { gap:4px; white-space:nowrap; }
-.ov-measure-key,.ov-probe-key { padding:2px 4px; border-radius:4px; }
-.ov-range-key::before,.ov-measure-key::before,.ov-probe-key::before { content:""; display:block; box-sizing:border-box; }
-.ov-range-key::before { width:12px; height:5px; border-radius:2px; background:var(--history-band); }
-.ov-measure-key::before { width:9px; height:9px; border:2px solid var(--accent); border-radius:50%; }
-.ov-probe-key::before { width:6px; height:6px; border-radius:50%; background:var(--ov-teal); }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-measure-key { color:var(--accent); background:var(--ov-blue-wash); }
-.ov-demo:is([data-beat="probe"],[data-beat="match"],[data-beat="recall"]) .ov-probe-key { color:var(--ov-teal); background:var(--ov-teal-soft); }
-.ov-probe-bank,.ov-bank-options,.ov-bank-profile { display:flex; align-items:center; }
-.ov-probe-bank { gap:12px; padding-left:16px; border-left:1px solid var(--rule); }
-.ov-bank-options { gap:5px; }
-.ov-bank-profile { gap:4px; min-height:34px; padding:2px 8px 2px 5px; border:1px solid var(--rule); border-radius:6px; color:var(--muted); background:var(--surface); }
+.ov-history-region > span { position:absolute; bottom:100%; left:-1px; color:var(--profile-ink); white-space:nowrap; }
+/* Once the comparison starts, A's measured speed is the reference for B and C. */
+.ov-demo:is([data-beat="probe"],[data-beat="match"],[data-beat="recall"]) [data-head-profile="A"] .ov-history-region { display:none; }
+.ov-demo:is([data-beat="probe"],[data-beat="match"],[data-beat="recall"]) [data-head-profile="A"]::before {
+  content:""; position:absolute; left:var(--speed); bottom:0; height:78%;
+  border-left:1px dotted color-mix(in srgb,var(--profile-ink) 50%,var(--paper));
+}
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) :is([data-head-profile="B"],[data-head-profile="C"]) { visibility:hidden; }
+.ov-request-point {
+  position:absolute; z-index:1; left:var(--speed); bottom:calc(1.25 * var(--accept) - 20%); transform:translate(-50%,50%);
+  display:grid; place-items:center; width:16px; height:16px; border-radius:50%;
+  color:var(--paper); background:var(--profile-ink); box-shadow:0 0 0 1px var(--paper);
+  font-size:10px; line-height:1; font-weight:650; opacity:clamp(0,calc(3 * var(--reveal)),1);
+}
+.ov-request-point::after {
+  content:""; position:absolute; inset:-5px; border:1px solid var(--profile-ink); border-radius:50%;
+  opacity:calc(1 - var(--reveal)); transform:scale(calc(1.5 - .5 * var(--reveal)));
+}
+.ov-demo[data-beat="probe"] [data-head-profile="A"] .ov-request-point::after {
+  opacity:calc(1 - var(--ov-probe-progress)); transform:scale(calc(1.5 - .5 * var(--ov-probe-progress)));
+}
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-head-profile="B"] .ov-request-point::after {
+  opacity:1; transform:none; inset:-3px; border-width:2px;
+}
+.ov-map-footer { display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-top:4px; }
+.ov-point-key { display:inline-flex; align-items:center; gap:5px; color:var(--muted); }
+.ov-point-key::before { content:""; width:7px; height:7px; border-radius:50%; background:currentColor; }
+.ov-probe-bank { display:grid; width:214px; align-content:center; gap:8px; padding-left:16px; border-left:1px solid var(--rule); }
+.ov-bank-options { display:grid; grid-template-columns:repeat(3,minmax(58px,1fr)); gap:5px; }
+.ov-bank-entry,.ov-bank-profile { display:flex; align-items:center; }
+.ov-bank-entry { flex-direction:column; gap:4px; }
+.ov-bank-note { color:var(--muted); font-size:10px; line-height:1.3; }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-profile="B"] + .ov-bank-note { color:var(--ov-teal); font-weight:600; }
+.ov-bank-profile { gap:4px; min-height:26px; padding:0 7px 0 4px; border:1px solid var(--rule); border-radius:6px; color:var(--muted); background:var(--surface); }
 .ov-bank-profile b,.ov-draft-id { font-size:10px; font-weight:600; }
-.ov-bank-stack { width:34px; height:26px; }
+.ov-bank-stack { width:29px; height:23px; }
 .ov-bank-stack .ov-stack-shadow,.ov-bank-stack .ov-stack-spine { display:none; }
 .ov-bank-stack .ov-layer { fill:none; stroke:var(--connector); stroke-dasharray:5 5; stroke-width:2; }
 .ov-bank-stack .ov-bank-kept { fill:var(--accent-soft); stroke:currentColor; stroke-dasharray:none; stroke-width:3; }
@@ -122,7 +140,6 @@
 .ov-demo[data-beat="recall"] .ov-profile-arrow { stroke:var(--ov-teal); }
 
 @media (max-width:740px) {
- .ov-probe-bank { flex-direction:column; gap:4px; align-items:flex-start; }
  .ov-controller { gap:14px; padding-inline:12px; }
  .ov-runtime { grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr); }
  .ov-memory { max-width:260px; }
@@ -130,9 +147,6 @@
 }
 @media (max-width:520px) {
  .ov-reuse-controller { padding:7px 10px; column-gap:8px; }
- .ov-head-signals { font-size:10px; }
- .ov-signal-key { gap:4px 7px; font-size:9px; }
- .ov-probe-bank { gap:3px; padding-left:10px; flex-direction:column; align-items:flex-start; }
  .ov-bank-profile { gap:3px; min-height:25px; padding:1px 6px 1px 3px; }
  .ov-bank-stack { width:26px; height:21px; }
  .ov-draft-id { min-width:14px; font-size:9px; line-height:12px; }
@@ -163,10 +177,13 @@
  .ov-profile { grid-template-columns:repeat(3,3px); gap:2px; padding:4px; }
  .ov-profile i { width:3px; height:5px; }
 }
-@media (max-width:420px) {
+@media (max-width:580px) {
  .ov-reuse-controller { grid-template-columns:minmax(0,1fr); row-gap:6px; }
- .ov-head-reading { max-width:none; }
- .ov-probe-bank { flex-direction:row; align-items:center; justify-content:space-between; padding:5px 0 0; border-left:0; border-top:1px solid var(--rule); }
+ .ov-feature-map { max-width:none; }
+ .ov-probe-bank { width:auto; grid-template-columns:auto 1fr; align-items:center; gap:6px; min-width:0; padding:6px 0 0; border-left:0; border-top:1px solid var(--rule); }
+ .ov-bank-options { grid-template-columns:repeat(3,1fr); }
+ .ov-bank-entry { gap:3px; }
+ .ov-bank-note { font-size:9px; }
 }
 @media (max-width:360px) {
  .ov-node > span { font-size:8px; }

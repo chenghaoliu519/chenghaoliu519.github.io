@@ -44,6 +44,7 @@
     const profileA = demo.querySelector('[data-profile="A"]');
     const profileB = demo.querySelector('[data-profile="B"]');
     const profileC = demo.querySelector('[data-profile="C"]');
+    const bankNotes = Array.from(demo.querySelectorAll(".ov-bank-note"));
     const draft = demo.querySelector(".ov-stack-draft");
     const draftId = demo.querySelector(".ov-draft-id");
     // Draw the profile bank with the same layer geometry as the active draft.
@@ -91,11 +92,11 @@
         { at: .65, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" }
       ],
       reuse: [
-        { at: 0, beat: "monitor", layers: refined, label: "Measure A’s throughput and acceptance at the request head" },
-        { at: .20, beat: "shift", layers: refined, label: "Throughput and acceptance fall below A’s historical ranges" },
-        { at: .40, beat: "probe", layers: refined, label: "Compare A, B and C on the same request head" },
-        { at: .68, beat: "match", layers: refined, label: "Only B outscores A and meets the throughput requirement." },
-        { at: .85, beat: "recall", layers: recalled, label: "Restore B’s skip ratio and layer pattern" }
+        { at: 0, beat: "monitor", layers: refined, notes: ["Active draft", "Saved", "Saved"], label: "Measure A’s throughput and acceptance at the request head" },
+        { at: .20, beat: "shift", layers: refined, notes: ["Outside range", "Saved", "Saved"], label: "Throughput and acceptance fall below A’s historical ranges" },
+        { at: .40, beat: "probe", layers: refined, notes: ["Reference", "Saved", "Saved"], label: "Compare A, B and C on the same request head" },
+        { at: .68, beat: "match", layers: refined, notes: ["Outside range", "Selected", "Slower than A"], label: "Only B outscores A and meets the throughput requirement." },
+        { at: .85, beat: "recall", layers: recalled, notes: ["Outside range", "Restored", "Slower than A"], label: "Restore B’s skip ratio and layer pattern" }
       ]
     };
     let scene = null;
@@ -116,6 +117,7 @@
         if (step === "reuse") {
           const restored = scene.beat === "recall";
           draftId.textContent = restored ? "B" : "A";
+          bankNotes.forEach((note, i) => { note.textContent = scene.notes[i]; });
           if (enteringReuse) alignRecallPath();
         }
         draftLayers.forEach(layer => {

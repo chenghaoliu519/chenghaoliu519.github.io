@@ -41,11 +41,11 @@
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
   <link rel="stylesheet" href="/spirit/project.css?v=b6ce107a2c1c">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
-  <link rel="stylesheet" href="/spirit/model-flow.css?v=5d61fcc69edd">
-  <link rel="stylesheet" href="/spirit/overview.css?v=e75186a59931">
+  <link rel="stylesheet" href="/spirit/model-flow.css?v=5516169c0e58">
+  <link rel="stylesheet" href="/spirit/overview.css?v=552d4ed46461">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=23d4e441b335" defer></script>
+  <script src="/spirit/overview.js?v=487fdafdeb7b" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -104,7 +104,7 @@
         </div>
 
         <div class="ov-demo" id="model-flow" data-step="decode" data-beat="commit">
-        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. Bands show historical ranges. Open circles mark A’s throughput and draft acceptance measured at the request head. Both fall below A’s ranges. Filled dots show the same-head probe results for A, B and C. B and C match their own ranges. B outscores A and clears the throughput check. C delivers fewer tokens per second than A. SPIRIT restores B’s saved draft.">
+        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. In the illustrative reuse map, each request-head observation is positioned by throughput horizontally and draft acceptance vertically. A falls below its own historical range on both axes. Probing the same head with A, B and C places B and C inside their own ranges. C is slower than A. Only B improves the probe score and meets the throughput requirement. SPIRIT restores B’s saved draft.">
           <div class="ov-runtime">
             <div class="ov-node ov-draft"><div class="ov-node-art"><svg class="ov-stack ov-stack-draft" viewBox="0 0 160 112" aria-hidden="true"><ellipse class="ov-stack-shadow" cx="80" cy="100" rx="48" ry="8"/><path class="ov-layer" data-layer="5" data-kept d="M24 85 80 68 136 85 80 102Z"/><path class="ov-layer" data-layer="4" d="M24 72 80 55 136 72 80 89Z"/><path class="ov-layer" data-layer="3" d="M24 59 80 42 136 59 80 76Z"/><path class="ov-layer" data-layer="2" data-kept d="M24 46 80 29 136 46 80 63Z"/><path class="ov-layer" data-layer="1" d="M24 33 80 16 136 33 80 50Z"/><path class="ov-layer" data-layer="0" data-kept d="M24 20 80 3 136 20 80 37Z"/><path class="ov-stack-spine" d="M80 4v96"/></svg></div><strong>Self-draft <span class="ov-draft-id" aria-hidden="true">A</span></strong><span data-skip-count>3 of 6 sublayers skipped</span></div>
             <div class="ov-wire ov-wire-draft" aria-hidden="true"><span>propose</span><i></i></div>
@@ -135,26 +135,30 @@
             <div class="ov-memory"><div><span class="ov-controller-label">Across requests</span><strong>Recall useful profiles</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true"><i class="filled"></i><i class="filled"></i><i></i><i></i><i class="filled"></i><i></i></span><span class="ov-profile ov-profile-1" aria-hidden="true"><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i><i class="filled"></i></span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i class="filled"></i></span></div></div>
           </div>
           <div class="ov-reuse-controller">
-            <div class="ov-head-reading">
-              <table class="ov-head-signals" aria-label="Request-head measurements compared with each profile’s history">
-                <thead><tr><th scope="col">Profile</th><th scope="col">Throughput</th><th scope="col">Draft acceptance</th></tr></thead>
-                <tbody>
-                  <tr data-head-profile="A"><th scope="row">A</th><td><span class="probe-scale"><span class="ov-head-mark"></span><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><span class="ov-head-mark"></span><i></i></span></td></tr>
-                  <tr data-head-profile="B"><th scope="row">B</th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
-                  <tr data-head-profile="C"><th scope="row">C</th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
-                </tbody>
-              </table>
-              <div class="ov-signal-key">
-                <span class="ov-range-key">Historical range</span>
-                <span class="ov-phase-key"><span class="ov-measure-key">Measure A</span><span aria-hidden="true">→</span><span class="ov-probe-key">Probe A, B, C</span></span>
+            <div class="ov-feature-map">
+              <span class="ov-axis-title">Draft acceptance</span>
+              <div class="ov-feature-plane">
+                <div class="ov-feature-profile" data-head-profile="A">
+                  <span class="ov-history-region"><span>A’s range</span></span>
+                  <span class="ov-request-point">A</span>
+                </div>
+                <div class="ov-feature-profile" data-head-profile="B">
+                  <span class="ov-history-region"><span>B’s range</span></span>
+                  <span class="ov-request-point">B</span>
+                </div>
+                <div class="ov-feature-profile" data-head-profile="C">
+                  <span class="ov-history-region"><span>C’s range</span></span>
+                  <span class="ov-request-point">C</span>
+                </div>
               </div>
+              <div class="ov-map-footer"><span class="ov-point-key">This request head</span><span class="ov-axis-title">Throughput</span></div>
             </div>
             <div class="ov-probe-bank">
               <span class="ov-controller-label">Profile bank</span>
               <div class="ov-bank-options" aria-hidden="true">
-                <span class="ov-bank-profile" data-profile="A"><b>A</b></span>
-                <span class="ov-bank-profile" data-profile="B"><b>B</b></span>
-                <span class="ov-bank-profile" data-profile="C"><b>C</b></span>
+                <div class="ov-bank-entry"><span class="ov-bank-profile" data-profile="A"><b>A</b></span><span class="ov-bank-note">Active draft</span></div>
+                <div class="ov-bank-entry"><span class="ov-bank-profile" data-profile="B"><b>B</b></span><span class="ov-bank-note">Saved</span></div>
+                <div class="ov-bank-entry"><span class="ov-bank-profile" data-profile="C"><b>C</b></span><span class="ov-bank-note">Saved</span></div>
               </div>
             </div>
           </div>
