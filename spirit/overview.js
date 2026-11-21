@@ -46,9 +46,6 @@
     const profileC = demo.querySelector('[data-profile="C"]');
     const draft = demo.querySelector(".ov-stack-draft");
     const draftId = demo.querySelector(".ov-draft-id");
-    const readings = demo.querySelector(".ov-head-reading");
-    const headTitle = readings.querySelector("[data-head-title]");
-    const historyLabel = readings.querySelector("[data-head-history]");
     // Draw the profile bank with the same layer geometry as the active draft.
     for (const [card, mask] of [[profileA, refined], [profileB, recalled], [profileC, savedMask(".ov-profile-2 i")]]) {
       const stack = draft.cloneNode(true);
@@ -94,12 +91,11 @@
         { at: .65, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" }
       ],
       reuse: [
-        { at: 0, beat: "monitor", layers: refined, profile: "A", label: "Decode the opening tokens with A" },
-        { at: .17, beat: "shift", layers: refined, profile: "A", label: "Both readings are unusually low for A" },
-        { at: .32, beat: "probe", layers: refined, profile: "C", label: "C fits its history but misses the throughput target" },
-        { at: .51, beat: "probe", layers: refined, profile: "B", label: "Probe B on the same prefix" },
-        { at: .68, beat: "match", layers: refined, profile: "B", label: "B scores higher and passes the throughput check" },
-        { at: .85, beat: "recall", layers: recalled, profile: "B", label: "Restore B’s skip ratio and layer pattern" }
+        { at: 0, beat: "monitor", layers: refined, label: "Measure throughput and draft acceptance with A" },
+        { at: .20, beat: "shift", layers: refined, label: "Throughput and acceptance fall below A’s historical ranges" },
+        { at: .40, beat: "probe", layers: refined, label: "Compare A, B and C on the same prefix" },
+        { at: .68, beat: "match", layers: refined, label: "B outscores A. C trails A on throughput." },
+        { at: .85, beat: "recall", layers: recalled, label: "Restore B’s skip ratio and layer pattern" }
       ]
     };
     let scene = null;
@@ -120,9 +116,6 @@
         if (step === "reuse") {
           const restored = scene.beat === "recall";
           draftId.textContent = restored ? "B" : "A";
-          readings.dataset.headProfile = scene.profile;
-          headTitle.textContent = scene.profile === "A" ? "Opening tokens with A" : "Same prefix with " + scene.profile;
-          historyLabel.textContent = scene.profile + "’s history";
           if (enteringReuse) alignRecallPath();
         }
         draftLayers.forEach(layer => {
@@ -138,9 +131,9 @@
       if (step === "adapt") feedback = clamp(progress / .32);
       if (step === "reuse") {
         feedback = clamp((progress - .68) / .17);
-        // Reveal each measurement in place against the observed profile’s own history.
-        const measuredAt = scene.beat === "probe" ? scene.at + .035 : .09;
-        demo.style.setProperty("--ov-measured", clamp((progress - measuredAt) / .045).toFixed(4));
+        // Display the candidates together once the same-prefix comparison is available.
+        demo.style.setProperty("--ov-active-measured", clamp((progress - .08) / .045).toFixed(4));
+        demo.style.setProperty("--ov-candidates-measured", clamp((progress - .40) / .045).toFixed(4));
       }
       demo.style.setProperty("--ov-feedback", feedback.toFixed(4));
       const committed = step === "decode" ? Math.floor(clamp((progress - .62) / .3) * tokens.length) : tokens.length;
@@ -216,9 +209,7 @@
     // Each dot is a probe of its own profile on the same request head.
     view.querySelectorAll(".active-profile .probe-scale i").forEach(dot =>
       segment(dot, .10, .16, {opacity:0}, {opacity:1}));
-    view.querySelectorAll(".candidate-c .probe-scale i").forEach(dot =>
-      segment(dot, .23, .29, {opacity:0}, {opacity:1}));
-    view.querySelectorAll(".stored-profile .probe-scale i").forEach(dot =>
+    view.querySelectorAll(".probe-candidates .probe-scale i").forEach(dot =>
       segment(dot, .36, .42, {opacity:0}, {opacity:1}));
     segment(view.querySelector(".stored-profile"), .50, .57,
       {backgroundColor:"transparent"}, {backgroundColor:"#edf6f2"});
@@ -226,7 +217,7 @@
     segment(socket.querySelector(".card-a"), .62, .68,
       {opacity:1, transform:"none"}, {opacity:0, transform:"translateY(2px) scale(.9)"});
 
-    // The travel distance is the stored row's height plus the difference in
+    // The travel distance is the candidate group's height plus the difference in
     // padding. Percentage transforms keep both endpoints aligned on resize.
     const atSource = "translateY(0)";
     const atSlot = "translateY(calc(100% + var(--slot-pad) - var(--probe-pad)))";

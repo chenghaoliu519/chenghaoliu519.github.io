@@ -163,7 +163,8 @@
 .probe-table { --card-size:27px; --face-pad:4px; --probe-pad:6px; --probe-inset:11px; --slot-pad:18px; padding:6px 0 2px; }
 .probe-row { display:grid; grid-template-columns:1fr 1.35fr 1.35fr; align-items:center; gap:clamp(10px,3.6vw,44px); padding:var(--probe-pad) var(--probe-inset); }
 .probe-head { color:var(--soft); font-size:11px; line-height:1.4; }
-.probe-row.stored-profile { position:relative; border-radius:6px; background:#edf6f2; }
+.probe-candidates { position:relative; }
+.probe-row.stored-profile { border-radius:6px; background:#edf6f2; }
 .probe-scale { position:relative; height:5px; background:#e6edef; border-radius:5px; margin-inline:2px; }
 /* Each column uses the same scale for the active and stored profiles. */
 .active-profile .probe-scale, [data-head-profile="A"] .probe-scale { --low:52%; --high:80%; --point:27%; }
