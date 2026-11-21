@@ -15,7 +15,7 @@
         </div>
 
         <div class="ov-demo" id="model-flow" data-step="decode" data-beat="commit">
-        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. In the illustrative reuse map, each request-head observation is positioned by throughput horizontally and draft acceptance vertically. A falls below its own historical range on both axes. Probing the same head with A, B and C places B and C inside their own ranges. C is slower than A. Only B improves the probe score and meets the throughput requirement. SPIRIT restores B’s saved draft.">
+        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. In the illustrated request, A’s throughput and draft acceptance fall below its historical ranges. SPIRIT compares A, B and C on the same request head. B and C both match their own histories and improve acceptance over A. B also delivers higher throughput than A, so its probe score improves and it passes the throughput check. C is too slow to qualify. SPIRIT restores B’s saved draft.">
           <div class="ov-runtime">
             <div class="ov-node ov-draft"><div class="ov-node-art"><svg class="ov-stack ov-stack-draft" viewBox="0 0 160 112" aria-hidden="true"><ellipse class="ov-stack-shadow" cx="80" cy="100" rx="48" ry="8"/><path class="ov-layer" data-layer="5" data-kept d="M24 85 80 68 136 85 80 102Z"/><path class="ov-layer" data-layer="4" d="M24 72 80 55 136 72 80 89Z"/><path class="ov-layer" data-layer="3" d="M24 59 80 42 136 59 80 76Z"/><path class="ov-layer" data-layer="2" data-kept d="M24 46 80 29 136 46 80 63Z"/><path class="ov-layer" data-layer="1" d="M24 33 80 16 136 33 80 50Z"/><path class="ov-layer" data-layer="0" data-kept d="M24 20 80 3 136 20 80 37Z"/><path class="ov-stack-spine" d="M80 4v96"/></svg></div><strong>Self-draft <span class="ov-draft-id" aria-hidden="true">A</span></strong><span data-skip-count>3 of 6 sublayers skipped</span></div>
             <div class="ov-wire ov-wire-draft" aria-hidden="true"><span>propose</span><i></i></div>
@@ -46,32 +46,29 @@
             <div class="ov-memory"><div><span class="ov-controller-label">Across requests</span><strong>Recall useful profiles</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true"><i class="filled"></i><i class="filled"></i><i></i><i></i><i class="filled"></i><i></i></span><span class="ov-profile ov-profile-1" aria-hidden="true"><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i><i class="filled"></i></span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i class="filled"></i></span></div></div>
           </div>
           <div class="ov-reuse-controller">
-            <div class="ov-feature-map">
-              <span class="ov-axis-title">Draft acceptance</span>
-              <div class="ov-feature-plane">
-                <div class="ov-feature-profile" data-head-profile="A">
-                  <span class="ov-history-region"><span>A’s range</span></span>
-                  <span class="ov-request-point">A</span>
-                </div>
-                <div class="ov-feature-profile" data-head-profile="B">
-                  <span class="ov-history-region"><span>B’s range</span></span>
-                  <span class="ov-request-point">B</span>
-                </div>
-                <div class="ov-feature-profile" data-head-profile="C">
-                  <span class="ov-history-region"><span>C’s range</span></span>
-                  <span class="ov-request-point">C</span>
-                </div>
-              </div>
-              <div class="ov-map-footer"><span class="ov-point-key">This request head</span><span class="ov-axis-title">Throughput</span></div>
-            </div>
-            <div class="ov-probe-bank">
-              <span class="ov-controller-label">Profile bank</span>
-              <div class="ov-bank-options" aria-hidden="true">
-                <div class="ov-bank-entry"><span class="ov-bank-profile" data-profile="A"><b>A</b></span><span class="ov-bank-note">Active draft</span></div>
-                <div class="ov-bank-entry"><span class="ov-bank-profile" data-profile="B"><b>B</b></span><span class="ov-bank-note">Saved</span></div>
-                <div class="ov-bank-entry"><span class="ov-bank-profile" data-profile="C"><b>C</b></span><span class="ov-bank-note">Saved</span></div>
-              </div>
-            </div>
+            <table class="ov-probe-comparison" aria-label="Profile probes on the same request head">
+              <colgroup><col class="ov-metric-col"><col><col><col></colgroup>
+              <thead><tr>
+                <th scope="col">Profile</th>
+                <th scope="col"><span class="ov-bank-profile" data-profile="A"><b>A</b></span></th>
+                <th scope="col"><span class="ov-bank-profile" data-profile="B"><b>B</b></span></th>
+                <th scope="col"><span class="ov-bank-profile" data-profile="C"><b>C</b></span></th>
+              </tr></thead>
+              <tbody>
+                <tr><th scope="row">Fit to history</th>
+                  <td><span>Mismatch</span></td><td><span>Match</span></td><td><span>Match</span></td>
+                </tr>
+                <tr><th scope="row">Throughput</th>
+                  <td data-head-profile="A"><span><span class="ov-initial-reading">Low</span><span class="ov-probe-reading">Baseline</span><i class="ov-speed-bar"></i></span></td>
+                  <td data-head-profile="B"><span>Faster<i class="ov-speed-bar"></i></span></td>
+                  <td data-head-profile="C"><span>Slower<i class="ov-speed-bar"></i></span></td>
+                </tr>
+                <tr><th scope="row">Draft acceptance</th>
+                  <td><span><span class="ov-initial-reading">Low</span><span class="ov-probe-reading">Baseline</span></span></td>
+                  <td><span>Higher</span></td><td><span>Higher</span></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           </div>
         </div>

@@ -62,77 +62,39 @@
 /* Keep the model in place while the controller changes chapters. */
 .ov-controller-space { display:grid; }
 .ov-controller-space > * { grid-area:1/1; min-width:0; }
-.ov-reuse-controller { visibility:hidden; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; column-gap:12px; padding:8px 16px; border:1px solid var(--rule); border-radius:10px; background:var(--paper); }
+.ov-reuse-controller { visibility:hidden; display:grid; align-content:center; padding:6px 14px; border:1px solid var(--rule); border-radius:10px; background:var(--paper); }
 .ov-demo[data-step="reuse"] .ov-controller { visibility:hidden; }
 .ov-demo[data-step="reuse"] .ov-reuse-controller { visibility:visible; }
-/* The map and example table share measurements. The illustrative y-axis
-   spans 16–96% of the table's scale to keep the observations legible. */
-.ov-feature-map { min-width:0; width:100%; max-width:460px; }
-.ov-axis-title,.ov-point-key,.ov-history-region > span { font-size:10px; line-height:1.4; }
-.ov-axis-title { display:block; font-size:11px; color:var(--ink); font-weight:550; }
-.ov-feature-plane {
-  position:relative; isolation:isolate; height:94px; margin:4px 4px 0;
-  border-left:1px solid var(--connector); border-bottom:1px solid var(--connector);
-}
-.ov-feature-plane::before,.ov-feature-plane::after {
-  position:absolute; content:""; width:5px; height:5px;
-  border:solid var(--connector); border-width:1px 1px 0 0;
-}
-.ov-feature-plane::before { top:0; left:-3px; transform:rotate(-45deg); }
-.ov-feature-plane::after { right:0; bottom:-3px; transform:rotate(45deg); }
-.ov-feature-profile { --profile-ink:var(--muted); --reveal:var(--ov-probe-progress,0); }
-.ov-feature-profile[data-head-profile="A"] { --profile-ink:var(--accent); --reveal:var(--ov-head-progress,0); }
-.ov-feature-profile[data-head-profile="B"] { --profile-ink:var(--ov-teal); }
-.ov-history-region {
-  position:absolute; left:var(--speed-low); bottom:calc(1.25 * var(--accept-low) - 20%);
-  width:calc(var(--speed-high) - var(--speed-low)); height:calc(1.25 * (var(--accept-high) - var(--accept-low)));
-  border:1px dashed color-mix(in srgb,var(--profile-ink) 76%,var(--paper)); border-radius:3px;
-  background:color-mix(in srgb,var(--profile-ink) 7%,transparent);
-}
-.ov-history-region > span { position:absolute; bottom:100%; left:-1px; color:var(--profile-ink); white-space:nowrap; }
-/* Once the comparison starts, A's measured speed is the reference for B and C. */
-.ov-demo:is([data-beat="probe"],[data-beat="match"],[data-beat="recall"]) [data-head-profile="A"] .ov-history-region { display:none; }
-.ov-demo:is([data-beat="probe"],[data-beat="match"],[data-beat="recall"]) [data-head-profile="A"]::before {
-  content:""; position:absolute; left:var(--speed); bottom:0; height:78%;
-  border-left:1px dotted color-mix(in srgb,var(--profile-ink) 50%,var(--paper));
-}
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) :is([data-head-profile="B"],[data-head-profile="C"]) { visibility:hidden; }
-.ov-request-point {
-  position:absolute; z-index:1; left:var(--speed); bottom:calc(1.25 * var(--accept) - 20%); transform:translate(-50%,50%);
-  display:grid; place-items:center; width:16px; height:16px; border-radius:50%;
-  color:var(--paper); background:var(--profile-ink); box-shadow:0 0 0 1px var(--paper);
-  font-size:10px; line-height:1; font-weight:650; opacity:clamp(0,calc(3 * var(--reveal)),1);
-}
-.ov-request-point::after {
-  content:""; position:absolute; inset:-5px; border:1px solid var(--profile-ink); border-radius:50%;
-  opacity:calc(1 - var(--reveal)); transform:scale(calc(1.5 - .5 * var(--reveal)));
-}
-.ov-demo[data-beat="probe"] [data-head-profile="A"] .ov-request-point::after {
-  opacity:calc(1 - var(--ov-probe-progress)); transform:scale(calc(1.5 - .5 * var(--ov-probe-progress)));
-}
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-head-profile="B"] .ov-request-point::after {
-  opacity:1; transform:none; inset:-3px; border-width:2px;
-}
-.ov-map-footer { display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-top:4px; }
-.ov-point-key { display:inline-flex; align-items:center; gap:5px; color:var(--muted); }
-.ov-point-key::before { content:""; width:7px; height:7px; border-radius:50%; background:currentColor; }
-.ov-probe-bank { display:grid; width:214px; align-content:center; gap:8px; padding-left:16px; border-left:1px solid var(--rule); }
-.ov-bank-options { display:grid; grid-template-columns:repeat(3,minmax(58px,1fr)); gap:5px; }
-.ov-bank-entry,.ov-bank-profile { display:flex; align-items:center; }
-.ov-bank-entry { flex-direction:column; gap:4px; }
-.ov-bank-note { color:var(--muted); font-size:10px; line-height:1.3; }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-profile="B"] + .ov-bank-note { color:var(--ov-teal); font-weight:600; }
-.ov-bank-profile { gap:4px; min-height:26px; padding:0 7px 0 4px; border:1px solid var(--rule); border-radius:6px; color:var(--muted); background:var(--surface); }
-.ov-bank-profile b,.ov-draft-id { font-size:10px; font-weight:600; }
-.ov-bank-stack { width:29px; height:23px; }
+/* The same columns carry the active reading and the three same-head probes. */
+.ov-probe-comparison { width:100%; max-width:550px; margin:auto; table-layout:fixed; border-collapse:collapse; font-size:12px; line-height:1.35; }
+.ov-probe-comparison .ov-metric-col { width:29%; }
+.ov-probe-comparison :is(th,td) { padding:3px 5px; text-align:left; vertical-align:middle; }
+.ov-probe-comparison th { color:var(--muted); font-weight:500; }
+.ov-probe-comparison td { position:relative; color:var(--ink); }
+.ov-probe-comparison thead th { border-bottom:1px solid var(--rule); }
+.ov-probe-comparison thead th:first-child { font-weight:600; }
+.ov-probe-comparison tbody tr:first-child > * { padding-top:6px; }
+.ov-probe-comparison .ov-initial-reading { display:none; }
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-initial-reading { display:inline; }
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-reading { display:none; }
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-comparison td:nth-child(2) > span { opacity:var(--ov-head-progress,0); }
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-comparison td:nth-child(n+3) > span { visibility:hidden; }
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-comparison td:nth-child(n+3)::after { position:absolute; left:5px; top:3px; content:"—"; color:var(--connector); }
+.ov-demo[data-beat="probe"] .ov-probe-comparison td:nth-child(n+3) > span { opacity:var(--ov-probe-progress,0); }
+.ov-speed-bar { display:block; width:var(--speed); height:4px; margin-top:3px; border-radius:2px; background:var(--connector); }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-probe-comparison tr > :nth-child(3) { background:var(--ov-teal-soft); color:var(--ov-teal); font-weight:600; }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-head-profile="B"] .ov-speed-bar { background:var(--ov-teal); }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-profile="B"]::after { content:"✓"; color:var(--ov-teal); }
+.ov-bank-profile { display:inline-flex; align-items:center; gap:5px; color:var(--muted); }
+.ov-bank-profile b,.ov-draft-id { font-size:12px; font-weight:600; }
+.ov-bank-stack { width:30px; height:23px; }
 .ov-bank-stack .ov-stack-shadow,.ov-bank-stack .ov-stack-spine { display:none; }
 .ov-bank-stack .ov-layer { fill:none; stroke:var(--connector); stroke-dasharray:5 5; stroke-width:2; }
 .ov-bank-stack .ov-bank-kept { fill:var(--accent-soft); stroke:currentColor; stroke-dasharray:none; stroke-width:3; }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-bank-profile[data-profile="A"],
-.ov-demo[data-beat="probe"] .ov-bank-profile { color:var(--accent); border-color:var(--connector); }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-bank-profile[data-profile="B"],
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) [data-profile="A"] { color:var(--accent); }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-profile="B"],
 .ov-demo[data-beat="recall"] .ov-draft-id { color:var(--ov-teal); border-color:var(--ov-teal); background:var(--ov-teal-soft); }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-bank-profile[data-profile="B"] .ov-bank-kept { fill:var(--ov-teal-soft); }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-profile="B"] .ov-bank-kept { fill:var(--ov-teal-soft); }
 .ov-draft-id { display:none; vertical-align:1px; min-width:16px; line-height:14px; border:1px solid var(--connector); border-radius:4px; color:var(--accent); background:var(--accent-soft); }
 .ov-demo[data-step="reuse"] .ov-draft-id { display:inline-block; }
 .ov-demo[data-step="reuse"] .ov-feedback-arrow { display:none; }
@@ -146,8 +108,11 @@
  .ov-profile { padding:5px; }
 }
 @media (max-width:520px) {
- .ov-reuse-controller { padding:7px 10px; column-gap:8px; }
- .ov-bank-profile { gap:3px; min-height:25px; padding:1px 6px 1px 3px; }
+ .ov-reuse-controller { padding:5px 6px; }
+ .ov-probe-comparison { font-size:11px; }
+ .ov-probe-comparison :is(th,td) { padding-inline:3px; }
+ .ov-probe-comparison .ov-metric-col { width:31%; }
+ .ov-bank-profile { gap:3px; }
  .ov-bank-stack { width:26px; height:21px; }
  .ov-draft-id { min-width:14px; font-size:9px; line-height:12px; }
  .ov-demo-graph { padding-top:14px; }
@@ -176,14 +141,6 @@
  .ov-profile-bank { gap:3px; }
  .ov-profile { grid-template-columns:repeat(3,3px); gap:2px; padding:4px; }
  .ov-profile i { width:3px; height:5px; }
-}
-@media (max-width:580px) {
- .ov-reuse-controller { grid-template-columns:minmax(0,1fr); row-gap:6px; }
- .ov-feature-map { max-width:none; }
- .ov-probe-bank { width:auto; grid-template-columns:auto 1fr; align-items:center; gap:6px; min-width:0; padding:6px 0 0; border-left:0; border-top:1px solid var(--rule); }
- .ov-bank-options { grid-template-columns:repeat(3,1fr); }
- .ov-bank-entry { gap:3px; }
- .ov-bank-note { font-size:9px; }
 }
 @media (max-width:360px) {
  .ov-node > span { font-size:8px; }
