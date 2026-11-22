@@ -41,11 +41,11 @@
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
   <link rel="stylesheet" href="/spirit/project.css?v=b6ce107a2c1c">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
-  <link rel="stylesheet" href="/spirit/model-flow.css?v=623bfecb34c7">
-  <link rel="stylesheet" href="/spirit/overview.css?v=552d4ed46461">
+  <link rel="stylesheet" href="/spirit/model-flow.css?v=f474dd859121">
+  <link rel="stylesheet" href="/spirit/overview.css?v=d7b5d093ab8c">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=1c630cbc36ce" defer></script>
+  <script src="/spirit/overview.js?v=3eb50d945bf1" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -144,17 +144,17 @@
                 <th scope="col"><span class="ov-bank-profile" data-profile="C"><b>C</b></span></th>
               </tr></thead>
               <tbody>
-                <tr><th scope="row">Fit to history</th>
-                  <td><span>Mismatch</span></td><td><span>Match</span></td><td><span>Match</span></td>
+                <tr>
+                  <th scope="row">History match</th>
+                  <td><span class="ov-verdict" role="img" aria-label="Mismatch">×</span></td>
+                  <td><span class="ov-verdict" role="img" aria-label="Match">✓</span></td>
+                  <td><span class="ov-verdict" role="img" aria-label="Match">✓</span></td>
                 </tr>
-                <tr><th scope="row">Throughput</th>
-                  <td data-head-profile="A"><span><span class="ov-initial-reading">Low</span><span class="ov-probe-reading">Baseline</span><i class="ov-speed-bar"></i></span></td>
-                  <td data-head-profile="B"><span>Faster<i class="ov-speed-bar"></i></span></td>
-                  <td data-head-profile="C"><span>Slower<i class="ov-speed-bar"></i></span></td>
-                </tr>
-                <tr><th scope="row">Draft acceptance</th>
-                  <td><span><span class="ov-initial-reading">Low</span><span class="ov-probe-reading">Baseline</span></span></td>
-                  <td><span>Higher</span></td><td><span>Higher</span></td>
+                <tr>
+                  <th scope="row">Throughput check</th>
+                  <td><span class="ov-baseline">Baseline</span></td>
+                  <td><span class="ov-verdict" role="img" aria-label="Pass">✓</span></td>
+                  <td><span class="ov-verdict" role="img" aria-label="Fail">×</span></td>
                 </tr>
               </tbody>
             </table>

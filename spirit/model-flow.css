@@ -65,26 +65,20 @@
 .ov-reuse-controller { visibility:hidden; display:grid; align-content:center; padding:6px 14px; border:1px solid var(--rule); border-radius:10px; background:var(--paper); }
 .ov-demo[data-step="reuse"] .ov-controller { visibility:hidden; }
 .ov-demo[data-step="reuse"] .ov-reuse-controller { visibility:visible; }
-/* The same columns carry the active reading and the three same-head probes. */
-.ov-probe-comparison { width:100%; max-width:550px; margin:auto; table-layout:fixed; border-collapse:collapse; font-size:12px; line-height:1.35; }
-.ov-probe-comparison .ov-metric-col { width:29%; }
-.ov-probe-comparison :is(th,td) { padding:3px 5px; text-align:left; vertical-align:middle; }
+/* The active profile is the throughput baseline for the same-head probes. */
+.ov-probe-comparison { width:100%; max-width:470px; margin:auto; table-layout:fixed; border-collapse:collapse; font-size:12px; line-height:1.35; }
+.ov-probe-comparison .ov-metric-col { width:34%; }
+.ov-probe-comparison :is(th,td) { padding:3px 4px; vertical-align:middle; text-align:center; }
 .ov-probe-comparison th { color:var(--muted); font-weight:500; }
-.ov-probe-comparison td { position:relative; color:var(--ink); }
+.ov-probe-comparison th:first-child { text-align:left; }
 .ov-probe-comparison thead th { border-bottom:1px solid var(--rule); }
-.ov-probe-comparison thead th:first-child { font-weight:600; }
-.ov-probe-comparison tbody tr:first-child > * { padding-top:6px; }
-.ov-probe-comparison .ov-initial-reading { display:none; }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-initial-reading { display:inline; }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-reading { display:none; }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-comparison td:nth-child(2) > span { opacity:var(--ov-head-progress,0); }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-comparison td:nth-child(n+3) > span { visibility:hidden; }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-comparison td:nth-child(n+3)::after { position:absolute; left:5px; top:3px; content:"—"; color:var(--connector); }
-.ov-demo[data-beat="probe"] .ov-probe-comparison td:nth-child(n+3) > span { opacity:var(--ov-probe-progress,0); }
-.ov-speed-bar { display:block; width:var(--speed); height:4px; margin-top:3px; border-radius:2px; background:var(--connector); }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-probe-comparison tr > :nth-child(3) { background:var(--ov-teal-soft); color:var(--ov-teal); font-weight:600; }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-head-profile="B"] .ov-speed-bar { background:var(--ov-teal); }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-profile="B"]::after { content:"✓"; color:var(--ov-teal); }
+.ov-probe-comparison td { color:var(--ink); }
+.ov-verdict { display:inline-block; font:600 16px/1.2 system-ui,sans-serif; }
+.ov-baseline { color:var(--muted); font-size:11px; }
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-comparison td:nth-child(2) .ov-verdict { opacity:var(--ov-head-progress,0); }
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-comparison td:nth-child(n+3) .ov-verdict { visibility:hidden; }
+.ov-demo[data-beat="probe"] .ov-probe-comparison td:nth-child(n+3) .ov-verdict { opacity:var(--ov-probe-progress,0); }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-probe-comparison tr > :nth-child(3) { color:var(--ov-teal); background:var(--ov-teal-soft); }
 .ov-bank-profile { display:inline-flex; align-items:center; gap:5px; color:var(--muted); }
 .ov-bank-profile b,.ov-draft-id { font-size:12px; font-weight:600; }
 .ov-bank-stack { width:30px; height:23px; }
@@ -111,7 +105,7 @@
  .ov-reuse-controller { padding:5px 6px; }
  .ov-probe-comparison { font-size:11px; }
  .ov-probe-comparison :is(th,td) { padding-inline:3px; }
- .ov-probe-comparison .ov-metric-col { width:31%; }
+ .ov-probe-comparison .ov-metric-col { width:40%; }
  .ov-bank-profile { gap:3px; }
  .ov-bank-stack { width:26px; height:21px; }
  .ov-draft-id { min-width:14px; font-size:9px; line-height:12px; }

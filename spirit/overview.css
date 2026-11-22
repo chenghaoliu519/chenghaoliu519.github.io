@@ -166,14 +166,14 @@
 .probe-candidates { position:relative; }
 .probe-row.stored-profile { border-radius:6px; background:#edf6f2; }
 .probe-scale { position:relative; height:5px; background:#e6edef; border-radius:5px; margin-inline:2px; }
-/* Illustrative request-head values and historical ranges, shared by both views. */
-.active-profile,[data-head-profile="A"] {
+/* Illustrative request-head values and historical ranges for the worked example. */
+.active-profile {
   --speed:27%; --speed-low:52%; --speed-high:80%; --accept:36%; --accept-low:55%; --accept-high:75%;
 }
-.stored-profile,[data-head-profile="B"] {
+.stored-profile {
   --speed:66%; --speed-low:53%; --speed-high:82%; --accept:61%; --accept-low:42%; --accept-high:68%;
 }
-.candidate-c,[data-head-profile="C"] {
+.candidate-c {
   --speed:17%; --speed-low:10%; --speed-high:29%; --accept:70%; --accept-low:56%; --accept-high:80%;
 }
 .probe-row .probe-scale { --low:var(--speed-low); --high:var(--speed-high); --point:var(--speed); }
