@@ -62,33 +62,38 @@
 /* Keep the model in place while the controller changes chapters. */
 .ov-controller-space { display:grid; }
 .ov-controller-space > * { grid-area:1/1; min-width:0; }
-.ov-reuse-controller { visibility:hidden; display:grid; align-content:center; padding:6px 14px; border:1px solid var(--rule); border-radius:10px; background:var(--paper); }
+.ov-reuse-controller { visibility:hidden; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; column-gap:12px; padding:8px 16px; border:1px solid var(--rule); border-radius:10px; background:var(--paper); }
 .ov-demo[data-step="reuse"] .ov-controller { visibility:hidden; }
 .ov-demo[data-step="reuse"] .ov-reuse-controller { visibility:visible; }
-/* The active profile is the throughput baseline for the same-head probes. */
-.ov-probe-comparison { width:100%; max-width:470px; margin:auto; table-layout:fixed; border-collapse:collapse; font-size:12px; line-height:1.35; }
-.ov-probe-comparison .ov-metric-col { width:34%; }
-.ov-probe-comparison :is(th,td) { padding:3px 4px; vertical-align:middle; text-align:center; }
-.ov-probe-comparison th { color:var(--muted); font-weight:500; }
-.ov-probe-comparison th:first-child { text-align:left; }
-.ov-probe-comparison thead th { border-bottom:1px solid var(--rule); }
-.ov-probe-comparison td { color:var(--ink); }
-.ov-verdict { display:inline-block; font:600 16px/1.2 system-ui,sans-serif; }
-.ov-baseline { color:var(--muted); font-size:11px; }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-comparison td:nth-child(2) .ov-verdict { opacity:var(--ov-head-progress,0); }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-probe-comparison td:nth-child(n+3) .ov-verdict { visibility:hidden; }
-.ov-demo[data-beat="probe"] .ov-probe-comparison td:nth-child(n+3) .ov-verdict { opacity:var(--ov-probe-progress,0); }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-probe-comparison tr > :nth-child(3) { color:var(--ov-teal); background:var(--ov-teal-soft); }
-.ov-bank-profile { display:inline-flex; align-items:center; gap:5px; color:var(--muted); }
-.ov-bank-profile b,.ov-draft-id { font-size:12px; font-weight:600; }
-.ov-bank-stack { width:30px; height:23px; }
+.ov-head-reading { --history-band:color-mix(in srgb,var(--connector) 75%,var(--paper)); width:100%; max-width:340px; min-width:0; }
+.ov-head-signals { width:100%; table-layout:fixed; border-collapse:collapse; color:var(--muted); font-size:10px; line-height:1.45; }
+.ov-head-signals th,.ov-head-signals td { padding:2px 5px; text-align:left; }
+.ov-head-signals th:first-child { width:20%; padding-left:0; }
+.ov-head-signals thead th { font-weight:500; vertical-align:bottom; }
+.ov-head-signals tbody th { color:var(--ink); font-weight:600; }
+.ov-head-signals .probe-scale { display:block; height:2px; background:var(--rule); }
+.ov-head-signals .probe-scale::before { height:6px; background:var(--history-band); }
+.ov-head-signals .probe-scale i { width:7px; height:7px; background:var(--accent); box-shadow:0 0 0 1px var(--paper); opacity:var(--ov-candidates-measured,0); }
+.ov-head-signals [data-head-profile="A"] .probe-scale i { opacity:var(--ov-active-measured,1); }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-head-signals [data-head-profile="B"] { background:var(--ov-teal-soft); }
+.ov-signal-key { display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; margin-top:4px; color:var(--muted); font-size:9px; line-height:1.4; }
+.ov-signal-key span { display:inline-flex; gap:4px; align-items:center; white-space:nowrap; }
+.ov-signal-key span::before { content:""; display:block; width:11px; height:5px; border-radius:2px; background:var(--history-band); }
+.ov-signal-key span + span::before { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+.ov-probe-bank,.ov-bank-options,.ov-bank-profile { display:flex; align-items:center; }
+.ov-probe-bank { gap:12px; padding-left:16px; border-left:1px solid var(--rule); }
+.ov-bank-options { gap:5px; }
+.ov-bank-profile { gap:4px; min-height:34px; padding:2px 8px 2px 5px; border:1px solid var(--rule); border-radius:6px; color:var(--muted); background:var(--surface); }
+.ov-bank-profile b,.ov-draft-id { font-size:10px; font-weight:600; }
+.ov-bank-stack { width:34px; height:26px; }
 .ov-bank-stack .ov-stack-shadow,.ov-bank-stack .ov-stack-spine { display:none; }
 .ov-bank-stack .ov-layer { fill:none; stroke:var(--connector); stroke-dasharray:5 5; stroke-width:2; }
 .ov-bank-stack .ov-bank-kept { fill:var(--accent-soft); stroke:currentColor; stroke-dasharray:none; stroke-width:3; }
-.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) [data-profile="A"] { color:var(--accent); }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-profile="B"],
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-bank-profile[data-profile="A"],
+.ov-demo[data-beat="probe"] .ov-bank-profile { color:var(--accent); border-color:var(--connector); }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-bank-profile[data-profile="B"],
 .ov-demo[data-beat="recall"] .ov-draft-id { color:var(--ov-teal); border-color:var(--ov-teal); background:var(--ov-teal-soft); }
-.ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-profile="B"] .ov-bank-kept { fill:var(--ov-teal-soft); }
+.ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-bank-profile[data-profile="B"] .ov-bank-kept { fill:var(--ov-teal-soft); }
 .ov-draft-id { display:none; vertical-align:1px; min-width:16px; line-height:14px; border:1px solid var(--connector); border-radius:4px; color:var(--accent); background:var(--accent-soft); }
 .ov-demo[data-step="reuse"] .ov-draft-id { display:inline-block; }
 .ov-demo[data-step="reuse"] .ov-feedback-arrow { display:none; }
@@ -96,17 +101,18 @@
 .ov-demo[data-beat="recall"] .ov-profile-arrow { stroke:var(--ov-teal); }
 
 @media (max-width:740px) {
+ .ov-probe-bank { flex-direction:column; gap:4px; align-items:flex-start; }
  .ov-controller { gap:14px; padding-inline:12px; }
  .ov-runtime { grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr); }
  .ov-memory { max-width:260px; }
  .ov-profile { padding:5px; }
 }
 @media (max-width:520px) {
- .ov-reuse-controller { padding:5px 6px; }
- .ov-probe-comparison { font-size:11px; }
- .ov-probe-comparison :is(th,td) { padding-inline:3px; }
- .ov-probe-comparison .ov-metric-col { width:40%; }
- .ov-bank-profile { gap:3px; }
+ .ov-reuse-controller { padding:7px 10px; column-gap:8px; }
+ .ov-head-signals { font-size:9px; }
+ .ov-signal-key { gap:7px; font-size:8px; }
+ .ov-probe-bank { gap:3px; padding-left:10px; flex-direction:column; align-items:flex-start; }
+ .ov-bank-profile { gap:3px; min-height:25px; padding:1px 6px 1px 3px; }
  .ov-bank-stack { width:26px; height:21px; }
  .ov-draft-id { min-width:14px; font-size:9px; line-height:12px; }
  .ov-demo-graph { padding-top:14px; }
@@ -135,6 +141,11 @@
  .ov-profile-bank { gap:3px; }
  .ov-profile { grid-template-columns:repeat(3,3px); gap:2px; padding:4px; }
  .ov-profile i { width:3px; height:5px; }
+}
+@media (max-width:420px) {
+ .ov-reuse-controller { grid-template-columns:minmax(0,1fr); row-gap:6px; }
+ .ov-head-reading { max-width:none; }
+ .ov-probe-bank { flex-direction:row; align-items:center; justify-content:space-between; padding:5px 0 0; border-left:0; border-top:1px solid var(--rule); }
 }
 @media (max-width:360px) {
  .ov-node > span { font-size:8px; }

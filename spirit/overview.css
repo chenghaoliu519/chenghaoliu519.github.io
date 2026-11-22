@@ -166,18 +166,13 @@
 .probe-candidates { position:relative; }
 .probe-row.stored-profile { border-radius:6px; background:#edf6f2; }
 .probe-scale { position:relative; height:5px; background:#e6edef; border-radius:5px; margin-inline:2px; }
-/* Illustrative request-head values and historical ranges for the worked example. */
-.active-profile {
-  --speed:27%; --speed-low:52%; --speed-high:80%; --accept:36%; --accept-low:55%; --accept-high:75%;
-}
-.stored-profile {
-  --speed:66%; --speed-low:53%; --speed-high:82%; --accept:61%; --accept-low:42%; --accept-high:68%;
-}
-.candidate-c {
-  --speed:17%; --speed-low:10%; --speed-high:29%; --accept:70%; --accept-low:56%; --accept-high:80%;
-}
-.probe-row .probe-scale { --low:var(--speed-low); --high:var(--speed-high); --point:var(--speed); }
-.probe-row .probe-scale + .probe-scale { --low:var(--accept-low); --high:var(--accept-high); --point:var(--accept); }
+/* Each column uses the same scale for the active and stored profiles. */
+.active-profile .probe-scale, [data-head-profile="A"] .probe-scale { --low:52%; --high:80%; --point:27%; }
+.active-profile .probe-scale + .probe-scale, [data-head-profile="A"] .ov-acceptance-reading { --low:55%; --high:75%; --point:36%; }
+.stored-profile .probe-scale, [data-head-profile="B"] .probe-scale { --low:53%; --high:82%; --point:66%; }
+.stored-profile .probe-scale + .probe-scale, [data-head-profile="B"] .ov-acceptance-reading { --low:42%; --high:68%; --point:61%; }
+.candidate-c .probe-scale, [data-head-profile="C"] .probe-scale { --low:10%; --high:29%; --point:17%; }
+.candidate-c .probe-scale + .probe-scale, [data-head-profile="C"] .ov-acceptance-reading { --low:56%; --high:80%; --point:70%; }
 .probe-scale::before { content:""; position:absolute; top:50%; transform:translateY(-50%); left:var(--low); width:calc(var(--high) - var(--low)); height:8px; border-radius:2px; background:#b8d9ce; }
 .probe-scale i { position:absolute; top:50%; left:var(--point); transform:translate(-50%,-50%); width:9px; height:9px; border-radius:50%; background:#234a61; box-shadow:0 0 0 1.5px white; }
 /* The stored card and active slot share an inset. A copy drops into the slot,

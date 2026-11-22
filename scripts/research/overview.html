@@ -46,29 +46,25 @@
             <div class="ov-memory"><div><span class="ov-controller-label">Across requests</span><strong>Recall useful profiles</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true"><i class="filled"></i><i class="filled"></i><i></i><i></i><i class="filled"></i><i></i></span><span class="ov-profile ov-profile-1" aria-hidden="true"><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i><i class="filled"></i></span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i class="filled"></i></span></div></div>
           </div>
           <div class="ov-reuse-controller">
-            <table class="ov-probe-comparison" aria-label="Profile probes on the same request head">
-              <colgroup><col class="ov-metric-col"><col><col><col></colgroup>
-              <thead><tr>
-                <th scope="col">Profile</th>
-                <th scope="col"><span class="ov-bank-profile" data-profile="A"><b>A</b></span></th>
-                <th scope="col"><span class="ov-bank-profile" data-profile="B"><b>B</b></span></th>
-                <th scope="col"><span class="ov-bank-profile" data-profile="C"><b>C</b></span></th>
-              </tr></thead>
-              <tbody>
-                <tr>
-                  <th scope="row">History match</th>
-                  <td><span class="ov-verdict" role="img" aria-label="Mismatch">×</span></td>
-                  <td><span class="ov-verdict" role="img" aria-label="Match">✓</span></td>
-                  <td><span class="ov-verdict" role="img" aria-label="Match">✓</span></td>
-                </tr>
-                <tr>
-                  <th scope="row">Throughput check</th>
-                  <td><span class="ov-baseline">Baseline</span></td>
-                  <td><span class="ov-verdict" role="img" aria-label="Pass">✓</span></td>
-                  <td><span class="ov-verdict" role="img" aria-label="Fail">×</span></td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="ov-head-reading">
+              <table class="ov-head-signals" aria-label="Request-head measurements compared with each profile’s history">
+                <thead><tr><th scope="col">Profile</th><th scope="col">Throughput</th><th scope="col">Draft acceptance</th></tr></thead>
+                <tbody>
+                  <tr data-head-profile="A"><th scope="row">A</th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
+                  <tr data-head-profile="B"><th scope="row">B</th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
+                  <tr data-head-profile="C"><th scope="row">C</th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
+                </tbody>
+              </table>
+              <div class="ov-signal-key"><span>Historical range</span><span>This request</span></div>
+            </div>
+            <div class="ov-probe-bank">
+              <span class="ov-controller-label">Profile bank</span>
+              <div class="ov-bank-options" aria-hidden="true">
+                <span class="ov-bank-profile" data-profile="A"><b>A</b></span>
+                <span class="ov-bank-profile" data-profile="B"><b>B</b></span>
+                <span class="ov-bank-profile" data-profile="C"><b>C</b></span>
+              </div>
+            </div>
           </div>
           </div>
         </div>
