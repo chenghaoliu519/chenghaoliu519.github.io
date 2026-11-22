@@ -171,9 +171,10 @@
 .ov-film :is([data-beat="shift"],[data-beat="probe"]) .profile-drift-note,
 .ov-film :is([data-beat="match"],[data-beat="recall"]) .profile-match-note { display:inline; }
 .ov-probe-label { display:none; }
-.ov-film [data-beat="probe"] .probe-candidates {
-  outline:1px dashed color-mix(in srgb,var(--probe-ink) 75%,var(--paper)); outline-offset:-1px;
+.ov-film :is([data-beat="probe"],[data-beat="match"],[data-beat="recall"]) .probe-candidates {
+  outline:1px dashed color-mix(in srgb,var(--muted) 75%,var(--paper)); outline-offset:-1px;
 }
+.ov-film [data-beat="probe"] .probe-candidates { outline-color:color-mix(in srgb,var(--probe-ink) 75%,var(--paper)); }
 .ov-film [data-beat="probe"] .ov-probe-label {
   display:block; position:absolute; z-index:1; inset:0 auto auto 16px; transform:translateY(-50%);
   padding:0 4px; color:var(--probe-ink); background:var(--paper); font-size:10px; line-height:1.1; font-weight:600;
