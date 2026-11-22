@@ -41,11 +41,11 @@
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
   <link rel="stylesheet" href="/spirit/project.css?v=b6ce107a2c1c">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
-  <link rel="stylesheet" href="/spirit/model-flow.css?v=70dbaa4c1b92">
-  <link rel="stylesheet" href="/spirit/overview.css?v=0e620b3282b3">
+  <link rel="stylesheet" href="/spirit/model-flow.css?v=fa5ae9720273">
+  <link rel="stylesheet" href="/spirit/overview.css?v=1acd56b3c4d4">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=e8e043d5ea13" defer></script>
+  <script src="/spirit/overview.js?v=958bbcae1164" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -104,7 +104,7 @@
         </div>
 
         <div class="ov-demo" id="model-flow" data-step="decode" data-beat="commit">
-        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. In the illustrated request, A’s throughput and draft acceptance fall below its historical ranges. SPIRIT compares A, B and C on the same request head. B and C both match their own histories and improve acceptance over A. B also delivers higher throughput than A, so its probe score improves and it passes the throughput check. C is too slow to qualify. SPIRIT restores B’s saved draft.">
+        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. In the illustrated request, A’s throughput and draft acceptance fall below its historical ranges. SPIRIT compares the current profile (A) with saved profiles B and C on the same request head. B and C both match their own histories and improve acceptance over A. B also delivers higher throughput than A, so its probe score improves and it passes the throughput check. C is too slow to qualify. SPIRIT restores B’s saved draft.">
           <div class="ov-runtime">
             <div class="ov-node ov-draft"><div class="ov-node-art"><svg class="ov-stack ov-stack-draft" viewBox="0 0 160 112" aria-hidden="true"><ellipse class="ov-stack-shadow" cx="80" cy="100" rx="48" ry="8"/><path class="ov-layer" data-layer="5" data-kept d="M24 85 80 68 136 85 80 102Z"/><path class="ov-layer" data-layer="4" d="M24 72 80 55 136 72 80 89Z"/><path class="ov-layer" data-layer="3" d="M24 59 80 42 136 59 80 76Z"/><path class="ov-layer" data-layer="2" data-kept d="M24 46 80 29 136 46 80 63Z"/><path class="ov-layer" data-layer="1" d="M24 33 80 16 136 33 80 50Z"/><path class="ov-layer" data-layer="0" data-kept d="M24 20 80 3 136 20 80 37Z"/><path class="ov-stack-spine" d="M80 4v96"/></svg></div><strong>Self-draft <span class="ov-draft-id" aria-hidden="true">A</span></strong><span data-skip-count>3 of 6 sublayers skipped</span></div>
             <div class="ov-wire ov-wire-draft" aria-hidden="true"><span>propose</span><i></i></div>
@@ -238,7 +238,7 @@
 
           <section class="film-scene" id="film-reuse" data-beat="match" aria-labelledby="film-title-reuse">
             <h3 id="film-title-reuse">Can a later request reuse a saved draft?</h3>
-            <div class="film-board study-board" role="img" aria-label="All three profiles are compared on the same request head. A’s throughput and draft acceptance are below its historical ranges. B and C match their own ranges. B improves on A’s probe score and meets the throughput requirement. C delivers fewer tokens per second than A. B’s saved draft replaces A.">
+            <div class="film-board study-board" role="img" aria-label="The current profile (A) and saved profiles B and C are compared on the same request head. A’s throughput and draft acceptance are below its historical ranges. B and C match their own ranges. B improves on A’s probe score and meets the throughput requirement. C delivers fewer tokens per second than A. B’s saved draft replaces A.">
               <div class="study-heading"><strong>Probes on the same request head</strong><div class="study-key probe-symbols"><span>Stored range</span><span>Probe</span></div></div>
               <div class="probe-table">
                 <div class="probe-row probe-head"><span>Profile</span><span>Raw throughput</span><span>Acceptance</span></div>

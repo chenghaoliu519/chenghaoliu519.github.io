@@ -170,6 +170,9 @@
 .ov-film [data-beat="monitor"] .profile-active-note,
 .ov-film :is([data-beat="shift"],[data-beat="probe"]) .profile-drift-note,
 .ov-film :is([data-beat="match"],[data-beat="recall"]) .profile-match-note { display:inline; }
+.ov-film [data-beat="probe"] :is([data-head-profile="B"],[data-head-profile="C"],.probe-candidates .probe-row) {
+  outline:1px dashed var(--muted); outline-offset:-2px;
+}
 .probe-symbols span::before { content:""; width:15px; height:6px; border-radius:2px; background:#afb7bc; }
 .probe-symbols span + span::before { width:7px; height:7px; border-radius:50%; background:#5b656d; }
 .probe-table { --card-size:27px; --face-pad:4px; --probe-pad:6px; --probe-inset:11px; --slot-pad:18px; padding:6px 0 2px; }
@@ -189,7 +192,7 @@
 .probe-scale i { position:absolute; top:50%; left:var(--point); transform:translate(-50%,-50%); width:9px; height:9px; border-radius:50%; background:#5b656d; box-shadow:0 0 0 1.5px white; }
 /* The stored card and active slot share an inset. A copy drops into the slot,
    leaving the saved profile available for later requests. */
-.reuse-identity { display:flex; align-items:center; gap:7px; color:inherit; font-size:12px; }
+.reuse-identity { display:flex; align-items:center; gap:10px; color:inherit; font-size:12px; }
 .reuse-card {
   display:inline-grid; place-items:center; flex:none; width:var(--card-size); height:var(--card-size);
   border-radius:5px; color:#fff; font-size:14px; font-weight:600; line-height:1;
@@ -279,7 +282,7 @@
   .study-key span,.probe-head { font-size:10px; }
   .probe-table { --card-size:23px; --probe-inset:4px; --slot-pad:14px; }
   .probe-row { gap:9px; }
-  .reuse-identity { gap:4px; font-size:11px; }
+  .reuse-identity { gap:7px; font-size:11px; }
   .reuse-card { font-size:12px; }
   .recall-result { gap:10px; }
   .draft-readout strong { font-size:14px; }

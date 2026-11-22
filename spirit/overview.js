@@ -91,7 +91,7 @@
         { at: .65, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" }
       ],
       reuse: [
-        { at: 0, beat: "monitor", layers: refined, label: "Measure A’s throughput and acceptance at the request head" },
+        { at: 0, beat: "monitor", layers: refined, label: "Measure request-head throughput and acceptance with the current profile (A)" },
         { at: .20, beat: "shift", layers: refined, label: "Throughput and acceptance fall below A’s historical ranges" },
         { at: .40, beat: "probe", layers: refined, label: "Compare A, B and C on the same request head" },
         { at: .68, beat: "match", layers: refined, label: "B outscores A. C falls short on throughput." },
@@ -251,6 +251,7 @@
       const view = views[selected];
       let beat = "monitor";
       if (progress >= .54) beat = "match";
+      else if (progress >= .36) beat = "probe";
       else if (progress >= .20) beat = "shift";
       if (view.dataset.beat !== beat) view.dataset.beat = beat;
     }
