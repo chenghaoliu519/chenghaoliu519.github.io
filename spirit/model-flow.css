@@ -140,12 +140,10 @@
  .ov-output-rule { margin-top:7px; height:2px; }
  .ov-feedback-loop,.ov-feedback-loop svg { height:36px; }
  .ov-feedback-label { top:19px; font-size:8px; padding-inline:6px; }
- .ov-controller { gap:9px; padding:10px; align-items:center; }
- .ov-search { flex:1; }
- .ov-search > div { gap:4px; font-size:10px; }
- .ov-controller-label { font-size:8px; }
- .ov-memory { flex:0 0 auto; gap:8px; }
- .ov-memory strong { font-size:10px; }
+ .ov-controller { display:grid; grid-template-columns:minmax(0,1fr); align-content:center; gap:8px; padding:10px; }
+ .ov-controller-divider { width:100%; height:1px; }
+ .ov-search > div { gap:6px; font-size:11px; }
+ .ov-memory { max-width:none; gap:8px; }
  .ov-profile-bank { gap:3px; }
  .ov-profile { grid-template-columns:repeat(3,3px); gap:2px; padding:4px; }
  .ov-profile i { width:3px; height:5px; }
@@ -157,9 +155,5 @@
 }
 @media (max-width:360px) {
  .ov-node > span { font-size:8px; }
- .ov-controller { padding-inline:8px; gap:7px; }
- .ov-search > div { font-size:9px; gap:3px; }
- .ov-memory { gap:5px; }
- .ov-memory strong { font-size:9px; }
 }
 @media (prefers-reduced-motion:reduce) { .ov-demo * { transition:none !important; } }
