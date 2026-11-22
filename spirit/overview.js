@@ -18,7 +18,7 @@
   }
   let duration = chapterDuration(0);
   let exampleOpened = example;
-  let modelFrame = null;
+  let chapterFrame = null;
   const supported = typeof Element.prototype.animate === "function";
   let requested = supported && !motion.matches;
   let inView = false;
@@ -211,8 +211,6 @@
       segment(dot, .10, .16, {opacity:0}, {opacity:1}));
     view.querySelectorAll(".probe-candidates .probe-scale i").forEach(dot =>
       segment(dot, .36, .42, {opacity:0}, {opacity:1}));
-    segment(view.querySelector(".stored-profile"), .50, .57,
-      {backgroundColor:"transparent"}, {backgroundColor:"#edf6f2"});
     const socket = view.querySelector(".reuse-socket");
     segment(socket.querySelector(".card-a"), .62, .68,
       {opacity:1, transform:"none"}, {opacity:0, transform:"translateY(2px) scale(.9)"});
@@ -239,20 +237,34 @@
   }
 
   const draw = {decode, adapt, reuse};
-  function stopModelFrames() {
-    if (modelFrame !== null) window.cancelAnimationFrame(modelFrame);
-    modelFrame = null;
+  function stopChapterFrames() {
+    if (chapterFrame !== null) window.cancelAnimationFrame(chapterFrame);
+    chapterFrame = null;
   }
 
-  function updateModel() {
-    modelFrame = null;
-    if (!clock || example || clock.playState !== "running") return;
-    renderModel(buttons[selected].dataset.chapter, Math.min(1, clock.currentTime / duration));
-    modelFrame = window.requestAnimationFrame(updateModel);
+  function renderChapter(progress) {
+    const chapter = buttons[selected].dataset.chapter;
+    if (!example) {
+      renderModel(chapter, progress);
+    } else if (chapter === "reuse") {
+      // The head is measured first. Select B after all same-head probes arrive.
+      const view = views[selected];
+      let beat = "monitor";
+      if (progress >= .54) beat = "match";
+      else if (progress >= .20) beat = "shift";
+      if (view.dataset.beat !== beat) view.dataset.beat = beat;
+    }
+  }
+
+  function updateChapter() {
+    chapterFrame = null;
+    if (!clock || clock.playState !== "running") return;
+    renderChapter(Math.min(1, clock.currentTime / duration));
+    chapterFrame = window.requestAnimationFrame(updateChapter);
   }
 
   function dispose() {
-    stopModelFrames();
+    stopChapterFrames();
     if (clock) clock.onfinish = null;
     tracks.forEach(track => track.cancel());
     tracks = [];
@@ -264,7 +276,7 @@
     selected = index;
     duration = chapterDuration(index);
     const position = fraction * duration;
-    if (!example) renderModel(buttons[selected].dataset.chapter, fraction);
+    renderChapter(fraction);
     views.forEach((view, i) => view.setAttribute("aria-hidden", String(i !== selected)));
     buttons.forEach((button, i) => button.setAttribute("aria-pressed", String(i === selected)));
     if (supported && !printing) {
@@ -288,8 +300,10 @@
       if (running && track.playState === "paused") track.play();
       if (!running && track.playState === "running") track.pause();
     });
-    stopModelFrames();
-    if (running && !example && clock) modelFrame = window.requestAnimationFrame(updateModel);
+    stopChapterFrames();
+    if (running && clock && (!example || buttons[selected].dataset.chapter === "reuse")) {
+      chapterFrame = window.requestAnimationFrame(updateChapter);
+    }
     play.dataset.playing = String(requested);
     play.setAttribute("aria-label", requested ? "Pause animation" : "Play animation");
     play.querySelector("[data-play-label]").textContent = requested ? "Pause" : "Play";
@@ -350,6 +364,7 @@
     savedPosition = clock?.currentTime || 0;
     dispose();
     if (!example) renderModel(buttons[selected].dataset.chapter, 1);
+    figure.querySelector("#film-reuse").dataset.beat = "match";
     delete figure.dataset.choreography;
     views.forEach(view => view.removeAttribute("aria-hidden"));
   });

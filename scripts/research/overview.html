@@ -50,8 +50,8 @@
               <table class="ov-head-signals" aria-label="Request-head measurements compared with each profile’s history">
                 <thead><tr><th scope="col">Profile</th><th scope="col">Throughput</th><th scope="col">Draft acceptance</th></tr></thead>
                 <tbody>
-                  <tr data-head-profile="A"><th scope="row">A</th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
-                  <tr data-head-profile="B"><th scope="row">B</th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
+                  <tr data-head-profile="A"><th scope="row">A <span class="ov-profile-note profile-active-note">Active</span><span class="ov-profile-note profile-drift-note">Drift</span></th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
+                  <tr data-head-profile="B"><th scope="row">B <span class="ov-profile-note profile-match-note">Match</span></th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
                   <tr data-head-profile="C"><th scope="row">C</th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
                 </tbody>
               </table>
@@ -147,25 +147,25 @@
             <p class="film-caption">Dots show illustrative throughput scores after prefix-length correction and smoothing. Whiskers mark confidence bounds on each ratio’s mean. With four skips fixed, the higher-scoring pattern runs sublayers 1 and 4.</p>
           </section>
 
-          <section class="film-scene" id="film-reuse" aria-labelledby="film-title-reuse">
+          <section class="film-scene" id="film-reuse" data-beat="match" aria-labelledby="film-title-reuse">
             <h3 id="film-title-reuse">Can a later request reuse a saved draft?</h3>
             <div class="film-board study-board" role="img" aria-label="All three profiles are compared on the same request head. A’s throughput and draft acceptance are below its historical ranges. B and C match their own ranges. B improves on A’s probe score and meets the throughput requirement. C delivers fewer tokens per second than A. B’s saved draft replaces A.">
               <div class="study-heading"><strong>Probes on the same request head</strong><div class="study-key probe-symbols"><span>Stored range</span><span>Probe</span></div></div>
               <div class="probe-table">
                 <div class="probe-row probe-head"><span>Profile</span><span>Raw throughput</span><span>Acceptance</span></div>
                 <div class="probe-row active-profile">
-                  <span class="reuse-identity"><span class="reuse-card card-a">A</span>Initial</span>
+                  <span class="reuse-identity"><span class="reuse-card card-a">A</span><span class="ov-profile-note profile-active-note">Active</span><span class="ov-profile-note profile-drift-note">Drift</span></span>
                   <div class="probe-scale"><i></i></div>
                   <div class="probe-scale"><i></i></div>
                 </div>
                 <div class="probe-candidates">
                   <div class="probe-row stored-profile">
-                    <span class="reuse-identity"><span class="reuse-card card-b">B</span>Saved</span>
+                    <span class="reuse-identity"><span class="reuse-card card-b">B</span><span class="ov-profile-note profile-match-note">Match</span></span>
                     <div class="probe-scale"><i></i></div>
                     <div class="probe-scale"><i></i></div>
                   </div>
                   <div class="probe-row candidate-c">
-                    <span class="reuse-identity"><span class="reuse-card card-c">C</span>Saved</span>
+                    <span class="reuse-identity"><span class="reuse-card card-c">C</span></span>
                     <div class="probe-scale"><i></i></div>
                     <div class="probe-scale"><i></i></div>
                   </div>
