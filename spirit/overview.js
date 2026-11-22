@@ -91,10 +91,10 @@
         { at: .65, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" }
       ],
       reuse: [
-        { at: 0, beat: "monitor", layers: refined, label: "Measure request-head throughput and acceptance with the current profile (A)" },
-        { at: .20, beat: "shift", layers: refined, label: "Detecting drift: request-head features fall outside A’s historical range" },
+        { at: 0, beat: "monitor", layers: refined, label: "Drift detection: measure request-head throughput and acceptance with the current profile (A)" },
+        { at: .20, beat: "shift", layers: refined, label: "Drift detected: request-head features fall outside A’s historical range" },
         { at: .40, beat: "probe", layers: refined, label: "Probing: compare A, B and C on the same request head" },
-        { at: .68, beat: "match", layers: refined, label: "B outscores A. C falls short on throughput." },
+        { at: .68, beat: "match", layers: refined, label: "Profile reuse: B outscores A. C falls short on throughput." },
         { at: .85, beat: "recall", layers: recalled, label: "Restore B’s skip ratio and layer pattern" }
       ]
     };
