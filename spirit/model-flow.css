@@ -74,10 +74,11 @@
 .ov-head-signals { width:100%; table-layout:fixed; border-collapse:collapse; color:var(--muted); font-size:10px; line-height:1.45; }
 .ov-head-signals th,.ov-head-signals td { padding:2px 5px; text-align:left; }
 .ov-head-signals th:first-child { width:20%; padding-left:4px; white-space:nowrap; }
+.ov-head-signals [data-head-profile="A"] > * { padding-bottom:6px; }
 .ov-head-signals thead th { font-weight:500; vertical-align:bottom; }
 .ov-head-signals tbody tr { color:var(--profile-ink,var(--muted)); background:var(--profile-wash,transparent); }
 .ov-head-signals tbody th { font-weight:600; }
-.ov-head-signals .ov-profile-note { margin-inline-start:4px; }
+.ov-head-signals .ov-profile-note { margin-inline-start:9px; }
 .ov-head-signals .probe-scale { display:block; height:2px; background:var(--rule); }
 .ov-head-signals .probe-scale::before { height:6px; background:var(--history-band); }
 .ov-head-signals .probe-scale i { width:7px; height:7px; background:currentColor; box-shadow:0 0 0 1px var(--paper); opacity:var(--ov-candidates-measured,0); }
@@ -97,7 +98,6 @@
 .ov-bank-stack .ov-bank-kept { fill:color-mix(in srgb,currentColor 12%,var(--paper)); stroke:currentColor; stroke-dasharray:none; stroke-width:3; }
 .ov-demo:is([data-beat="monitor"],[data-beat="shift"],[data-beat="probe"]) [data-profile="A"],
 .ov-demo:is([data-beat="match"],[data-beat="recall"]) [data-profile="B"] { border-color:currentColor; }
-.ov-demo[data-beat="probe"] .ov-bank-profile:is([data-profile="B"],[data-profile="C"]) { border:1px dashed var(--muted); }
 .ov-draft-id { display:none; vertical-align:1px; min-width:16px; line-height:14px; border:1px solid currentColor; border-radius:4px; color:var(--draft-ink); background:var(--draft-wash); }
 .ov-demo[data-step="reuse"] .ov-draft-id { display:inline-block; }
 .ov-demo[data-step="reuse"] .ov-feedback-arrow { display:none; }
@@ -111,8 +111,8 @@
  .ov-memory { max-width:260px; }
  .ov-profile { padding:5px; }
 }
-@media (max-width:580px) {
- .ov-head-signals th:first-child { width:48px; }
+@media (max-width:650px) {
+ .ov-head-signals th:first-child { width:56px; }
 }
 @media (max-width:520px) {
  .ov-reuse-controller { padding:7px 10px; column-gap:8px; }

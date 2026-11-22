@@ -159,8 +159,8 @@
 }
 .trial-mask .executed b { opacity:1; transform:translateY(-2px); }
 /* The same profile states follow the horizontal readings in both Adapt views. */
-.ov-film { --profile-drift:#a93934; --profile-match:#246e46; }
-:root[data-theme="dark"] .ov-demo { --profile-drift:#ffaaa3; --profile-match:#8bd6a6; }
+.ov-film { --profile-drift:#a93934; --profile-match:#246e46; --probe-gold:#e9af22; --probe-ink:#845e0a; }
+:root[data-theme="dark"] .ov-demo { --profile-drift:#ffaaa3; --profile-match:#8bd6a6; --probe-gold:#ffcf57; --probe-ink:#e8c26d; }
 .ov-film [data-beat="monitor"] { --a-ink:var(--accent); --a-wash:var(--accent-soft); }
 .ov-film :is([data-beat="shift"],[data-beat="probe"]) { --a-ink:var(--profile-drift); --a-wash:color-mix(in srgb,var(--profile-drift) 10%,var(--paper)); }
 .ov-film :is([data-beat="match"],[data-beat="recall"]) { --b-ink:var(--profile-match); --b-wash:color-mix(in srgb,var(--profile-match) 10%,var(--paper)); }
@@ -170,13 +170,21 @@
 .ov-film [data-beat="monitor"] .profile-active-note,
 .ov-film :is([data-beat="shift"],[data-beat="probe"]) .profile-drift-note,
 .ov-film :is([data-beat="match"],[data-beat="recall"]) .profile-match-note { display:inline; }
-.ov-film [data-beat="probe"] :is([data-head-profile="B"],[data-head-profile="C"],.probe-candidates .probe-row) {
-  outline:1px dashed var(--muted); outline-offset:-2px;
+.ov-probe-label { display:none; }
+.ov-film [data-beat="probe"] .probe-candidates {
+  outline:1px dashed color-mix(in srgb,var(--probe-ink) 75%,var(--paper)); outline-offset:-1px;
+}
+.ov-film [data-beat="probe"] .ov-probe-label {
+  display:block; position:absolute; z-index:1; inset:0 auto auto 16px; transform:translateY(-50%);
+  padding:0 4px; color:var(--probe-ink); background:var(--paper); font-size:10px; line-height:1.1; font-weight:600;
+}
+.ov-film [data-beat="probe"] .probe-candidates .probe-scale i {
+  background:var(--probe-gold); box-shadow:0 0 0 1px var(--probe-ink);
 }
 .probe-symbols span::before { content:""; width:15px; height:6px; border-radius:2px; background:#afb7bc; }
 .probe-symbols span + span::before { width:7px; height:7px; border-radius:50%; background:#5b656d; }
 .probe-table { --card-size:27px; --face-pad:4px; --probe-pad:6px; --probe-inset:11px; --slot-pad:18px; padding:6px 0 2px; }
-.probe-row { display:grid; grid-template-columns:1fr 1.35fr 1.35fr; align-items:center; gap:clamp(10px,3.6vw,44px); padding:var(--probe-pad) var(--probe-inset); }
+.probe-row { display:grid; grid-template-columns:minmax(74px,1fr) repeat(2,minmax(0,1.35fr)); align-items:center; gap:clamp(10px,3.6vw,44px); padding:var(--probe-pad) var(--probe-inset); }
 .probe-head { color:var(--soft); font-size:11px; line-height:1.4; }
 .probe-candidates { position:relative; }
 .probe-row:not(.probe-head) { border-radius:6px; background:var(--profile-wash,transparent); color:var(--profile-ink,var(--muted)); }
@@ -192,7 +200,7 @@
 .probe-scale i { position:absolute; top:50%; left:var(--point); transform:translate(-50%,-50%); width:9px; height:9px; border-radius:50%; background:#5b656d; box-shadow:0 0 0 1.5px white; }
 /* The stored card and active slot share an inset. A copy drops into the slot,
    leaving the saved profile available for later requests. */
-.reuse-identity { display:flex; align-items:center; gap:10px; color:inherit; font-size:12px; }
+.reuse-identity { display:flex; align-items:center; gap:15px; color:inherit; font-size:12px; }
 .reuse-card {
   display:inline-grid; place-items:center; flex:none; width:var(--card-size); height:var(--card-size);
   border-radius:5px; color:#fff; font-size:14px; font-weight:600; line-height:1;
@@ -281,8 +289,8 @@
   .study-key { gap:4px 8px; }
   .study-key span,.probe-head { font-size:10px; }
   .probe-table { --card-size:23px; --probe-inset:4px; --slot-pad:14px; }
-  .probe-row { gap:9px; }
-  .reuse-identity { gap:7px; font-size:11px; }
+  .probe-row { grid-template-columns:minmax(65px,1fr) repeat(2,minmax(0,1.35fr)); gap:9px; }
+  .reuse-identity { gap:12px; font-size:11px; }
   .reuse-card { font-size:12px; }
   .recall-result { gap:10px; }
   .draft-readout strong { font-size:14px; }

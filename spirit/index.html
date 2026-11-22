@@ -41,11 +41,11 @@
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
   <link rel="stylesheet" href="/spirit/project.css?v=b6ce107a2c1c">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
-  <link rel="stylesheet" href="/spirit/model-flow.css?v=fa5ae9720273">
-  <link rel="stylesheet" href="/spirit/overview.css?v=1acd56b3c4d4">
+  <link rel="stylesheet" href="/spirit/model-flow.css?v=21bff4c5628c">
+  <link rel="stylesheet" href="/spirit/overview.css?v=112e99755ff4">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=958bbcae1164" defer></script>
+  <script src="/spirit/overview.js?v=bc73613b8550" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -140,7 +140,9 @@
                 <thead><tr><th scope="col">Profile</th><th scope="col">Throughput</th><th scope="col">Draft acceptance</th></tr></thead>
                 <tbody>
                   <tr data-head-profile="A"><th scope="row">A <span class="ov-profile-note profile-active-note">Active</span><span class="ov-profile-note profile-drift-note">Drift</span></th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
-                  <tr data-head-profile="B"><th scope="row">B <span class="ov-profile-note profile-match-note">Match</span></th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
+                </tbody>
+                <tbody class="probe-candidates">
+                  <tr data-head-profile="B"><th scope="row">B <span class="ov-profile-note profile-match-note">Match</span><span class="ov-probe-label">Probing</span></th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
                   <tr data-head-profile="C"><th scope="row">C</th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
                 </tbody>
               </table>
@@ -249,7 +251,7 @@
                 </div>
                 <div class="probe-candidates">
                   <div class="probe-row stored-profile">
-                    <span class="reuse-identity"><span class="reuse-card card-b">B</span><span class="ov-profile-note profile-match-note">Match</span></span>
+                    <span class="reuse-identity"><span class="reuse-card card-b">B</span><span class="ov-profile-note profile-match-note">Match</span><span class="ov-probe-label">Probing</span></span>
                     <div class="probe-scale"><i></i></div>
                     <div class="probe-scale"><i></i></div>
                   </div>

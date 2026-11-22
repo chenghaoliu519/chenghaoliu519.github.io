@@ -131,9 +131,9 @@
       if (step === "adapt") feedback = clamp(progress / .32);
       if (step === "reuse") {
         feedback = clamp((progress - .68) / .17);
-        // Display the candidates together once the same-prefix comparison is available.
+        // Let the shared probe start before its two candidate readings fade in together.
         demo.style.setProperty("--ov-active-measured", clamp((progress - .08) / .045).toFixed(4));
-        demo.style.setProperty("--ov-candidates-measured", clamp((progress - .40) / .045).toFixed(4));
+        demo.style.setProperty("--ov-candidates-measured", clamp((progress - .42) / .14).toFixed(4));
       }
       demo.style.setProperty("--ov-feedback", feedback.toFixed(4));
       const committed = step === "decode" ? Math.floor(clamp((progress - .62) / .3) * tokens.length) : tokens.length;
@@ -210,7 +210,7 @@
     view.querySelectorAll(".active-profile .probe-scale i").forEach(dot =>
       segment(dot, .10, .16, {opacity:0}, {opacity:1}));
     view.querySelectorAll(".probe-candidates .probe-scale i").forEach(dot =>
-      segment(dot, .36, .42, {opacity:0}, {opacity:1}));
+      segment(dot, .375, .485, {opacity:0}, {opacity:1}));
     const socket = view.querySelector(".reuse-socket");
     segment(socket.querySelector(".card-a"), .62, .68,
       {opacity:1, transform:"none"}, {opacity:0, transform:"translateY(2px) scale(.9)"});
