@@ -69,7 +69,10 @@
 .ov-controller-space { display:grid; }
 .ov-controller-space > * { grid-area:1/1; min-width:0; }
 .ov-reuse-controller { visibility:hidden; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; column-gap:12px; padding:8px 16px; border:1px solid var(--rule); border-radius:10px; background:var(--paper); }
-.ov-demo[data-step="reuse"] .ov-controller { visibility:hidden; }
+.ov-controller-space > .profile-build { visibility:hidden; align-content:center; }
+.ov-demo:is([data-step="reuse"],[data-beat="build"]) .ov-controller { visibility:hidden; }
+.ov-demo[data-beat="build"] .ov-controller-space > .profile-build { visibility:visible; }
+.ov-demo[data-beat="build"] :is(.ov-window-route,.ov-feedback-arrow) { display:none; }
 .ov-demo[data-step="reuse"] .ov-reuse-controller { visibility:visible; }
 .ov-head-reading { --history-band:color-mix(in srgb,var(--connector) 75%,var(--paper)); width:100%; max-width:340px; min-width:0; }
 .ov-head-signals { width:100%; table-layout:fixed; border-collapse:collapse; color:var(--muted); font-size:10px; line-height:1.45; }

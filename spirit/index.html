@@ -41,11 +41,11 @@
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
   <link rel="stylesheet" href="/spirit/project.css?v=b6ce107a2c1c">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
-  <link rel="stylesheet" href="/spirit/model-flow.css?v=2fa263c8b7de">
-  <link rel="stylesheet" href="/spirit/overview.css?v=112e99755ff4">
+  <link rel="stylesheet" href="/spirit/model-flow.css?v=54c38951b74b">
+  <link rel="stylesheet" href="/spirit/overview.css?v=ca37f3d99a9b">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=c14da9903acc" defer></script>
+  <script src="/spirit/overview.js?v=2734a1bf7844" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -104,7 +104,7 @@
         </div>
 
         <div class="ov-demo" id="model-flow" data-step="decode" data-beat="commit">
-        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. In the illustrated request, A’s throughput and draft acceptance fall below its historical ranges. SPIRIT compares the current profile (A) with saved profiles B and C on the same request head. B and C both match their own histories and improve acceptance over A. B also delivers higher throughput than A, so its probe score improves and it passes the throughput check. C is too slow to qualify. SPIRIT restores B’s saved draft.">
+        <div class="ov-demo-graph" id="overview-animation" role="img" aria-label="A self-draft skips selected sublayers. The full target verifies proposed tokens and commits output. Runtime throughput is length-calibrated to guide skip-ratio search and layer refinement. SPIRIT stores the tuned draft and its running request-head statistics together as profile A. In the illustrated request, A’s throughput and draft acceptance fall below its historical ranges. SPIRIT compares the current profile (A) with saved profiles B and C on the same request head. B and C both match their own histories and improve acceptance over A. B also delivers higher throughput than A, so its probe score improves and it passes the throughput check. C is too slow to qualify. SPIRIT restores B’s saved draft.">
           <div class="ov-runtime">
             <div class="ov-node ov-draft"><div class="ov-node-art"><svg class="ov-stack ov-stack-draft" viewBox="0 0 160 112" aria-hidden="true"><ellipse class="ov-stack-shadow" cx="80" cy="100" rx="48" ry="8"/><path class="ov-layer" data-layer="5" data-kept d="M24 85 80 68 136 85 80 102Z"/><path class="ov-layer" data-layer="4" d="M24 72 80 55 136 72 80 89Z"/><path class="ov-layer" data-layer="3" d="M24 59 80 42 136 59 80 76Z"/><path class="ov-layer" data-layer="2" data-kept d="M24 46 80 29 136 46 80 63Z"/><path class="ov-layer" data-layer="1" d="M24 33 80 16 136 33 80 50Z"/><path class="ov-layer" data-layer="0" data-kept d="M24 20 80 3 136 20 80 37Z"/><path class="ov-stack-spine" d="M80 4v96"/></svg></div><strong>Self-draft <span class="ov-draft-id" aria-hidden="true">A</span></strong><span data-skip-count>3 of 6 sublayers skipped</span></div>
             <div class="ov-wire ov-wire-draft" aria-hidden="true"><span>propose</span><i></i></div>
@@ -132,8 +132,25 @@
           <div class="ov-controller">
             <div class="ov-search"><span class="ov-controller-label">Within a request</span><div><span class="ov-ratio">Optimize skip ratio</span><b aria-hidden="true">→</b><span class="ov-pattern">Refine layer pattern</span></div></div>
             <span class="ov-controller-divider" aria-hidden="true"></span>
-            <div class="ov-memory"><div><span class="ov-controller-label">Across requests</span><strong>Adapt to workload shifts</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true"><i class="filled"></i><i class="filled"></i><i></i><i></i><i class="filled"></i><i></i></span><span class="ov-profile ov-profile-1" aria-hidden="true"><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i><i class="filled"></i></span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i class="filled"></i></span></div></div>
+            <div class="ov-memory"><div><span class="ov-controller-label">Across requests</span><strong>Adapt to workload shifts</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true"><i class="filled"></i><i></i><i></i><i class="filled"></i><i></i><i></i></span><span class="ov-profile ov-profile-1" aria-hidden="true"><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i><i class="filled"></i></span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i class="filled"></i></span></div></div>
           </div>
+          <div class="profile-build" data-head-profile="A" role="img" aria-label="Building profile A. The tuned draft skips four of six sublayers and runs sublayers 1 and 4. Each prior request served with A contributes a pair of request-head readings. The bands summarize the running mean and standard deviation of raw throughput and draft acceptance for this draft.">
+  <div class="build-heading"><strong>Profile A</strong><span class="build-saved">Saved to bank</span></div>
+  <div class="build-parts">
+    <div class="build-config">
+      <strong>Tuned self-draft</strong>
+      <div class="build-mask" aria-hidden="true"><b>1</b><span>2</span><span>3</span><b>4</b><span>5</span><span>6</span></div>
+      <small>4 of 6 sublayers skipped</small>
+    </div>
+    <span class="build-plus" aria-hidden="true">+</span>
+    <div class="build-history">
+      <strong>Request-head history</strong>
+      <div class="build-signal"><span>Raw throughput</span><span class="probe-scale"><i></i><i></i><i></i><i></i></span></div>
+      <div class="build-signal"><span>Draft acceptance</span><span class="probe-scale ov-acceptance-reading"><i></i><i></i><i></i><i></i></span></div>
+      <small class="build-history-note"><span>One pair of readings per request head</span><span>Mean ± SD across requests served with A</span></small>
+    </div>
+  </div>
+</div>
           <div class="ov-reuse-controller">
             <div class="ov-head-reading">
               <table class="ov-head-signals" aria-label="Request-head measurements compared with each profile’s history">
@@ -207,7 +224,7 @@
             <p class="film-caption">The full target scores all seven positions in parallel. Here it replaces <em>ten</em> with <em>noon</em>, the Harbor train’s departure time. Four accepted draft tokens and one correction give five committed tokens.</p>
           </section>
 
-          <section class="film-scene" id="film-adapt" aria-labelledby="film-title-adapt">
+          <section class="film-scene" id="film-adapt" data-build aria-labelledby="film-title-adapt">
             <h3 id="film-title-adapt">How does throughput guide the next draft?</h3>
             <div class="film-board adapt-board" role="img" aria-label="Illustrative search across productive decoding windows. The dots show throughput-based scores, with higher scores to the right. In the ratio search, confidence bounds narrow and skipping four of six sublayers leads both three and five. With four skips fixed, running sublayers 1 and 4 scores higher than running 1 and 6. SPIRIT retains the better pattern.">
               <div class="adapt-input"><strong>Window throughput</strong><span>Committed tokens <i>÷</i> decode time</span></div>
@@ -235,7 +252,26 @@
                 <p class="adapt-choice pattern-choice">Run 1 and 4</p>
               </div>
             </div>
-            <p class="film-caption">Dots show illustrative throughput scores after prefix-length correction and smoothing. Whiskers mark confidence bounds on each ratio’s mean. With four skips fixed, the higher-scoring pattern runs sublayers 1 and 4.</p>
+            <div class="optimize-result">
+              <p class="film-caption">Dots show illustrative throughput scores after prefix-length correction and smoothing. Whiskers mark confidence bounds on each ratio’s mean. With four skips fixed, the higher-scoring pattern runs sublayers 1 and 4.</p>
+              <div class="profile-build" data-head-profile="A" role="img" aria-label="Building profile A. The tuned draft skips four of six sublayers and runs sublayers 1 and 4. Each prior request served with A contributes a pair of request-head readings. The bands summarize the running mean and standard deviation of raw throughput and draft acceptance for this draft.">
+  <div class="build-heading"><strong>Profile A</strong><span class="build-saved">Saved to bank</span></div>
+  <div class="build-parts">
+    <div class="build-config">
+      <strong>Tuned self-draft</strong>
+      <div class="build-mask" aria-hidden="true"><b>1</b><span>2</span><span>3</span><b>4</b><span>5</span><span>6</span></div>
+      <small>4 of 6 sublayers skipped</small>
+    </div>
+    <span class="build-plus" aria-hidden="true">+</span>
+    <div class="build-history">
+      <strong>Request-head history</strong>
+      <div class="build-signal"><span>Raw throughput</span><span class="probe-scale"><i></i><i></i><i></i><i></i></span></div>
+      <div class="build-signal"><span>Draft acceptance</span><span class="probe-scale ov-acceptance-reading"><i></i><i></i><i></i><i></i></span></div>
+      <small class="build-history-note"><span>One pair of readings per request head</span><span>Mean ± SD across requests served with A</span></small>
+    </div>
+  </div>
+</div>
+            </div>
           </section>
 
           <section class="film-scene" id="film-reuse" data-beat="match" aria-labelledby="film-title-reuse">

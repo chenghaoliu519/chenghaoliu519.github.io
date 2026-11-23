@@ -10,11 +10,14 @@
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const modeInputs = Array.from(figure.querySelectorAll('[name="overview-view"]'));
   const model = figure.querySelector("#model-flow");
+  const modelBuildStart = .55;
+  const exampleOptimizeMs = 15500;
+  const exampleBuildStart = 11000 / exampleOptimizeMs;
   const renderModel = createModelRenderer(model);
   let example = figure.querySelector("#show-example").checked;
   function chapterDuration(index) {
-    if (!example) return buttons[index].dataset.chapter === "reuse" ? 12800 : 5200;
-    return {decode:10000, adapt:11000, reuse:9000}[buttons[index].dataset.chapter];
+    if (!example) return {decode:5200, adapt:10400, reuse:12800}[buttons[index].dataset.chapter];
+    return {decode:10000, adapt:exampleOptimizeMs, reuse:9000}[buttons[index].dataset.chapter];
   }
   let duration = chapterDuration(0);
   let exampleOpened = example;
@@ -40,7 +43,7 @@
       .flatMap((cell, i) => cell.classList.contains("filled") ? [i] : []);
     const recalled = savedMask(".ov-profile-1 i");
     const coarse = [0, 5];
-    const refined = [0, 3];
+    const refined = savedMask(".ov-profile-0 i");
     const profileA = demo.querySelector('[data-profile="A"]');
     const profileB = demo.querySelector('[data-profile="B"]');
     const profileC = demo.querySelector('[data-profile="C"]');
@@ -87,8 +90,9 @@
       ],
       adapt: [
         { at: 0, beat: "feedback", layers: recalled, label: "Calibrate for prefix length" },
-        { at: .32, beat: "ratio", layers: coarse, label: "Change how many sublayers to skip" },
-        { at: .65, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" }
+        { at: .16, beat: "ratio", layers: coarse, label: "Change how many sublayers to skip" },
+        { at: .33, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" },
+        { at: modelBuildStart, beat: "build", layers: refined, label: "Pair the tuned draft with its request-head history" }
       ],
       reuse: [
         { at: 0, beat: "monitor", layers: refined, label: "Drift detection: measure request-head throughput and acceptance with the current profile (A)" },
@@ -128,7 +132,7 @@
       demo.style.setProperty("--ov-draft-flight", clamp(progress / .32).toFixed(4));
       demo.style.setProperty("--ov-verify-flight", clamp((progress - .32) / .3).toFixed(4));
       let feedback = 0;
-      if (step === "adapt") feedback = clamp(progress / .32);
+      if (step === "adapt") feedback = clamp(progress / .16);
       if (step === "reuse") {
         feedback = clamp((progress - .68) / .17);
         // Let the shared probe start before its two candidate readings fade in together.
@@ -184,25 +188,28 @@
   const lowered = {opacity:0, transform:"translateY(0)"};
 
   function adapt(view) {
+    // Finish both search stages before their result becomes a profile.
+    const search = (node, start, end, from, to) =>
+      segment(node, start * exampleBuildStart, end * exampleBuildStart, from, to);
     const clear = {backgroundColor:"transparent"};
     const chosen = {backgroundColor:"#eaf4ef"};
     // As productive windows accumulate, the ratio estimates separate.
     view.querySelectorAll(".score-range").forEach(bounds =>
-      segment(bounds, .10, .30, {transform:"scaleX(2.6)"}, {transform:"scaleX(1)"}));
-    segment(view.querySelector(".ratio-four"), .33, .39, clear, chosen);
-    segment(view.querySelector(".ratio-choice"), .33, .39, {opacity:0}, {opacity:1});
+      search(bounds, .10, .30, {transform:"scaleX(2.6)"}, {transform:"scaleX(1)"}));
+    search(view.querySelector(".ratio-four"), .33, .39, clear, chosen);
+    search(view.querySelector(".ratio-choice"), .33, .39, {opacity:0}, {opacity:1});
 
     const pattern = view.querySelector(".refined-pattern");
     const first = view.querySelector(".initial-pattern");
-    segment(first, .40, .48, {opacity:.24}, {opacity:1});
-    segment(first.querySelector(".score-dot"), .45, .50, {opacity:0}, {opacity:1});
-    segment(pattern, .52, .58, {opacity:.24}, {opacity:1});
+    search(first, .40, .48, {opacity:.24}, {opacity:1});
+    search(first.querySelector(".score-dot"), .45, .50, {opacity:0}, {opacity:1});
+    search(pattern, .52, .58, {opacity:.24}, {opacity:1});
     // Keep four skips while exchanging the executed sublayer at 6 for 4.
-    segment(pattern.querySelector('[data-layer="6"] b'), .59, .67, raised, lowered);
-    segment(pattern.querySelector('[data-layer="4"] b'), .59, .67, lowered, raised);
-    segment(pattern.querySelector(".score-dot"), .68, .73, {opacity:0}, {opacity:1});
-    segment(pattern, .76, .81, clear, chosen);
-    segment(view.querySelector(".pattern-choice"), .76, .81, {opacity:0}, {opacity:1});
+    search(pattern.querySelector('[data-layer="6"] b'), .59, .67, raised, lowered);
+    search(pattern.querySelector('[data-layer="4"] b'), .59, .67, lowered, raised);
+    search(pattern.querySelector(".score-dot"), .68, .73, {opacity:0}, {opacity:1});
+    search(pattern, .76, .81, clear, chosen);
+    search(view.querySelector(".pattern-choice"), .76, .81, {opacity:0}, {opacity:1});
   }
 
   function reuse(view) {
@@ -244,6 +251,13 @@
 
   function renderChapter(progress) {
     const chapter = buttons[selected].dataset.chapter;
+    if (chapter === "adapt") {
+      const start = example ? exampleBuildStart : modelBuildStart;
+      const host = example ? views[selected] : model;
+      const build = Math.max(0, Math.min(1, (progress - start) / (1 - start)));
+      host.style.setProperty("--build-progress", build.toFixed(4));
+      if (example) host.toggleAttribute("data-build", progress >= start);
+    }
     if (!example) {
       renderModel(chapter, progress);
     } else if (chapter === "reuse") {
@@ -302,7 +316,7 @@
       if (!running && track.playState === "running") track.pause();
     });
     stopChapterFrames();
-    if (running && clock && (!example || buttons[selected].dataset.chapter === "reuse")) {
+    if (running && clock && (!example || buttons[selected].dataset.chapter !== "decode")) {
       chapterFrame = window.requestAnimationFrame(updateChapter);
     }
     play.dataset.playing = String(requested);
@@ -364,7 +378,10 @@
     printing = true;
     savedPosition = clock?.currentTime || 0;
     dispose();
-    if (!example) renderModel(buttons[selected].dataset.chapter, 1);
+    if (!example) renderChapter(1);
+    const optimized = figure.querySelector("#film-adapt");
+    optimized.setAttribute("data-build", "");
+    optimized.style.removeProperty("--build-progress");
     figure.querySelector("#film-reuse").dataset.beat = "match";
     delete figure.dataset.choreography;
     views.forEach(view => view.removeAttribute("aria-hidden"));

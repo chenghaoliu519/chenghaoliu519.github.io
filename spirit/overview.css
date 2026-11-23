@@ -158,6 +158,69 @@
   box-shadow:inset 0 1px 0 #558397, 0 2px 0 #204c61; opacity:0;
 }
 .trial-mask .executed b { opacity:1; transform:translateY(-2px); }
+
+/* The same saved profile bridges Optimize and Adapt in both views. */
+.profile-build {
+  --summary:clamp(0,calc((var(--build-progress,1) - .50) * 6),1);
+  padding:10px 16px; min-width:0; border:1px solid var(--rule); border-radius:10px;
+  background:var(--paper); color:var(--ink); font-size:11px; line-height:1.4;
+}
+.build-heading,.build-mask { display:flex; align-items:center; }
+.build-heading { justify-content:space-between; margin-bottom:8px; }
+.build-heading strong { font-size:14px; font-weight:650; }
+.build-saved { color:var(--profile-match); font-size:10px; font-weight:600; opacity:clamp(0,calc((var(--build-progress,1) - .67) * 8),1); }
+.build-saved::before { content:"✓"; margin-right:4px; }
+.build-parts { display:grid; align-items:start; grid-template-columns:minmax(0,.85fr) auto minmax(0,1.15fr); gap:clamp(8px,3vw,30px); }
+.build-parts strong { display:block; font-size:12px; font-weight:600; }
+.build-parts small { display:block; margin-top:4px; color:var(--muted); font-size:10px; }
+.build-history .build-history-note { display:grid; }
+.build-history-note span { grid-area:1/1; }
+.build-history-note span:first-child { opacity:calc(1 - var(--summary)); }
+.build-history-note span:last-child { opacity:var(--summary); }
+.build-plus { align-self:center; color:var(--muted); font-size:16px; }
+.build-mask { gap:4px; margin-top:5px; }
+.build-mask > * { display:grid; place-items:center; width:20px; height:20px; border:1px dashed var(--connector); border-radius:3px; color:var(--muted); font-size:10px; }
+.build-mask b { background:var(--accent); border:1px solid var(--accent); color:var(--paper); }
+.build-signal { display:grid; align-items:center; grid-template-columns:7.8em minmax(0,1fr); gap:6px; margin-top:3px; font-size:11px; }
+#film-adapt .build-mask b { color:white; background:#2f667c; border-color:#2f667c; }
+.build-signal .probe-scale { display:block; height:2px; background:var(--rule); }
+.build-signal .probe-scale::before { background:var(--connector); height:6px; opacity:var(--summary); }
+.build-signal .probe-scale::after {
+  content:""; position:absolute; top:50%; left:calc((var(--high) + var(--low)) / 2); width:2px; height:8px;
+  transform:translate(-50%,-50%); background:var(--ink); opacity:var(--summary);
+}
+/* The four schematic head pairs have these same per-metric means and SDs. */
+.build-signal i { --z:-1.4; --at:.02; }
+.build-signal i:nth-child(2) { --z:.2; --at:.12; }
+.build-signal i:nth-child(3) { --z:1.4; --at:.22; }
+.build-signal i:nth-child(4) { --z:-.2; --at:.32; }
+.build-signal .ov-acceptance-reading i:first-child { --z:.2; }
+.build-signal .ov-acceptance-reading i:nth-child(2) { --z:-1.4; }
+.build-signal .ov-acceptance-reading i:nth-child(3) { --z:-.2; }
+.build-signal .ov-acceptance-reading i:nth-child(4) { --z:1.4; }
+.build-signal .probe-scale i {
+  left:calc((var(--low) + var(--high) + var(--z) * (var(--high) - var(--low))) / 2);
+  width:5px; height:5px; background:var(--accent); box-shadow:0 0 0 1px var(--paper);
+  opacity:calc(clamp(0,(var(--build-progress,1) - var(--at)) * 11,1) * (1 - var(--summary)));
+}
+.optimize-result { display:grid; margin-top:12px; }
+.optimize-result > * { grid-area:1/1; align-self:center; }
+.film-scene .optimize-result .film-caption { margin:0; }
+#film-adapt[data-build] .optimize-result .film-caption,
+#film-adapt:not([data-build]) .optimize-result .profile-build { visibility:hidden; }
+@media (max-width:560px) {
+  .profile-build { padding:8px 10px; }
+  .build-parts { grid-template-columns:minmax(0,1fr); gap:7px; }
+  .build-plus { display:none; }
+  .build-config { display:grid; grid-template-columns:1fr auto; align-items:center; gap:2px 6px; }
+  .build-config .build-mask { grid-area:1/2/3/3; margin:0; }
+  .build-config small { margin:0; }
+  .build-history { padding-top:6px; border-top:1px solid var(--rule); }
+  .build-signal { grid-template-columns:8.7em 1fr; }
+  .build-mask { gap:3px; }
+  .build-mask > * { width:15px; height:19px; }
+}
+
 /* The same profile states follow the horizontal readings in both Adapt views. */
 .ov-film { --profile-drift:#a93934; --profile-match:#246e46; --probe-gold:#e9af22; --probe-ink:#845e0a; }
 :root[data-theme="dark"] .ov-demo { --profile-drift:#ffaaa3; --profile-match:#8bd6a6; --probe-gold:#ffcf57; --probe-ink:#e8c26d; }

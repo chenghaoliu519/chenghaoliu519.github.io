@@ -331,6 +331,7 @@ def build_overview():
         'overview_peak': f"{max(run[-1] for run in values['runs'].values()):.2f}",
         'overview_fp16': f"{max(row['speedup'] for row in spirit):.2f}",
         'overview_wins': str(wins),
+        'profile_build': (ROOT/'scripts/research/profile-build.html').read_text().strip(),
     }
     rendered = (ROOT/'scripts/research/overview.html').read_text()
     for key, value in replacements.items():
