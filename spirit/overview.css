@@ -159,66 +159,97 @@
 }
 .trial-mask .executed b { opacity:1; transform:translateY(-2px); }
 
-/* The same saved profile bridges Optimize and Adapt in both views. */
+/* A tuned mask and its paired request-head measurements form one profile. */
 .profile-build {
-  --summary:clamp(0,calc((var(--build-progress,1) - .50) * 6),1);
-  padding:10px 16px; min-width:0; border:1px solid var(--rule); border-radius:10px;
-  background:var(--paper); color:var(--ink); font-size:11px; line-height:1.4;
+  --summary:clamp(0,calc((var(--build-progress,1) - .58) * 7),1);
+  --head-ink:color-mix(in srgb,var(--accent) 63%,var(--muted));
+  display:grid; grid-template-columns:minmax(150px,.65fr) minmax(0,1.35fr);
+  align-items:center; gap:clamp(12px,3vw,28px); padding:10px 16px;
+  border:1px solid var(--rule); border-radius:10px; background:var(--paper);
+  color:var(--ink); min-width:0; line-height:1.4;
 }
 .build-heading,.build-mask { display:flex; align-items:center; }
-.build-heading { justify-content:space-between; margin-bottom:8px; }
+.build-heading { gap:12px; }
 .build-heading strong { font-size:14px; font-weight:650; }
-.build-saved { color:var(--profile-match); font-size:10px; font-weight:600; opacity:clamp(0,calc((var(--build-progress,1) - .67) * 8),1); }
+.build-heading span { font-size:10px; font-weight:600; }
+.build-saved { color:var(--profile-match); opacity:clamp(0,calc((var(--build-progress,1) - .76) * 8),1); }
 .build-saved::before { content:"✓"; margin-right:4px; }
-.build-parts { display:grid; align-items:start; grid-template-columns:minmax(0,.85fr) auto minmax(0,1.15fr); gap:clamp(8px,3vw,30px); }
-.build-parts strong { display:block; font-size:12px; font-weight:600; }
-.build-parts small { display:block; margin-top:4px; color:var(--muted); font-size:10px; }
-.build-history .build-history-note { display:grid; }
-.build-history-note span { grid-area:1/1; }
-.build-history-note span:first-child { opacity:calc(1 - var(--summary)); }
-.build-history-note span:last-child { opacity:var(--summary); }
-.build-plus { align-self:center; color:var(--muted); font-size:16px; }
-.build-mask { gap:4px; margin-top:5px; }
-.build-mask > * { display:grid; place-items:center; width:20px; height:20px; border:1px dashed var(--connector); border-radius:3px; color:var(--muted); font-size:10px; }
+.build-active,.build-drift { display:none; }
+.build-draft { margin-top:8px; }
+.build-draft > span,.signature-key strong { font-size:12px; font-weight:600; }
+.build-draft small { display:block; margin-top:4px; color:var(--muted); font-size:10px; }
+.build-mask { gap:4px; margin-top:3px; }
+.build-mask > * { display:grid; place-items:center; width:20px; height:19px; border:1px dashed var(--connector); border-radius:3px; color:var(--muted); font-size:10px; font-style:normal; line-height:1; }
 .build-mask b { background:var(--accent); border:1px solid var(--accent); color:var(--paper); }
-.build-signal { display:grid; align-items:center; grid-template-columns:7.8em minmax(0,1fr); gap:6px; margin-top:3px; font-size:11px; }
 #film-adapt .build-mask b { color:white; background:#2f667c; border-color:#2f667c; }
-.build-signal .probe-scale { display:block; height:2px; background:var(--rule); }
-.build-signal .probe-scale::before { background:var(--connector); height:6px; opacity:var(--summary); }
-.build-signal .probe-scale::after {
-  content:""; position:absolute; top:50%; left:calc((var(--high) + var(--low)) / 2); width:2px; height:8px;
-  transform:translate(-50%,-50%); background:var(--ink); opacity:var(--summary);
+.build-signature {
+  display:grid; grid-template-columns:minmax(108px,1fr) minmax(0,1.65fr); align-items:center;
+  border-inline-start:1px solid var(--rule); padding-inline-start:clamp(10px,2vw,22px); gap:8px;
 }
-/* The four schematic head pairs have these same per-metric means and SDs. */
-.build-signal i { --z:-1.4; --at:.02; }
-.build-signal i:nth-child(2) { --z:.2; --at:.12; }
-.build-signal i:nth-child(3) { --z:1.4; --at:.22; }
-.build-signal i:nth-child(4) { --z:-.2; --at:.32; }
-.build-signal .ov-acceptance-reading i:first-child { --z:.2; }
-.build-signal .ov-acceptance-reading i:nth-child(2) { --z:-1.4; }
-.build-signal .ov-acceptance-reading i:nth-child(3) { --z:-.2; }
-.build-signal .ov-acceptance-reading i:nth-child(4) { --z:1.4; }
-.build-signal .probe-scale i {
-  left:calc((var(--low) + var(--high) + var(--z) * (var(--high) - var(--low))) / 2);
-  width:5px; height:5px; background:var(--accent); box-shadow:0 0 0 1px var(--paper);
-  opacity:calc(clamp(0,(var(--build-progress,1) - var(--at)) * 11,1) * (1 - var(--summary)));
-}
+.signature-key { display:flex; flex-direction:column; align-items:flex-start; gap:5px; }
+.signature-key strong { margin-bottom:3px; }
+.signature-key span { display:inline-flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; }
+.signature-dot-key::before { content:""; width:6px; height:6px; margin-inline:2px; border-radius:50%; background:color-mix(in srgb,var(--head-ink) 70%,var(--paper)); }
+.signature-mean-key::before { content:""; width:10px; height:10px; color:var(--ink); background:linear-gradient(currentColor,currentColor) center / 10px 1.5px no-repeat,linear-gradient(currentColor,currentColor) center / 1.5px 10px no-repeat; }
+.signature-plot { display:block; width:100%; max-width:235px; height:auto; justify-self:end; }
+.signature-axes,.signature-moments path { fill:none; stroke:var(--connector); stroke-width:1.2; stroke-linecap:round; stroke-linejoin:round; }
+.signature-axis-label,.signature-current text { fill:var(--muted); font:11.5px/1 system-ui,sans-serif; }
+.signature-axis-label tspan { font-family:Georgia,serif; font-style:italic; }
+.signature-heads circle { fill:var(--head-ink); opacity:calc(.70 * clamp(0,(var(--build-progress,1) - var(--arrival,0)) * 13,1)); }
+.signature-heads circle:nth-child(2) { --arrival:.047; }
+.signature-heads circle:nth-child(3) { --arrival:.094; }
+.signature-heads circle:nth-child(4) { --arrival:.141; }
+.signature-heads circle:nth-child(5) { --arrival:.188; }
+.signature-heads circle:nth-child(6) { --arrival:.235; }
+.signature-heads circle:nth-child(7) { --arrival:.282; }
+.signature-heads circle:nth-child(8) { --arrival:.329; }
+.signature-heads circle:nth-child(9) { --arrival:.376; }
+.signature-heads circle:nth-child(10) { --arrival:.423; }
+.signature-moments { opacity:var(--summary); }
+.signature-moments path { stroke:var(--ink); stroke-width:1.6; }
+.signature-moments circle { fill:var(--ink); stroke:var(--paper); stroke-width:1.2; }
+.signature-current { display:none; }
+.ov-demo[data-step="reuse"] .profile-build { --build-progress:1; }
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .build-saved { display:none; }
+.ov-demo[data-beat="monitor"] .build-active,.ov-demo[data-beat="shift"] .build-drift { display:inline; color:var(--a-ink); }
+.ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .signature-current { display:inline; opacity:var(--ov-active-measured,0); }
+.signature-current circle { fill:var(--paper); stroke:var(--a-ink); stroke-width:2.3; }
+.signature-current text { fill:var(--a-ink); font-weight:600; }
 .optimize-result { display:grid; margin-top:12px; }
 .optimize-result > * { grid-area:1/1; align-self:center; }
 .film-scene .optimize-result .film-caption { margin:0; }
 #film-adapt[data-build] .optimize-result .film-caption,
 #film-adapt:not([data-build]) .optimize-result .profile-build { visibility:hidden; }
-@media (max-width:560px) {
-  .profile-build { padding:8px 10px; }
-  .build-parts { grid-template-columns:minmax(0,1fr); gap:7px; }
-  .build-plus { display:none; }
-  .build-config { display:grid; grid-template-columns:1fr auto; align-items:center; gap:2px 6px; }
-  .build-config .build-mask { grid-area:1/2/3/3; margin:0; }
-  .build-config small { margin:0; }
-  .build-history { padding-top:6px; border-top:1px solid var(--rule); }
-  .build-signal { grid-template-columns:8.7em 1fr; }
-  .build-mask { gap:3px; }
-  .build-mask > * { width:15px; height:19px; }
+@media (max-width:660px) {
+  .profile-build { grid-template-columns:minmax(0,.8fr) minmax(0,1fr); padding:8px 12px; gap:10px; }
+  .build-signature { grid-template-columns:minmax(0,1fr); gap:1px; padding-inline-start:12px; }
+  .signature-key { display:grid; grid-template-columns:auto auto; justify-content:start; gap:1px 8px; }
+  .signature-key strong { grid-column:1/-1; margin:0; }
+  .signature-key span { font-size:10px; }
+  .signature-plot { max-width:208px; justify-self:center; }
+}
+@media (max-width:490px) {
+  .profile-build { grid-template-columns:minmax(0,1fr); gap:7px; padding:8px 10px; }
+  .build-config { display:flex; align-items:center; justify-content:space-between; gap:6px; }
+  .build-heading { align-items:flex-start; flex-direction:column; gap:1px; }
+  .build-draft { display:grid; grid-template-columns:auto auto; align-items:center; gap:0 6px; margin:0; }
+  .build-draft .build-mask { grid-area:1/2/3/3; gap:2px; margin:0; }
+  .build-mask > * { width:13px; height:17px; }
+  .build-draft small { margin:0; }
+  .build-signature { grid-template-columns:minmax(86px,.8fr) minmax(0,1.5fr); border:0; padding:5px 0 0; border-top:1px solid var(--rule); }
+  .signature-key { display:flex; gap:4px; }
+  .signature-key strong { font-size:11px; }
+  .signature-key span { line-height:1.25; }
+  .signature-plot { max-width:195px; }
+}
+@media (max-width:370px) {
+  .build-draft { grid-template-columns:auto; }
+  .build-draft > span { display:none; }
+  .build-draft .build-mask { grid-area:auto; justify-self:end; }
+  .build-draft small { font-size:9px; }
+  .build-signature { grid-template-columns:minmax(0,1fr); }
+  .signature-key { display:flex; flex-direction:row; align-items:center; flex-wrap:wrap; gap:3px 8px; }
+  .signature-key strong { flex-basis:100%; }
 }
 
 /* The same profile states follow the horizontal readings in both Adapt views. */

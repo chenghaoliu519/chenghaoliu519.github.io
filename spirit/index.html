@@ -41,8 +41,8 @@
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
   <link rel="stylesheet" href="/spirit/project.css?v=b6ce107a2c1c">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
-  <link rel="stylesheet" href="/spirit/model-flow.css?v=54c38951b74b">
-  <link rel="stylesheet" href="/spirit/overview.css?v=ca37f3d99a9b">
+  <link rel="stylesheet" href="/spirit/model-flow.css?v=358a7cbb7e40">
+  <link rel="stylesheet" href="/spirit/overview.css?v=9c67518f0d1d">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
   <script src="/spirit/overview.js?v=2734a1bf7844" defer></script>
@@ -134,21 +134,48 @@
             <span class="ov-controller-divider" aria-hidden="true"></span>
             <div class="ov-memory"><div><span class="ov-controller-label">Across requests</span><strong>Adapt to workload shifts</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true"><i class="filled"></i><i></i><i></i><i class="filled"></i><i></i><i></i></span><span class="ov-profile ov-profile-1" aria-hidden="true"><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i><i class="filled"></i></span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i class="filled"></i></span></div></div>
           </div>
-          <div class="profile-build" data-head-profile="A" role="img" aria-label="Building profile A. The tuned draft skips four of six sublayers and runs sublayers 1 and 4. Each prior request served with A contributes a pair of request-head readings. The bands summarize the running mean and standard deviation of raw throughput and draft acceptance for this draft.">
-  <div class="build-heading"><strong>Profile A</strong><span class="build-saved">Saved to bank</span></div>
-  <div class="build-parts">
-    <div class="build-config">
-      <strong>Tuned self-draft</strong>
-      <div class="build-mask" aria-hidden="true"><b>1</b><span>2</span><span>3</span><b>4</b><span>5</span><span>6</span></div>
+          <div class="profile-build" role="group" aria-label="Profile A, tuned configuration and request-head signature">
+  <div class="build-config">
+    <div class="build-heading"><strong>Profile A</strong><span class="build-saved">Saved to bank</span><span class="build-active">Active</span><span class="build-drift">Drift</span></div>
+    <div class="build-draft">
+      <span>Tuned self-draft</span>
+      <div class="build-mask" role="img" aria-label="Tuned self-draft runs sublayers 1 and 4"><b>1</b><i>2</i><i>3</i><b>4</b><i>5</i><i>6</i></div>
       <small>4 of 6 sublayers skipped</small>
     </div>
-    <span class="build-plus" aria-hidden="true">+</span>
-    <div class="build-history">
-      <strong>Request-head history</strong>
-      <div class="build-signal"><span>Raw throughput</span><span class="probe-scale"><i></i><i></i><i></i><i></i></span></div>
-      <div class="build-signal"><span>Draft acceptance</span><span class="probe-scale ov-acceptance-reading"><i></i><i></i><i></i><i></i></span></div>
-      <small class="build-history-note"><span>One pair of readings per request head</span><span>Mean ± SD across requests served with A</span></small>
+  </div>
+  <div class="build-signature">
+    <div class="signature-key">
+      <strong>Request-head signature</strong>
+      <span class="signature-dot-key">Prior request head</span>
+      <span class="signature-mean-key">Mean ± SD</span>
     </div>
+    <svg class="signature-plot" viewBox="0 0 228 113" role="img" aria-label="Each dot pairs raw throughput with draft acceptance for a prior request head served by A. Whiskers extend one standard deviation from the mean along each axis.">
+      <path class="signature-axes" d="M11 22v68h208m-4-3 4 3-4 3M8 26l3-4 3 4"/>
+      <text class="signature-axis-label" x="8" y="13">Draft acceptance <tspan>α</tspan></text>
+      <text class="signature-axis-label" x="220" y="106" text-anchor="end">Raw throughput <tspan>S</tspan></text>
+      <!-- Poster head pairs scaled to A’s illustrative ranges in the probe table.
+           Plot coordinates: x = 12 + 2S, y = 115 − α (table scale 0–100). -->
+      <g class="signature-heads">
+        <circle cx="130.59" cy="52.83" r="3"/>
+        <circle cx="170.33" cy="35.13" r="3"/>
+        <circle cx="109.48" cy="61.69" r="3"/>
+        <circle cx="147.97" cy="42.21" r="3"/>
+        <circle cx="98.30" cy="51.95" r="3"/>
+        <circle cx="177.78" cy="56.37" r="3"/>
+        <circle cx="118.17" cy="38.67" r="3"/>
+        <circle cx="185.23" cy="43.09" r="3"/>
+        <circle cx="145.49" cy="68.77" r="3"/>
+        <circle cx="156.67" cy="49.29" r="3"/>
+      </g>
+      <g class="signature-moments">
+        <path d="M116 50h56m-56-3v6m56-6v6M144 40v20m-3-20h6m-6 20h6"/>
+        <circle cx="144" cy="50" r="3.6"/>
+      </g>
+      <g class="signature-current">
+        <circle cx="66" cy="79" r="4"/>
+        <text x="75" y="82.5">This request</text>
+      </g>
+    </svg>
   </div>
 </div>
           <div class="ov-reuse-controller">
@@ -254,21 +281,48 @@
             </div>
             <div class="optimize-result">
               <p class="film-caption">Dots show illustrative throughput scores after prefix-length correction and smoothing. Whiskers mark confidence bounds on each ratio’s mean. With four skips fixed, the higher-scoring pattern runs sublayers 1 and 4.</p>
-              <div class="profile-build" data-head-profile="A" role="img" aria-label="Building profile A. The tuned draft skips four of six sublayers and runs sublayers 1 and 4. Each prior request served with A contributes a pair of request-head readings. The bands summarize the running mean and standard deviation of raw throughput and draft acceptance for this draft.">
-  <div class="build-heading"><strong>Profile A</strong><span class="build-saved">Saved to bank</span></div>
-  <div class="build-parts">
-    <div class="build-config">
-      <strong>Tuned self-draft</strong>
-      <div class="build-mask" aria-hidden="true"><b>1</b><span>2</span><span>3</span><b>4</b><span>5</span><span>6</span></div>
+              <div class="profile-build" role="group" aria-label="Profile A, tuned configuration and request-head signature">
+  <div class="build-config">
+    <div class="build-heading"><strong>Profile A</strong><span class="build-saved">Saved to bank</span><span class="build-active">Active</span><span class="build-drift">Drift</span></div>
+    <div class="build-draft">
+      <span>Tuned self-draft</span>
+      <div class="build-mask" role="img" aria-label="Tuned self-draft runs sublayers 1 and 4"><b>1</b><i>2</i><i>3</i><b>4</b><i>5</i><i>6</i></div>
       <small>4 of 6 sublayers skipped</small>
     </div>
-    <span class="build-plus" aria-hidden="true">+</span>
-    <div class="build-history">
-      <strong>Request-head history</strong>
-      <div class="build-signal"><span>Raw throughput</span><span class="probe-scale"><i></i><i></i><i></i><i></i></span></div>
-      <div class="build-signal"><span>Draft acceptance</span><span class="probe-scale ov-acceptance-reading"><i></i><i></i><i></i><i></i></span></div>
-      <small class="build-history-note"><span>One pair of readings per request head</span><span>Mean ± SD across requests served with A</span></small>
+  </div>
+  <div class="build-signature">
+    <div class="signature-key">
+      <strong>Request-head signature</strong>
+      <span class="signature-dot-key">Prior request head</span>
+      <span class="signature-mean-key">Mean ± SD</span>
     </div>
+    <svg class="signature-plot" viewBox="0 0 228 113" role="img" aria-label="Each dot pairs raw throughput with draft acceptance for a prior request head served by A. Whiskers extend one standard deviation from the mean along each axis.">
+      <path class="signature-axes" d="M11 22v68h208m-4-3 4 3-4 3M8 26l3-4 3 4"/>
+      <text class="signature-axis-label" x="8" y="13">Draft acceptance <tspan>α</tspan></text>
+      <text class="signature-axis-label" x="220" y="106" text-anchor="end">Raw throughput <tspan>S</tspan></text>
+      <!-- Poster head pairs scaled to A’s illustrative ranges in the probe table.
+           Plot coordinates: x = 12 + 2S, y = 115 − α (table scale 0–100). -->
+      <g class="signature-heads">
+        <circle cx="130.59" cy="52.83" r="3"/>
+        <circle cx="170.33" cy="35.13" r="3"/>
+        <circle cx="109.48" cy="61.69" r="3"/>
+        <circle cx="147.97" cy="42.21" r="3"/>
+        <circle cx="98.30" cy="51.95" r="3"/>
+        <circle cx="177.78" cy="56.37" r="3"/>
+        <circle cx="118.17" cy="38.67" r="3"/>
+        <circle cx="185.23" cy="43.09" r="3"/>
+        <circle cx="145.49" cy="68.77" r="3"/>
+        <circle cx="156.67" cy="49.29" r="3"/>
+      </g>
+      <g class="signature-moments">
+        <path d="M116 50h56m-56-3v6m56-6v6M144 40v20m-3-20h6m-6 20h6"/>
+        <circle cx="144" cy="50" r="3.6"/>
+      </g>
+      <g class="signature-current">
+        <circle cx="66" cy="79" r="4"/>
+        <text x="75" y="82.5">This request</text>
+      </g>
+    </svg>
   </div>
 </div>
             </div>
