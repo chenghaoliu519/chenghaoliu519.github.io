@@ -107,6 +107,11 @@
 .study-heading,.study-key,.study-key span { display:flex; align-items:center; }
 .study-heading { justify-content:space-between; flex-wrap:wrap; gap:5px 12px; padding-bottom:12px; border-bottom:1px solid var(--line); }
 .study-heading strong { font-size:13px; line-height:1.4; font-weight:550; color:#263e53; }
+#film-reuse[data-beat="monitor"] [data-reuse-heading] { color:var(--accent); }
+#film-reuse[data-beat="shift"] [data-reuse-heading] { color:var(--profile-drift); }
+.reuse-caption { display:grid; }
+.reuse-caption > span { grid-area:1/1; }
+.reuse-caption > [aria-hidden="true"] { visibility:hidden; }
 .study-key { flex-wrap:wrap; gap:4px 13px; }
 .study-key span { gap:5px; color:var(--soft); font-size:11px; line-height:1.4; }
 /* The two comparisons share a score direction. Each ratio has a mean and bounds;

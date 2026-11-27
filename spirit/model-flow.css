@@ -62,6 +62,9 @@
 .ov-demo[data-step="reuse"] .ov-feedback-label { color:var(--ink); font-size:clamp(9px,1.25vw,11px); line-height:1.4; }
 .ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-feedback-label { top:auto; bottom:2px; width:max-content; max-width:100%; white-space:normal; text-align:center; text-wrap:balance; }
 .ov-demo[data-beat="monitor"] .ov-feedback-label { left:calc(50% + 8px); max-width:calc(100% - 16px); }
+.ov-feedback-label strong { color:inherit; font-weight:650; }
+.ov-demo[data-beat="monitor"] .ov-feedback-label strong { color:var(--accent); }
+.ov-demo[data-beat="shift"] .profile-build,.ov-demo[data-beat="probe"] .ov-reuse-controller { opacity:var(--probe-panel-opacity,1); }
 .ov-demo[data-beat="shift"] .ov-feedback-label { color:var(--profile-drift); }
 .ov-demo:is([data-beat="match"],[data-beat="recall"]) .ov-feedback-label { color:var(--profile-match); }
 .ov-demo[data-step="reuse"] .ov-feedback-trace { stroke:var(--profile-match); }

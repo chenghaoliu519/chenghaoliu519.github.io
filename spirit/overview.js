@@ -13,11 +13,24 @@
   const modelBuildStart = .55;
   const exampleOptimizeMs = 15500;
   const exampleBuildStart = 11000 / exampleOptimizeMs;
+  // Both views give the detected drift its own hold before any candidate is probed.
+  const reuseDuration = 16000;
+  const reuseTime = {headStart:.06, headEnd:.11, drift:.20, probe:.50, dotsStart:.54, dotsEnd:.64, match:.75, restore:.875};
+  const reuseStages = [
+    { at: 0, beat: "monitor", title: "Drift detection", label: "measure request-head throughput and acceptance with the current profile (A)" },
+    { at: reuseTime.drift, beat: "shift", title: "Drift detected", label: "request-head features fall outside A’s historical range" },
+    { at: reuseTime.probe, beat: "probe", title: "Probing", label: "compare A, B and C on the same request head" },
+    { at: reuseTime.match, beat: "match", title: "Profile reuse", label: "B outscores A. C falls short on throughput." },
+    { at: reuseTime.restore, beat: "recall", title: "Profile reuse", label: "restore B’s skip ratio and layer pattern" }
+  ];
+  const reuseView = figure.querySelector("#film-reuse");
+  const reuseHeading = reuseView.querySelector("[data-reuse-heading]");
+  const reuseNotes = reuseView.querySelectorAll("[data-reuse-note]");
   const renderModel = createModelRenderer(model);
   let example = figure.querySelector("#show-example").checked;
   function chapterDuration(index) {
-    if (!example) return {decode:5200, adapt:10400, reuse:12800}[buttons[index].dataset.chapter];
-    return {decode:10000, adapt:exampleOptimizeMs, reuse:9000}[buttons[index].dataset.chapter];
+    if (!example) return {decode:5200, adapt:10400, reuse:reuseDuration}[buttons[index].dataset.chapter];
+    return {decode:10000, adapt:exampleOptimizeMs, reuse:reuseDuration}[buttons[index].dataset.chapter];
   }
   let duration = chapterDuration(0);
   let exampleOpened = example;
@@ -31,13 +44,23 @@
   let clock;
   let snapshot = !requested;
 
+  function stageAt(stages, progress) {
+    let current = stages[0];
+    for (const stage of stages) {
+      if (stage.at > progress) break;
+      current = stage;
+    }
+    return current;
+  }
+
   function createModelRenderer(demo) {
     const tokens = Array.from(demo.querySelectorAll("[data-token]"));
     const copies = Array.from(demo.querySelectorAll("[data-overview-copy]"));
     const clamp = value => Math.max(0, Math.min(1, value));
     const draftLayers = Array.from(demo.querySelectorAll("[data-layer]"));
     const skipCount = demo.querySelector("[data-skip-count]");
-    const routeLabel = demo.querySelector(".ov-feedback-label");
+    const routeTitle = demo.querySelector(".ov-feedback-label strong");
+    const routeText = demo.querySelector(".ov-feedback-label span");
     // The recalled mask is the highlighted profile shown in the bank.
     const savedMask = selector => Array.from(demo.querySelectorAll(selector))
       .flatMap((cell, i) => cell.classList.contains("filled") ? [i] : []);
@@ -94,24 +117,14 @@
         { at: .33, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" },
         { at: modelBuildStart, beat: "build", layers: refined, label: "Pair the tuned draft with its request-head history" }
       ],
-      reuse: [
-        { at: 0, beat: "monitor", layers: refined, label: "Drift detection: measure request-head throughput and acceptance with the current profile (A)" },
-        { at: .20, beat: "shift", layers: refined, label: "Drift detected: request-head features fall outside A’s historical range" },
-        { at: .40, beat: "probe", layers: refined, label: "Probing: compare A, B and C on the same request head" },
-        { at: .68, beat: "match", layers: refined, label: "Profile reuse: B outscores A. C falls short on throughput." },
-        { at: .85, beat: "recall", layers: recalled, label: "Restore B’s skip ratio and layer pattern" }
-      ]
+      reuse: reuseStages.map(stage => ({ ...stage, layers: stage.beat === "recall" ? recalled : refined }))
     };
     let scene = null;
     function data(name, value) {
       if (demo.dataset[name] !== value) demo.dataset[name] = value;
     }
     function render(step, progress) {
-      let next = scenes[step][0];
-      for (const candidate of scenes[step]) {
-        if (candidate.at > progress) break;
-        next = candidate;
-      }
+      const next = stageAt(scenes[step], progress);
       if (next !== scene) {
         scene = next;
         const enteringReuse = step === "reuse" && demo.dataset.step !== "reuse";
@@ -126,7 +139,8 @@
           layer.toggleAttribute("data-kept", scene.layers.includes(Number(layer.dataset.layer)));
         });
         skipCount.textContent = (draftLayers.length - scene.layers.length) + " of " + draftLayers.length + " sublayers skipped";
-        routeLabel.textContent = scene.label;
+        routeTitle.textContent = scene.title ? scene.title + ": " : "";
+        routeText.textContent = scene.label;
         copies.forEach(copy => copy.setAttribute("aria-hidden", String(copy.dataset.overviewCopy !== step)));
       }
       demo.style.setProperty("--ov-draft-flight", clamp(progress / .32).toFixed(4));
@@ -134,10 +148,12 @@
       let feedback = 0;
       if (step === "adapt") feedback = clamp(progress / .16);
       if (step === "reuse") {
-        feedback = clamp((progress - .68) / .17);
+        feedback = clamp((progress - reuseTime.match) / (reuseTime.restore - reuseTime.match));
+        // Fade from the held red scatter to the probe table on the pausable chapter clock.
+        demo.style.setProperty("--probe-panel-opacity", clamp(Math.abs(progress - reuseTime.probe) * reuseDuration / 280).toFixed(4));
         // Let the shared probe start before its two candidate readings fade in together.
-        demo.style.setProperty("--ov-active-measured", clamp((progress - .08) / .045).toFixed(4));
-        demo.style.setProperty("--ov-candidates-measured", clamp((progress - .42) / .14).toFixed(4));
+        demo.style.setProperty("--ov-active-measured", clamp((progress - reuseTime.headStart) / (reuseTime.headEnd - reuseTime.headStart)).toFixed(4));
+        demo.style.setProperty("--ov-candidates-measured", clamp((progress - reuseTime.dotsStart) / (reuseTime.dotsEnd - reuseTime.dotsStart)).toFixed(4));
       }
       demo.style.setProperty("--ov-feedback", feedback.toFixed(4));
       const committed = step === "decode" ? Math.floor(clamp((progress - .62) / .3) * tokens.length) : tokens.length;
@@ -215,11 +231,11 @@
   function reuse(view) {
     // Each dot is a probe of its own profile on the same request head.
     view.querySelectorAll(".active-profile .probe-scale i").forEach(dot =>
-      segment(dot, .10, .16, {opacity:0}, {opacity:1}));
+      segment(dot, reuseTime.headStart, reuseTime.headEnd, {opacity:0}, {opacity:1}));
     view.querySelectorAll(".probe-candidates .probe-scale i").forEach(dot =>
-      segment(dot, .375, .485, {opacity:0}, {opacity:1}));
+      segment(dot, reuseTime.dotsStart, reuseTime.dotsEnd, {opacity:0}, {opacity:1}));
     const socket = view.querySelector(".reuse-socket");
-    segment(socket.querySelector(".card-a"), .62, .68,
+    segment(socket.querySelector(".card-a"), .82, .865,
       {opacity:1, transform:"none"}, {opacity:0, transform:"translateY(2px) scale(.9)"});
 
     // The travel distance is the candidate group's height plus the difference in
@@ -227,26 +243,36 @@
     const atSource = "translateY(0)";
     const atSlot = "translateY(calc(100% + var(--slot-pad) - var(--probe-pad)))";
     track(view.querySelector(".reuse-flight"), [
-      {offset:0, opacity:0, transform:atSource}, {offset:.56, opacity:0, transform:atSource},
-      {offset:.57, opacity:1, transform:atSource, easing:"cubic-bezier(.4,0,.2,1)"},
-      {offset:.69, opacity:1, transform:atSlot}, {offset:.70, opacity:0, transform:atSlot},
+      {offset:0, opacity:0, transform:atSource}, {offset:.77, opacity:0, transform:atSource},
+      {offset:.78, opacity:1, transform:atSource, easing:"cubic-bezier(.4,0,.2,1)"},
+      {offset:reuseTime.restore, opacity:1, transform:atSlot}, {offset:.885, opacity:0, transform:atSlot},
       {offset:1, opacity:0, transform:atSlot}
     ]);
-    segment(socket.querySelector(".card-b"), .685, .69, {opacity:0}, {opacity:1});
+    segment(socket.querySelector(".card-b"), .87, reuseTime.restore, {opacity:0}, {opacity:1});
     const full = {opacity:1}, hidden = {opacity:0};
-    segment(view.querySelector(".status-initial"), .54, .56, full, hidden);
+    segment(view.querySelector(".status-initial"), reuseTime.match, .77, full, hidden);
     track(view.querySelector(".status-loading"), [
-      {offset:0, opacity:0}, {offset:.56, opacity:0}, {offset:.59, opacity:1},
-      {offset:.69, opacity:1}, {offset:.72, opacity:0}, {offset:1, opacity:0}
+      {offset:0, opacity:0}, {offset:.77, opacity:0}, {offset:.79, opacity:1},
+      {offset:reuseTime.restore, opacity:1}, {offset:.90, opacity:0}, {offset:1, opacity:0}
     ]);
-    segment(view.querySelector(".status-restored"), .72, .75, hidden, full);
-    segment(view.querySelector(".reuse-module"), .69, .74, {color:"#8293a2"}, {color:"#39775f"});
+    segment(view.querySelector(".status-restored"), .90, .925, hidden, full);
+    segment(view.querySelector(".reuse-module"), reuseTime.restore, .91, {color:"#8293a2"}, {color:"#39775f"});
   }
 
   const draw = {decode, adapt, reuse};
   function stopChapterFrames() {
     if (chapterFrame !== null) window.cancelAnimationFrame(chapterFrame);
     chapterFrame = null;
+  }
+
+  function showExampleReuse(progress) {
+    const stage = stageAt(reuseStages, progress);
+    const beat = stage.beat === "recall" ? "match" : stage.beat;
+    if (reuseView.dataset.beat !== beat) {
+      reuseView.dataset.beat = beat;
+      reuseHeading.textContent = stage.title;
+      reuseNotes.forEach(note => note.setAttribute("aria-hidden", String(note.dataset.reuseNote !== beat)));
+    }
   }
 
   function renderChapter(progress) {
@@ -261,13 +287,7 @@
     if (!example) {
       renderModel(chapter, progress);
     } else if (chapter === "reuse") {
-      // The head is measured first. Select B after all same-head probes arrive.
-      const view = views[selected];
-      let beat = "monitor";
-      if (progress >= .54) beat = "match";
-      else if (progress >= .36) beat = "probe";
-      else if (progress >= .20) beat = "shift";
-      if (view.dataset.beat !== beat) view.dataset.beat = beat;
+      showExampleReuse(progress);
     }
   }
 
@@ -382,7 +402,7 @@
     const optimized = figure.querySelector("#film-adapt");
     optimized.setAttribute("data-build", "");
     optimized.style.removeProperty("--build-progress");
-    figure.querySelector("#film-reuse").dataset.beat = "match";
+    showExampleReuse(1);
     delete figure.dataset.choreography;
     views.forEach(view => view.removeAttribute("aria-hidden"));
   });

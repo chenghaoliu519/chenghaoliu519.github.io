@@ -37,7 +37,7 @@
               </g>
               <path class="ov-feedback-arrow" d="m116 7 4-5 4 5"/>
             </svg>
-            <span class="ov-feedback-label">Committed tokens per decode second</span>
+            <span class="ov-feedback-label"><strong></strong><span>Committed tokens per decode second</span></span>
           </div>
           <div class="ov-controller-space">
           <div class="ov-controller">
@@ -58,7 +58,7 @@
                   <tr data-head-profile="C"><th scope="row">C</th><td><span class="probe-scale"><i></i></span></td><td><span class="probe-scale ov-acceptance-reading"><i></i></span></td></tr>
                 </tbody>
               </table>
-              <div class="ov-signal-key"><span>Historical range</span><span>This request</span></div>
+              <div class="ov-signal-key"><span>Historical range</span><span>Current request</span></div>
             </div>
             <div class="ov-probe-bank">
               <span class="ov-controller-label">Profile bank</span>
@@ -156,7 +156,7 @@
           <section class="film-scene" id="film-reuse" data-beat="match" aria-labelledby="film-title-reuse">
             <h3 id="film-title-reuse">Can a later request reuse a saved draft?</h3>
             <div class="film-board study-board" role="img" aria-label="The current profile (A) and saved profiles B and C are compared on the same request head. A’s throughput and draft acceptance are below its historical ranges. B and C match their own ranges. B improves on A’s probe score and meets the throughput requirement. C delivers fewer tokens per second than A. B’s saved draft replaces A.">
-              <div class="study-heading"><strong>Probes on the same request head</strong><div class="study-key probe-symbols"><span>Stored range</span><span>Probe</span></div></div>
+              <div class="study-heading"><strong data-reuse-heading>Profile reuse</strong><div class="study-key probe-symbols"><span>Stored range</span><span>Current request</span></div></div>
               <div class="probe-table">
                 <div class="probe-row probe-head"><span>Profile</span><span>Raw throughput</span><span>Acceptance</span></div>
                 <div class="probe-row active-profile">
@@ -194,7 +194,12 @@
                 </div>
               </div>
             </div>
-            <p class="film-caption">On this request head, B and C both match their historical ranges. C delivers fewer tokens per second than A. B outscores A and meets the throughput requirement, so SPIRIT restores B’s tuned draft.</p>
+            <p class="film-caption reuse-caption">
+              <span data-reuse-note="monitor" aria-hidden="true">SPIRIT measures throughput and draft acceptance in the opening windows with profile A.</span>
+              <span data-reuse-note="shift" aria-hidden="true">With A active, both measurements fall below their historical ranges.</span>
+              <span data-reuse-note="probe" aria-hidden="true">A, B and C each run on the same request head. Each dot is a measurement under that profile.</span>
+              <span data-reuse-note="match">B and C both match their historical ranges. C delivers fewer tokens per second than A. B outscores A and meets the throughput requirement, so SPIRIT restores B’s tuned draft.</span>
+            </p>
           </section>
         </div>
           <div class="film-chapters" hidden role="group" aria-label="Animation chapters">
