@@ -44,21 +44,6 @@
 .ov-film[data-enhanced] .film-scene[aria-hidden="true"] { visibility:hidden; pointer-events:none; }
 .film-scene { min-width:0; }
 .film-scene h3 { margin:21px 0 13px; font-size:22px; font-weight:550; line-height:1.28; letter-spacing:-.45px; color:var(--ink); }
-/* Carry the same scope title from profile construction through cross-request adaptation. */
-.workload-heading small {
-  display:block; margin-bottom:2px; color:var(--muted); font-size:10px; font-weight:550;
-  line-height:1.3; letter-spacing:.075em; text-transform:uppercase;
-}
-.flow-workload-heading { display:none; flex:1; margin:0 10px; font-size:20px; font-weight:550; line-height:1.25; letter-spacing:-.4px; color:var(--ink); }
-.ov-film:has(#show-model:checked):has(.ov-demo:is([data-beat="build"],[data-step="reuse"])) .flow-workload-heading { display:block; }
-.film-scene #film-title-adapt { display:grid; align-content:end; }
-#film-title-adapt > span { grid-area:1/1; align-self:end; }
-#film-adapt[data-build] .search-heading,#film-adapt:not([data-build]) .workload-heading { visibility:hidden; }
-.film-scene h3.workload-heading { display:block; align-content:end; }
-@media (max-width:560px) {
-  .film-toolbar { flex-wrap:wrap; }
-  .flow-workload-heading { order:1; flex:0 0 100%; margin:6px 0 0; font-size:19px; }
-}
 /* A white study sheet ties the prompt, window and returning request together. */
 .ov-film:has(#show-example:checked) {
   color-scheme:light; background:#fff; color:#172534;

@@ -331,7 +331,6 @@ def build_overview():
         'overview_peak': f"{max(run[-1] for run in values['runs'].values()):.2f}",
         'overview_fp16': f"{max(row['speedup'] for row in spirit):.2f}",
         'overview_wins': str(wins),
-        'workload_heading': '<small>Across requests</small>Adapt to workload shifts',
         'profile_build': (ROOT/'scripts/research/profile-build.html').read_text().strip(),
     }
     rendered = (ROOT/'scripts/research/overview.html').read_text()
