@@ -213,6 +213,16 @@
 .signature-moments { opacity:var(--summary); }
 .signature-moments path { stroke:var(--ink); stroke-width:1.6; }
 .signature-moments circle { fill:var(--ink); stroke:var(--paper); stroke-width:1.2; }
+/* During drift, the box joins the endpoints of the two ±1 SD whiskers. */
+.signature-history-box { display:none; }
+.ov-demo[data-beat="shift"] .signature-history-box {
+  display:inline; stroke:var(--head-ink); stroke-width:1.25; stroke-dasharray:3 2.5;
+  vector-effect:non-scaling-stroke; fill:var(--head-ink); fill-opacity:.08;
+}
+.ov-demo[data-beat="shift"] .signature-mean-key::before {
+  box-sizing:border-box; width:11px; height:8px; border:1px dashed var(--head-ink);
+  background:color-mix(in srgb,var(--head-ink) 8%,var(--paper)); flex-shrink:0;
+}
 .signature-current { display:none; }
 .ov-demo[data-step="reuse"] .profile-build { --build-progress:1; }
 .ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .build-saved { display:none; }
