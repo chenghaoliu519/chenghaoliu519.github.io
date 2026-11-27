@@ -281,7 +281,7 @@
 .ov-film :is([data-beat="match"],[data-beat="recall"]) .profile-match-note { display:inline; }
 .ov-probe-label { display:none; }
 .ov-film [data-beat="probe"] .probe-candidates {
-  outline:1px dashed color-mix(in srgb,var(--probe-ink) 75%,var(--paper)); outline-offset:-1px;
+  outline:2px dashed color-mix(in srgb,var(--probe-ink) 75%,var(--paper)); outline-offset:-2px;
 }
 .ov-film [data-beat="probe"] .ov-probe-label {
   display:block; position:absolute; z-index:1; inset:0 auto auto 16px; transform:translateY(-50%);

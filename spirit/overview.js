@@ -169,8 +169,8 @@
 
   // All tracks share a chapter clock. The holds give readers time to inspect
   // both ends of a movement, and pausing freezes every object together.
-  function track(node, frames) {
-    const animation = node.animate(frames, {duration, fill:"both"});
+  function track(node, frames, timing = {}) {
+    const animation = node.animate(frames, {duration, fill:"both", ...timing});
     animation.pause();
     tracks.push(animation);
   }
@@ -316,7 +316,20 @@
     buttons.forEach((button, i) => button.setAttribute("aria-pressed", String(i === selected)));
     if (supported && !printing) {
       const view = views[selected];
-      if (example) draw[buttons[selected].dataset.chapter](view);
+      const chapter = buttons[selected].dataset.chapter;
+      if (example) draw[chapter](view);
+      if (chapter === "reuse" && !motion.matches) {
+        const candidates = (example ? view : model).querySelector(".probe-candidates");
+        const halfCycleMs = 500;
+        track(candidates, [
+          {outlineColor:"var(--probe-ink)"},
+          {outlineColor:"color-mix(in srgb, var(--probe-ink) 22%, var(--paper))"}
+        ], {
+          delay:reuseTime.probe * duration, duration:halfCycleMs,
+          iterations:(reuseTime.match - reuseTime.probe) * duration / halfCycleMs,
+          direction:"alternate", easing:"ease-in-out", fill:"none"
+        });
+      }
       clock = buttons[selected].querySelector(".film-progress").animate(
         [{transform:"scaleX(0)"}, {transform:"scaleX(1)"}], {duration, fill:"both"});
       clock.pause();
