@@ -41,11 +41,11 @@
   <link rel="stylesheet" href="/research.css?v=f053c467fda1">
   <link rel="stylesheet" href="/spirit/project.css?v=b6ce107a2c1c">
   <link rel="stylesheet" href="/spirit/content.css?v=8470f16b8770">
-  <link rel="stylesheet" href="/spirit/model-flow.css?v=32fda7e83efa">
-  <link rel="stylesheet" href="/spirit/overview.css?v=5ce92619ad6d">
+  <link rel="stylesheet" href="/spirit/model-flow.css?v=11b22f8495bb">
+  <link rel="stylesheet" href="/spirit/overview.css?v=8f9ff41a3e07">
   <script src="/research.js?v=d45f4a188da7" defer></script>
   <script src="/spirit/project.js?v=fc0dd9953231" defer></script>
-  <script src="/spirit/overview.js?v=0bcecb448488" defer></script>
+  <script src="/spirit/overview.js?v=49982c02e757" defer></script>
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -100,6 +100,7 @@
             <input type="radio" name="overview-view" id="show-model" value="model" aria-controls="model-flow" autocomplete="off" checked><label for="show-model">Flow</label>
             <input type="radio" name="overview-view" id="show-example" value="example" aria-controls="worked-example" autocomplete="off"><label for="show-example">Example</label>
           </fieldset>
+          <h3 class="workload-heading flow-workload-heading"><small>Across requests</small>Adapt to workload shifts</h3>
           <button class="film-play" type="button" hidden aria-label="Play animation" data-playing="false"><span class="film-control-icon" aria-hidden="true"></span><span data-play-label>Play</span></button>
         </div>
 
@@ -253,7 +254,10 @@
           </section>
 
           <section class="film-scene" id="film-adapt" data-build aria-labelledby="film-title-adapt">
-            <h3 id="film-title-adapt">How does throughput guide the next draft?</h3>
+            <h3 id="film-title-adapt">
+              <span class="search-heading">How does throughput guide the next draft?</span>
+              <span class="workload-heading"><small>Across requests</small>Adapt to workload shifts</span>
+            </h3>
             <div class="film-board adapt-board" role="img" aria-label="Illustrative search across productive decoding windows. The dots show throughput-based scores, with higher scores to the right. In the ratio search, confidence bounds narrow and skipping four of six sublayers leads both three and five. With four skips fixed, running sublayers 1 and 4 scores higher than running 1 and 6. SPIRIT retains the better pattern.">
               <div class="adapt-input"><strong>Window throughput</strong><span>Committed tokens <i>÷</i> decode time</span></div>
               <div class="adapt-stage ratio-stage">
@@ -331,7 +335,7 @@
           </section>
 
           <section class="film-scene" id="film-reuse" data-beat="match" aria-labelledby="film-title-reuse">
-            <h3 id="film-title-reuse">Can a later request reuse a saved draft?</h3>
+            <h3 id="film-title-reuse" class="workload-heading"><small>Across requests</small>Adapt to workload shifts</h3>
             <div class="film-board study-board" role="img" aria-label="The current profile (A) and saved profiles B and C are compared on the same request head. A’s throughput and draft acceptance are below its historical ranges. B and C match their own ranges. B improves on A’s probe score and meets the throughput requirement. C delivers fewer tokens per second than A. B’s saved draft replaces A.">
               <div class="study-heading"><strong data-reuse-heading>Profile reuse</strong><div class="study-key probe-symbols"><span>Stored range</span><span>Current request</span></div></div>
               <div class="probe-table">

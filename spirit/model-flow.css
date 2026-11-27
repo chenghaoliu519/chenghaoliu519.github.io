@@ -61,6 +61,10 @@
 .ov-demo[data-step="adapt"] .ov-feedback-label { color:var(--accent); }
 .ov-demo[data-step="reuse"] .ov-feedback-label { color:var(--ink); font-size:clamp(9px,1.25vw,11px); line-height:1.4; }
 .ov-demo:is([data-beat="monitor"],[data-beat="shift"]) .ov-feedback-label { top:auto; bottom:2px; width:max-content; max-width:100%; white-space:normal; text-align:center; text-wrap:balance; }
+.ov-demo[data-beat="build"] .ov-feedback-label {
+  top:auto; bottom:2px; width:max-content; max-width:100%; white-space:normal;
+  font-size:clamp(10px,1.25vw,11px); line-height:1.4; text-align:center; text-wrap:balance;
+}
 .ov-demo[data-beat="monitor"] .ov-feedback-label { left:calc(50% + 8px); max-width:calc(100% - 16px); }
 .ov-feedback-label strong { color:inherit; font-weight:650; }
 .ov-demo[data-beat="monitor"] .ov-feedback-label strong { color:var(--accent); }

@@ -115,7 +115,7 @@
         { at: 0, beat: "feedback", layers: recalled, label: "Calibrate for prefix length" },
         { at: .16, beat: "ratio", layers: coarse, label: "Change how many sublayers to skip" },
         { at: .33, beat: "pattern", layers: refined, label: "Move the skips at the same ratio" },
-        { at: modelBuildStart, beat: "build", layers: refined, label: "Pair the tuned draft with its request-head history" }
+        { at: modelBuildStart, beat: "build", layers: refined, title: "Create profile", label: "pair the tuned draft with its request-head history" }
       ],
       reuse: reuseStages.map(stage => ({ ...stage, layers: stage.beat === "recall" ? recalled : refined }))
     };
