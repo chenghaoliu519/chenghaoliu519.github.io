@@ -331,9 +331,18 @@ def build_overview():
         'overview_peak': f"{max(run[-1] for run in values['runs'].values()):.2f}",
         'overview_fp16': f"{max(row['speedup'] for row in spirit):.2f}",
         'overview_wins': str(wins),
-        'profile_build': (ROOT/'scripts/research/profile-build.html').read_text().strip(),
     }
-    rendered = (ROOT/'scripts/research/overview.html').read_text()
+    # Flow's profile bank and Example's numbered strips describe the same drafts.
+    for name, executed in (('a', (1, 4)), ('b', (1, 3, 6))):
+        replacements[f'bank_{name}'] = ''.join(
+            '<i class="filled"></i>' if layer in executed else '<i></i>' for layer in range(1, 7)
+        )
+        replacements[f'mask_{name}'] = ''.join(
+            f'<b>{layer}</b>' if layer in executed else f'<i>{layer}</i>' for layer in range(1, 7)
+        )
+    rendered = (ROOT/'scripts/research/overview.html').read_text().replace(
+        '{{profile_build}}', (ROOT/'scripts/research/profile-build.html').read_text().strip()
+    )
     for key, value in replacements.items():
         rendered = rendered.replace('{{' + key + '}}', value)
     assert not re.search(r'\{\{\w+\}\}', rendered), 'Unresolved overview template value'

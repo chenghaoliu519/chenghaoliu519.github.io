@@ -355,14 +355,25 @@
 }
 .reuse-socket .reuse-card { grid-area:1/1; }
 .reuse-socket .card-a { opacity:0; }
-.draft-readout { align-self:center; min-width:0; }
+.draft-readout { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:6px 14px; align-self:center; min-width:0; }
+.installed-pattern > span { color:var(--soft); font-size:11px; line-height:1.4; }
+.installed-pattern .build-mask { gap:3px; }
+.installed-pattern .build-mask > * { width:clamp(17px,2.8vw,22px); height:21px; }
+.installed-pattern .build-mask b { background:#2f667c; border-color:#2f667c; color:white; }
+.installed-pattern [data-mask-for="B"] b { background:var(--profile-match); border-color:var(--profile-match); }
+#film-reuse[data-restored] [data-mask-for="A"],#film-reuse:not([data-restored]) [data-mask-for="B"] { display:none; }
 .draft-readout strong { display:block; color:#213b47; font-size:16px; font-weight:550; line-height:1.3; letter-spacing:-.02em; }
 .draft-status { display:grid; margin-top:3px; color:#526575; font-size:12px; line-height:1.4; }
-.draft-status > span { grid-area:1/1; align-self:start; }
-.status-initial,.status-loading { opacity:0; }
+.draft-status > span { grid-area:1/1; align-self:start; visibility:hidden; }
+#film-reuse:not([data-beat="match"]) .status-initial,
+#film-reuse[data-beat="match"]:not([data-restored]) .status-loading,
+#film-reuse[data-restored] .status-restored { visibility:inherit; }
 .status-restored { color:#2d6653; }
 .film-scene .film-caption { color:var(--muted); font-size:13px; line-height:1.7; margin:14px 0 0; }
 .film-footer { padding-top:10px; color:var(--muted); font-size:10px; line-height:1.5; }
+@media screen and (max-width:560px) {
+  .ov-film[data-enhanced] .film-scene[aria-hidden="true"] { display:none; }
+}
 @media (max-width:560px) {
   .ov-film { padding:12px 12px 8px; border-radius:13px; }
   .animation-views label { padding:4px 8px; font-size:11px; }
@@ -394,7 +405,7 @@
   .adapt-choice { grid-area:1/2; margin:0; font-size:10px; gap:3px; }
   .study-board { padding-block:12px; }
   .study-heading { padding-bottom:9px; }
-  .study-heading strong { font-size:12px; }
+  .study-heading strong { min-inline-size:8em; font-size:12px; }
   .study-key { gap:4px 8px; }
   .study-key span,.probe-head { font-size:10px; }
   .probe-table { --card-size:23px; --probe-inset:4px; --slot-pad:14px; }

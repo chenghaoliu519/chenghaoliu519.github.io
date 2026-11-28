@@ -43,7 +43,7 @@
           <div class="ov-controller">
             <div class="ov-search"><span class="ov-controller-label">Within a request</span><div><span class="ov-ratio">Optimize skip ratio</span><b aria-hidden="true">→</b><span class="ov-pattern">Refine layer pattern</span></div></div>
             <span class="ov-controller-divider" aria-hidden="true"></span>
-            <div class="ov-memory"><div><span class="ov-controller-label">Across requests</span><strong>Adapt to workload shifts</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true"><i class="filled"></i><i></i><i></i><i class="filled"></i><i></i><i></i></span><span class="ov-profile ov-profile-1" aria-hidden="true"><i class="filled"></i><i></i><i class="filled"></i><i></i><i></i><i class="filled"></i></span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i class="filled"></i></span></div></div>
+            <div class="ov-memory"><div><span class="ov-controller-label">Across requests</span><strong>Adapt to workload shifts</strong></div><div class="ov-profile-bank"><span class="ov-profile ov-profile-0" aria-hidden="true">{{bank_a}}</span><span class="ov-profile ov-profile-1" aria-hidden="true">{{bank_b}}</span><span class="ov-profile ov-profile-2" aria-hidden="true"><i></i><i class="filled"></i><i></i><i class="filled"></i><i></i><i class="filled"></i></span></div></div>
           </div>
           {{profile_build}}
           <div class="ov-reuse-controller">
@@ -153,9 +153,9 @@
             </div>
           </section>
 
-          <section class="film-scene" id="film-reuse" data-beat="match" aria-labelledby="film-title-reuse">
+          <section class="film-scene" id="film-reuse" data-beat="match" data-restored aria-labelledby="film-title-reuse">
             <h3 id="film-title-reuse">Can a later request reuse a saved draft?</h3>
-            <div class="film-board study-board" role="img" aria-label="The current profile (A) and saved profiles B and C are compared on the same request head. A’s throughput and draft acceptance are below its historical ranges. B and C match their own ranges. B improves on A’s probe score and meets the throughput requirement. C delivers fewer tokens per second than A. B’s saved draft replaces A.">
+            <div class="film-board study-board" role="img" aria-label="The current profile (A) and saved profiles B and C are compared on the same request head. A’s throughput and draft acceptance are below its historical ranges. B and C match their own ranges. B improves on A’s probe score and meets the throughput requirement. C delivers fewer tokens per second than A. A runs sublayers 1 and 4 through probing. When B is restored, the active draft runs sublayers 1, 3 and 6.">
               <div class="study-heading"><strong data-reuse-heading>Profile reuse</strong><div class="study-key probe-symbols"><span>Stored range</span><span>Current request</span></div></div>
               <div class="probe-table">
                 <div class="probe-row probe-head"><span>Profile</span><span>Raw throughput</span><span>Acceptance</span></div>
@@ -184,11 +184,18 @@
                     </div>
                   </div>
                   <div class="draft-readout">
-                    <strong>Active self-draft</strong>
-                    <div class="draft-status">
-                      <span class="status-initial">Using profile A</span>
-                      <span class="status-loading">Restoring profile B…</span>
-                      <span class="status-restored">B’s saved skip ratio and layer pattern are active.</span>
+                    <div>
+                      <strong>Active self-draft</strong>
+                      <div class="draft-status">
+                        <span class="status-initial">Profile A · 4 of 6 skipped</span>
+                        <span class="status-loading">Restoring profile B…</span>
+                        <span class="status-restored">Profile B · 3 of 6 skipped</span>
+                      </div>
+                    </div>
+                    <div class="installed-pattern">
+                      <span>Executed sublayers</span>
+                      <div class="build-mask" data-mask-for="A" role="img" aria-label="Profile A executes sublayers 1 and 4">{{mask_a}}</div>
+                      <div class="build-mask" data-mask-for="B" role="img" aria-label="Profile B executes sublayers 1, 3 and 6">{{mask_b}}</div>
                     </div>
                   </div>
                 </div>

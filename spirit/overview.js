@@ -33,7 +33,6 @@
     return {decode:10000, adapt:exampleOptimizeMs, reuse:reuseDuration}[buttons[index].dataset.chapter];
   }
   let duration = chapterDuration(0);
-  let exampleOpened = example;
   let chapterFrame = null;
   const supported = typeof Element.prototype.animate === "function";
   let requested = supported && !motion.matches;
@@ -249,13 +248,6 @@
       {offset:1, opacity:0, transform:atSlot}
     ]);
     segment(socket.querySelector(".card-b"), .87, reuseTime.restore, {opacity:0}, {opacity:1});
-    const full = {opacity:1}, hidden = {opacity:0};
-    segment(view.querySelector(".status-initial"), reuseTime.match, .77, full, hidden);
-    track(view.querySelector(".status-loading"), [
-      {offset:0, opacity:0}, {offset:.77, opacity:0}, {offset:.79, opacity:1},
-      {offset:reuseTime.restore, opacity:1}, {offset:.90, opacity:0}, {offset:1, opacity:0}
-    ]);
-    segment(view.querySelector(".status-restored"), .90, .925, hidden, full);
     segment(view.querySelector(".reuse-module"), reuseTime.restore, .91, {color:"#8293a2"}, {color:"#39775f"});
   }
 
@@ -267,7 +259,9 @@
 
   function showExampleReuse(progress) {
     const stage = stageAt(reuseStages, progress);
-    const beat = stage.beat === "recall" ? "match" : stage.beat;
+    const restored = stage.beat === "recall";
+    reuseView.toggleAttribute("data-restored", restored);
+    const beat = restored ? "match" : stage.beat;
     if (reuseView.dataset.beat !== beat) {
       reuseView.dataset.beat = beat;
       reuseHeading.textContent = stage.title;
@@ -383,10 +377,7 @@
   modeInputs.forEach(input => input.addEventListener("change", () => {
     const fraction = clock ? clock.currentTime / duration : 1;
     example = input.value === "example";
-    if (example && !exampleOpened) {
-      exampleOpened = true;
-      choose(0);
-    } else present(selected, Math.min(1, fraction));
+    present(selected, Math.min(1, fraction));
   }));
   figure.querySelector(".film-chapters").hidden = false;
   play.hidden = !supported;
